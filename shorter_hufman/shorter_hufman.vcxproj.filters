@@ -13,10 +13,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="image">
+      <UniqueIdentifier>{fff19675-747f-4a7b-a6c5-eb90484b29a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="shorter_hufman.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\lena512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\toys512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\airplane512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\baboon512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\barbara512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\boat512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\couple512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\gold512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\pepper512.raw">
+      <Filter>image</Filter>
+    </None>
+    <None Include="image\sailboat512.raw">
+      <Filter>image</Filter>
+    </None>
   </ItemGroup>
 </Project>
