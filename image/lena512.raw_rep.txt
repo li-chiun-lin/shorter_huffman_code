@@ -13,7 +13,7 @@ Frequency of t
      t      0      1      2      3      4      5      6      7      8 
   dist 129776   4824   7166  15661  20955  27252  23126  14470  17891 
 
-B. Image Encryption, okay, write to ../image/lena512.raw_enc.raw
+B. Image Encryption, okay, write to ../image/lena512.raw_encrypt.raw
 
 C. Huffman Coding, okay, 912623, LM = 698337, extra-capacity = 214234 + 52
 Huffman coding
@@ -111,7 +111,7 @@ D8. embed into the 1st col of enc(image), 511 bytes
 
 D9. embed into rest of the enc(image)
 
-E. write to ../image/lena512.raw_ste.raw
+E. write to ../image/lena512.raw_stego.raw
 
 F. Data Extraction and Image Recovery
 
