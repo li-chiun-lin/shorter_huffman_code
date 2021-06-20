@@ -1,9 +1,5 @@
-﻿#include <iostream>
-#include <fstream>
-#include <queue>
-#include <cassert>
-#include <algorithm>
-#include <random>
+﻿
+#include "../lib/Header.h"
 
 # define REPORT 1
 # define PRINT 1
@@ -12,263 +8,127 @@
 //# define COVER_IMG_FN "../image/Lena.tiff"
 //# define TIFF 1
 
-# define ENC_IMG_FN     COVER_IMG_FN"_enc.raw"
-# define STEGO_IMG_FN   COVER_IMG_FN"_ste.raw"
-# define RESTORE_IMG_FN COVER_IMG_FN"_rec.raw"
+# define ENC_IMG_FN     COVER_IMG_FN"_encrypt.raw"
+# define STEGO_IMG_FN   COVER_IMG_FN"_stego.raw"
+# define RESTORE_IMG_FN COVER_IMG_FN"_restore.raw"
 
 # if REPORT
-#	define REPORT_FN COVER_IMG_FN"_rep.txt"
+#	define REPORT_FN COVER_IMG_FN"_report.txt"
+#	define LEN_SAMPLE 1024
 # endif
 
 # if PRINT
-#	define PRINT_FN COVER_IMG_FN"_hex.txt"
+#	define FN_ORIGINAL_IMAGE_HEXDUMP COVER_IMG_FN"_hex.txt"
+#	define FN_RESTORE_IMAGE_HEXDUMP  COVER_IMG_FN"_restore_hex.txt"
 # endif
 
-using namespace std;
+# define SIZE_HCODE 9
+# define MAX_T 8
+# define LEN_HC_RULE 32
+# define LEN_LEN_H_ENCODED_LABELMAP 20
+# define LEN_HCODE_HEADER  (LEN_HC_RULE + LEN_LEN_H_ENCODED_LABELMAP)
+# define MAX_HCODE_LEN 5
 
-const static unsigned char pixel2t[256] = {
-	8, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+static const unsigned char byte_hcode[SIZE_HCODE] = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
+static const unsigned char len_hcode[SIZE_HCODE] = { 2, 2, 3, 3, 4, 4, 4, 5, 5 };
+static const vector< vector<unsigned char> > bits_hcode = { 
+	{0, 0}, 
+	{0, 1}, 
+	{1, 0, 0},
+	{1, 0, 1}, 
+	{1, 1, 0, 0}, 
+	{1, 1, 0, 1}, 
+	{1, 1, 1, 0}, 
+	{1, 1, 1, 1, 0}, 
+	{1, 1, 1, 1, 1} 
 };
 
-const static unsigned char byte2bits[256][8] = {
-	{0, 0, 0, 0, 0, 0, 0, 0 }, {0, 0, 0, 0, 0, 0, 0, 1 }, {0, 0, 0, 0, 0, 0, 1, 0 }, {0, 0, 0, 0, 0, 0, 1, 1 },
-	{0, 0, 0, 0, 0, 1, 0, 0 }, {0, 0, 0, 0, 0, 1, 0, 1 }, {0, 0, 0, 0, 0, 1, 1, 0 }, {0, 0, 0, 0, 0, 1, 1, 1 },
-	{0, 0, 0, 0, 1, 0, 0, 0 }, {0, 0, 0, 0, 1, 0, 0, 1 }, {0, 0, 0, 0, 1, 0, 1, 0 }, {0, 0, 0, 0, 1, 0, 1, 1 },
-	{0, 0, 0, 0, 1, 1, 0, 0 }, {0, 0, 0, 0, 1, 1, 0, 1 }, {0, 0, 0, 0, 1, 1, 1, 0 }, {0, 0, 0, 0, 1, 1, 1, 1 },
-	{0, 0, 0, 1, 0, 0, 0, 0 }, {0, 0, 0, 1, 0, 0, 0, 1 }, {0, 0, 0, 1, 0, 0, 1, 0 }, {0, 0, 0, 1, 0, 0, 1, 1 },
-	{0, 0, 0, 1, 0, 1, 0, 0 }, {0, 0, 0, 1, 0, 1, 0, 1 }, {0, 0, 0, 1, 0, 1, 1, 0 }, {0, 0, 0, 1, 0, 1, 1, 1 },
-	{0, 0, 0, 1, 1, 0, 0, 0 }, {0, 0, 0, 1, 1, 0, 0, 1 }, {0, 0, 0, 1, 1, 0, 1, 0 }, {0, 0, 0, 1, 1, 0, 1, 1 },
-	{0, 0, 0, 1, 1, 1, 0, 0 }, {0, 0, 0, 1, 1, 1, 0, 1 }, {0, 0, 0, 1, 1, 1, 1, 0 }, {0, 0, 0, 1, 1, 1, 1, 1 },
-	{0, 0, 1, 0, 0, 0, 0, 0 }, {0, 0, 1, 0, 0, 0, 0, 1 }, {0, 0, 1, 0, 0, 0, 1, 0 }, {0, 0, 1, 0, 0, 0, 1, 1 },
-	{0, 0, 1, 0, 0, 1, 0, 0 }, {0, 0, 1, 0, 0, 1, 0, 1 }, {0, 0, 1, 0, 0, 1, 1, 0 }, {0, 0, 1, 0, 0, 1, 1, 1 },
-	{0, 0, 1, 0, 1, 0, 0, 0 }, {0, 0, 1, 0, 1, 0, 0, 1 }, {0, 0, 1, 0, 1, 0, 1, 0 }, {0, 0, 1, 0, 1, 0, 1, 1 },
-	{0, 0, 1, 0, 1, 1, 0, 0 }, {0, 0, 1, 0, 1, 1, 0, 1 }, {0, 0, 1, 0, 1, 1, 1, 0 }, {0, 0, 1, 0, 1, 1, 1, 1 },
-	{0, 0, 1, 1, 0, 0, 0, 0 }, {0, 0, 1, 1, 0, 0, 0, 1 }, {0, 0, 1, 1, 0, 0, 1, 0 }, {0, 0, 1, 1, 0, 0, 1, 1 },
-	{0, 0, 1, 1, 0, 1, 0, 0 }, {0, 0, 1, 1, 0, 1, 0, 1 }, {0, 0, 1, 1, 0, 1, 1, 0 }, {0, 0, 1, 1, 0, 1, 1, 1 },
-	{0, 0, 1, 1, 1, 0, 0, 0 }, {0, 0, 1, 1, 1, 0, 0, 1 }, {0, 0, 1, 1, 1, 0, 1, 0 }, {0, 0, 1, 1, 1, 0, 1, 1 },
-	{0, 0, 1, 1, 1, 1, 0, 0 }, {0, 0, 1, 1, 1, 1, 0, 1 }, {0, 0, 1, 1, 1, 1, 1, 0 }, {0, 0, 1, 1, 1, 1, 1, 1 },
-	{0, 1, 0, 0, 0, 0, 0, 0 }, {0, 1, 0, 0, 0, 0, 0, 1 }, {0, 1, 0, 0, 0, 0, 1, 0 }, {0, 1, 0, 0, 0, 0, 1, 1 },
-	{0, 1, 0, 0, 0, 1, 0, 0 }, {0, 1, 0, 0, 0, 1, 0, 1 }, {0, 1, 0, 0, 0, 1, 1, 0 }, {0, 1, 0, 0, 0, 1, 1, 1 },
-	{0, 1, 0, 0, 1, 0, 0, 0 }, {0, 1, 0, 0, 1, 0, 0, 1 }, {0, 1, 0, 0, 1, 0, 1, 0 }, {0, 1, 0, 0, 1, 0, 1, 1 },
-	{0, 1, 0, 0, 1, 1, 0, 0 }, {0, 1, 0, 0, 1, 1, 0, 1 }, {0, 1, 0, 0, 1, 1, 1, 0 }, {0, 1, 0, 0, 1, 1, 1, 1 },
-	{0, 1, 0, 1, 0, 0, 0, 0 }, {0, 1, 0, 1, 0, 0, 0, 1 }, {0, 1, 0, 1, 0, 0, 1, 0 }, {0, 1, 0, 1, 0, 0, 1, 1 },
-	{0, 1, 0, 1, 0, 1, 0, 0 }, {0, 1, 0, 1, 0, 1, 0, 1 }, {0, 1, 0, 1, 0, 1, 1, 0 }, {0, 1, 0, 1, 0, 1, 1, 1 },
-	{0, 1, 0, 1, 1, 0, 0, 0 }, {0, 1, 0, 1, 1, 0, 0, 1 }, {0, 1, 0, 1, 1, 0, 1, 0 }, {0, 1, 0, 1, 1, 0, 1, 1 },
-	{0, 1, 0, 1, 1, 1, 0, 0 }, {0, 1, 0, 1, 1, 1, 0, 1 }, {0, 1, 0, 1, 1, 1, 1, 0 }, {0, 1, 0, 1, 1, 1, 1, 1 },
-	{0, 1, 1, 0, 0, 0, 0, 0 }, {0, 1, 1, 0, 0, 0, 0, 1 }, {0, 1, 1, 0, 0, 0, 1, 0 }, {0, 1, 1, 0, 0, 0, 1, 1 },
-	{0, 1, 1, 0, 0, 1, 0, 0 }, {0, 1, 1, 0, 0, 1, 0, 1 }, {0, 1, 1, 0, 0, 1, 1, 0 }, {0, 1, 1, 0, 0, 1, 1, 1 },
-	{0, 1, 1, 0, 1, 0, 0, 0 }, {0, 1, 1, 0, 1, 0, 0, 1 }, {0, 1, 1, 0, 1, 0, 1, 0 }, {0, 1, 1, 0, 1, 0, 1, 1 },
-	{0, 1, 1, 0, 1, 1, 0, 0 }, {0, 1, 1, 0, 1, 1, 0, 1 }, {0, 1, 1, 0, 1, 1, 1, 0 }, {0, 1, 1, 0, 1, 1, 1, 1 },
-	{0, 1, 1, 1, 0, 0, 0, 0 }, {0, 1, 1, 1, 0, 0, 0, 1 }, {0, 1, 1, 1, 0, 0, 1, 0 }, {0, 1, 1, 1, 0, 0, 1, 1 },
-	{0, 1, 1, 1, 0, 1, 0, 0 }, {0, 1, 1, 1, 0, 1, 0, 1 }, {0, 1, 1, 1, 0, 1, 1, 0 }, {0, 1, 1, 1, 0, 1, 1, 1 },
-	{0, 1, 1, 1, 1, 0, 0, 0 }, {0, 1, 1, 1, 1, 0, 0, 1 }, {0, 1, 1, 1, 1, 0, 1, 0 }, {0, 1, 1, 1, 1, 0, 1, 1 },
-	{0, 1, 1, 1, 1, 1, 0, 0 }, {0, 1, 1, 1, 1, 1, 0, 1 }, {0, 1, 1, 1, 1, 1, 1, 0 }, {0, 1, 1, 1, 1, 1, 1, 1 },
-	{1, 0, 0, 0, 0, 0, 0, 0 }, {1, 0, 0, 0, 0, 0, 0, 1 }, {1, 0, 0, 0, 0, 0, 1, 0 }, {1, 0, 0, 0, 0, 0, 1, 1 },
-	{1, 0, 0, 0, 0, 1, 0, 0 }, {1, 0, 0, 0, 0, 1, 0, 1 }, {1, 0, 0, 0, 0, 1, 1, 0 }, {1, 0, 0, 0, 0, 1, 1, 1 },
-	{1, 0, 0, 0, 1, 0, 0, 0 }, {1, 0, 0, 0, 1, 0, 0, 1 }, {1, 0, 0, 0, 1, 0, 1, 0 }, {1, 0, 0, 0, 1, 0, 1, 1 },
-	{1, 0, 0, 0, 1, 1, 0, 0 }, {1, 0, 0, 0, 1, 1, 0, 1 }, {1, 0, 0, 0, 1, 1, 1, 0 }, {1, 0, 0, 0, 1, 1, 1, 1 },
-	{1, 0, 0, 1, 0, 0, 0, 0 }, {1, 0, 0, 1, 0, 0, 0, 1 }, {1, 0, 0, 1, 0, 0, 1, 0 }, {1, 0, 0, 1, 0, 0, 1, 1 },
-	{1, 0, 0, 1, 0, 1, 0, 0 }, {1, 0, 0, 1, 0, 1, 0, 1 }, {1, 0, 0, 1, 0, 1, 1, 0 }, {1, 0, 0, 1, 0, 1, 1, 1 },
-	{1, 0, 0, 1, 1, 0, 0, 0 }, {1, 0, 0, 1, 1, 0, 0, 1 }, {1, 0, 0, 1, 1, 0, 1, 0 }, {1, 0, 0, 1, 1, 0, 1, 1 },
-	{1, 0, 0, 1, 1, 1, 0, 0 }, {1, 0, 0, 1, 1, 1, 0, 1 }, {1, 0, 0, 1, 1, 1, 1, 0 }, {1, 0, 0, 1, 1, 1, 1, 1 },
-	{1, 0, 1, 0, 0, 0, 0, 0 }, {1, 0, 1, 0, 0, 0, 0, 1 }, {1, 0, 1, 0, 0, 0, 1, 0 }, {1, 0, 1, 0, 0, 0, 1, 1 },
-	{1, 0, 1, 0, 0, 1, 0, 0 }, {1, 0, 1, 0, 0, 1, 0, 1 }, {1, 0, 1, 0, 0, 1, 1, 0 }, {1, 0, 1, 0, 0, 1, 1, 1 },
-	{1, 0, 1, 0, 1, 0, 0, 0 }, {1, 0, 1, 0, 1, 0, 0, 1 }, {1, 0, 1, 0, 1, 0, 1, 0 }, {1, 0, 1, 0, 1, 0, 1, 1 },
-	{1, 0, 1, 0, 1, 1, 0, 0 }, {1, 0, 1, 0, 1, 1, 0, 1 }, {1, 0, 1, 0, 1, 1, 1, 0 }, {1, 0, 1, 0, 1, 1, 1, 1 },
-	{1, 0, 1, 1, 0, 0, 0, 0 }, {1, 0, 1, 1, 0, 0, 0, 1 }, {1, 0, 1, 1, 0, 0, 1, 0 }, {1, 0, 1, 1, 0, 0, 1, 1 },
-	{1, 0, 1, 1, 0, 1, 0, 0 }, {1, 0, 1, 1, 0, 1, 0, 1 }, {1, 0, 1, 1, 0, 1, 1, 0 }, {1, 0, 1, 1, 0, 1, 1, 1 },
-	{1, 0, 1, 1, 1, 0, 0, 0 }, {1, 0, 1, 1, 1, 0, 0, 1 }, {1, 0, 1, 1, 1, 0, 1, 0 }, {1, 0, 1, 1, 1, 0, 1, 1 },
-	{1, 0, 1, 1, 1, 1, 0, 0 }, {1, 0, 1, 1, 1, 1, 0, 1 }, {1, 0, 1, 1, 1, 1, 1, 0 }, {1, 0, 1, 1, 1, 1, 1, 1 },
-	{1, 1, 0, 0, 0, 0, 0, 0 }, {1, 1, 0, 0, 0, 0, 0, 1 }, {1, 1, 0, 0, 0, 0, 1, 0 }, {1, 1, 0, 0, 0, 0, 1, 1 },
-	{1, 1, 0, 0, 0, 1, 0, 0 }, {1, 1, 0, 0, 0, 1, 0, 1 }, {1, 1, 0, 0, 0, 1, 1, 0 }, {1, 1, 0, 0, 0, 1, 1, 1 },
-	{1, 1, 0, 0, 1, 0, 0, 0 }, {1, 1, 0, 0, 1, 0, 0, 1 }, {1, 1, 0, 0, 1, 0, 1, 0 }, {1, 1, 0, 0, 1, 0, 1, 1 },
-	{1, 1, 0, 0, 1, 1, 0, 0 }, {1, 1, 0, 0, 1, 1, 0, 1 }, {1, 1, 0, 0, 1, 1, 1, 0 }, {1, 1, 0, 0, 1, 1, 1, 1 },
-	{1, 1, 0, 1, 0, 0, 0, 0 }, {1, 1, 0, 1, 0, 0, 0, 1 }, {1, 1, 0, 1, 0, 0, 1, 0 }, {1, 1, 0, 1, 0, 0, 1, 1 },
-	{1, 1, 0, 1, 0, 1, 0, 0 }, {1, 1, 0, 1, 0, 1, 0, 1 }, {1, 1, 0, 1, 0, 1, 1, 0 }, {1, 1, 0, 1, 0, 1, 1, 1 },
-	{1, 1, 0, 1, 1, 0, 0, 0 }, {1, 1, 0, 1, 1, 0, 0, 1 }, {1, 1, 0, 1, 1, 0, 1, 0 }, {1, 1, 0, 1, 1, 0, 1, 1 },
-	{1, 1, 0, 1, 1, 1, 0, 0 }, {1, 1, 0, 1, 1, 1, 0, 1 }, {1, 1, 0, 1, 1, 1, 1, 0 }, {1, 1, 0, 1, 1, 1, 1, 1 },
-	{1, 1, 1, 0, 0, 0, 0, 0 }, {1, 1, 1, 0, 0, 0, 0, 1 }, {1, 1, 1, 0, 0, 0, 1, 0 }, {1, 1, 1, 0, 0, 0, 1, 1 },
-	{1, 1, 1, 0, 0, 1, 0, 0 }, {1, 1, 1, 0, 0, 1, 0, 1 }, {1, 1, 1, 0, 0, 1, 1, 0 }, {1, 1, 1, 0, 0, 1, 1, 1 },
-	{1, 1, 1, 0, 1, 0, 0, 0 }, {1, 1, 1, 0, 1, 0, 0, 1 }, {1, 1, 1, 0, 1, 0, 1, 0 }, {1, 1, 1, 0, 1, 0, 1, 1 },
-	{1, 1, 1, 0, 1, 1, 0, 0 }, {1, 1, 1, 0, 1, 1, 0, 1 }, {1, 1, 1, 0, 1, 1, 1, 0 }, {1, 1, 1, 0, 1, 1, 1, 1 },
-	{1, 1, 1, 1, 0, 0, 0, 0 }, {1, 1, 1, 1, 0, 0, 0, 1 }, {1, 1, 1, 1, 0, 0, 1, 0 }, {1, 1, 1, 1, 0, 0, 1, 1 },
-	{1, 1, 1, 1, 0, 1, 0, 0 }, {1, 1, 1, 1, 0, 1, 0, 1 }, {1, 1, 1, 1, 0, 1, 1, 0 }, {1, 1, 1, 1, 0, 1, 1, 1 },
-	{1, 1, 1, 1, 1, 0, 0, 0 }, {1, 1, 1, 1, 1, 0, 0, 1 }, {1, 1, 1, 1, 1, 0, 1, 0 }, {1, 1, 1, 1, 1, 0, 1, 1 },
-	{1, 1, 1, 1, 1, 1, 0, 0 }, {1, 1, 1, 1, 1, 1, 0, 1 }, {1, 1, 1, 1, 1, 1, 1, 0 }, {1, 1, 1, 1, 1, 1, 1, 1 },
-};
-
-const static unsigned char bit_mask[8] = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-
-errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name)
+vector<unsigned char> genLabelMap(vector<unsigned char> &byte_image, 
+	int size_image, int width_image, vector<int> &cnt_t)
 {
-	FILE* fptr = NULL;
-	errno_t err = fopen_s(&fptr, file_name.c_str(), "w");
+	vector<unsigned char> val_labelmap(size_image);
 
-	if (err || fptr == NULL)
-		return err;
-
-	for (int i = 0; i < len; ++i)
+	// leave first row and first column as ref_value.
+	for (int i = 1; i < width_image; ++i)
 	{
-		int r = i * len;
-		for (int j = 0; j < len; ++j)
-			fprintf(fptr, "%02X ", byte_buf[r + j]);
-		fprintf(fptr, "\n");
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = row + col;
+			//assert(width_image1 <= idx && idx < size_image);
+
+			unsigned char px = predictedValue(byte_image, idx, width_image);
+
+			// this pixel can embed (t + 1) bits.
+			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
+			++cnt_t[val_labelmap[idx]];
+		}
 	}
 
-	fclose(fptr);
-	return 0;
+	return val_labelmap;
 }
 
-vector<unsigned char> readImage(string file_name)
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
 {
-	ifstream file(file_name, ios::binary);
-	streampos fileSize;
-
-	// Stop eating new lines in binary mode!!!
-	file.unsetf(ios::skipws);
-
-	file.seekg(0, ios::end);
-	fileSize = file.tellg();
-	file.seekg(0, ios::beg);
-
-	vector<unsigned char> byte_buf((size_t)fileSize);
-
-	byte_buf.insert(byte_buf.begin(),
-		istream_iterator<unsigned char>(file),
-		istream_iterator<unsigned char>());
-
-	return byte_buf;
-}
-
-void writeImage(string file_name, vector<unsigned char>& byte_buf)
-{
-	ofstream ofs(file_name, ios::binary | ios::out);
-	ofs.write((const char*)byte_buf.data(), byte_buf.size());
-	ofs.close();
-}
-
-unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8)
-{
-	assert(0 < len && len <= 8);
-
-	unsigned char byte_ret = 0;
-
-	for (int i = 0; i < len; ++i)
+	for (int i = 1; i < width_image; ++i)
 	{
-		byte_ret <<= 1;
-		byte_ret |= bit_buf[idx + i];
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = row + col;
+			int t = val_ex_labelmap[idx];
+
+			unsigned char px = predictedValue(byte_image, idx, width_image);
+
+			if (t < 7)
+				px |= bit_mask[t + 1];
+
+			byte_image[idx] = px;
+		}
+	}
+}
+
+int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
+{
+	priority_queue<pair<int, int>> pq;
+	int len_h_encoded_labelmap = 0;
+
+	for (int t = 0; t < SIZE_HCODE; ++t)
+		pq.push(make_pair(cnt_t[t], t));
+
+	for (int i = 0; i < SIZE_HCODE; ++i)
+	{
+		auto p = pq.top();
+		pq.pop();
+		h_encoder[p.second] = i;
+		len_h_encoded_labelmap += p.first * len_hcode[i];
 	}
 
-	return byte_ret << (8 - len);
+	return len_h_encoded_labelmap;
 }
 
-struct Trie
+int encodeLabelMap(vector<unsigned char> &val_labelmap, int width_image, 
+	vector<int>& h_encoder, vector<unsigned char> &bits_h_encoded_labelmap, int & len_secret)
 {
-	bool isValid;
-	unsigned char val_t;
-	struct Trie* next[2];
-};
+	int idx_h_encoded_labelmap = 0;
 
-// build a valid huffman coding structure
-void build(struct Trie* coder, vector<unsigned char>& bits_buf)
-{
-	assert(coder);
-
-	for (size_t i = 0; i < bits_buf.size() && coder; ++i)
+	for (int i = 1; i < width_image; ++i)
 	{
-		int idx = bits_buf[i];
-		assert(idx == 1 || idx == 0);
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int t = val_labelmap[row + col];
+			int idx_hc = h_encoder[t];
+			int len_hc = len_hcode[idx_hc];
 
-		if (coder->next[idx] == NULL)
-			coder->next[idx] = (struct Trie*)calloc(1, sizeof(struct Trie));
-		coder = coder->next[idx];
+			for (int k = 0; k < len_hc; ++k)
+				bits_h_encoded_labelmap[idx_h_encoded_labelmap++] = bits_hcode[idx_hc][k];
+
+			len_secret += (t < 7 ? t + 1 : 8) - len_hc;
+		}
 	}
 
-	if (coder)
-		coder->isValid = true;
-}
-
-// set the value of a valid huffman coding structure
-void assignValue(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start, size_t idx_end, unsigned char val)
-{
-	assert(idx_start < idx_end);
-
-	for (size_t i = idx_start; i < bits_buf.size() && i < idx_end; ++i)
-	{
-		int idx = bits_buf[i];
-		assert(idx == 1 || idx == 0);
-
-		// integrity check
-		assert(coder->next[idx]);
-
-		coder = coder->next[idx];
-	}
-
-	if (coder->isValid)
-		coder->val_t = val;
-}
-
-// return (value, length)
-pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start, size_t idx_end)
-{
-	assert(coder);
-	assert(idx_start < idx_end);
-
-	for (size_t i = idx_start; i < bits_buf.size() && i < idx_end; ++i)
-	{
-		int idx = bits_buf[i];
-		assert(idx == 1 || idx == 0);
-
-		if (coder->isValid)
-			return make_pair(coder->val_t, i - idx_start);
-
-		// integrity check
-		assert(coder->next[idx]);
-
-		coder = coder->next[idx];
-	}
-
-	// integrity check
-	// should never reach here
-	assert(false);
-
-	// not enough bits to decode next value
-	return make_pair(-1, -1);
-}
-
-unsigned char predictedValue(vector<unsigned char> &byte_image, int idx, int width_image)
-{
-	unsigned char x1 = byte_image[idx - width_image - 1];
-	unsigned char x2 = byte_image[idx - width_image];
-	unsigned char x3 = byte_image[idx - 1];
-	unsigned char px = 0;
-
-	if (x1 <= x2 && x1 <= x3)
-		px = x2 > x3 ? x2 : x3;
-	else if (x1 >= x2 && x1 >= x3)
-		px = x2 < x3 ? x2 : x3;
-	else
-	{
-		px = x2 + x3 - x1;
-		assert(0 <= px && px <= 255);
-	}
-
-	return px;
+	return idx_h_encoded_labelmap;
 }
 
 int main()
@@ -289,32 +149,18 @@ int main()
 # endif
 
 # if PRINT
-	printByteToFile(byte_image, width_image, PRINT_FN);
+	printByteToFile(byte_image, width_image, FN_ORIGINAL_IMAGE_HEXDUMP);
 # endif
 
 	//------------------------------------------------------
 	// A Label Map Generation
-	vector<unsigned char> val_labelmap(size_image);
-	int cnt_t[9] = { 0 };
+	vector<int> cnt_t(SIZE_HCODE);
+	vector<unsigned char> val_labelmap = 
+		genLabelMap(byte_image, size_image, width_image, cnt_t);
 
-	// leave first row and first column as ref_value.
-	for (int i = 1; i < width_image; ++i)
-	{
-		int row = i * width_image;
-		for (int col = 1; col < width_image; ++col)
-		{
-			int idx = row + col;
-			assert(width_image1 <= idx && idx < size_image);
-
-			unsigned char px = predictedValue(byte_image, idx, width_image);
-
-			// this pixel can embed (t + 1) bits.
-			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
-			++cnt_t[val_labelmap[idx]];
-		}
-	}
-
+# if 0
 	assert(pixel2t[156 ^ 150] == 4);
+# endif
 
 # if REPORT
 	fprintf(fptr_report, "A. Label Map Generation, okay, show only first few.\n\t");
@@ -327,10 +173,10 @@ int main()
 	}
 	fprintf(fptr_report, "\n\tDistribution of t\n");
 	fprintf(fptr_report, "\t%6s ", "t");
-	for (int i = 0; i <= 8; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 		fprintf(fptr_report, "%6d ", i);
 	fprintf(fptr_report, "\n\t%6s ", "dist");
-	for (int i = 0; i <= 8; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 		fprintf(fptr_report, "%6d ", cnt_t[i]);
 	fprintf(fptr_report, "\n\n");
 # endif
@@ -343,21 +189,20 @@ int main()
 # if REPORT
 	fprintf(fptr_report, "B. Image Encryption with random key stream, only show first few\n\n");
 	fprintf(fptr_report, "B1. original pixels, only show first few\n\t");
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 	fprintf(fptr_report, "B2. random key stream, only show first few\n\t");
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_rand_keystream[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
-	for (int i = 0; i < size_image; ++i)
-		byte_image[i] ^= byte_rand_keystream[i];
+	XOR(byte_image, byte_rand_keystream);
 
 # if REPORT
 	fprintf(fptr_report, "B3. cipher bytes, only show first few\n\t");
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
@@ -371,71 +216,30 @@ int main()
 
 
 	//------------------------------------------------------
-	// C Huffman Coding                00,   01,  100,  101, 1100, 1101, 1110,11110,11111    
-	const unsigned char byte_hcode[] = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
-	const unsigned char len_hcode[] = { 2, 2, 3, 3, 4, 4, 4, 5, 5 };
-	vector< vector<unsigned char> > bits_hcode = { {0, 0}, {0, 1}, {1, 0, 0}, {1, 0, 1}, {1, 1, 0, 0}, {1, 1, 0, 1}, {1, 1, 1, 0}, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 1} };
-	int h_encoder[9] = { 0 };
-	priority_queue<pair<int, int>> pq;
-	int len_h_encoded_labelmap = 0;
+	// C Huffman Coding  
+	
+	vector<int> h_encoder(SIZE_HCODE);
+	int len_h_encoded_labelmap = buildHuffmanEncoder(h_encoder, cnt_t);
+
 	int len_secret = 0;
-
-	for (int t = 0; t <= 8; ++t)
-		pq.push(make_pair(cnt_t[t], t));
-
-	for (int i = 0; i <= 8; ++i)
-	{
-		auto p = pq.top();
-		pq.pop();
-		h_encoder[p.second] = i;
-		len_h_encoded_labelmap += p.first * len_hcode[i];
-	}
-
 	vector<unsigned char> bits_h_encoded_labelmap(len_h_encoded_labelmap);
-	int idx_h_encoded_labelmap = 0;
-
-	for (int i = 1; i < width_image; ++i)
-	{
-		int row = i * width_image;
-		for (int col = 1; col < width_image; ++col)
-		{
-			int t = val_labelmap[row + col];
-			int idx_hc = h_encoder[t];
-			int len_hc = len_hcode[idx_hc];
-
-			for (int k = 0; k < len_hc; ++k)
-				bits_h_encoded_labelmap[idx_h_encoded_labelmap++] = bits_hcode[idx_hc][k];
-
-			len_secret += (t < 7 ? t + 1 : 8) - len_hc;
-		}
-	}
+	int idx_h_encoded_labelmap = encodeLabelMap(val_labelmap, width_image, h_encoder, 
+		bits_h_encoded_labelmap, len_secret);
 
 	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d + 52\n", len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret - 52);
-# if 0
-	fprintf(fptr_report, "\tHuffman coding\n");
-	fprintf(fptr_report, "%6s %6s %6s %6s %6s %6s %6s %6s %6s %6s \n",
-		"", "00", "01", "100", "101", "1100", "1101", "1110", "11110", "11111");
-	fprintf(fptr_report, "%6s ", "");
-	for (int i = 0; i <= 8; ++i)
-		fprintf(fptr_report, "%6X ", byte_hcode[i]);
-	fprintf(fptr_report, "\n%6s ", "len");
-	for (int i = 0; i <= 8; ++i)
-		fprintf(fptr_report, "%6d ", len_hcode[i]);
-	fprintf(fptr_report, "\n\n");
-# endif
+	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d + 52\n", 
+		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret - 52);
 
-	//fprintf(fptr_report, "\tcoding rules of t\n");
 	fprintf(fptr_report, "%6s ", "t");
-	for (int i = 0; i <= 8; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 		fprintf(fptr_report, "%6d ", i);
 	fprintf(fptr_report, "\n%6s ", "code");
-	for (int i = 0; i <= 8; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 		fprintf(fptr_report, "%6X ", byte_hcode[h_encoder[i]]);
 	fprintf(fptr_report, "\n%6s ", "len");
-	for (int i = 0; i <= 8; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 		fprintf(fptr_report, "%6d ", len_hcode[h_encoder[i]]);
 	fprintf(fptr_report, "\n\n");
 # endif
@@ -446,13 +250,11 @@ int main()
 
 	//------------------------------------------------------
 	// D Label Map Embedding
-	const int len_hc_rule = 32;
-	const int len_len_h_encoded_labelmap = 20;
-	const int len_hc_header = len_hc_rule + len_len_h_encoded_labelmap;
-	const int len_sideinfo = len_hc_header + len_h_encoded_labelmap;
+	
+	const int len_sideinfo = LEN_HCODE_HEADER + len_h_encoded_labelmap;
 	const int len_ref = (width_image + width_image - 1) * 8;
 	const int len_auxinfo = len_sideinfo + len_ref;
-	const int len_embed = len_auxinfo + (len_secret -= len_hc_header);
+	const int len_embed = len_auxinfo + (len_secret -= LEN_HCODE_HEADER);
 
 	vector<unsigned char> bits_rand_secret(len_secret);
 	generate(bits_rand_secret.begin(), bits_rand_secret.end(), rand);
@@ -463,101 +265,101 @@ int main()
 # endif
 
 	vector<unsigned char> bits_embed(len_embed);
-	int idx_embed = 0;
+	int idx_prepare = 0;
 
 	//side info 1, Huffman coding rule - 0 to 8 - 32 bits
-	for (int t = 0; t <= 8; ++t)
+	for (int t = 0; t < SIZE_HCODE; ++t)
 	{
 		int idx = h_encoder[t];
 		int len = len_hcode[idx];
 
 		for (int j = 0; j < len; ++j)
-			bits_embed[idx_embed++] = bits_hcode[idx][j];
+			bits_embed[idx_prepare++] = bits_hcode[idx][j];
 	}
 
 # if REPORT
 	fprintf(fptr_report, "D. Label Map Embedding\n\n");
 	fprintf(fptr_report, "D1. Side Info, Huffman coding rule 32 bits\n\t");
-	for (int i = 0; i < 32; ++i)
+	for (int i = 0; i < LEN_HC_RULE; ++i)
 		fprintf(fptr_report, "%d ", bits_embed[i]);
-	fprintf(fptr_report, "\n\n\tprepare embeding bits %d \n\n", idx_embed);
+	fprintf(fptr_report, "\n\n\tprepare embeding bits %d \n\n", idx_prepare);
 # endif
 
 	//side info 2, length of encode(lab map) => lm, 20 bits
-	unsigned int lmask = 1 << 19;
-	while (lmask)
+	unsigned int bit_long_mask = 1 << (LEN_LEN_H_ENCODED_LABELMAP - 1);
+	while (bit_long_mask)
 	{
-		bits_embed[idx_embed++] = (len_h_encoded_labelmap & lmask) ? 1 : 0;
-		lmask >>= 1;
+		bits_embed[idx_prepare++] = (len_h_encoded_labelmap & bit_long_mask) ? 1 : 0;
+		bit_long_mask >>= 1;
 	}
 
 # if REPORT
 	fprintf(fptr_report, "D2. Side Info, length of hEncode(LabelMap) 20 bits\n\t");
-	for (int i = 0; i < 20; ++i)
-		fprintf(fptr_report, "%d ", bits_embed[len_hc_rule + i]);
-	fprintf(fptr_report, "\n\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
+	for (int i = 0; i < LEN_LEN_H_ENCODED_LABELMAP; ++i)
+		fprintf(fptr_report, "%d ", bits_embed[LEN_HC_RULE + i]);
+	fprintf(fptr_report, "\n\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 # endif
 
 	//side info 3, encode(lab map) => lm bits
 	for (int i = 0; i < len_h_encoded_labelmap; ++i)
-		bits_embed[idx_embed++] = bits_h_encoded_labelmap[i];
+		bits_embed[idx_prepare++] = bits_h_encoded_labelmap[i];
 
-	assert(idx_embed == len_sideinfo);
+	assert(idx_prepare == len_sideinfo);
 
 # if REPORT
 	fprintf(fptr_report, "D3. Side Info, hEncode(LabelMap) LM bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
-		fprintf(fptr_report, "%d %s", bits_embed[len_hc_header + i], i % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
+		fprintf(fptr_report, "%d %s", bits_embed[LEN_HCODE_HEADER + i], i % 64 == 63 ? "\n\t" : "");
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 # endif
 
 	// reference values
 	// first row
 	for (int col = 0; col < width_image; ++col)
 		for (int j = 0; j < 8; ++j)
-			bits_embed[idx_embed++] = byte2bits[byte_image[col]][j];
+			bits_embed[idx_prepare++] = byte2bits[byte_image[col]][j];
 
 # if REPORT
 	fprintf(fptr_report, "D4. reference value, 1st row of enc(image), 512 bytes\n\t");
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], col % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 # endif
 
 	// first col, but except (0, 0)
 	for (int row = 1; row < width_image; ++row)
 		for (int j = 0; j < 8; ++j)
-			bits_embed[idx_embed++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
+			bits_embed[idx_prepare++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
 
-	assert(idx_embed == len_auxinfo);
+	assert(idx_prepare == len_auxinfo);
 
 # if REPORT
 	fprintf(fptr_report, "D5. reference value, 1st col of enc(image), 511 bytes\n\t");
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], row % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
-	fprintf(fptr_report, "\ttotal auxiliary info size = %d bits\n\n", idx_embed);
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
+	fprintf(fptr_report, "\ttotal auxiliary info size = %d bits\n\n", idx_prepare);
 # endif
 
 	for (int i = 0; i < len_secret; ++i)
 	{
-		bits_embed[idx_embed] = bits_rand_secret[i] & 0x01;
-		assert(bits_embed[idx_embed] == 0 || bits_embed[idx_embed] == 1);
-		++idx_embed;
+		bits_embed[idx_prepare] = bits_rand_secret[i] & 0x01;
+		//assert(bits_embed[idx_embed] == 0 || bits_embed[idx_embed] == 1);
+		++idx_prepare;
 	}
 
-	assert(idx_embed == len_embed);
+	assert(idx_prepare == len_embed);
 
 # if REPORT
 	fprintf(fptr_report, "D6. random secret bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
 		fprintf(fptr_report, "%d %s", bits_embed[len_auxinfo + i], i % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 # endif
 
 	// embed auxiliary info into 1st row and 1st col, 8 bits * 1023
-	idx_embed = 0;
+	int idx_embed = 0;
 	for (int col = 0; col < width_image; ++col)
 	{
 		byte_image[col] = bits2byte(bits_embed, idx_embed);
@@ -624,6 +426,8 @@ int main()
 # endif
 	}
 
+	assert(idx_embed == idx_prepare);
+
 	writeImage(STEGO_IMG_FN, byte_image);
 
 # if REPORT
@@ -649,7 +453,7 @@ int main()
 		for (int j = 0; j < 8; ++j)
 		{
 			bit_extract[idx_ex] = byte2bits[byte_image[col]][j];
-			assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
+			//assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
 			idx_ex++;
 		}
 	}
@@ -659,8 +463,7 @@ int main()
 	fprintf(fptr_report, "F1. extract 1st row\n\t");
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], col % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n\t");
-	fprintf(fptr_report, "the first few bits\n\t");
+	fprintf(fptr_report, "\n\tthe first few bits\n\t");
 	for (int i = 0; i < 128; ++i)
 		fprintf(fptr_report, "%x %s", bit_extract[i], i % 64 == 63 ? "\n\t" : "");
 	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
@@ -672,7 +475,7 @@ int main()
 		for (int j = 0; j < 8; ++j)
 		{
 			bit_extract[idx_ex] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
-			assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
+			//assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
 			idx_ex++;
 		}
 	}
@@ -688,13 +491,13 @@ int main()
 # endif
 
 	struct Trie* h_decoder = (struct Trie*)calloc(1, sizeof(struct Trie));
-	for (int i = 0; i < 9; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 		build(h_decoder, bits_hcode[i]);
 
 	int idx_ex_proceed = 0;
-	for (int i = 0; i <= 8; ++i)
+	for (int i = 0; i < SIZE_HCODE; ++i)
 	{
-		auto p = decode(h_decoder, bit_extract, idx_ex_proceed, idx_ex);
+		auto p = decode(h_decoder, bit_extract, idx_ex_proceed);
 		assert(p.first != -1);
 		assert(p.second);
 
@@ -712,9 +515,11 @@ int main()
 		idx_ex_proceed += len_cur_hcode;
 	}
 
+	assert(idx_ex_proceed == LEN_HC_RULE);
+
 	int len_ex_h_encoded_labelmap = 0;
 
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < LEN_LEN_H_ENCODED_LABELMAP; ++i)
 	{
 		len_ex_h_encoded_labelmap <<= 1;
 		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
@@ -728,16 +533,15 @@ int main()
 # endif
 
 	vector<unsigned char> val_ex_labelmap(size_image);
-
 	int idx_row_ex_lm = 1;
 	int idx_col_ex_lm = 1;
 
 	// re-construct lable map
 	while (idx_row_ex_lm < width_image)
 	{
-		auto p = decode(h_decoder, bit_extract, idx_ex_proceed, idx_ex);
+		auto p = decode(h_decoder, bit_extract, idx_ex_proceed);
 
-		assert(0 <= p.first && p.first <= 8);
+		assert(0 <= p.first && p.first <= MAX_T);
 		assert(p.second);
 
 		unsigned char t = p.first;
@@ -746,10 +550,10 @@ int main()
 
 		assert(val_ex_labelmap[idx_ex_lm] == val_labelmap[idx_ex_lm]);
 
-		for (int j = 0; j <= t && j < 8; ++j)
+		for (int j = 0; j <= t && j < MAX_T; ++j)
 		{
 			bit_extract[idx_ex] = ((byte_image[idx_ex_lm] << j) & 0x80) ? 1 : 0;
-			assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
+			//assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
 			++idx_ex;
 		}
 
@@ -763,6 +567,8 @@ int main()
 			++idx_row_ex_lm;
 		}
 	}
+
+	del(h_decoder);
 
 # if REPORT
 	fprintf(fptr_report, "F5. recover Label Map, proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
@@ -791,8 +597,7 @@ int main()
 
 	for (int row = 1; row < width_image; ++row)
 	{
-		int idx = row * width_image + 1;
-		byte_image[idx] = bits2byte(bit_extract, idx_ex_proceed);
+		byte_image[row * width_image + 1] = bits2byte(bit_extract, idx_ex_proceed);
 		idx_ex_proceed += 8;
 	}
 
@@ -823,55 +628,40 @@ int main()
 # if REPORT
 	fprintf(fptr_report, "G. Image Recovery with key stream, only show first few\n\n");
 	fprintf(fptr_report, "G1. cipher bytes, only show first few\n\t");
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 	fprintf(fptr_report, "G2. key stream, only show first few\n\t");
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_rand_keystream[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
-	for (int i = 0; i < size_image; ++i)
-		byte_image[i] ^= byte_rand_keystream[i];
+	XOR(byte_image, byte_rand_keystream);
 
 # if REPORT
 	fprintf(fptr_report, "G3. decrypted bytes, only show first few\n\t");
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
 	//-------------------------------------------------------------------
 
-	for (int i = 1; i < width_image; ++i)
-	{
-		int row = i * width_image;
-		for (int col = 1; col < width_image; ++col)
-		{
-			int idx = row + col;
-			int t = val_ex_labelmap[idx];
-
-			unsigned char px = predictedValue(byte_image, idx, width_image);
-
-			if (t < 8)
-				px |= bit_mask[t + 1];
-
-			byte_image[idx] = px;
-		}
-	}
+	restoreImage(byte_image, val_ex_labelmap, width_image);
 
 # if REPORT
 	fprintf(fptr_report, "G4. revoered pixels, only show first few, write stego image to %s\n\t", RESTORE_IMG_FN);
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
 	writeImage(RESTORE_IMG_FN, byte_image);
 
-
-
+# if PRINT
+	printByteToFile(byte_image, width_image, FN_RESTORE_IMAGE_HEXDUMP);
+# endif
 
 
 # if REPORT

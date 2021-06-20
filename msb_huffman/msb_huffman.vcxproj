@@ -141,6 +141,11 @@
   <ItemGroup>
     <ClCompile Include="msb_huffman.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\lib.vcxproj">
+      <Project>{d14af807-af47-4944-9e93-e1e4d5033eac}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
