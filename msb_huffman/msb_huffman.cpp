@@ -1,35 +1,32 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <queue>
-#include <assert.h>
-//#include <cassert>
-//#include <Wincodec.h>
-
-# define DB_SEC 0
+#include <cassert>
+#include <algorithm>
+#include <random>
 
 # define REPORT 1
 # define PRINT 1
 
-# define FN_COVER_IMG "../image/lena512.raw"
+# define COVER_IMG_FN "../image/lena512.raw"
 //# define COVER_IMG_FN "../image/Lena.tiff"
 //# define TIFF 1
 
-# define FN_ENC_IMG FN_COVER_IMG"_encrypt.raw"
-# define FN_STE_IMG FN_COVER_IMG"_stego.raw"
-# define FN_RES_IMG FN_COVER_IMG"_restore.raw"
+# define ENC_IMG_FN     COVER_IMG_FN"_enc.raw"
+# define STEGO_IMG_FN   COVER_IMG_FN"_ste.raw"
+# define RESTORE_IMG_FN COVER_IMG_FN"_rec.raw"
 
 # if REPORT
-#	define FN_REPORT FN_COVER_IMG"_report.txt"
+#	define REPORT_FN COVER_IMG_FN"_rep.txt"
 # endif
 
 # if PRINT
-#	define FN_COVER_IMAGE_HEXDUMP   FN_COVER_IMG"_hex.txt"
-#	define FN_RESTORE_IMAGE_HEXDUMP FN_COVER_IMG"_restore_hex.txt"
+#	define PRINT_FN COVER_IMG_FN"_hex.txt"
 # endif
 
 using namespace std;
 
-const static vector<unsigned char> pixel2t = {
+const static unsigned char pixel2t[256] = {
 	8, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -45,10 +42,10 @@ const static vector<unsigned char> pixel2t = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-const static vector< vector<unsigned char> > byte2bits = {
+const static unsigned char byte2bits[256][8] = {
 	{0, 0, 0, 0, 0, 0, 0, 0 }, {0, 0, 0, 0, 0, 0, 0, 1 }, {0, 0, 0, 0, 0, 0, 1, 0 }, {0, 0, 0, 0, 0, 0, 1, 1 },
 	{0, 0, 0, 0, 0, 1, 0, 0 }, {0, 0, 0, 0, 0, 1, 0, 1 }, {0, 0, 0, 0, 0, 1, 1, 0 }, {0, 0, 0, 0, 0, 1, 1, 1 },
 	{0, 0, 0, 0, 1, 0, 0, 0 }, {0, 0, 0, 0, 1, 0, 0, 1 }, {0, 0, 0, 0, 1, 0, 1, 0 }, {0, 0, 0, 0, 1, 0, 1, 1 },
@@ -115,8 +112,7 @@ const static vector< vector<unsigned char> > byte2bits = {
 	{1, 1, 1, 1, 1, 1, 0, 0 }, {1, 1, 1, 1, 1, 1, 0, 1 }, {1, 1, 1, 1, 1, 1, 1, 0 }, {1, 1, 1, 1, 1, 1, 1, 1 },
 };
 
-const static vector<unsigned char> mask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-
+const static unsigned char bit_mask[8] = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name)
 {
@@ -138,7 +134,6 @@ errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_na
 	return 0;
 }
 
-
 vector<unsigned char> readImage(string file_name)
 {
 	ifstream file(file_name, ios::binary);
@@ -151,11 +146,8 @@ vector<unsigned char> readImage(string file_name)
 	fileSize = file.tellg();
 	file.seekg(0, ios::beg);
 
-	// reserve capacity
-	vector<unsigned char> byte_buf;
-	byte_buf.reserve((size_t)fileSize);
+	vector<unsigned char> byte_buf((size_t)fileSize);
 
-	// read the data:
 	byte_buf.insert(byte_buf.begin(),
 		istream_iterator<unsigned char>(file),
 		istream_iterator<unsigned char>());
@@ -170,114 +162,140 @@ void writeImage(string file_name, vector<unsigned char>& byte_buf)
 	ofs.close();
 }
 
-unsigned char bits2byte(vector<unsigned char>& vec, int idx, int n = 8)
+unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8)
 {
-	unsigned char ret = 0;
+	assert(0 < len && len <= 8);
 
-	for (int i = 0; i < n; ++i)
+	unsigned char byte_ret = 0;
+
+	for (int i = 0; i < len; ++i)
 	{
-		ret <<= 1;
-		ret |= vec[idx + i];
+		byte_ret <<= 1;
+		byte_ret |= bit_buf[idx + i];
 	}
 
-	return (ret << (8 - n));
+	return byte_ret << (8 - len);
 }
 
 struct Trie
 {
 	bool isValid;
-	int value;
+	unsigned char val_t;
 	struct Trie* next[2];
 };
 
 // build a valid huffman coding structure
-void build(struct Trie* obj, const vector<unsigned char>& bits)
+void build(struct Trie* coder, vector<unsigned char>& bits_buf)
 {
-	assert(obj);
+	assert(coder);
 
-	if (obj == NULL)
-		return; 
-
-	for (size_t i = 0; i < bits.size(); ++i)
+	for (size_t i = 0; i < bits_buf.size() && coder; ++i)
 	{
-		if (obj && obj->next[bits[i]] == NULL)
-			obj->next[bits[i]] = (struct Trie*)calloc(1, sizeof(struct Trie));
+		int idx = bits_buf[i];
+		assert(idx == 1 || idx == 0);
 
-		if (obj)
-			obj = obj->next[bits[i]];
+		if (coder->next[idx] == NULL)
+			coder->next[idx] = (struct Trie*)calloc(1, sizeof(struct Trie));
+		coder = coder->next[idx];
 	}
 
-	if (obj)
-		obj->isValid = true;
+	if (coder)
+		coder->isValid = true;
 }
 
 // set the value of a valid huffman coding structure
-void insertValue(struct Trie* obj, vector<unsigned char>& bits, size_t idx_start, size_t idx_end, int val)
+void assignValue(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start, size_t idx_end, unsigned char val)
 {
-	for (size_t i = idx_start; i < bits.size() && i < idx_end; ++i)
+	assert(idx_start < idx_end);
+
+	for (size_t i = idx_start; i < bits_buf.size() && i < idx_end; ++i)
 	{
-		int idx = bits[i];
+		int idx = bits_buf[i];
 		assert(idx == 1 || idx == 0);
 
-		if (obj && obj->next[idx] == NULL)
-			obj->next[idx] = (struct Trie*)calloc(1, sizeof(struct Trie));
+		// integrity check
+		assert(coder->next[idx]);
 
-		if (obj)
-		obj = obj->next[idx];
+		coder = coder->next[idx];
 	}
 
-	if (obj && obj->isValid)
-		obj->value = val;
+	if (coder->isValid)
+		coder->val_t = val;
 }
 
 // return (value, length)
-pair<int, int> decode(struct Trie* obj, vector<unsigned char>& bits, size_t idx_start, size_t idx_end)
+pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start, size_t idx_end)
 {
-	assert(obj);
+	assert(coder);
+	assert(idx_start < idx_end);
 
-	for (size_t i = idx_start; i < bits.size() && i < idx_end; ++i)
+	for (size_t i = idx_start; i < bits_buf.size() && i < idx_end; ++i)
 	{
-		int idx = bits[i];
+		int idx = bits_buf[i];
 		assert(idx == 1 || idx == 0);
 
-		if (obj->isValid)
-			return make_pair(obj->value, i - idx_start);
+		if (coder->isValid)
+			return make_pair(coder->val_t, i - idx_start);
 
 		// integrity check
-		assert(obj->next[idx]);
+		assert(coder->next[idx]);
 
-		obj = obj->next[idx];
+		coder = coder->next[idx];
 	}
+
+	// integrity check
+	// should never reach here
+	assert(false);
 
 	// not enough bits to decode next value
 	return make_pair(-1, -1);
 }
 
+unsigned char predictedValue(vector<unsigned char> &byte_image, int idx, int width_image)
+{
+	unsigned char x1 = byte_image[idx - width_image - 1];
+	unsigned char x2 = byte_image[idx - width_image];
+	unsigned char x3 = byte_image[idx - 1];
+	unsigned char px = 0;
+
+	if (x1 <= x2 && x1 <= x3)
+		px = x2 > x3 ? x2 : x3;
+	else if (x1 >= x2 && x1 >= x3)
+		px = x2 < x3 ? x2 : x3;
+	else
+	{
+		px = x2 + x3 - x1;
+		assert(0 <= px && px <= 255);
+	}
+
+	return px;
+}
+
 int main()
 {
-	vector<unsigned char> byte_image = readImage(FN_COVER_IMG);
+	vector<unsigned char> byte_image = readImage(COVER_IMG_FN);
 	const int size_image = byte_image.size();
 	const int width_image = (int)sqrt(size_image);
-	
+	const int width_image1 = width_image + 1;
+
 	srand(0);
 
 # if REPORT
 	FILE* fptr_report = NULL;
-	int ren = fopen_s(&fptr_report, FN_REPORT, "w");
+	int ren = fopen_s(&fptr_report, REPORT_FN, "w");
 	if (ren || fptr_report == NULL)
 		return -2;
-	fprintf(fptr_report, "cover image: %s, %d x %d = %d\n\n", FN_COVER_IMG, width_image, width_image, size_image);
+	fprintf(fptr_report, "cover image: %s, %d x %d = %d\n\n", COVER_IMG_FN, width_image, width_image, size_image);
 # endif
 
-
 # if PRINT
-	printByteToFile(byte_image, width_image, FN_COVER_IMAGE_HEXDUMP);
+	printByteToFile(byte_image, width_image, PRINT_FN);
 # endif
 
 	//------------------------------------------------------
 	// A Label Map Generation
 	vector<unsigned char> val_labelmap(size_image);
-	vector<int> cnt_t(9);
+	int cnt_t[9] = { 0 };
 
 	// leave first row and first column as ref_value.
 	for (int i = 1; i < width_image; ++i)
@@ -286,22 +304,9 @@ int main()
 		for (int col = 1; col < width_image; ++col)
 		{
 			int idx = row + col;
-			assert(idx < size_image);
+			assert(width_image1 <= idx && idx < size_image);
 
-			unsigned char x1 = byte_image[idx - width_image - 1];
-			unsigned char x2 = byte_image[idx - width_image];
-			unsigned char x3 = byte_image[idx - 1];
-			unsigned char px = 0;
-
-			if (x1 <= x2 && x1 <= x3)
-				px = x2 > x3 ? x2 : x3;
-			else if (x1 >= x2 && x1 >= x3)
-				px = x2 < x3 ? x2 : x3;
-			else
-			{
-				px = x2 + x3 - x1;
-				assert(0 <= px && px <= 255);
-			}
+			unsigned char px = predictedValue(byte_image, idx, width_image);
 
 			// this pixel can embed (t + 1) bits.
 			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
@@ -311,9 +316,8 @@ int main()
 
 	assert(pixel2t[156 ^ 150] == 4);
 
-
 # if REPORT
-	fprintf(fptr_report, "A. Label Map Generation, show only first few.\n\t");
+	fprintf(fptr_report, "A. Label Map Generation, okay, show only first few.\n\t");
 	for (int i = 1; i < 8; ++i)
 	{
 		int row = i * width_image;
@@ -322,10 +326,10 @@ int main()
 		fprintf(fptr_report, "\n\t");
 	}
 	fprintf(fptr_report, "\n\tDistribution of t\n");
-	fprintf(fptr_report, "%6s ", "t");
+	fprintf(fptr_report, "\t%6s ", "t");
 	for (int i = 0; i <= 8; ++i)
 		fprintf(fptr_report, "%6d ", i);
-	fprintf(fptr_report, "\n%6s ", "dist");
+	fprintf(fptr_report, "\n\t%6s ", "dist");
 	for (int i = 0; i <= 8; ++i)
 		fprintf(fptr_report, "%6d ", cnt_t[i]);
 	fprintf(fptr_report, "\n\n");
@@ -336,13 +340,26 @@ int main()
 	vector<unsigned char> byte_rand_keystream(size_image);
 	generate(byte_rand_keystream.begin(), byte_rand_keystream.end(), rand);
 
+# if REPORT
+	fprintf(fptr_report, "B. Image Encryption with random key stream, only show first few\n\n");
+	fprintf(fptr_report, "B1. original pixels, only show first few\n\t");
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
+	fprintf(fptr_report, "B2. random key stream, only show first few\n\t");
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_rand_keystream[i], i % 128 == 127 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
+# endif
+
 	for (int i = 0; i < size_image; ++i)
 		byte_image[i] ^= byte_rand_keystream[i];
 
-	writeImage(FN_ENC_IMG, byte_image);
-
 # if REPORT
-	fprintf(fptr_report, "B. Image Encryption, write to %s\n\n", FN_ENC_IMG);
+	fprintf(fptr_report, "B3. cipher bytes, only show first few\n\t");
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
 # endif
 
 
@@ -355,29 +372,27 @@ int main()
 
 	//------------------------------------------------------
 	// C Huffman Coding                00,   01,  100,  101, 1100, 1101, 1110,11110,11111    
-	const int size_hcode = 9;
-	const vector<unsigned char> val_hcode = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
-	const vector<unsigned char> len_hcode = { 2, 2, 3, 3, 4, 4, 4, 5, 5 };
-	const vector< vector<unsigned char> > bits_hcode = { {0, 0}, {0, 1}, {1, 0, 0}, {1, 0, 1}, {1, 1, 0, 0}, {1, 1, 0, 1}, {1, 1, 1, 0}, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 1} };
-	vector<int> h_encode(size_hcode);
+	const unsigned char byte_hcode[] = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
+	const unsigned char len_hcode[] = { 2, 2, 3, 3, 4, 4, 4, 5, 5 };
+	vector< vector<unsigned char> > bits_hcode = { {0, 0}, {0, 1}, {1, 0, 0}, {1, 0, 1}, {1, 1, 0, 0}, {1, 1, 0, 1}, {1, 1, 1, 0}, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 1} };
+	int h_encoder[9] = { 0 };
 	priority_queue<pair<int, int>> pq;
 	int len_h_encoded_labelmap = 0;
 	int len_secret = 0;
 
-
-	for (int t = 0; t < size_hcode; ++t)
+	for (int t = 0; t <= 8; ++t)
 		pq.push(make_pair(cnt_t[t], t));
 
-	for (int i = 0; i < size_hcode; ++i)
+	for (int i = 0; i <= 8; ++i)
 	{
-		pair<int, int> p = pq.top();
+		auto p = pq.top();
 		pq.pop();
-		h_encode[p.second] = i;
+		h_encoder[p.second] = i;
 		len_h_encoded_labelmap += p.first * len_hcode[i];
 	}
 
-	vector<unsigned char> bits_h_encode_labelmap(len_h_encoded_labelmap);
-	int idx_h_encode_labelmap = 0;
+	vector<unsigned char> bits_h_encoded_labelmap(len_h_encoded_labelmap);
+	int idx_h_encoded_labelmap = 0;
 
 	for (int i = 1; i < width_image; ++i)
 	{
@@ -385,38 +400,43 @@ int main()
 		for (int col = 1; col < width_image; ++col)
 		{
 			int t = val_labelmap[row + col];
-			int idx_code = h_encode[t];
-			int len_code = len_hcode[idx_code];
-			for (int k = 0; k < len_code; ++k)
-			{
-				bits_h_encode_labelmap[idx_h_encode_labelmap++] = bits_hcode[idx_code][k];
-			}
+			int idx_hc = h_encoder[t];
+			int len_hc = len_hcode[idx_hc];
 
-			if (t < 7)
-			{
-				len_secret += t + 1 - len_code;
-			}
-			else
-			{
-				len_secret += 8 - len_code;
-			}
+			for (int k = 0; k < len_hc; ++k)
+				bits_h_encoded_labelmap[idx_h_encoded_labelmap++] = bits_hcode[idx_hc][k];
+
+			len_secret += (t < 7 ? t + 1 : 8) - len_hc;
 		}
 	}
 
-	assert(idx_h_encode_labelmap == len_h_encoded_labelmap);
+	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	fprintf(fptr_report, "C. Huffman Coding, okay, %d, LM = %d, extra-capacity = %d + 52\n", len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret - 52);
-	fprintf(fptr_report, "\tcoding rules of t\n");
+	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d + 52\n", len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret - 52);
+# if 0
+	fprintf(fptr_report, "\tHuffman coding\n");
+	fprintf(fptr_report, "%6s %6s %6s %6s %6s %6s %6s %6s %6s %6s \n",
+		"", "00", "01", "100", "101", "1100", "1101", "1110", "11110", "11111");
+	fprintf(fptr_report, "%6s ", "");
+	for (int i = 0; i <= 8; ++i)
+		fprintf(fptr_report, "%6X ", byte_hcode[i]);
+	fprintf(fptr_report, "\n%6s ", "len");
+	for (int i = 0; i <= 8; ++i)
+		fprintf(fptr_report, "%6d ", len_hcode[i]);
+	fprintf(fptr_report, "\n\n");
+# endif
+
+	//fprintf(fptr_report, "\tcoding rules of t\n");
 	fprintf(fptr_report, "%6s ", "t");
-	for (int i = 0; i < size_hcode; ++i)
+	for (int i = 0; i <= 8; ++i)
 		fprintf(fptr_report, "%6d ", i);
 	fprintf(fptr_report, "\n%6s ", "code");
-	for (int i = 0; i < size_hcode; ++i)
-		fprintf(fptr_report, "%6X ", val_hcode[h_encode[i]]);
+	for (int i = 0; i <= 8; ++i)
+		fprintf(fptr_report, "%6X ", byte_hcode[h_encoder[i]]);
 	fprintf(fptr_report, "\n%6s ", "len");
-	for (int i = 0; i < size_hcode; ++i)
-		fprintf(fptr_report, "%6d ", len_hcode[h_encode[i]]);
+	for (int i = 0; i <= 8; ++i)
+		fprintf(fptr_report, "%6d ", len_hcode[h_encoder[i]]);
 	fprintf(fptr_report, "\n\n");
 # endif
 
@@ -426,103 +446,88 @@ int main()
 
 	//------------------------------------------------------
 	// D Label Map Embedding
-
 	const int len_hc_rule = 32;
-	const int len_len_h_encoded_lm = 20;
-	const int len_hc_header = len_hc_rule + len_len_h_encoded_lm;
-	len_secret -= len_hc_header;
-
+	const int len_len_h_encoded_labelmap = 20;
+	const int len_hc_header = len_hc_rule + len_len_h_encoded_labelmap;
 	const int len_sideinfo = len_hc_header + len_h_encoded_labelmap;
 	const int len_ref = (width_image + width_image - 1) * 8;
 	const int len_auxinfo = len_sideinfo + len_ref;
-	const int len_embed = len_auxinfo + len_secret;
+	const int len_embed = len_auxinfo + (len_secret -= len_hc_header);
 
-	// an un-initialized array as random secret bits
 	vector<unsigned char> bits_rand_secret(len_secret);
 	generate(bits_rand_secret.begin(), bits_rand_secret.end(), rand);
+
+# if 0
+	std::mt19937 rnd{ std::random_device()() };
+	shuffle(bits_rand_secret.begin(), bits_rand_secret.end(), rnd);
+# endif
 
 	vector<unsigned char> bits_embed(len_embed);
 	int idx_embed = 0;
 
 	//side info 1, Huffman coding rule - 0 to 8 - 32 bits
-	for (int t = 0; t < size_hcode; ++t)
+	for (int t = 0; t <= 8; ++t)
 	{
-		int idx = h_encode[t];
+		int idx = h_encoder[t];
 		int len = len_hcode[idx];
 
 		for (int j = 0; j < len; ++j)
 			bits_embed[idx_embed++] = bits_hcode[idx][j];
 	}
 
-	assert(idx_embed == len_hc_rule);
-
 # if REPORT
-	fprintf(fptr_report, "D. Label Map Embedding\n");
+	fprintf(fptr_report, "D. Label Map Embedding\n\n");
 	fprintf(fptr_report, "D1. Side Info, Huffman coding rule 32 bits\n\t");
-	for (int i = 0; i < len_hc_rule; ++i)
+	for (int i = 0; i < 32; ++i)
 		fprintf(fptr_report, "%d ", bits_embed[i]);
-	fprintf(fptr_report, "\n\tprepare embeding bits %d \n\n", idx_embed);
+	fprintf(fptr_report, "\n\n\tprepare embeding bits %d \n\n", idx_embed);
 # endif
 
 	//side info 2, length of encode(lab map) => lm, 20 bits
-	unsigned int bit_long_mask = 1 << (len_len_h_encoded_lm - 1);
-	while (bit_long_mask)
+	unsigned int lmask = 1 << 19;
+	while (lmask)
 	{
-		bits_embed[idx_embed++] = (len_h_encoded_labelmap & bit_long_mask) ? 1 : 0;
-		bit_long_mask >>= 1;
+		bits_embed[idx_embed++] = (len_h_encoded_labelmap & lmask) ? 1 : 0;
+		lmask >>= 1;
 	}
-
-	assert(idx_embed == len_hc_header);
 
 # if REPORT
 	fprintf(fptr_report, "D2. Side Info, length of hEncode(LabelMap) 20 bits\n\t");
-	for (int i = 0; i < len_len_h_encoded_lm; ++i)
+	for (int i = 0; i < 20; ++i)
 		fprintf(fptr_report, "%d ", bits_embed[len_hc_rule + i]);
-	fprintf(fptr_report, "\n\tprepare embeding bits %d \n\n", idx_embed);
+	fprintf(fptr_report, "\n\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
 # endif
 
 	//side info 3, encode(lab map) => lm bits
 	for (int i = 0; i < len_h_encoded_labelmap; ++i)
-	{
-		bits_embed[idx_embed++] = bits_h_encode_labelmap[i];
-	}
+		bits_embed[idx_embed++] = bits_h_encoded_labelmap[i];
 
 	assert(idx_embed == len_sideinfo);
 
 # if REPORT
-	fprintf(fptr_report, "D3. Side Info, hEncode(LabelMap) LM bits, okay, only show first few bits\n\t");
+	fprintf(fptr_report, "D3. Side Info, hEncode(LabelMap) LM bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
 		fprintf(fptr_report, "%d %s", bits_embed[len_hc_header + i], i % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "\tprepare embeding bits %d \n\n", idx_embed);
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
 # endif
 
 	// reference values
 	// first row
 	for (int col = 0; col < width_image; ++col)
-	{
 		for (int j = 0; j < 8; ++j)
-		{
 			bits_embed[idx_embed++] = byte2bits[byte_image[col]][j];
-		}
-	}
 
 # if REPORT
 	fprintf(fptr_report, "D4. reference value, 1st row of enc(image), 512 bytes\n\t");
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], col % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "\tprepare embeding bits %d \n\n", idx_embed);
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
 # endif
 
 	// first col, but except (0, 0)
 	for (int row = 1; row < width_image; ++row)
-	{
 		for (int j = 0; j < 8; ++j)
-		{
-			bits_embed[idx_embed++] = byte2bits[byte_image[row * width_image]][j];
-		}
-	}
+			bits_embed[idx_embed++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
 
 	assert(idx_embed == len_auxinfo);
 
@@ -531,24 +536,15 @@ int main()
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], row % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "\tprepare embeding bits %d \n\n", idx_embed);
-	fprintf(fptr_report, "total auxiliary info size = %d bits\n\n", idx_embed);
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
+	fprintf(fptr_report, "\ttotal auxiliary info size = %d bits\n\n", idx_embed);
 # endif
-
-
-	//---------------------
-# if DB_SEC
-	for (int i = 0; i < 16; ++i)
-		bits_rand_secret[i] = i % 2;
-# endif
-	//---------------------
 
 	for (int i = 0; i < len_secret; ++i)
 	{
-		bits_embed[idx_embed] = (bits_rand_secret[i] & 0x01);
+		bits_embed[idx_embed] = bits_rand_secret[i] & 0x01;
 		assert(bits_embed[idx_embed] == 0 || bits_embed[idx_embed] == 1);
-		idx_embed++;
+		++idx_embed;
 	}
 
 	assert(idx_embed == len_embed);
@@ -557,9 +553,7 @@ int main()
 	fprintf(fptr_report, "D6. random secret bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
 		fprintf(fptr_report, "%d %s", bits_embed[len_auxinfo + i], i % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "\tprepare embeding bits %d \n\n", idx_embed);
-
+	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_embed, len_embed);
 # endif
 
 	// embed auxiliary info into 1st row and 1st col, 8 bits * 1023
@@ -586,20 +580,17 @@ int main()
 	}
 
 # if REPORT
-	fprintf(fptr_report, "D8. embed into the 1st col of enc(image), 511 bytes\n\t");
+	fprintf(fptr_report, "D8. embed into the 1st col of enc(image), except(0, 0), 511 bytes\n\t");
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], row % 64 == 63 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 	fprintf(fptr_report, "\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);
 
+
+
 	fprintf(fptr_report, "D9. embed into rest of the enc(image)\n");
-
 	bool printmark = true;
-# endif
-
-# if DB_SEC
-	const int tarCol = 10;
 # endif
 
 	for (int i = 1; i < width_image; ++i)
@@ -619,22 +610,24 @@ int main()
 			}
 			else
 			{
-				byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[idx] & (mask[t] - 1));
+				byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[idx] & (bit_mask[t] - 1));
 				idx_embed += t + 1;
 			}
 		}
 
 # if 0
-		fprintf(fptr_report, "\t(%3d) progress %6d / %6d / %6d bits %s\n", i, idx_ai, len_ai, len_embed, (printmark && idx_ai >= len_ai) ? "*" : "");
-		if (printmark && idx_ai >= len_ai)
+		fprintf(fptr_report, "\t(%3d) progress %7d / %7d / %7d bits %s\n", 
+			i, idx_embed, len_auxinfo, len_embed, (printmark && idx_embed >= len_auxinfo) ? "*" : "");
+
+		if (printmark && idx_embed >= len_auxinfo)
 			printmark = false;
 # endif
 	}
 
-	writeImage(FN_STE_IMG, byte_image);
+	writeImage(STEGO_IMG_FN, byte_image);
 
 # if REPORT
-	fprintf(fptr_report, "\nE. write to %s\n\n", FN_STE_IMG);
+	fprintf(fptr_report, "\nE. write stego image to %s\n\n", STEGO_IMG_FN);
 # endif
 
 
@@ -656,6 +649,7 @@ int main()
 		for (int j = 0; j < 8; ++j)
 		{
 			bit_extract[idx_ex] = byte2bits[byte_image[col]][j];
+			assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
 			idx_ex++;
 		}
 	}
@@ -669,9 +663,7 @@ int main()
 	fprintf(fptr_report, "the first few bits\n\t");
 	for (int i = 0; i < 128; ++i)
 		fprintf(fptr_report, "%x %s", bit_extract[i], i % 64 == 63 ? "\n\t" : "");
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "\textract %d bits\n", idx_ex);
-	fprintf(fptr_report, "\n");
+	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
 # endif
 
 	// first col, but except (0, 0)
@@ -679,7 +671,7 @@ int main()
 	{
 		for (int j = 0; j < 8; ++j)
 		{
-			bit_extract[idx_ex] = byte2bits[byte_image[row * width_image]][j];
+			bit_extract[idx_ex] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
 			assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
 			idx_ex++;
 		}
@@ -689,108 +681,96 @@ int main()
 	fprintf(fptr_report, "F2. extract 1st col, except (0, 0)\n\t");
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-		fprintf(fptr_report, "%02X %s",byte_image[row * width_image], row % 64 == 63 ? "\n\t" : "");
+		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], row % 64 == 63 ? "\n\t" : "");
 	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
 
 	fprintf(fptr_report, "F3. recover Huffman coding rules\n");
 # endif
 
-	struct Trie* hCoder = (struct Trie*)calloc(1, sizeof(struct Trie));
+	struct Trie* h_decoder = (struct Trie*)calloc(1, sizeof(struct Trie));
 	for (int i = 0; i < 9; ++i)
-		build(hCoder, bits_hcode[i]);
+		build(h_decoder, bits_hcode[i]);
 
-	int idx_extra_proceed = 0;
+	int idx_ex_proceed = 0;
 	for (int i = 0; i <= 8; ++i)
 	{
-		pair<int, int> p = decode(hCoder, bit_extract, idx_extra_proceed, idx_extra_proceed + 6);
+		auto p = decode(h_decoder, bit_extract, idx_ex_proceed, idx_ex);
 		assert(p.first != -1);
 		assert(p.second);
 
-		int len_cur_hcrule = p.second;
+		int len_cur_hcode = p.second;
 
-		insertValue(hCoder, bit_extract, idx_extra_proceed, idx_extra_proceed + len_cur_hcrule, i);
+		assignValue(h_decoder, bit_extract, idx_ex_proceed, idx_ex_proceed + len_cur_hcode, i);
 
 # if REPORT
-		fprintf(fptr_report, "\tproceed %2d bits\t %d : ", idx_extra_proceed, i);
-		for (int i = 0; i < len_cur_hcrule; ++i)
-			fprintf(fptr_report, "%d ", bit_extract[idx_extra_proceed + i]);
+		fprintf(fptr_report, "\tproceed %2d bits\t %d : ", idx_ex_proceed, i);
+		for (int i = 0; i < len_cur_hcode; ++i)
+			fprintf(fptr_report, "%d ", bit_extract[idx_ex_proceed + i]);
 		fprintf(fptr_report, "\n");
 # endif
 
-		idx_extra_proceed += len_cur_hcrule;
+		idx_ex_proceed += len_cur_hcode;
 	}
 
-	int len_extra_hcencode_lm = 0;
+	int len_ex_h_encoded_labelmap = 0;
 
 	for (int i = 0; i < 20; ++i)
 	{
-		len_extra_hcencode_lm <<= 1;
-		len_extra_hcencode_lm |= bit_extract[idx_extra_proceed++];
+		len_ex_h_encoded_labelmap <<= 1;
+		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
 	}
 
-	assert(len_extra_hcencode_lm == len_h_encoded_labelmap);
+	assert(len_ex_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "F4. recover length of hEncode(label map) = %d, proceed %d bits\n", len_extra_hcencode_lm, idx_extra_proceed);
-	fprintf(fptr_report, "\n");
+	fprintf(fptr_report, "\nF4. recover length of hEncode(label map) = %d, proceed %d bits\n\n", 
+		len_ex_h_encoded_labelmap, idx_ex_proceed);
 # endif
 
-	vector<unsigned char> val_labelmap_ex(size_image);
+	vector<unsigned char> val_ex_labelmap(size_image);
 
 	int idx_row_ex_lm = 1;
 	int idx_col_ex_lm = 1;
 
 	// re-construct lable map
-	while (true)
+	while (idx_row_ex_lm < width_image)
 	{
-		pair<int, int> p = decode(hCoder, bit_extract, idx_extra_proceed, idx_ex);
-		if (p.first == -1)
-			break;
+		auto p = decode(h_decoder, bit_extract, idx_ex_proceed, idx_ex);
 
 		assert(0 <= p.first && p.first <= 8);
 		assert(p.second);
 
 		unsigned char t = p.first;
-		int idx_extra_lm = idx_row_ex_lm * width_image + idx_col_ex_lm;
-		val_labelmap_ex[idx_extra_lm] = (unsigned char)p.first;
+		int idx_ex_lm = idx_row_ex_lm * width_image + idx_col_ex_lm;
+		val_ex_labelmap[idx_ex_lm] = p.first;
 
-		assert(val_labelmap_ex[idx_extra_lm] == val_labelmap[idx_extra_lm]);
-
-
+		assert(val_ex_labelmap[idx_ex_lm] == val_labelmap[idx_ex_lm]);
 
 		for (int j = 0; j <= t && j < 8; ++j)
 		{
-			bit_extract[idx_ex] = ((byte_image[idx_extra_lm] << j) & 0x80) ? 1 : 0;
+			bit_extract[idx_ex] = ((byte_image[idx_ex_lm] << j) & 0x80) ? 1 : 0;
 			assert(bit_extract[idx_ex] == 1 || bit_extract[idx_ex] == 0);
-
 			++idx_ex;
 		}
 
-		idx_extra_proceed += p.second;
+		idx_ex_proceed += p.second;
 
-		if (idx_col_ex_lm + 1 == width_image)
+		++idx_col_ex_lm;
+
+		if (idx_col_ex_lm == width_image)
 		{
 			idx_col_ex_lm = 1;
 			++idx_row_ex_lm;
-
-			if (idx_row_ex_lm == width_image)
-				break;
 		}
-		else
-			++idx_col_ex_lm;
 	}
 
 # if REPORT
-	fprintf(fptr_report, "F5. recover Label Map, proceed %d / %d bits, show only first few.\n\t", idx_extra_proceed, idx_ex);
+	fprintf(fptr_report, "F5. recover Label Map, proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
 	for (int i = 1; i < 8; ++i)
 	{
 		int row = i * width_image;
 		for (int col = 1; col < width_image; ++col)
-		{
-			int idx = row + col;
-			fprintf(fptr_report, "%2d", val_labelmap_ex[idx]);
-		}
+			fprintf(fptr_report, "%2d", val_ex_labelmap[row + col]);
 		fprintf(fptr_report, "\n\t");
 	}
 	fprintf(fptr_report, "\n");
@@ -798,12 +778,12 @@ int main()
 
 	for (int col = 0; col < width_image; ++col)
 	{
-		byte_image[col] = bits2byte(bit_extract, idx_extra_proceed);
-		idx_extra_proceed += 8;
+		byte_image[col] = bits2byte(bit_extract, idx_ex_proceed);
+		idx_ex_proceed += 8;
 	}
 
 # if REPORT
-	fprintf(fptr_report, "F6. recover first row, proceed %d / %d bits, show only first few.\n\t", idx_extra_proceed, idx_ex);
+	fprintf(fptr_report, "F6. recover first row of enc(image), proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], col % 64 == 63 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
@@ -811,19 +791,16 @@ int main()
 
 	for (int row = 1; row < width_image; ++row)
 	{
-		int idx = row * width_image;
-		byte_image[idx] = bits2byte(bit_extract, idx_extra_proceed);
-		idx_extra_proceed += 8;
+		int idx = row * width_image + 1;
+		byte_image[idx] = bits2byte(bit_extract, idx_ex_proceed);
+		idx_ex_proceed += 8;
 	}
 
 # if REPORT
-	fprintf(fptr_report, "F7. recover first col, except(0, 0), proceed %d / %d bits, show only first few.\n\t", idx_extra_proceed, idx_ex);
-	fprintf(fptr_report, "   "); 
+	fprintf(fptr_report, "F7. recover first col of enc(image), except(0, 0), proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
+	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-	{
-		int idx = row * width_image;
-		fprintf(fptr_report, "%02X %s", byte_image[idx], row % 64 == 63 ? "\n\t" : "");
-	}
+		fprintf(fptr_report, "%02X %s", byte_image[row * width_image + 1], row % 64 == 63 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
@@ -831,23 +808,41 @@ int main()
 
 	for (size_t i = 0; i < bit_secret_extra.size(); ++i)
 	{
-		bit_secret_extra[i] = bit_extract[idx_extra_proceed++];
+		bit_secret_extra[i] = bit_extract[idx_ex_proceed];
 		assert(bit_secret_extra[i] == (bits_rand_secret[i] & 0x01));
+		++idx_ex_proceed;
 	}
 
 # if REPORT
-	fprintf(fptr_report, "F8. recover secret %d / %d bits, show only first few.\n\t", idx_extra_proceed, idx_ex);
+	fprintf(fptr_report, "F8. recover secret %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
 	for (size_t i = 0; i < 512; ++i)
 		fprintf(fptr_report, "%2d %s", bit_secret_extra[i], i % 64 == 63 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
+# endif
 
+# if REPORT
+	fprintf(fptr_report, "G. Image Recovery with key stream, only show first few\n\n");
+	fprintf(fptr_report, "G1. cipher bytes, only show first few\n\t");
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
+	fprintf(fptr_report, "G2. key stream, only show first few\n\t");
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_rand_keystream[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
 	for (int i = 0; i < size_image; ++i)
 		byte_image[i] ^= byte_rand_keystream[i];
 
-	
+# if REPORT
+	fprintf(fptr_report, "G3. decrypted bytes, only show first few\n\t");
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
+# endif
 
+	//-------------------------------------------------------------------
 
 	for (int i = 1; i < width_image; ++i)
 	{
@@ -855,45 +850,25 @@ int main()
 		for (int col = 1; col < width_image; ++col)
 		{
 			int idx = row + col;
-			int t = val_labelmap_ex[idx];
+			int t = val_ex_labelmap[idx];
 
-			assert(idx < size_image);
-
-			unsigned char x1 = byte_image[idx - width_image - 1];
-			unsigned char x2 = byte_image[idx - width_image];
-			unsigned char x3 = byte_image[idx - 1];
-			unsigned char px = 0;
-
-			if (x1 <= x2 && x1 <= x3)
-			{
-				px = x2 > x3 ? x2 : x3;
-			}
-			else if (x1 >= x2 && x1 >= x3)
-			{
-				px = x2 < x3 ? x2 : x3;
-			}
-			else
-			{
-				px = x2 + x3 - x1;
-			}
+			unsigned char px = predictedValue(byte_image, idx, width_image);
 
 			if (t < 8)
-				px |= mask[t];
+				px |= bit_mask[t + 1];
 
 			byte_image[idx] = px;
 		}
 	}
 
-# if PRINT
-	printByteToFile(byte_image, width_image, FN_RESTORE_IMAGE_HEXDUMP);
+# if REPORT
+	fprintf(fptr_report, "G4. revoered pixels, only show first few, write stego image to %s\n\t", RESTORE_IMG_FN);
+	for (int i = 0; i < 1024; ++i)
+		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
+	fprintf(fptr_report, "\n");
 # endif
 
-
-
-
-
-
-
+	writeImage(RESTORE_IMG_FN, byte_image);
 
 
 
