@@ -141,18 +141,6 @@
   <ItemGroup>
     <ClCompile Include="shorter_hufman.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="image\airplane512.raw" />
-    <None Include="image\baboon512.raw" />
-    <None Include="image\barbara512.raw" />
-    <None Include="image\boat512.raw" />
-    <None Include="image\couple512.raw" />
-    <None Include="image\gold512.raw" />
-    <None Include="image\lena512.raw" />
-    <None Include="image\pepper512.raw" />
-    <None Include="image\sailboat512.raw" />
-    <None Include="image\toys512.raw" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
