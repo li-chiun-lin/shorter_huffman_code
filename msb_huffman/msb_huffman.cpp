@@ -4,22 +4,27 @@
 # define REPORT 1
 # define PRINT 1
 
-# define FN_COVER_IMG "../image/lena512.raw"
+# define DIR_IMG "../image/"
+# define DIR_OUT "../out/"
+
+# define FN_COVER_IMG "lena512.raw"
+
+# define PATH_COVER_IMG DIR_IMG FN_COVER_IMG
 //# define COVER_IMG_FN "../image/Lena.tiff"
 //# define TIFF 1
 
-# define FN_ENC_IMG     FN_COVER_IMG"_encrypt.raw"
-# define FN_STEGO_IMG   FN_COVER_IMG"_stego.raw"
-# define FN_RESTORE_IMG FN_COVER_IMG"_restore.raw"
+# define PATH_ENCRY_IMG PATH_COVER_IMG"_encrypt.raw"
+# define PATH_STEGO_IMG PATH_COVER_IMG"_stego.raw"
+# define PATH_RESTO_IMG PATH_COVER_IMG"_restore.raw"
 
 # if REPORT
-#	define FN_REPORT FN_COVER_IMG"_report.txt"
+#	define PATH_REPORT PATH_COVER_IMG"_report.txt"
 #	define LEN_SAMPLE 4096
 # endif
 
 # if PRINT
-#	define FN_ORIGINAL_IMAGE_HEXDUMP FN_COVER_IMG"_hex.txt"
-#	define FN_RESTORE_IMAGE_HEXDUMP  FN_COVER_IMG"_restore_hex.txt"
+#	define PATH_OG_IMG_HD PATH_COVER_IMG"_hex.txt"
+#	define PATH_RE_IMG_HD PATH_COVER_IMG"_restore_hex.txt"
 # endif
 
 # define SIZE_HCODE 9
@@ -68,6 +73,8 @@ vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
 	return val_labelmap;
 }
 
+
+
 void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
 {
 	for (int i = 1; i < width_image; ++i)
@@ -80,10 +87,9 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 
 			unsigned char px = predictedValue(byte_image, idx, width_image);
 
-			if (t < 7)
+			if (t < 8)
 			{
-				px |= bit_mask[t + 1];
-				//byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[idx] & (bit_mask[t] - 1));
+				px ^= bit_mask[t];
 				byte_image[idx] = (px & msb_mask[t]) | (byte_image[idx] & (bit_mask[t] - 1));
 			}
 			else
@@ -102,7 +108,7 @@ int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
 
 	for (int i = 0; i < SIZE_HCODE; ++i)
 	{
-		auto p = pq.top();
+		pair<int, int> p = pq.top();
 		pq.pop();
 		h_encoder[p.second] = i;
 		len_h_encoded_labelmap += p.first * len_hcode[i];
@@ -137,7 +143,7 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 
 int main()
 {
-	vector<unsigned char> byte_image = readImage(FN_COVER_IMG);
+	vector<unsigned char> byte_image = readImage(PATH_COVER_IMG);
 	vector<unsigned char> byte_orig(byte_image.begin(), byte_image.end());
 	const int size_image = byte_image.size();
 	const int width_image = (int)sqrt(size_image);
@@ -147,14 +153,14 @@ int main()
 
 # if REPORT
 	FILE* fptr_report = NULL;
-	int ren = fopen_s(&fptr_report, FN_REPORT, "w");
+	int ren = fopen_s(&fptr_report, PATH_REPORT, "w");
 	if (ren || fptr_report == NULL)
 		return -2;
-	fprintf(fptr_report, "cover image: %s, %d x %d = %d\n\n", FN_COVER_IMG, width_image, width_image, size_image);
+	fprintf(fptr_report, "cover image: %s, %d x %d = %d\n\n", PATH_COVER_IMG, width_image, width_image, size_image);
 # endif
 
 # if PRINT
-	printByteToFile(byte_image, width_image, FN_ORIGINAL_IMAGE_HEXDUMP);
+	printByteToFile(byte_image, width_image, PATH_OG_IMG_HD);
 # endif
 
 	//------------------------------------------------------
@@ -434,10 +440,10 @@ int main()
 
 	assert(idx_embed == idx_prepare);
 
-	writeImage(FN_STEGO_IMG, byte_image);
+	writeImage(PATH_STEGO_IMG, byte_image);
 
 # if REPORT
-	fprintf(fptr_report, "\nE. write stego image to %s\n\n", FN_STEGO_IMG);
+	fprintf(fptr_report, "\nE. write stego image to %s\n\n", PATH_STEGO_IMG);
 # endif
 
 
@@ -603,7 +609,7 @@ int main()
 
 	for (int row = 1; row < width_image; ++row)
 	{
-		byte_image[row * width_image + 1] = bits2byte(bit_extract, idx_ex_proceed);
+		byte_image[row * width_image] = bits2byte(bit_extract, idx_ex_proceed);
 		idx_ex_proceed += 8;
 	}
 
@@ -611,7 +617,7 @@ int main()
 	fprintf(fptr_report, "F7. recover first col of enc(image), except(0, 0), proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-		fprintf(fptr_report, "%02X %s", byte_image[row * width_image + 1], row % width_image == width_image_1 ? "\n\t" : "");
+		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], row % width_image == width_image_1 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
@@ -660,16 +666,16 @@ int main()
 		assert(byte_image[i] == byte_orig[i]);
 
 # if REPORT
-	fprintf(fptr_report, "G4. revoered pixels, only show first few, write stego image to %s\n\t", FN_RESTORE_IMG);
+	fprintf(fptr_report, "G4. revoered pixels, only show first few, write stego image to %s\n\t", PATH_RESTO_IMG);
 	for (int i = 0; i < LEN_SAMPLE; ++i)
 		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
-	writeImage(FN_RESTORE_IMG, byte_image);
+	writeImage(PATH_RESTO_IMG, byte_image);
 
 # if PRINT
-	printByteToFile(byte_image, width_image, FN_RESTORE_IMAGE_HEXDUMP);
+	printByteToFile(byte_image, width_image, PATH_RE_IMG_HD);
 # endif
 
 
