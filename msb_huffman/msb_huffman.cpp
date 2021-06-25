@@ -13,18 +13,18 @@
 //# define COVER_IMG_FN "../image/Lena.tiff"
 //# define TIFF 1
 
-# define PATH_ENCRY_IMG PATH_COVER_IMG"_encrypt.raw"
-# define PATH_STEGO_IMG PATH_COVER_IMG"_stego.raw"
-# define PATH_RESTO_IMG PATH_COVER_IMG"_restore.raw"
+# define PATH_ENCRY_IMG DIR_OUT FN_COVER_IMG"_encrypt.raw"
+# define PATH_STEGO_IMG DIR_OUT FN_COVER_IMG"_stego.raw"
+# define PATH_RESTO_IMG DIR_OUT FN_COVER_IMG"_restore.raw"
 
 # if REPORT
-#	define PATH_REPORT PATH_COVER_IMG"_report.txt"
+#	define PATH_REPORT DIR_OUT FN_COVER_IMG"_report.txt"
 #	define LEN_SAMPLE 4096
 # endif
 
 # if PRINT
-#	define PATH_OG_IMG_HD PATH_COVER_IMG"_hex.txt"
-#	define PATH_RE_IMG_HD PATH_COVER_IMG"_restore_hex.txt"
+#	define PATH_OG_IMG_HD DIR_OUT FN_COVER_IMG"_hex.txt"
+#	define PATH_RE_IMG_HD DIR_OUT FN_COVER_IMG"_restore_hex.txt"
 # endif
 
 # define SIZE_HCODE 9
@@ -668,7 +668,7 @@ int main()
 # if REPORT
 	fprintf(fptr_report, "G4. revoered pixels, only show first few, write stego image to %s\n\t", PATH_RESTO_IMG);
 	for (int i = 0; i < LEN_SAMPLE; ++i)
-		fprintf(fptr_report, "%02X %s", byte_image[i], i % 128 == 127 ? "\n\t" : "");
+		fprintf(fptr_report, "%02X %s", byte_image[i], i % width_image == width_image_1 ? "\n\t" : "");
 	fprintf(fptr_report, "\n");
 # endif
 
