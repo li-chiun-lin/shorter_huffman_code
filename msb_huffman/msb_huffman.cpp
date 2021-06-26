@@ -9,15 +9,15 @@ int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
 	priority_queue<pair<int, int>> pq;
 	int len_h_encoded_labelmap = 0;
 
-	for (int t = 0; t < SIZE_HCODE; ++t)
+	for (int t = 0; t < DOMAIN_HCODE; ++t)
 		pq.push(make_pair(cnt_t[t], t));
 
-	for (int i = 0; i < SIZE_HCODE; ++i)
+	for (int i = 0; i < DOMAIN_HCODE; ++i)
 	{
 		pair<int, int> p = pq.top();
 		pq.pop();
 		h_encoder[p.second] = i;
-		len_h_encoded_labelmap += p.first * bits_hcode[i].size();
+		len_h_encoded_labelmap += p.first * (int)bits_hcode[i].size();
 	}
 
 	return len_h_encoded_labelmap;
@@ -35,7 +35,7 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 		{
 			int t = val_labelmap[row + col];
 			int idx_hc = h_encoder[t];
-			int len_hc = bits_hcode[idx_hc].size();
+			int len_hc = (int)bits_hcode[idx_hc].size();
 
 			for (int k = 0; k < len_hc; ++k)
 				bits_h_encoded_labelmap[idx_h_encoded_labelmap++] = bits_hcode[idx_hc][k];
@@ -57,12 +57,15 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 	fprintf(fptr_report, "%8s %8s %8s %8s %8s %8s %8s\n", "t", "dist", "code", "cap.", "c len", "p len", "delta");
 	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
 
-	for (int t = 0; t < SIZE_HCODE; ++t)
+	for (int t = 0; t < DOMAIN_HCODE; ++t)
 	{
-		fprintf(fptr_report, "%8d %8d %8X %8d %8d %8d %8d\n", 
-			t, cnt_t[t], byte_hcode[h_encoder[t]], t < 8 ? t + 1 : t, 
-			(int)bits_hcode[h_encoder[t]].size(), (t < 8 ? t + 1 : t) - (int)bits_hcode[h_encoder[t]].size(), 
-			((t < 8 ? t + 1 : t) - (int)bits_hcode[h_encoder[t]].size()) * cnt_t[t]);
+		int cap = t < 8 ? t + 1 : t;
+		int len = (int)bits_hcode[h_encoder[t]].size();
+		int pay = cap - len;
+		int del = pay * cnt_t[t];
+
+		fprintf(fptr_report, "%8d %8d %8X %8d %8d %8d %8d\n",
+			t, cnt_t[t], byte_hcode[h_encoder[t]], cap, len, pay, del);
 	}
 
 	fprintf(fptr_report, "\n\n");
@@ -111,7 +114,7 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 }
 # endif
 
-int embedMain(vector<unsigned char> &val_labelmap, vector<unsigned char> &byte_image, vector<unsigned char> &bits_embed, int width_image, int idx_embed)
+int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_image, vector<unsigned char>& bits_embed, int width_image, int idx_embed)
 {
 	for (int i = 1; i < width_image; ++i)
 	{
@@ -171,7 +174,7 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 int main()
 {
 	vector<unsigned char> byte_image = readImage(PATH_COVER_IMG);
-	const int size_image = byte_image.size();
+	const int size_image = (int)byte_image.size();
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
@@ -191,12 +194,12 @@ int main()
 
 	//------------------------------------------------------
 	// A Label Map Generation
-	vector<int> cnt_t(SIZE_HCODE);
+	vector<int> cnt_t(DOMAIN_HCODE);
 	vector<unsigned char> val_labelmap =
 		genLabelMap(byte_image, size_image, width_image, cnt_t);
 
 # if REPORT
-	reportA(val_labelmap, cnt_t, width_image);
+	reportA(val_labelmap, cnt_t, width_image, DOMAIN_HCODE);
 # endif
 
 	//------------------------------------------------------
@@ -221,7 +224,7 @@ int main()
 	//------------------------------------------------------
 	// C Huffman Coding  
 
-	vector<int> h_encoder(SIZE_HCODE);
+	vector<int> h_encoder(DOMAIN_HCODE);
 	int len_h_encoded_labelmap = buildHuffmanEncoder(h_encoder, cnt_t);
 
 	int len_secret = 0;
@@ -253,11 +256,11 @@ int main()
 	vector<unsigned char> bits_embed(len_embed);
 	int idx_prepare = 0;
 
-	//side info 1, Huffman coding rule - 0 to 8 - 32 bits
-	for (int t = 0; t < SIZE_HCODE; ++t)
+	//side info 1, Huffman coding rule - 0 to 8 
+	for (int t = 0; t < DOMAIN_HCODE; ++t)
 	{
 		int idx = h_encoder[t];
-		int len = bits_hcode[idx].size();
+		int len = (int)bits_hcode[idx].size();
 
 		for (int j = 0; j < len; ++j)
 			bits_embed[idx_prepare++] = bits_hcode[idx][j];
@@ -389,7 +392,7 @@ int main()
 	// first col, but except (0, 0)
 	for (int row = 1; row < width_image; ++row)
 		for (int j = 0; j < 8; ++j)
-			bit_extract[idx_ex ++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
+			bit_extract[idx_ex++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
 
 # if REPORT
 	reportF2(byte_image, idx_ex, width_image);
@@ -400,11 +403,11 @@ int main()
 # endif
 
 	struct Trie* h_decoder = (struct Trie*)calloc(1, sizeof(struct Trie));
-	for (int i = 0; i < SIZE_HCODE; ++i)
+	for (int i = 0; i < RANGE_HCODE; ++i)
 		build(h_decoder, bits_hcode[i]);
 
 	int idx_ex_proceed = 0;
-	for (int i = 0; i < SIZE_HCODE; ++i)
+	for (int i = 0; i < RANGE_HCODE; ++i)
 	{
 		auto p = decode(h_decoder, bit_extract, idx_ex_proceed);
 		assert(p.first != -1);
@@ -460,11 +463,11 @@ int main()
 		assert(val_ex_labelmap[idx_ex_lm] == val_labelmap[idx_ex_lm]);
 
 		for (int j = 0; j <= t && j < MAX_T; ++j)
-			bit_extract[idx_ex ++] = ((byte_image[idx_ex_lm] << j) & 0x80) ? 1 : 0;
+			bit_extract[idx_ex++] = ((byte_image[idx_ex_lm] << j) & 0x80) ? 1 : 0;
 
 		idx_ex_proceed += p.second;
 
-		if (++ idx_col_ex_lm == width_image)
+		if (++idx_col_ex_lm == width_image)
 		{
 			idx_col_ex_lm = 1;
 			++idx_row_ex_lm;
@@ -500,7 +503,7 @@ int main()
 	vector<unsigned char> bit_secret_extra(len_secret);
 
 	for (size_t i = 0; i < bit_secret_extra.size(); ++i)
-		bit_secret_extra[i] = bit_extract[idx_ex_proceed ++];
+		bit_secret_extra[i] = bit_extract[idx_ex_proceed++];
 
 # if REPORT
 	reportF8(bit_secret_extra, idx_ex, idx_ex_proceed);

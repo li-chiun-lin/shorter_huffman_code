@@ -126,20 +126,7 @@ vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image, int size_im
 //# define LEN_HCODE_HEADER  (LEN_HC_RULE + LEN_LEN_H_ENCODED_LABELMAP)
 # define MAX_HCODE_LEN 5
 
-# define SIZE_HCODE 9
 
-const unsigned char byte_hcode[SIZE_HCODE] = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
-const vector< vector<unsigned char> > bits_hcode = {
-	{0, 0},
-	{0, 1},
-	{1, 0, 0},
-	{1, 0, 1},
-	{1, 1, 0, 0},
-	{1, 1, 0, 1},
-	{1, 1, 1, 0},
-	{1, 1, 1, 1, 0},
-	{1, 1, 1, 1, 1}
-};
 
 struct Trie
 {
@@ -182,7 +169,7 @@ extern FILE* fptr_report;
 
 int reportBegin(int width_image, int size_image, const char* fn_report, const char* fn_cover_img);
 void reportEnd();
-void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image);
+void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int size_hcode);
 void reportB(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 void reportB3(vector<unsigned char>& byte_image, const char* fn_enc_img);
 //void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret);

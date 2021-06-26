@@ -22,7 +22,7 @@ void reportEnd()
 	fclose(fptr_report);
 }
 
-void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image)
+void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode)
 {
 	fprintf(fptr_report, "A. Label Map Generation, show only first few.\n\t");
 	for (int row = 1; row < ROW_SAMPLE; ++row)
@@ -34,10 +34,10 @@ void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_
 	}
 	fprintf(fptr_report, "\n\tDistribution of t\n");
 	fprintf(fptr_report, "\t%6s ", "t");
-	for (int i = 0; i < SIZE_HCODE; ++i)
+	for (int i = 0; i < domain_hcode; ++i)
 		fprintf(fptr_report, "%6d ", i);
 	fprintf(fptr_report, "\n\t%6s ", "dist");
-	for (int i = 0; i < SIZE_HCODE; ++i)
+	for (int i = 0; i < domain_hcode; ++i)
 		fprintf(fptr_report, "%6d ", cnt_t[i]);
 	fprintf(fptr_report, "\n\n");
 }
