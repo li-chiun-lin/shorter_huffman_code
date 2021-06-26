@@ -4,6 +4,156 @@
 # define REPORT 1
 # define PRINT 1
 
+int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
+{
+	priority_queue<pair<int, int>> pq;
+	int len_h_encoded_labelmap = 0;
+
+	for (int t = 0; t < 3; ++t)
+	{
+		h_encoder[t] = 0;
+		len_h_encoded_labelmap += cnt_t[t] * bits_hcode[0].size();
+	}
+
+	for (int t = 3; t < SIZE_HCODE; ++t)
+		pq.push(make_pair(cnt_t[t], t));
+
+	for (int i = 1; i < 7; ++i)
+	{
+		pair<int, int> p = pq.top();
+		pq.pop();
+		h_encoder[p.second] = i;
+		len_h_encoded_labelmap += p.first * bits_hcode[i].size();
+	}
+
+	return len_h_encoded_labelmap;
+}
+
+int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
+	vector<int>& h_encoder, vector<unsigned char>& bits_h_encoded_labelmap, int& len_secret)
+{
+	int idx_h_encoded_labelmap = 0;
+
+	for (int i = 1; i < width_image; ++i)
+	{
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int t = val_labelmap[row + col];
+			int idx_hc = h_encoder[t];
+			int len_hc = bits_hcode[idx_hc].size();
+
+			for (int k = 0; k < len_hc; ++k)
+				bits_h_encoded_labelmap[idx_h_encoded_labelmap++] = bits_hcode[idx_hc][k];
+
+			if (t <= 2)
+				len_secret += - len_hc;
+			else
+				len_secret += (t < 7 ? t + 1 : 8) - len_hc;
+		}
+	}
+
+	return idx_h_encoded_labelmap;
+}
+
+void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header)
+{
+	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d\n",
+		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - len_hcode_header, len_hcode_header);
+
+	fprintf(fptr_report, "%8s ", "t");
+	for (int i = 0; i < SIZE_HCODE; ++i)
+		fprintf(fptr_report, "%8d ", i);
+
+	fprintf(fptr_report, "\n%8s ", "dist");
+	for (int i = 0; i < SIZE_HCODE; ++i)
+		fprintf(fptr_report, "%8d ", cnt_t[i]);
+
+	fprintf(fptr_report, "\n%8s ", "code");
+	for (int i = 0; i < SIZE_HCODE; ++i)
+		fprintf(fptr_report, "%8X ", byte_hcode[h_encoder[i]]);
+
+	fprintf(fptr_report, "\n%8s ", "len");
+	for (int i = 0; i < SIZE_HCODE; ++i)
+		fprintf(fptr_report, "%8d ", bits_hcode[h_encoder[i]].size());
+
+	vector<int> delta(SIZE_HCODE);
+
+	for (int i = 0; i < 3; ++i)
+		delta[i] =  0 - bits_hcode[h_encoder[i]].size();
+
+	for (int i = 3; i < 8; ++i)
+		delta[i] = i + 1 - bits_hcode[h_encoder[i]].size();
+	delta[8] = 8 - bits_hcode[h_encoder[8]].size();
+
+	fprintf(fptr_report, "\n%8s ", "delta");
+	for (int i = 0; i < SIZE_HCODE; ++i)
+		fprintf(fptr_report, "%+8d ", delta[i]);
+
+	int sum = 0;
+	fprintf(fptr_report, "\n%8s ", "total");
+	for (int i = 0; i < SIZE_HCODE; ++i)
+	{
+		fprintf(fptr_report, "%+8d ", delta[i] * cnt_t[i]);
+		sum += delta[i] * cnt_t[i];
+	}
+
+	fprintf(fptr_report, "\n%8s = %d", "sum", sum);
+	fprintf(fptr_report, "\n\n");
+}
+
+int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_image, vector<unsigned char>& bits_embed, int width_image, int idx_embed)
+{
+	for (int i = 1; i < width_image; ++i)
+	{
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = row + col;
+			int t = val_labelmap[idx];
+
+			if (t <= 2)
+			{
+				//skip
+			}
+			else if (t >= 7)
+			{
+				byte_image[idx] = bits2byte(bits_embed, idx_embed);
+				idx_embed += 8;
+			}
+			else
+			{
+				byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[idx] & mask_lsb[t]);
+				idx_embed += t + 1;
+			}
+			}
+		}
+
+	return idx_embed;
+	}
+
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
+{
+	for (int row = 1; row < width_image; ++row)
+	{
+		int rw = row * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = rw + col;
+			int t = val_ex_labelmap[idx];
+
+			unsigned char px = predictedValue(byte_image, idx, width_image);
+
+			if (t <= 2)
+				; // skip
+			else if (t < 8)
+				byte_image[idx] = ((px ^ mask_bit[t]) & mask_msb[t]) | (byte_image[idx] & mask_lsb[t]);
+			else
+				byte_image[idx] = px;
+		}
+	}
+}
+
 int main()
 {
 	vector<unsigned char> byte_image = readImage(PATH_COVER_IMG);
@@ -13,9 +163,6 @@ int main()
 	const int width_image_1 = width_image - 1;
 
 	srand(0);
-
-
-
 
 # if REPORT
 	reportBegin(width_image, size_image, PATH_REPORT, PATH_COVER_IMG);
@@ -68,16 +215,23 @@ int main()
 	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret);
+	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret, LEN_HCODE_HEADER);
 # endif
 
 
+	//---------------------------------------------------
+# if 1
+# if REPORT
+	reportEnd();
+# endif
 
+	return 0;
+# endif
+	//---------------------------------------------------
 
 
 	//------------------------------------------------------
 	// D Label Map Embedding
-
 	const int len_sideinfo = LEN_HCODE_HEADER + len_h_encoded_labelmap;
 	const int len_ref = (width_image + width_image_1) * 8;
 	const int len_auxinfo = len_sideinfo + len_ref;
@@ -100,7 +254,7 @@ int main()
 	}
 
 # if REPORT
-	reportD(bits_embed, idx_prepare);
+	reportD(bits_embed, idx_prepare, LEN_HC_RULE);
 # endif
 
 	//side info 2, length of encode(lab map) => lm, 20 bits
@@ -113,7 +267,7 @@ int main()
 	}
 
 # if REPORT
-	reportD2(bits_embed, idx_prepare, len_embed);
+	reportD2(bits_embed, idx_prepare, len_embed, LEN_LEN_H_ENCODED_LABELMAP, LEN_HC_RULE);
 # endif
 
 	//side info 3, encode(lab map) => lm bits
@@ -123,7 +277,7 @@ int main()
 	assert(idx_prepare == len_sideinfo);
 
 # if REPORT
-	reportD3(bits_embed, idx_prepare, len_embed);
+	reportD3(bits_embed, idx_prepare, len_embed, LEN_HCODE_HEADER);
 # endif
 
 	// reference values
@@ -185,41 +339,13 @@ int main()
 
 
 
+
 # if REPORT
 	fprintf(fptr_report, "D9. embed into rest of the enc(image)\n");
 	bool printmark = true;
 # endif
 
-	for (int i = 1; i < width_image; ++i)
-	{
-		int row = i * width_image;
-		for (int col = 1; col < width_image; ++col)
-		{
-			int idx = row + col;
-			int t = val_labelmap[idx];
-
-			assert(idx_embed <= len_embed);
-
-			if (t >= 7)
-			{
-				byte_image[idx] = bits2byte(bits_embed, idx_embed);
-				idx_embed += 8;
-			}
-			else
-			{
-				byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[idx] & mask_lsb[t]);
-				idx_embed += t + 1;
-			}
-		}
-
-# if 0
-		fprintf(fptr_report, "\t(%3d) progress %7d / %7d / %7d bits %s\n",
-			i, idx_embed, len_auxinfo, len_embed, (printmark && idx_embed >= len_auxinfo) ? "*" : "");
-
-		if (printmark && idx_embed >= len_auxinfo)
-			printmark = false;
-# endif
-	}
+	idx_embed = embedMain(val_labelmap, byte_image, bits_embed, width_image, idx_embed);
 
 	assert(idx_embed == idx_prepare);
 

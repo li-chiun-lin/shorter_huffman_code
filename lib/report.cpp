@@ -63,70 +63,30 @@ void reportB3(vector<unsigned char>& byte_image, const char* fn_enc_img)
 	fprintf(fptr_report, "\n");
 }
 
-void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret)
-{
-	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + 52\n",
-		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - 52);
 
-	fprintf(fptr_report, "%8s ", "t");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8d ", i);
 
-	fprintf(fptr_report, "\n%8s ", "dist");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8d ", cnt_t[i]);
-
-	fprintf(fptr_report, "\n%8s ", "code");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8X ", byte_hcode[h_encoder[i]]);
-
-	fprintf(fptr_report, "\n%8s ", "len");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8d ", bits_hcode[h_encoder[i]].size());
-
-	vector<int> delta(SIZE_HCODE);
-	for (int i = 0; i < 8; ++i)
-		delta[i] = i + 1 - bits_hcode[h_encoder[i]].size();
-	delta[8] = 8 - bits_hcode[h_encoder[8]].size();
-
-	fprintf(fptr_report, "\n%8s ", "delta");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%+8d ", delta[i]);
-
-	int sum = 0;
-	fprintf(fptr_report, "\n%8s ", "total");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-	{
-		fprintf(fptr_report, "%+8d ", delta[i] * cnt_t[i]);
-		sum += delta[i] * cnt_t[i];
-	}
-
-	fprintf(fptr_report, "\n%8s = %d", "sum", sum);
-	fprintf(fptr_report, "\n\n");
-}
-
-void reportD(vector<unsigned char>& bits_embed, int idx_prepare)
+void reportD(vector<unsigned char>& bits_embed, int idx_prepare, int len_hc_rule)
 {
 	fprintf(fptr_report, "D. Label Map Embedding\n\n");
 	fprintf(fptr_report, "D1. Side Info, Huffman coding rule bits\n\t");
-	for (int i = 0; i < LEN_HC_RULE; ++i)
+	for (int i = 0; i < len_hc_rule; ++i)
 		fprintf(fptr_report, "%d ", bits_embed[i]);
 	fprintf(fptr_report, "\n\n\tprepare embeding bits %d \n\n", idx_prepare);
 }
 
-void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed)
+void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_len_h_encoded_labelmap, int len_hc_rule)
 {
 	fprintf(fptr_report, "D2. Side Info, length of hEncode(LabelMap) 20 bits\n\t");
-	for (int i = 0; i < LEN_LEN_H_ENCODED_LABELMAP; ++i)
-		fprintf(fptr_report, "%d ", bits_embed[LEN_HC_RULE + i]);
+	for (int i = 0; i < len_len_h_encoded_labelmap; ++i)
+		fprintf(fptr_report, "%d ", bits_embed[len_hc_rule + i]);
 	fprintf(fptr_report, "\n\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
-void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed)
+void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_hcode_header)
 {
 	fprintf(fptr_report, "D3. Side Info, hEncode(LabelMap) LM bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
-		fprintf(fptr_report, "%d %s", bits_embed[LEN_HCODE_HEADER + i], WRAP(i));
+		fprintf(fptr_report, "%d %s", bits_embed[len_hcode_header + i], WRAP(i));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
