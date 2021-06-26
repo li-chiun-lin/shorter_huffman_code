@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="msb_huffman.cpp" />
-    <ClCompile Include="report.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib\lib.vcxproj">
@@ -148,7 +147,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="msb_huffman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

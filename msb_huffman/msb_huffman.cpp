@@ -1,10 +1,8 @@
-﻿
-#include "../lib/Header.h"
-#include "Header.h"
+﻿#include "../lib/lib.h"
+#include "msb_huffman.h"
 
-
-
-
+# define REPORT 1
+# define PRINT 1
 
 int main()
 {
@@ -16,8 +14,11 @@ int main()
 
 	srand(0);
 
+
+
+
 # if REPORT
-	reportBegin(width_image, size_image);
+	reportBegin(width_image, size_image, PATH_REPORT, PATH_COVER_IMG);
 # endif
 
 # if PRINT
@@ -40,7 +41,7 @@ int main()
 	generate(byte_rand_keystream.begin(), byte_rand_keystream.end(), rand);
 
 # if REPORT
-	reportB(byte_image, byte_rand_keystream, width_image);
+	reportB(byte_image, byte_rand_keystream);
 # endif
 
 	XOR(byte_image, byte_rand_keystream);
@@ -48,7 +49,7 @@ int main()
 	writeImage(PATH_ENCRY_IMG, byte_image);
 
 # if REPORT
-	reportB3(byte_image, width_image);
+	reportB3(byte_image, PATH_ENCRY_IMG);
 # endif
 
 
@@ -67,7 +68,7 @@ int main()
 	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	reportC(h_encoder, len_h_encoded_labelmap, len_secret);
+	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret);
 # endif
 
 
@@ -390,14 +391,10 @@ int main()
 		assert(byte_image[i] == byte_orig[i]);
 
 # if REPORT
-	reportG4(byte_image);
+	reportG4(byte_image, PATH_RESTO_IMG);
 # endif
 
 	writeImage(PATH_RESTO_IMG, byte_image);
-
-# if REPORT
-	fprintf(fptr_report, "\nE. write recover image to %s\n\n", PATH_RESTO_IMG);
-# endif
 
 # if PRINT
 	printByteToFile(byte_image, width_image, PATH_RE_IMG_HD);

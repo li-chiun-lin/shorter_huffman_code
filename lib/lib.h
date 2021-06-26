@@ -8,6 +8,10 @@
 
 using namespace std;
 
+# define DIR_IMG "../image/"
+# define DIR_OUT "../out/"
+
+
 const static unsigned char pixel2t[256] = {
 	8, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -98,7 +102,32 @@ const vector<unsigned char> mask_bit = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x0
 const vector<unsigned char> mask_msb = { 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 const vector<unsigned char> mask_lsb = { 0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00 };
 
+
+errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
+vector<unsigned char> readImage(string file_name);
+void writeImage(string file_name, vector<unsigned char>& byte_buf);
+unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8);
+
+void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
+unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image);
+
+vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image, int size_image, int width_image, vector<int>& cnt_t);
+
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image);
+
+
+
+
+// huffman coding --------------------------------------------------------------
+
+# define MAX_T 8
+# define LEN_HC_RULE 32
+# define LEN_LEN_H_ENCODED_LABELMAP 20
+# define LEN_HCODE_HEADER  (LEN_HC_RULE + LEN_LEN_H_ENCODED_LABELMAP)
+# define MAX_HCODE_LEN 5
+
 # define SIZE_HCODE 9
+
 const unsigned char byte_hcode[SIZE_HCODE] = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
 const vector< vector<unsigned char> > bits_hcode = {
 	{0, 0},
@@ -112,12 +141,6 @@ const vector< vector<unsigned char> > bits_hcode = {
 	{1, 1, 1, 1, 1}
 };
 
-
-errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
-vector<unsigned char> readImage(string file_name);
-void writeImage(string file_name, vector<unsigned char>& byte_buf);
-unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8);
-
 struct Trie
 {
 	bool isValid;
@@ -130,16 +153,55 @@ void build(struct Trie* coder, const vector<unsigned char>& bits_buf);
 void assignValue(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start, size_t idx_end, unsigned char val);
 pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start);
 
-unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image);
-vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image, int size_image, int width_image, vector<int>& cnt_t);
-
-void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
-
-void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image);
-
 int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t);
 int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 	vector<int>& h_encoder, vector<unsigned char>& bits_h_encoded_labelmap, int& len_secret);
 
 
 
+
+
+
+
+
+// report ------------------------------------------------------
+
+# define LEN_SAMPLE 2048
+# define ROW_SAMPLE 8
+# define WIDTH_REPORT 128
+# define WIDTH_REPORT_1 WIDTH_REPORT - 1
+# define WRAP(i) (i % WIDTH_REPORT == WIDTH_REPORT_1 ? "\n\t" : "")
+
+# define LEN_SAMPLE 2048
+# define ROW_SAMPLE 8
+# define WIDTH_REPORT 128
+# define WIDTH_REPORT_1 WIDTH_REPORT - 1
+# define WRAP(i) (i % WIDTH_REPORT == WIDTH_REPORT_1 ? "\n\t" : "")
+
+
+
+extern FILE* fptr_report;
+
+int reportBegin(int width_image, int size_image, const char* fn_report, const char* fn_cover_img);
+void reportEnd();
+void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image);
+void reportB(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
+void reportB3(vector<unsigned char>& byte_image, const char* fn_enc_img);
+void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret);
+void reportD(vector<unsigned char>& bits_embed, int idx_prepare);
+void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed);
+void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed);
+void reportD4(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
+void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
+void reportD6(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_auxinfo);
+void reportD7(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo);
+void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo);
+void reportF(vector<unsigned char>& byte_image, vector<unsigned char>& bit_extract, int idx_ex, int width_image);
+void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image);
+void reportF5(vector<unsigned char>& val_ex_labelmap, int idx_ex, int idx_ex_proceed, int width_image);
+void reportF6(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image);
+void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image);
+void reportF8(vector<unsigned char>& bit_secret_extra, int idx_ex, int idx_ex_proceed);
+void reportG(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
+void reportG3(vector<unsigned char>& byte_image);
+void reportG4(vector<unsigned char>& byte_image, const char* fn_restore);
