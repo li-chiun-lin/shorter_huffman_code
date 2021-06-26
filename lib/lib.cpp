@@ -176,8 +176,96 @@ unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int wid
 	return px;
 }
 
+vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
+	int size_image, int width_image, vector<int>& cnt_t)
+{
+	vector<unsigned char> val_labelmap(size_image);
+
+	// leave first row and first column as ref_value.
+	for (int i = 1; i < width_image; ++i)
+	{
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = row + col;
+			//assert(width_image1 <= idx && idx < size_image);
+
+			unsigned char px = predictedValue(byte_image, idx, width_image);
+
+			// this pixel can embed (t + 1) bits.
+			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
+			++cnt_t[val_labelmap[idx]];
+		}
+	}
+
+	return val_labelmap;
+}
+
 void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream)
 {
 	for (size_t i = 0; i < byte_image.size(); ++i)
 		byte_image[i] ^= byte_rand_keystream[i];
+}
+
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
+{
+	for (int row = 1; row < width_image; ++row)
+	{
+		int rw = row * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = rw + col;
+			int t = val_ex_labelmap[idx];
+
+			unsigned char px = predictedValue(byte_image, idx, width_image);
+
+			if (t < 8)
+				byte_image[idx] = ((px ^ mask_bit[t]) & mask_msb[t]) | (byte_image[idx] & mask_lsb[t]);
+			else
+				byte_image[idx] = px;
+		}
+	}
+}
+
+int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
+{
+	priority_queue<pair<int, int>> pq;
+	int len_h_encoded_labelmap = 0;
+
+	for (int t = 0; t < SIZE_HCODE; ++t)
+		pq.push(make_pair(cnt_t[t], t));
+
+	for (int i = 0; i < SIZE_HCODE; ++i)
+	{
+		pair<int, int> p = pq.top();
+		pq.pop();
+		h_encoder[p.second] = i;
+		len_h_encoded_labelmap += p.first * bits_hcode[i].size();
+	}
+
+	return len_h_encoded_labelmap;
+}
+
+int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
+	vector<int>& h_encoder, vector<unsigned char>& bits_h_encoded_labelmap, int& len_secret)
+{
+	int idx_h_encoded_labelmap = 0;
+
+	for (int i = 1; i < width_image; ++i)
+	{
+		int row = i * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int t = val_labelmap[row + col];
+			int idx_hc = h_encoder[t];
+			int len_hc = bits_hcode[idx_hc].size();
+
+			for (int k = 0; k < len_hc; ++k)
+				bits_h_encoded_labelmap[idx_h_encoded_labelmap++] = bits_hcode[idx_hc][k];
+
+			len_secret += (t < 7 ? t + 1 : 8) - len_hc;
+		}
+	}
+
+	return idx_h_encoded_labelmap;
 }

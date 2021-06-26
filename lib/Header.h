@@ -94,8 +94,23 @@ const static unsigned char byte2bits[256][8] = {
 	{1, 1, 1, 1, 1, 1, 0, 0 }, {1, 1, 1, 1, 1, 1, 0, 1 }, {1, 1, 1, 1, 1, 1, 1, 0 }, {1, 1, 1, 1, 1, 1, 1, 1 },
 };
 
-const vector<unsigned char> bit_mask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-const vector<unsigned char> msb_mask = { 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
+const vector<unsigned char> mask_bit = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+const vector<unsigned char> mask_msb = { 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
+const vector<unsigned char> mask_lsb = { 0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00 };
+
+# define SIZE_HCODE 9
+const unsigned char byte_hcode[SIZE_HCODE] = { 0x00, 0x01, 0x04, 0x05, 0x0c, 0x0d, 0x0e, 0x1e, 0x1f };
+const vector< vector<unsigned char> > bits_hcode = {
+	{0, 0},
+	{0, 1},
+	{1, 0, 0},
+	{1, 0, 1},
+	{1, 1, 0, 0},
+	{1, 1, 0, 1},
+	{1, 1, 1, 0},
+	{1, 1, 1, 1, 0},
+	{1, 1, 1, 1, 1}
+};
 
 
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
@@ -116,5 +131,15 @@ void assignValue(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx
 pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start);
 
 unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image);
+vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image, int size_image, int width_image, vector<int>& cnt_t);
 
 void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
+
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image);
+
+int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t);
+int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
+	vector<int>& h_encoder, vector<unsigned char>& bits_h_encoded_labelmap, int& len_secret);
+
+
+
