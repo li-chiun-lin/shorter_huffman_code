@@ -47,6 +47,27 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 	return idx_h_encoded_labelmap;
 }
 
+# if 1
+void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header)
+{
+	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d\n",
+		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - len_hcode_header, len_hcode_header);
+
+	// header
+	fprintf(fptr_report, "%8s %8s %8s %8s %8s %8s %8s\n", "t", "dist", "code", "cap.", "c len", "p len", "delta");
+	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
+
+	for (int t = 0; t < SIZE_HCODE; ++t)
+	{
+		fprintf(fptr_report, "%8d %8d %8X %8d %8d %8d %8d\n", 
+			t, cnt_t[t], byte_hcode[h_encoder[t]], t < 8 ? t + 1 : t, 
+			(int)bits_hcode[h_encoder[t]].size(), (t < 8 ? t + 1 : t) - (int)bits_hcode[h_encoder[t]].size(), 
+			((t < 8 ? t + 1 : t) - (int)bits_hcode[h_encoder[t]].size()) * cnt_t[t]);
+	}
+
+	fprintf(fptr_report, "\n\n");
+}
+# else
 void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header)
 {
 	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d\n",
@@ -88,6 +109,7 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 	fprintf(fptr_report, "\n%8s = %d", "sum", sum);
 	fprintf(fptr_report, "\n\n");
 }
+# endif
 
 int embedMain(vector<unsigned char> &val_labelmap, vector<unsigned char> &byte_image, vector<unsigned char> &bits_embed, int width_image, int idx_embed)
 {

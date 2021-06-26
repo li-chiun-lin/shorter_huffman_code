@@ -1,6 +1,7 @@
 #pragma once
 
-# define FN_COVER_IMG "lena512.raw"
+//# define FN_COVER_IMG "lena512.raw"
+# define FN_COVER_IMG "lena.tiff.raw"
 
 # define PATH_COVER_IMG DIR_IMG FN_COVER_IMG
 # define PATH_ENCRY_IMG DIR_OUT FN_COVER_IMG"_encrypt_sh.raw"
