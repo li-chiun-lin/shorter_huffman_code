@@ -24,6 +24,7 @@
     <ProjectGuid>{0708346f-84f8-4c2d-b657-b18a70107e17}</ProjectGuid>
     <RootNamespace>shorterhufman</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>shorter_huffman</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,10 +140,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="shorter_hufman.cpp" />
+    <ClCompile Include="shorter_huffman.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="shorter_huffman.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib\lib.vcxproj">
