@@ -1,5 +1,8 @@
 ﻿#include <iostream>
+#include <vector>
+
 #include "../tiff-4.3.0/libtiff/tiffio.h"
+#include "../lib/lib.h"
 
 using namespace std;
 
@@ -100,9 +103,57 @@ void readtiff()
 
 }
 
+void testHuffman()
+{
+	vector<int> freq = { 9818, 9742, 15247, 33246, 44509, 53359, 41758, 24353, 29089 };
+
+	Node* tree = buildHuffmanTree(freq);
+	vector< vector<int> > encoder = buildHuffmanEncoder(tree, (int)freq.size());
+
+	for (int i = 0; i < freq.size(); ++i)
+	{
+		printf("%d %6d : ", i, freq[i]);
+		for (int j = 0; j < encoder[i].size(); ++j)
+			printf("%d", encoder[i][j]);
+		printf("\n");
+	}
+
+	vector<unsigned char> bit_topology;
+	vector<unsigned char> bit_val;
+
+	serializeHuffmanTree(tree, bit_topology, bit_val, 5);
+
+	printf("%2d : ", (int)bit_topology.size());
+	for (int i = 0; i < bit_topology.size(); ++i)
+		printf("%x", bit_topology[i]);
+	printf("\n");
+
+	printf("%2d : ", (int)bit_val.size());
+	for (int i = 0; i < bit_val.size(); ++i)
+		printf("%x%s", bit_val[i], i % 5 == 4 ? " " : "");
+	printf("\n");
+
+	int it = 0;
+	int iv = 0;
+	Node* tree2 = unserializeHuffmanTree(bit_topology, it, bit_val, iv, 5);
+
+	vector< vector<int> > encoder2 = buildHuffmanEncoder(tree2, (int)freq.size());
+
+	for (int i = 0; i < encoder2.size(); ++i)
+	{
+		printf("%d : ", i);
+		for (int j = 0; j < encoder2[i].size(); ++j)
+			printf("%d", encoder2[i][j]);
+		printf("\n");
+	}
+
+}
+
 int main()
 {
-	readtiff();
+	//readtiff();
+
+	testHuffman();
 
 	return 0;
 }

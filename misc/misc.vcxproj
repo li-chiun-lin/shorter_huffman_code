@@ -145,6 +145,9 @@
     <ClCompile Include="misc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\lib\lib.vcxproj">
+      <Project>{d14af807-af47-4944-9e93-e1e4d5033eac}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\tiff-4.3.0\ALL_BUILD.vcxproj">
       <Project>{af71aa22-1304-3355-ab9a-aa81f417c63a}</Project>
     </ProjectReference>

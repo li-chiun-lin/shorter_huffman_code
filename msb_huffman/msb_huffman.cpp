@@ -28,12 +28,12 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 {
 	int idx_h_encoded_labelmap = 0;
 
-	for (int i = 1; i < width_image; ++i)
+	for (int row = 1; row < width_image; ++row)
 	{
-		int row = i * width_image;
+		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
 		{
-			int t = val_labelmap[row + col];
+			int t = val_labelmap[rw + col];
 			int idx_hc = h_encoder[t];
 			int len_hc = (int)bits_hcode[idx_hc].size();
 
@@ -114,17 +114,16 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 }
 # endif
 
-int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_image, vector<unsigned char>& bits_embed, int width_image, int idx_embed)
+int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_image,
+		vector<unsigned char>& bits_embed, int width_image, int idx_embed)
 {
-	for (int i = 1; i < width_image; ++i)
+	for (int row = 1; row < width_image; ++row)
 	{
-		int row = i * width_image;
+		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
 		{
-			int idx = row + col;
+			int idx = rw + col;
 			int t = val_labelmap[idx];
-
-			//assert(idx_embed <= len_embed);
 
 			if (t >= 7)
 			{
@@ -159,7 +158,6 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 		{
 			int idx = rw + col;
 			int t = val_ex_labelmap[idx];
-
 			unsigned char px = predictedValue(byte_image, idx, width_image);
 
 			if (t < 8)
@@ -212,7 +210,6 @@ int main()
 # endif
 
 	XOR(byte_image, byte_rand_keystream);
-
 	writeImage(PATH_ENCRY_IMG, byte_image);
 
 # if REPORT
@@ -315,10 +312,7 @@ int main()
 # endif
 
 	for (int i = 0; i < len_secret; ++i)
-	{
-		bits_embed[idx_prepare] = bits_rand_secret[i] & 0x01;
-		++idx_prepare;
-	}
+		bits_embed[idx_prepare ++] = bits_rand_secret[i] & 0x01;
 
 	assert(idx_prepare == len_embed);
 
@@ -409,9 +403,8 @@ int main()
 	int idx_ex_proceed = 0;
 	for (int i = 0; i < RANGE_HCODE; ++i)
 	{
-		auto p = decode(h_decoder, bit_extract, idx_ex_proceed);
-		assert(p.first != -1);
-		assert(p.second);
+		pair<unsigned char, int> p = decode(h_decoder, bit_extract, idx_ex_proceed);
+		assert(p.first != -1 && p.second);
 
 		int len_cur_hcode = p.second;
 
@@ -458,7 +451,7 @@ int main()
 
 		unsigned char t = p.first;
 		int idx_ex_lm = idx_row_ex_lm * width_image + idx_col_ex_lm;
-		val_ex_labelmap[idx_ex_lm] = p.first;
+		val_ex_labelmap[idx_ex_lm] = t;
 
 		assert(val_ex_labelmap[idx_ex_lm] == val_labelmap[idx_ex_lm]);
 

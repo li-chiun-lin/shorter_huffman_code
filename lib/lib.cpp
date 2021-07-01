@@ -4,12 +4,9 @@
 #include "pch.h"
 #include "framework.h"
 
-
 #include "lib.h"
 
 using namespace std;
-
-// TODO: 此為程式庫函式的範例
 
 
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name)
@@ -20,11 +17,11 @@ errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_na
 	if (err || fptr == NULL)
 		return err;
 
-	for (int i = 0; i < len; ++i)
+	for (int row = 0; row < len; ++row)
 	{
-		int r = i * len;
-		for (int j = 0; j < len; ++j)
-			fprintf(fptr, "%02X ", byte_buf[r + j]);
+		int rw = row * len;
+		for (int col = 0; col < len; ++col)
+			fprintf(fptr, "%02X ", byte_buf[rw + col]);
 		fprintf(fptr, "\n");
 	}
 
@@ -156,8 +153,115 @@ pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_
 	return make_pair(-1, -1);
 }
 
+Node* buildHuffmanTree(const vector<int>& freq)
+{
+	priority_queue<Node*, vector<Node*>, Node > pq;
+
+	for (int t = 0; t < freq.size(); ++t)
+		pq.push(new Node(t, freq[t]));
+
+	while (pq.size() > 1)
+	{
+		Node* node = new Node();
+
+		node->next[0] = pq.top();
+		pq.pop();
+		node->next[1] = pq.top();
+		pq.pop();
+		node->freq = node->next[0]->freq + node->next[1]->freq;
+
+		//printf("%6d %6d -> %6d\n", node->next[0]->freq, node->next[1]->freq, node->freq);
+
+		pq.push(node);
+	}
+
+	return pq.top();
+}
+
+vector<vector<int>> buildHuffmanEncoder(const Node* tree, int size_domain)
+{
+	vector<vector<int>> encoder(size_domain);
+	const int size_range = 10;
+	int code[size_range] = { 0 };
+
+	dfs(tree, encoder, code, 0);
+
+	return encoder;
+}
+
+void dfs(const Node* tree, vector<vector<int>>& encoder, int* code, int len)
+{
+	if (tree == NULL)
+		return;
+
+	if (tree->next[0] == NULL && tree->next[1] == NULL)
+	{
+		encoder[tree->val] = vector<int>(code, code + len);
+		return;
+	}
+
+	code[len] = 0;
+	dfs(tree->next[0], encoder, code, len + 1);
+
+	code[len] = 1;
+	dfs(tree->next[1], encoder, code, len + 1);
+}
+
+void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology, vector<unsigned char>& bit_val, int size_val)
+{
+	if (tree == NULL)
+		return;
+
+	if (tree->next[0] == NULL && tree->next[1] == NULL)
+	{
+		bit_topology.push_back(0);
+
+		unsigned int mask = 1 << (size_val - 1);
+
+		for (int i = 0; i < size_val; ++i, mask >>= 1)
+			bit_val.push_back((tree->val & mask) ? 1 : 0);
+	}
+	else
+	{
+		bit_topology.push_back(1);
+		serializeHuffmanTree(tree->next[0], bit_topology, bit_val, size_val);
+		serializeHuffmanTree(tree->next[1], bit_topology, bit_val, size_val);
+	}
+}
+
+Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int &it, vector<unsigned char>& bit_val, int &iv, int size_val)
+{
+	if (it == bit_topology.size())
+		assert(false);
+
+	int bit = bit_topology[it++];
+
+	if (bit == 0)
+	{
+		int val = 0;
+		for (int i = 0; i < size_val; ++i)
+			val = (val << 1) | bit_val[iv++];
+
+		return new Node(val);
+	}
+	else if (bit == 1)
+	{
+		Node* node = new Node();
+		node->next[0] = unserializeHuffmanTree(bit_topology, it, bit_val, iv, size_val);
+		node->next[1] = unserializeHuffmanTree(bit_topology, it, bit_val, iv, size_val);
+		return node;
+	}
+	else
+	{
+		assert(false);
+		return NULL;
+	}
+}
+
 unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image)
 {
+	assert(width_image < idx);
+
 	unsigned char x1 = byte_image[idx - width_image - 1];
 	unsigned char x2 = byte_image[idx - width_image];
 	unsigned char x3 = byte_image[idx - 1];
@@ -182,14 +286,12 @@ vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
 	vector<unsigned char> val_labelmap(size_image);
 
 	// leave first row and first column as ref_value.
-	for (int i = 1; i < width_image; ++i)
+	for (int row = 1; row < width_image; ++row)
 	{
-		int row = i * width_image;
+		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
 		{
-			int idx = row + col;
-			//assert(width_image1 <= idx && idx < size_image);
-
+			int idx = rw + col;
 			unsigned char px = predictedValue(byte_image, idx, width_image);
 
 			// this pixel can embed (t + 1) bits.
