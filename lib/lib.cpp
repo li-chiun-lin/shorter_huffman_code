@@ -258,6 +258,34 @@ Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int &it, vecto
 	}
 }
 
+pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, size_t idx_start)
+{
+	assert(tree);
+	assert(0 <= idx_start);
+
+	for (size_t i = idx_start; i < bits_buf.size(); ++i)
+	{
+		// leaf
+		if (tree->next[0] == NULL && tree->next[1] == NULL)
+			return make_pair(tree->val, i - idx_start);
+
+		int idx = bits_buf[i];
+		assert(idx == 1 || idx == 0);
+
+		// integrity check
+		assert(tree->next[idx]);
+
+		tree = tree->next[idx];
+	}
+
+	// integrity check
+	// should never reach here
+	assert(false);
+
+	// not enough bits to decode next value
+	return make_pair(-1, -1);
+}
+
 unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image)
 {
 	assert(width_image < idx);

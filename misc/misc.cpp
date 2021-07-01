@@ -103,6 +103,54 @@ void readtiff()
 
 }
 
+void tiff2raw(string fn_tiff, string fn_raw, string fn_txt = NULL)
+{
+	TIFF* tif = TIFFOpen(fn_tiff.c_str(), "r");
+	if (tif == NULL)
+		return;
+
+	FILE* fptr = NULL;
+	errno_t err = fopen_s(&fptr, fn_txt.c_str(), "w");
+
+	if (err || fptr == NULL)
+		return;
+
+	FILE* fptr_b = NULL;
+	err = fopen_s(&fptr_b, fn_raw.c_str(), "wb");
+
+	if (err || fptr_b == NULL)
+		return;
+
+	int width, height;
+	tdata_t buf_tif;
+
+	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &width);
+	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
+	buf_tif = _TIFFmalloc(TIFFScanlineSize(tif));
+
+	unsigned char* data;
+	printf("w %d h %d\n", width, height);
+
+	for (int row = 0; row < height; row++)
+	{
+		TIFFReadScanline(tif, buf_tif, row);
+		data = (unsigned char*)buf_tif;
+		for (int i = 0; i < width; i++)
+			fprintf(fptr, "%02X ", data[i]);
+
+		fwrite(data, sizeof(unsigned char), width, fptr_b);
+
+		fprintf(fptr, "\n");
+	}
+
+	fclose(fptr_b);
+	fclose(fptr);
+
+	_TIFFfree(buf_tif);
+	TIFFClose(tif);
+
+}
+
 void testHuffman()
 {
 	vector<int> freq = { 9818, 9742, 15247, 33246, 44509, 53359, 41758, 24353, 29089 };

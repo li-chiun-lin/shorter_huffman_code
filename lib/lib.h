@@ -167,7 +167,7 @@ vector< vector<int> > buildHuffmanEncoder(const Node* tree, int size_domain);
 void dfs(const Node* tree, vector< vector<int> >& encoder, int* code, int len);
 void serializeHuffmanTree(const Node* tree, vector<unsigned char> &bit_topology, vector<unsigned char>& bit_val, int size_val);
 Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int &it, vector<unsigned char>& bit_val, int &iv, int size_val);
-
+pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, size_t idx_start);
 
 
 
