@@ -8,11 +8,7 @@
 
 using namespace std;
 
-# define DIR_IMG "../image/"
-# define DIR_OUT "../out/"
-
-
-const static unsigned char pixel2t[256] = {
+const unsigned char pixel2t[256] = {
 	8, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -31,7 +27,7 @@ const static unsigned char pixel2t[256] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-const static unsigned char byte2bits[256][8] = {
+const unsigned char byte2bits[256][8] = {
 	{0, 0, 0, 0, 0, 0, 0, 0 }, {0, 0, 0, 0, 0, 0, 0, 1 }, {0, 0, 0, 0, 0, 0, 1, 0 }, {0, 0, 0, 0, 0, 0, 1, 1 },
 	{0, 0, 0, 0, 0, 1, 0, 0 }, {0, 0, 0, 0, 0, 1, 0, 1 }, {0, 0, 0, 0, 0, 1, 1, 0 }, {0, 0, 0, 0, 0, 1, 1, 1 },
 	{0, 0, 0, 0, 1, 0, 0, 0 }, {0, 0, 0, 0, 1, 0, 0, 1 }, {0, 0, 0, 0, 1, 0, 1, 0 }, {0, 0, 0, 0, 1, 0, 1, 1 },
@@ -111,22 +107,11 @@ unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8);
 void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image);
 
-vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image, int size_image, int width_image, vector<int>& cnt_t);
-
-//void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image);
-
-
 
 
 // huffman coding --------------------------------------------------------------
 
 # define MAX_T 8
-//# define LEN_HC_RULE 32
-//# define LEN_LEN_H_ENCODED_LABELMAP 20
-//# define LEN_HCODE_HEADER  (LEN_HC_RULE + LEN_LEN_H_ENCODED_LABELMAP)
-# define MAX_HCODE_LEN 5
-
-
 
 struct Trie
 {
@@ -158,7 +143,7 @@ public:
 
 	bool operator()(Node* a, Node* b)
 	{
-		return a->freq > b->freq; 
+		return a->freq > b->freq;
 	}
 };
 
@@ -166,8 +151,8 @@ Node* buildHuffmanTree(const vector<int>& freq);
 void del(Node* tree);
 vector< vector<int> > buildHuffmanEncoder(const Node* tree, int size_domain);
 void dfs(const Node* tree, vector< vector<int> >& encoder, int* code, int len);
-void serializeHuffmanTree(const Node* tree, vector<unsigned char> &bit_topology, vector<unsigned char>& bit_val, int size_val);
-Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int &it, vector<unsigned char>& bit_val, int &iv, int size_val);
+void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology, vector<unsigned char>& bit_val, int size_val);
+Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int& it, vector<unsigned char>& bit_val, int& iv, int size_val);
 pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, size_t idx_start);
 
 
@@ -181,19 +166,13 @@ pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, siz
 # define WIDTH_REPORT_1 WIDTH_REPORT - 1
 # define WRAP(i) (i % WIDTH_REPORT == WIDTH_REPORT_1 ? "\n\t" : "")
 
-# define LEN_SAMPLE 2048
-# define ROW_SAMPLE 8
-# define WIDTH_REPORT 128
-# define WIDTH_REPORT_1 WIDTH_REPORT - 1
-# define WRAP(i) (i % WIDTH_REPORT == WIDTH_REPORT_1 ? "\n\t" : "")
-
 
 
 extern FILE* fptr_report;
 
 int reportBegin(int width_image, int size_image, const char* fn_report, const char* fn_cover_img);
 void reportEnd();
-void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int size_hcode);
+
 void reportB(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 void reportB3(vector<unsigned char>& byte_image, const char* fn_enc_img);
 //void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret);

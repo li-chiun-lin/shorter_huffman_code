@@ -1,9 +1,6 @@
 ﻿#include "../lib/lib.h"
 #include "msb_huffman.h"
 
-# define REPORT 1
-# define PRINT 1
-
 int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
 {
 	priority_queue<pair<int, int>> pq;
@@ -47,75 +44,31 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 	return idx_h_encoded_labelmap;
 }
 
-# if 1
-void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header)
+vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
+	int size_image, int width_image, vector<int>& cnt_t)
 {
-	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d\n",
-		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - len_hcode_header, len_hcode_header);
+	vector<unsigned char> val_labelmap(size_image);
 
-	// header
-	fprintf(fptr_report, "%8s %8s %8s %8s %8s %8s %8s\n", "t", "dist", "code", "cap.", "c len", "p len", "delta");
-	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
-
-	for (int t = 0; t < DOMAIN_HCODE; ++t)
+	// leave first row and first column as ref_value.
+	for (int row = 1; row < width_image; ++row)
 	{
-		int cap = t < 8 ? t + 1 : t;
-		int len = (int)bits_hcode[h_encoder[t]].size();
-		int pay = cap - len;
-		int del = pay * cnt_t[t];
+		int rw = row * width_image;
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = rw + col;
+			unsigned char px = predictedValue(byte_image, idx, width_image);
 
-		fprintf(fptr_report, "%8d %8d %8X %8d %8d %8d %8d\n",
-			t, cnt_t[t], byte_hcode[h_encoder[t]], cap, len, pay, del);
+			// this pixel can embed (t + 1) bits.
+			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
+			++cnt_t[val_labelmap[idx]];
+		}
 	}
 
-	fprintf(fptr_report, "\n\n");
+	return val_labelmap;
 }
-# else
-void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header)
-{
-	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d\n",
-		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - len_hcode_header, len_hcode_header);
-
-	fprintf(fptr_report, "%8s ", "t");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8d ", i);
-
-	fprintf(fptr_report, "\n%8s ", "dist");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8d ", cnt_t[i]);
-
-	fprintf(fptr_report, "\n%8s ", "code");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8X ", byte_hcode[h_encoder[i]]);
-
-	fprintf(fptr_report, "\n%8s ", "len");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%8d ", bits_hcode[h_encoder[i]].size());
-
-	vector<int> delta(SIZE_HCODE);
-	for (int i = 0; i < 8; ++i)
-		delta[i] = i + 1 - bits_hcode[h_encoder[i]].size();
-	delta[8] = 8 - bits_hcode[h_encoder[8]].size();
-
-	fprintf(fptr_report, "\n%8s ", "delta");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-		fprintf(fptr_report, "%+8d ", delta[i]);
-
-	int sum = 0;
-	fprintf(fptr_report, "\n%8s ", "total");
-	for (int i = 0; i < SIZE_HCODE; ++i)
-	{
-		fprintf(fptr_report, "%+8d ", delta[i] * cnt_t[i]);
-		sum += delta[i] * cnt_t[i];
-	}
-
-	fprintf(fptr_report, "\n%8s = %d", "sum", sum);
-	fprintf(fptr_report, "\n\n");
-}
-# endif
 
 int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_image,
-		vector<unsigned char>& bits_embed, int width_image, int idx_embed)
+	vector<unsigned char>& bits_embed, int width_image, int idx_embed)
 {
 	for (int row = 1; row < width_image; ++row)
 	{
@@ -136,14 +89,6 @@ int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_i
 				idx_embed += t + 1;
 			}
 		}
-
-# if 0
-		fprintf(fptr_report, "\t(%3d) progress %7d / %7d / %7d bits %s\n",
-			i, idx_embed, len_auxinfo, len_embed, (printmark && idx_embed >= len_auxinfo) ? "*" : "");
-
-		if (printmark && idx_embed >= len_auxinfo)
-			printmark = false;
-# endif
 	}
 
 	return idx_embed;
@@ -168,10 +113,9 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 	}
 }
 
-
-int main()
+int msb_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex)
 {
-	vector<unsigned char> byte_image = readImage(PATH_COVER_IMG);
+	vector<unsigned char> byte_image = readImage(path_cover_img);
 	const int size_image = (int)byte_image.size();
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
@@ -183,11 +127,12 @@ int main()
 
 
 # if REPORT
-	reportBegin(width_image, size_image, PATH_REPORT, PATH_COVER_IMG);
+	reportBegin(width_image, size_image, path_report.c_str(), path_cover_img.c_str());
 # endif
 
 # if PRINT
-	printByteToFile(byte_image, width_image, PATH_OG_IMG_HD);
+	if (!path_ori_hex.empty())
+		printByteToFile(byte_image, width_image, path_ori_hex);
 # endif
 
 	//------------------------------------------------------
@@ -210,10 +155,12 @@ int main()
 # endif
 
 	XOR(byte_image, byte_rand_keystream);
-	writeImage(PATH_ENCRY_IMG, byte_image);
+
+	if (!path_encry_img.empty())
+		writeImage(path_encry_img, byte_image);
 
 # if REPORT
-	reportB3(byte_image, PATH_ENCRY_IMG);
+	reportB3(byte_image, path_encry_img.c_str());
 # endif
 
 
@@ -312,7 +259,7 @@ int main()
 # endif
 
 	for (int i = 0; i < len_secret; ++i)
-		bits_embed[idx_prepare ++] = bits_rand_secret[i] & 0x01;
+		bits_embed[idx_prepare++] = bits_rand_secret[i] & 0x01;
 
 	assert(idx_prepare == len_embed);
 
@@ -355,10 +302,11 @@ int main()
 
 	assert(idx_embed == idx_prepare);
 
-	writeImage(PATH_STEGO_IMG, byte_image);
+	if (!path_setgo_img.empty())
+		writeImage(path_setgo_img, byte_image);
 
 # if REPORT
-	fprintf(fptr_report, "\nE. write stego image to %s\n\n", PATH_STEGO_IMG);
+	fprintf(fptr_report, "\nE. write stego image to %s\n\n", path_setgo_img.c_str());
 # endif
 
 
@@ -516,19 +464,21 @@ int main()
 
 	restoreImage(byte_image, val_ex_labelmap, width_image);
 
-	vector<unsigned char> byte_orig = readImage(PATH_COVER_IMG);
+	vector<unsigned char> byte_orig = readImage(path_cover_img);
 
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);
 
 # if REPORT
-	reportG4(byte_image, PATH_RESTO_IMG);
+	reportG4(byte_image, path_resto_img.c_str());
 # endif
 
-	writeImage(PATH_RESTO_IMG, byte_image);
+	if (!path_resto_img.empty())
+		writeImage(path_resto_img, byte_image);
 
 # if PRINT
-	printByteToFile(byte_image, width_image, PATH_RE_IMG_HD);
+	if (!path_res_hex.empty())
+		printByteToFile(byte_image, width_image, path_res_hex);
 # endif
 
 

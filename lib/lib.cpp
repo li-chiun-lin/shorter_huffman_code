@@ -170,8 +170,6 @@ Node* buildHuffmanTree(const vector<int>& freq)
 		pq.pop();
 		node->freq = node->next[0]->freq + node->next[1]->freq;
 
-		//printf("%6d %6d -> %6d\n", node->next[0]->freq, node->next[1]->freq, node->freq);
-
 		pq.push(node);
 	}
 
@@ -240,7 +238,7 @@ void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology,
 	}
 }
 
-Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int &it, vector<unsigned char>& bit_val, int &iv, int size_val)
+Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int& it, vector<unsigned char>& bit_val, int& iv, int size_val)
 {
 	if (it == bit_topology.size())
 		assert(false);
@@ -317,29 +315,6 @@ unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int wid
 	}
 
 	return px;
-}
-
-vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
-	int size_image, int width_image, vector<int>& cnt_t)
-{
-	vector<unsigned char> val_labelmap(size_image);
-
-	// leave first row and first column as ref_value.
-	for (int row = 1; row < width_image; ++row)
-	{
-		int rw = row * width_image;
-		for (int col = 1; col < width_image; ++col)
-		{
-			int idx = rw + col;
-			unsigned char px = predictedValue(byte_image, idx, width_image);
-
-			// this pixel can embed (t + 1) bits.
-			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
-			++cnt_t[val_labelmap[idx]];
-		}
-	}
-
-	return val_labelmap;
 }
 
 void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream)

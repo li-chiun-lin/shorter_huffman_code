@@ -18,9 +18,18 @@
     <ClCompile Include="shorter_huffman.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="report.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shorter_huffman.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="export.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

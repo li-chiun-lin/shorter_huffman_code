@@ -1,20 +1,36 @@
 #pragma once
 
+using namespace std;
+
+# define REPORT 1
+# define PRINT 1
+
+# define DIR_IMG "../image/"
+# define DIR_OUT "../out/"
+
 //# define FN_COVER_IMG "lena512.raw"
 # define FN_COVER_IMG "lena.tiff.raw"
 //# define FN_COVER_IMG "baboon512.raw"
 
+# define EXT_ENC "_encrypt_sh.raw"
+# define EXT_STE "_stego_sh.raw"
+# define EXT_RES "_restore_sh.raw"
+# define EXT_REP "_report_sh.txt"
+# define EXT_HEX_OG "_hex_sh.txt"
+# define EXT_HEX_RE "_restore_hex_sh.txt"
+
 # define PATH_COVER_IMG DIR_IMG FN_COVER_IMG
-# define PATH_ENCRY_IMG DIR_OUT FN_COVER_IMG"_encrypt_sh.raw"
-# define PATH_STEGO_IMG DIR_OUT FN_COVER_IMG"_stego_sh.raw"
-# define PATH_RESTO_IMG DIR_OUT FN_COVER_IMG"_restore_sh.raw"
+
+# define PATH_ENCRY_IMG DIR_OUT FN_COVER_IMG EXT_ENC
+# define PATH_STEGO_IMG DIR_OUT FN_COVER_IMG EXT_STE
+# define PATH_RESTO_IMG DIR_OUT FN_COVER_IMG EXT_RES
 
 
-# define PATH_REPORT DIR_OUT FN_COVER_IMG"_report_sh.txt"
+# define PATH_REPORT DIR_OUT FN_COVER_IMG EXT_REP
 
 
-# define PATH_OG_IMG_HD DIR_OUT FN_COVER_IMG"_hex.txt"
-# define PATH_RE_IMG_HD DIR_OUT FN_COVER_IMG"_restore_hex_sh.txt"
+# define PATH_OG_IMG_HD DIR_OUT FN_COVER_IMG EXT_HEX_OG
+# define PATH_RE_IMG_HD DIR_OUT FN_COVER_IMG EXT_HEX_RE
 
 # define DOMAIN_HCODE 9
 # define RANGE_HCODE 7
@@ -23,24 +39,26 @@
 # define LEN_H_TOPOLOGY ((2 * DOMAIN_HCODE) - 1)
 # define LEN_H_VALUE (LEN_T * DOMAIN_HCODE)
 
+# define LEN_LEN_H_ENCODED_LABELMAP 20
+
 # define CNT_REF_TREE 7
 # define CNT_REF_LEN 3
 # define CNT_REF_T 2
 # define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T)
 
-# if 0
-const unsigned char byte_hcode[DOMAIN_HCODE] = { 0x00, 0x01, 0x04, 0x05, 0x07, 0x0c, 0x0d };
-const vector< vector<unsigned char> > bits_hcode = {
-	{0, 0},
-	{0, 1},
-	{1, 0, 0},
-	{1, 0, 1},
-	{1, 1, 1},
-	{1, 1, 0, 0},
-	{1, 1, 0, 1},
-};
-# endif
 
-# define LEN_HC_RULE 21
-# define LEN_LEN_H_ENCODED_LABELMAP 20
-# define LEN_HCODE_HEADER  (LEN_HC_RULE + LEN_LEN_H_ENCODED_LABELMAP)
+void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode);
+void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
+	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2);
+void reportD_(vector<unsigned char>& bits_embed, int len_h_topology, int len_h_value, int len_h_labmap, int idx_prepare);
+void reportD2_(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int offset);
+void reportD3_(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int cnt_ref);
+void reportD4_(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int offset);
+void reportD5_(vector<unsigned char>& byte_image, int idx_embed, int len_sideinfo);
+void reportF_(vector<unsigned char>& byte_image, vector<unsigned char>& bit_extract, int idx_ex);
+void reportF2_(Node* tree);
+// similar to A
+void reportF4_(vector<unsigned char>& val_ex_labelmap, int idx_ex, int idx_ex_proceed);
+void reportF6_(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed);
+void reportF7_(vector<unsigned char>& bit_secret_extra, int idx_ex, int idx_ex_proceed);
+
