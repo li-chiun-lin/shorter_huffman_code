@@ -19,6 +19,16 @@
 # define DOMAIN_HCODE 9
 # define RANGE_HCODE 7
 
+# define LEN_T 4
+# define LEN_H_TOPOLOGY ((2 * DOMAIN_HCODE) - 1)
+# define LEN_H_VALUE (LEN_T * DOMAIN_HCODE)
+
+# define CNT_REF_TREE 7
+# define CNT_REF_LEN 3
+# define CNT_REF_T 2
+# define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T)
+
+# if 0
 const unsigned char byte_hcode[DOMAIN_HCODE] = { 0x00, 0x01, 0x04, 0x05, 0x07, 0x0c, 0x0d };
 const vector< vector<unsigned char> > bits_hcode = {
 	{0, 0},
@@ -29,6 +39,7 @@ const vector< vector<unsigned char> > bits_hcode = {
 	{1, 1, 0, 0},
 	{1, 1, 0, 1},
 };
+# endif
 
 # define LEN_HC_RULE 21
 # define LEN_LEN_H_ENCODED_LABELMAP 20

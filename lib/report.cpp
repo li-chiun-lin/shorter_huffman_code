@@ -13,7 +13,7 @@ int reportBegin(int width_image, int size_image, const char* fn_report, const ch
 	if (ren || fptr_report == NULL)
 		return -2;
 
-	fprintf(fptr_report, "cover image: %s, %d x %d = %d\n\n", fn_cover_img, width_image, width_image, size_image);
+	fprintf(fptr_report, "cover image: %s, %d x %d = %d bytes\n\n", fn_cover_img, width_image, width_image, size_image);
 	return 0;
 }
 
@@ -25,8 +25,17 @@ void reportEnd()
 void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode)
 {
 	fprintf(fptr_report, "A. Label Map Generation, show only first few.\n\t");
+
+	// reference bytes
+	for (int col = 0; col < width_image; ++col)
+		fprintf(fptr_report, "x ");
+	fprintf(fptr_report, "\n\t");
+
 	for (int row = 1; row < ROW_SAMPLE; ++row)
 	{
+		// reference bytes
+		fprintf(fptr_report, "x ");
+
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
 			fprintf(fptr_report, "%d ", val_labelmap[rw + col]);
@@ -36,9 +45,14 @@ void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_
 	fprintf(fptr_report, "\t%6s ", "t");
 	for (int i = 0; i < domain_hcode; ++i)
 		fprintf(fptr_report, "%6d ", i);
-	fprintf(fptr_report, "\n\t%6s ", "dist");
+	fprintf(fptr_report, "\n\t%6s ", "freq");
+	int sum = 0;
 	for (int i = 0; i < domain_hcode; ++i)
+	{
 		fprintf(fptr_report, "%6d ", cnt_t[i]);
+		sum += cnt_t[i];
+	}
+	fprintf(fptr_report, "\n\t%6s %d", "sum", sum);
 	fprintf(fptr_report, "\n\n");
 }
 
@@ -120,8 +134,7 @@ void reportD7(vector<unsigned char>& byte_image, int idx_embed, int width_image,
 	fprintf(fptr_report, "D7. embed into the 1st row of enc(image), 512 bytes\n\t");
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], WRAP(col));
-	fprintf(fptr_report, "\n");
-	fprintf(fptr_report, "\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);
+	fprintf(fptr_report, "\n\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);
 }
 
 void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo)

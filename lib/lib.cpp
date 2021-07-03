@@ -207,7 +207,7 @@ void dfs(const Node* tree, vector<vector<int>>& encoder, int* code, int len)
 	dfs(tree->next[1], encoder, code, len + 1);
 }
 
-void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology, vector<unsigned char>& bit_val, int size_val)
+void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology, vector<unsigned char>& bit_val, int size_bit_val)
 {
 	if (tree == NULL)
 		return;
@@ -216,16 +216,16 @@ void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology,
 	{
 		bit_topology.push_back(0);
 
-		unsigned int mask = 1 << (size_val - 1);
+		unsigned int mask = 1 << (size_bit_val - 1);
 
-		for (int i = 0; i < size_val; ++i, mask >>= 1)
+		for (int i = 0; i < size_bit_val; ++i, mask >>= 1)
 			bit_val.push_back((tree->val & mask) ? 1 : 0);
 	}
 	else
 	{
 		bit_topology.push_back(1);
-		serializeHuffmanTree(tree->next[0], bit_topology, bit_val, size_val);
-		serializeHuffmanTree(tree->next[1], bit_topology, bit_val, size_val);
+		serializeHuffmanTree(tree->next[0], bit_topology, bit_val, size_bit_val);
+		serializeHuffmanTree(tree->next[1], bit_topology, bit_val, size_bit_val);
 	}
 }
 
@@ -336,6 +336,8 @@ void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_key
 	for (size_t i = 0; i < byte_image.size(); ++i)
 		byte_image[i] ^= byte_rand_keystream[i];
 }
+
+
 
 
 
