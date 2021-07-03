@@ -175,10 +175,10 @@ void reportF_(vector<unsigned char>& byte_image, vector<unsigned char>& bit_extr
 	fprintf(fptr_report, "F1. extract reference bytes\n\t");
 	for (int col = 0; col < CNT_REF; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], WRAP(col));
-	fprintf(fptr_report, "\n\tin bits\n\t");
+	fprintf(fptr_report, "\n\n\tin bits\n\t");
 	for (int i = 0; i < CNT_REF * 8; ++i)
 		fprintf(fptr_report, "%x %s", bit_extract[i], WRAP(i));
-	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
+	fprintf(fptr_report, "\n\n\textract %d bits\n\n", idx_ex);
 }
 
 void reportF3_(Node* tree)
@@ -195,6 +195,38 @@ void reportF3_(Node* tree)
 			fprintf(fptr_report, "%d", h_encoder[i][j]);
 		fprintf(fptr_report, "\n\t");
 	}
+}
+
+// similar to A
+void reportF5_(vector<unsigned char>& val_ex_labelmap, int idx_ex, int idx_ex_proceed)
+{
+	fprintf(fptr_report, "F5. recover Label Map, proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
+
+	// reference bytes
+	for (int col = 0; col < CNT_REF; ++col)
+		fprintf(fptr_report, "x ");
+
+	// other rows
+	for (int i = CNT_REF; i < 4096; ++i)
+		fprintf(fptr_report, "%d%s", val_ex_labelmap[i], i % 512 == 511 ? "\n\t" : " ");
+
+	fprintf(fptr_report, "\n");
+}
+
+void reportF6_(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed)
+{
+	fprintf(fptr_report, "F6. recover reference bytes, proceed %d / %d bits\n\t", idx_ex_proceed, idx_ex);
+	for (int col = 0; col < CNT_REF; ++col)
+		fprintf(fptr_report, "%02X %s", byte_image[col], WRAP(col));
+	fprintf(fptr_report, "\n\n");
+}
+
+void reportF7_(vector<unsigned char>& bit_secret_extra, int idx_ex, int idx_ex_proceed)
+{
+	fprintf(fptr_report, "F7. recover secret %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
+	for (size_t i = 0; i < LEN_SAMPLE; ++i)
+		fprintf(fptr_report, "%2d %s", bit_secret_extra[i], WRAP(i));
+	fprintf(fptr_report, "\n");
 }
 
 
@@ -271,6 +303,54 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 			else
 				byte_image[idx] = px;
 		}
+	}
+}
+# else
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
+{
+	// first row
+	for (int idx = CNT_REF; idx < width_image; ++idx)
+	{
+		int t = val_ex_labelmap[idx];
+
+		if (t < 8)
+			byte_image[idx] = ((byte_image[idx - 1] ^ mask_bit[t]) & mask_msb[t]) | (byte_image[idx] & mask_lsb[t]);
+		else
+			byte_image[idx] = byte_image[idx - 1];
+	}
+
+	int r1 = 0;
+	int rw = width_image;
+
+	for (int row = 1; row < width_image; ++row)
+	{
+		// first column
+		int t = val_ex_labelmap[rw];
+
+		if (t < 8)
+			byte_image[rw] = ((byte_image[r1] ^ mask_bit[t]) & mask_msb[t]) | (byte_image[rw] & mask_lsb[t]);
+		else
+			byte_image[rw] = byte_image[r1];
+
+
+
+		//----------------------------------
+
+		for (int col = 1; col < width_image; ++col)
+		{
+			int idx = rw + col;
+			t = val_ex_labelmap[idx];
+
+			unsigned char px = predictedValue(byte_image, idx, width_image);
+
+			if (t < 8)
+				byte_image[idx] = ((px ^ mask_bit[t]) & mask_msb[t]) | (byte_image[idx] & mask_lsb[t]);
+			else
+				byte_image[idx] = px;
+		}
+
+		r1 = rw;
+		rw += width_image;
 	}
 }
 # endif
@@ -390,6 +470,8 @@ int main()
 	vector<unsigned char> bit_topology;
 	vector<unsigned char> bit_val;
 	serializeHuffmanTree(tree, bit_topology, bit_val, LEN_T);
+
+	del(tree);
 
 	assert(bit_topology.size() == LEN_H_TOPOLOGY);
 	assert(bit_val.size() == LEN_H_VALUE);
@@ -678,9 +760,10 @@ int main()
 # endif
 # endif
 
+	int idx_ex_proceed = it + iv;
 
 # if 0
-	int idx_ex_proceed = 0;
+	
 	for (int i = 0; i < RANGE_HCODE; ++i)
 	{
 		auto p = decode(h_decoder, bit_extract, idx_ex_proceed);
@@ -702,6 +785,10 @@ int main()
 	}
 
 	assert(idx_ex_proceed == LEN_HC_RULE);
+
+# endif
+
+# if 1
 
 	int len_ex_h_encoded_labelmap = 0;
 
@@ -751,10 +838,34 @@ int main()
 	}
 
 	del(h_decoder);
+# else
+	vector<unsigned char> val_ex_labelmap(size_image);
+	int idx_ex_lm = CNT_REF;
+
+	// re-construct lable map
+	while (idx_ex_lm < val_ex_labelmap.size())
+	{
+		pair<unsigned char, int> p = decode(tree_ex, bit_extract, idx_ex_proceed);
+
+		assert(0 <= p.first && p.first <= MAX_T);
+		assert(p.second);
+
+		unsigned char t = p.first;
+		val_ex_labelmap[idx_ex_lm] = t;
+
+		assert(val_ex_labelmap[idx_ex_lm] == val_labelmap[idx_ex_lm]);
+
+		for (int j = 0; j <= t && j < MAX_T; ++j)
+			bit_extract[idx_ex++] = ((byte_image[idx_ex_lm] << j) & 0x80) ? 1 : 0;
+
+		idx_ex_proceed += p.second;
+
+		++idx_ex_lm;
+	}
+# endif
 
 # if REPORT
-	reportF5(val_ex_labelmap, idx_ex, idx_ex_proceed, width_image);
-# endif
+	reportF5_(val_ex_labelmap, idx_ex, idx_ex_proceed);
 # endif
 
 # if 0
@@ -763,10 +874,16 @@ int main()
 		byte_image[col] = bits2byte(bit_extract, idx_ex_proceed);
 		idx_ex_proceed += 8;
 	}
+# else
+	for (int col = 0; col < CNT_REF; ++col)
+	{
+		byte_image[col] = bits2byte(bit_extract, idx_ex_proceed);
+		idx_ex_proceed += 8;
+	}
+# endif
 
 # if REPORT
-	reportF6(byte_image, idx_ex, idx_ex_proceed, width_image);
-# endif
+	reportF6_(byte_image, idx_ex, idx_ex_proceed);
 # endif
 
 
@@ -783,18 +900,18 @@ int main()
 # endif
 
 
-# if 0
+# if 1
 	vector<unsigned char> bit_secret_extra(len_secret);
 
 	for (size_t i = 0; i < bit_secret_extra.size(); ++i)
 		bit_secret_extra[i] = bit_extract[idx_ex_proceed++];
+# endif
 
 # if REPORT
-	reportF8(bit_secret_extra, idx_ex, idx_ex_proceed);
-# endif
+	reportF7_(bit_secret_extra, idx_ex, idx_ex_proceed);
 # endif
 
-# if 0
+# if 1
 # if REPORT
 	reportG(byte_image, byte_rand_keystream);
 # endif
@@ -808,13 +925,15 @@ int main()
 
 	//-------------------------------------------------------------------
 
-# if 0
+# if 1
 	restoreImage(byte_image, val_ex_labelmap, width_image);
 
 	vector<unsigned char> byte_orig = readImage(PATH_COVER_IMG);
 
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);
+
+# endif
 
 # if REPORT
 	reportG4(byte_image, PATH_RESTO_IMG);
@@ -824,7 +943,6 @@ int main()
 
 # if PRINT
 	printByteToFile(byte_image, width_image, PATH_RE_IMG_HD);
-# endif
 # endif
 
 

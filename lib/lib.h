@@ -163,6 +163,7 @@ public:
 };
 
 Node* buildHuffmanTree(const vector<int>& freq);
+void del(Node* tree);
 vector< vector<int> > buildHuffmanEncoder(const Node* tree, int size_domain);
 void dfs(const Node* tree, vector< vector<int> >& encoder, int* code, int len);
 void serializeHuffmanTree(const Node* tree, vector<unsigned char> &bit_topology, vector<unsigned char>& bit_val, int size_val);

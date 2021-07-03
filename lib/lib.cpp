@@ -178,6 +178,17 @@ Node* buildHuffmanTree(const vector<int>& freq)
 	return pq.top();
 }
 
+void del(Node* tree)
+{
+	if (tree == NULL)
+		return;
+
+	del(tree->next[0]);
+	del(tree->next[1]);
+
+	delete tree;
+}
+
 vector<vector<int>> buildHuffmanEncoder(const Node* tree, int size_domain)
 {
 	vector<vector<int>> encoder(size_domain);
