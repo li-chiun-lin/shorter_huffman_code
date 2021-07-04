@@ -15,332 +15,333 @@
 \author{}
 
 \begin{document}
-   \maketitle
-   
+\maketitle
+
 The algorithm of Reversible Data Hiding in Encrypted Images Based on Multi-MSB Prediction and Huffman Coding, a.k.a. msb\_huffman. 
 
 
 Our algorithm, a.k.a. shorter\_huffman.
 
-   
+
 \section{msb\_huffman embedding}
-    \begin{enumerate}
-        \item Generate Label Map. 
-        \item[] INPUT: Cover image
-        \item[] OUTPUT: Label map, frequency table
-          		\begin{enumerate}
-          			\item Skip first row and first column since they are defined as Reference Values.
-          			\item For the rest of the pixels of cover image
-          			\begin{enumerate}
-          				\item 
-           				$pv(i, j) = \left\{ 
-           				\begin{array}{rl}
-           					max(x_2, x_3)   &, x_1 \leq min(x_2, x_3)\\
-           					min(x_2, x_3)   &, x_1 \geq max(x_2, x_3)\\
-           					x_2 + x_3 - x_1 &, otherwise
-           				\end{array} \right. $ 
-          				\item $idx = \textrm{the index of the MSB of } pv(i, j) \oplus pixel(i, j) \textrm{ counting from LSB.}$
-          				\item 
-           				$t = \left\{ 
-           				\begin{array}{rl}
-           					8   &, idx = 0\\
-           					8 - idx + 1   &, otherwise
-           				\end{array} \right.$
-           				\item calculate $freq[t]$.
-          			\end{enumerate}
-          		\end{enumerate}
-        \item Generate Huffman coding rule from a fixed Huffman tree.
-        \item[] INPUT: frequency table
-        \item[] OUTPUT: Huffman coding rule, capacity
-           	\begin{enumerate}
-           		\item Skip first row and first column.
-           		\item For the rest of the label map, calculate the $freq$ of every $t$.
-           		\item Sort $t$ by $freq$.
-           		\item Map each $t$ to a fixed Huffman coding rule \{00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111\}.
-           		\item For each $t$ in frequency table, calculate
-           			\begin{enumerate}
-           				\item $LM = \sum_{t=0}^{8} (freq[t] * \textrm{the Huffman code length of }t) $
-           				\item $cap = \sum_{t=0}^{8} (freq[t] * c[t]), c[t] = \left\{ 
-           				\begin{array}{rl}
-           					t      &, t = 8 \\
-           					t + 1  &, otherwise
-           				\end{array} \right. $
-           			\end{enumerate}
-           		\item the total $capacity$ is $cap - LM - header$, the $header$ is described in next part.
-       		\end{enumerate} 
-       	
-       	\item Encode label map
-       	\item[] INPUT: Label map, Huffman coding rule
-       	\item[] OUTPUT: encoded label map.
-       	
-       	\item Encrypt the cover image.
-       	\item[] INPUT: Cover image, key stream
-       	\item[] OUTPUT: Encrypted image
-       	
-       	\item Generate Side information
-       	\item[] INPUT: Label map, Huffman coding rule, encrypted reference bytes
-       	\item[] OUTPUT: Side information
-       		\begin{enumerate}
-       			\item the first 32 bits are the Huffman coding rule sorted by $t$.
-       			\item the following 20 bits are the value of $LM$.
-       			\item the $LM$ bits Huffman encoded label map follows.
-       			\item the encrypted first row and first column reference values are appended afterward.
-       		\end{enumerate}
-       	
-       	\item Replace the encrypted reference byte with side information(part 1).
-       	\item[] INPUT: encrypted image, side information
-       	\item[] OUTPUT: stego image(part 1)
-       	
-       	\item The rest of the side information(part 2) is embed into the $t+1$ MSB of each encrypted pixel.
-       	\item[] INPUT: stego image(part 1)
-       	\item[] OUTPUT: stego image(part 2)
-       	
-       	\item the rest of the $capacity$ is used to embed secret bits.
-       	\item[] INPUT: stego image(part 2)
-       	\item[] OUTPUT: stego image
-	\end{enumerate} 
+\begin{enumerate}
+	\item Generate Label Map.
+	\item[] INPUT: Cover image
+	\item[] OUTPUT: Label map, frequency table
+	      \begin{enumerate}
+		      \item Skip first row and first column since they are defined as Reference Values.
+		      \item For the rest of the pixels of cover image
+		            \begin{enumerate}
+			            \item 
+			                  $pv(i, j) = \left\{
+				                  \begin{array}{rl}
+					                  max(x_2, x_3)   & , x_1 \leq min(x_2, x_3) \\
+					                  min(x_2, x_3)   & , x_1 \geq max(x_2, x_3) \\
+					                  x_2 + x_3 - x_1 & , otherwise
+				                  \end{array} \right. $
+			            \item $idx = \textrm{the index of the MSB of } pv(i, j) \oplus pixel(i, j) \textrm{ counting from LSB.}$
+			            \item 
+			                  $t = \left\{
+				                  \begin{array}{rl}
+					                  8           & , idx = 0   \\
+					                  8 - idx + 1 & , otherwise
+				                  \end{array} \right.$
+			            \item calculate $freq[t]$.
+		            \end{enumerate}
+	      \end{enumerate}
+	\item Generate Huffman coding rule from a fixed Huffman tree.
+	\item[] INPUT: frequency table
+	\item[] OUTPUT: Huffman coding rule, capacity
+	      \begin{enumerate}
+		      \item Sort $t$ by $freq$.
+		      \item Map each $t$ to a fixed Huffman coding rule \{00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111\}.
+		      \item For each $t$ in frequency table, calculate
+		            \begin{enumerate}
+			            \item $LM = \sum_{t=0}^{8} (freq[t] * \textrm{the Huffman code length of }t) $
+			            \item $cap = \sum_{t=0}^{8} (freq[t] * c[t]), c[t] = \left\{
+				                  \begin{array}{rl}
+					                  t     & , t = 8     \\
+					                  t + 1 & , otherwise
+				                  \end{array} \right. $
+		            \end{enumerate}
+		      \item the total $capacity$ is $cap - LM - header$, the $header$ is described in next part.
+	      \end{enumerate}
+	      
+	\item Encode label map
+	\item[] INPUT: Label map, Huffman coding rule
+	\item[] OUTPUT: encoded label map.
+	      
+	\item Encrypt the cover image.
+	\item[] INPUT: Cover image, key stream
+	\item[] OUTPUT: Encrypted image
+	      
+	\item Generate Side information
+	\item[] INPUT: Label map, Huffman coding rule, encrypted reference bytes
+	\item[] OUTPUT: Side information
+	      \begin{enumerate}
+		      \item the first 32 bits are the Huffman coding rule sorted by $t$.
+		      \item the following 20 bits are the value of $LM$.
+		      \item the $LM$ bits Huffman encoded label map follows.
+		      \item the encrypted first row and first column reference values are appended afterward.
+	      \end{enumerate}
+	      
+	\item Replace the encrypted reference byte with side information(part 1).
+	\item[] INPUT: encrypted image, side information
+	\item[] OUTPUT: stego image(part 1)
+	      
+	\item The rest of the side information(part 2) is embed into the $t+1$ MSB of each encrypted pixel.
+	\item[] INPUT: stego image(part 1)
+	\item[] OUTPUT: stego image(part 2)
+	      
+	\item the rest of the $capacity$ is used to embed secret bits.
+	\item[] INPUT: stego image(part 2)
+	\item[] OUTPUT: stego image
+\end{enumerate}
 
 \section{msb\_huffman extracting}
-	\begin{enumerate}
-		\item Extract side information(part 1) from the first row and first column of the stego image.
-		\item[] INPUT: stego image
-		\item[] OUTPUT: side information(part 1), Huffman coding rule, label map(part 1)
-		\begin{enumerate}
-			\item Extract the Huffman coding rules from the first 32 bits of the extracted side information.
-			\item Extract $LM$ from the following 20 bits.
-			\item For the rest of the extracted side information(part 1), decode by Huffman coding rules and re-construct as many $t$ of label map as possible.
-		\end{enumerate}
-		
-		\item According to the already re-constructed part of the label map, keep extract side information(part 2).
-		\item[] INPUT: stego image, Huffman coding rule, label map(part 1)
-		\item[] OUTPUT: side information(part 2), label map.
-		\item[] For every encrypted pixel except the reference bytes, calculate
-			\begin{enumerate}
-				\item Extract the $t+1$ MSB from the encrypted $pixel(i, j)$ and put them in a $buffer$.
-					\begin{enumerate}
-						\item if the $buffer$ become a valid Huffman code, then decode it into the next $t$.
-					\end{enumerate}
-				\item This process stops when all the $t$ of the lable map has been decoded.
-			\end{enumerate}
-		\item Extract the encrypted reference values and restore them into the stego image.
-		\item[] INPUT: stego image, label map
-		\item[] OUTPUT: encrypted image(part 1).
-		
-		\item Extract secret bits.
-		\item[] INPUT: stego image, label map
-		\item[] OUTPUT: secret bits.
-		
-		\item Restore the encrypted image.
-		\item[] INPUT: encrypted image(part 1), label map
-		\item[] OUTPUT: Encrypted image.
-		\item[] For every encrypted pixel except the reference bytes, calculate
-			\begin{enumerate}
-				\item 
-				$pv(i, j) = \left\{ 
-				\begin{array}{rl}
-					max(x_2, x_3)   &, x_1 \leq min(x_2, x_3)\\
-					min(x_2, x_3)   &, x_1 \geq max(x_2, x_3)\\
-					x_2 + x_3 - x_1 &, otherwise
-				\end{array} \right. $ 
-				\item replace the $t+1$ MSB of encrypted $pixel(i, j)$ with the $t+1$ MSB of $pv(i, j)$
-			\end{enumerate}
-		
-		\item Decrypt the cover image.
-		\item[] INPUT: Encrypted image, key stream
-		\item[] OUTPUT: Cover image
-		
-	\end{enumerate}
-        	
-        
-      
+\begin{enumerate}
+	\item Extract side information(part 1) from the first row and first column of the stego image.
+	\item[] INPUT: stego image
+	\item[] OUTPUT: side information(part 1), Huffman coding rule, label map(part 1)
+	      \begin{enumerate}
+		      \item Extract the Huffman coding rules from the first 32 bits of the extracted side information.
+		      \item Extract $LM$ from the following 20 bits.
+		      \item For the rest of the extracted side information(part 1), decode by Huffman coding rules and re-construct as many $t$ of label map as possible.
+	      \end{enumerate}
+	      
+	\item According to the already re-constructed part of the label map, keep extract side information(part 2).
+	\item[] INPUT: stego image, Huffman coding rule, label map(part 1)
+	\item[] OUTPUT: side information(part 2), label map.
+	\item[] For every encrypted pixel except the reference bytes, calculate
+	      \begin{enumerate}
+		      \item Extract the $t+1$ MSB from the encrypted $pixel(i, j)$ and put them in a $buffer$.
+		            \begin{enumerate}
+			            \item if the $buffer$ become a valid Huffman code, then decode it into the next $t$.
+		            \end{enumerate}
+		      \item This process stops when all the $t$ of the lable map has been decoded.
+	      \end{enumerate}
+	\item Extract the encrypted reference values and restore them into the stego image.
+	\item[] INPUT: stego image, label map
+	\item[] OUTPUT: encrypted image(part 1).
+	      
+	\item Extract secret bits.
+	\item[] INPUT: stego image, label map
+	\item[] OUTPUT: secret bits.
+	      
+	\item Restore the encrypted image.
+	\item[] INPUT: encrypted image(part 1), label map
+	\item[] OUTPUT: Encrypted image.
+	\item[] For every encrypted pixel except the reference bytes, calculate
+	      \begin{enumerate}
+		      \item 
+		            $pv(i, j) = \left\{
+			            \begin{array}{rl}
+				            max(x_2, x_3)   & , x_1 \leq min(x_2, x_3) \\
+				            min(x_2, x_3)   & , x_1 \geq max(x_2, x_3) \\
+				            x_2 + x_3 - x_1 & , otherwise
+			            \end{array} \right. $
+		      \item replace the $t+1$ MSB of encrypted $pixel(i, j)$ with the $t+1$ MSB of $pv(i, j)$
+	      \end{enumerate}
+	      
+	\item Decrypt the cover image.
+	\item[] INPUT: Encrypted image, key stream
+	\item[] OUTPUT: Cover image
+	      
+\end{enumerate}
 
 
 
-        
+
+
+
+
 
 
 \section{shorter\_huffman embedding}
 \begin{enumerate}
-	\item Generate Label Map. 
+	\item Generate Label Map.
 	\item[] INPUT: Cover image
 	\item[] OUTPUT: Label map, frequency table
-	\begin{enumerate}
-		\item Skip first 16 bytes since they are defined as Reference Values.
-		\item For the rest of the pixels of the first row, $pv(0, j) = pixel(0, j - 1) \oplus pixel(0, j). $ 
-		\item For the first pixel of each row, except the first pixel of the first row, $pv(i, 0) = pixel(i - 1, 0) \oplus pixel(i, 0). $ 
-		\item For the rest of the pixels of cover image, 	$pv(i, j) = \left\{ 
-		\begin{array}{rl}
-			max(x_2, x_3)   &, x_1 \leq min(x_2, x_3)\\
-			min(x_2, x_3)   &, x_1 \geq max(x_2, x_3)\\
-			x_2 + x_3 - x_1 &, otherwise
-		\end{array} \right. $
-		\item For all the pixels except reference values,
-		\begin{enumerate}
-			\item $idx = \textrm{the index of the MSB of } pv(i, j) \oplus pixel(i, j) \textrm{ counting from LSB.}$
-			\item 
-			$t = \left\{ 
-			\begin{array}{rl}
-				8   &, idx = 0\\
-				8 - idx + 1   &, otherwise
-			\end{array} \right.$
-			\item calculate $freq[t]$.
-		\end{enumerate}
-	\end{enumerate}
+	      \begin{enumerate}
+		      \item Skip first 16 bytes since they are defined as Reference Values.
+		      \item For the rest of the pixels of the first row, $pv(0, j) = pixel(0, j - 1) \oplus pixel(0, j). $
+		      \item For the first pixel of each row, except the first pixel of the first row, $pv(i, 0) = pixel(i - 1, 0) \oplus pixel(i, 0). $
+		      \item For the rest of the pixels of cover image, 	$pv(i, j) = \left\{
+			            \begin{array}{rl}
+				            max(x_2, x_3)   & , x_1 \leq min(x_2, x_3) \\
+				            min(x_2, x_3)   & , x_1 \geq max(x_2, x_3) \\
+				            x_2 + x_3 - x_1 & , otherwise
+			            \end{array} \right. $
+		      \item For all the pixels except reference values,
+		            \begin{enumerate}
+			            \item $idx = \textrm{the index of the MSB of } pv(i, j) \oplus pixel(i, j) \textrm{ counting from LSB.}$
+			            \item 
+			                  $t = \left\{
+				                  \begin{array}{rl}
+					                  8           & , idx = 0   \\
+					                  8 - idx + 1 & , otherwise
+				                  \end{array} \right.$
+			            \item calculate $freq[t]$.
+		            \end{enumerate}
+	      \end{enumerate}
 	\item Generate Huffman tree.
 	\item[] INPUT: Label map, frequency table
 	\item[] OUTPUT: Huffman coding rule, capacity
-		\begin{enumerate}
-			\item Generate a Huffman tree node for each $t$ and $freq[t]$ pair.
-			\item while there are more then 1 such Huffman tree node.
-			\begin{enumerate}
-				\item find the 2 Huffman tree node with the lowest frequency.
-				\item Generate a new Huffman tree node and set the 2 tree nodes as the left and right sub tree.
-				\item set the frequency of the new tree node as the sum of the 2 tree nodes.
-				\item remove the 2 tree nodes.
-			\end{enumerate}
-			\item map each $t$ with the corresponding Huffman code.
-			\item For each $t$ in frequency table, calculate
-			\begin{enumerate}
-				\item $LM = \sum_{t=0}^{8} (freq[t] * \textrm{the Huffman code length of }t) $
-				\item $cap = \sum_{t=0}^{8} (freq[t] * c[t]), c[t] = \left\{ 
-				\begin{array}{rl}
-					t      &, t = 8 \\
-					t + 1  &, otherwise
-				\end{array} \right. $
-			\end{enumerate}
-			\item the total $capacity$ is $cap - LM - header$, the $header$ is described in next part.
-		\end{enumerate} 
-	
+	      \begin{enumerate}
+		      \item Generate a Huffman tree node for each $t$ and $freq[t]$ pair.
+		      \item while there are more then 1 such Huffman tree node.
+		            \begin{enumerate}
+			            \item find the 2 Huffman tree node with the lowest frequency.
+			            \item Generate a new Huffman tree node and set the 2 tree nodes as the left and right sub tree.
+			            \item set the frequency of the new tree node as the sum of the 2 tree nodes.
+			            \item remove the 2 tree nodes.
+		            \end{enumerate}
+		      \item map each $t$ with the corresponding Huffman code.
+		      \item For each $t$ in frequency table, calculate
+		            \begin{enumerate}
+			            \item $LM = \sum_{t=0}^{8} (freq[t] * \textrm{the Huffman code length of }t) $
+			            \item $cap = \sum_{t=0}^{8} (freq[t] * c[t]), c[t] = \left\{
+				                  \begin{array}{rl}
+					                  t     & , t = 8     \\
+					                  t + 1 & , otherwise
+				                  \end{array} \right. $
+		            \end{enumerate}
+		      \item the total $capacity$ is $cap - LM - header$, the $header$ is described in next part.
+	      \end{enumerate}
+	      
 	\item Encode label map.
 	\item[] INPUT: Label map, Huffman coding rule
 	\item[] OUTPUT: encoded label map
-		
+	      
 	\item Encrypt the cover image.
 	\item[] INPUT: Cover image, key stream
 	\item[] OUTPUT: Encrypted image
-	
+	      
 	\item Generate Side information
 	\item[] INPUT: Label map, Huffman coding rule, encrypted reference bytes
 	\item[] OUTPUT: Side information
-	\begin{enumerate}
-		\item the first 17 bits are the Huffman coding tree topology.
-		\item the following 36 bits are the Huffman coding value.
-		\item the following 20 bits are the value of $LM$.
-		\item the $LM$ bits Huffman encoded label map follows.
-		\item the first 16 encrypted reference bytes are appended afterward.
-	\end{enumerate}
-	
+	      \begin{enumerate}
+		      \item the first 17 bits are the Huffman coding tree topology.
+		      \item the following 36 bits are the Huffman coding value.
+		      \item the following 20 bits are the value of $LM$.
+		      \item the $LM$ bits Huffman encoded label map follows.
+		      \item the first 16 encrypted reference bytes are appended afterward.
+	      \end{enumerate}
+	      
 	\item Replace the 16 encrypted reference byte with side information(part 1).
 	\item[] INPUT: encrypted image, side information
 	\item[] OUTPUT: stego image(part 1)
-	
+	      
 	\item The rest of the side information(part 2) is embed into the $t+1$ MSB of each encrypted pixel.
 	\item[] INPUT: stego image(part 1)
 	\item[] OUTPUT: stego image(part 2)
-	
+	      
 	\item the rest of the $capacity$ is used to embed secret bits.
 	\item[] INPUT: stego image(part 2)
 	\item[] OUTPUT: stego image
-\end{enumerate} 
+\end{enumerate}
 
 \section{shorter\_huffman extracting}
 \begin{enumerate}
 	\item Extract side information(part 1) from the first 16 bytes of the stego image.
 	\item[] INPUT: stego image
 	\item[] OUTPUT: side information(part 1), Huffman coding rule, label map(part 1)
-	\begin{enumerate}
-		\item Extract the topology of Huffman coding tree from the first 17 bits of the extracted side information.
-		\item Extract the following 36 bits as 9 Huffman coding values, 4 bits each.
-		\item Extract $LM$ from the following 20 bits.
-		\item For the rest of the extracted side inforation(part 1), decode by Huffman coding rules and re-construct as many $t$ of label map as possible.
-	\end{enumerate}
-	
+	      \begin{enumerate}
+		      \item Extract the topology of Huffman coding tree from the first 17 bits of the extracted side information.
+		      \item Extract the following 36 bits as 9 Huffman coding values, 4 bits each.
+		      \item Extract $LM$ from the following 20 bits.
+		      \item For the rest of the extracted side inforation(part 1), decode by Huffman coding rules and re-construct as many $t$ of label map as possible.
+	      \end{enumerate}
+	      
 	\item According to the already re-constructed part of the label map, keep extract side information(part 2).
 	\item[] INPUT: stego image, Huffman coding rule, label map(part 1)
 	\item[] OUTPUT: side information(part 2), label map.
 	\item[] For every encrypted pixel except the reference bytes, calculate
-	\begin{enumerate}
-		\item Extract the $t+1$ MSB from the encrypted $pixel(i, j)$ and put them in a $buffer$.
-		\begin{enumerate}
-			\item if the $buffer$ become a valid Huffman code, then decode it into the next $t$.
-		\end{enumerate}
-		\item This process stops when all the $t$ of the lable map has been decoded.
-	\end{enumerate}
+	      \begin{enumerate}
+		      \item Extract the $t+1$ MSB from the encrypted $pixel(i, j)$ and put them in a $buffer$.
+		            \begin{enumerate}
+			            \item if the $buffer$ become a valid Huffman code, then decode it into the next $t$.
+		            \end{enumerate}
+		      \item This process stops when all the $t$ of the lable map has been decoded.
+	      \end{enumerate}
 	\item Extract the encrypted reference values and restore them into the stego image.
 	\item[] INPUT: stego image, label map
 	\item[] OUTPUT: encypted image(part 1).
-	
+	      
 	\item Extract secret bits.
 	\item[] INPUT: stego image, label map
 	\item[] OUTPUT: secret bits.
-	
+	      
 	\item Restore the encrypted image.
 	\item[] INPUT: encrypted image(part 1), label map
 	\item[] OUTPUT: Encrypted image.
 	\item[] For every encrypted pixel except the reference bytes, calculate
-	\begin{enumerate}
-		\item for the pixel in the first row except reference bytes, $pv(0, j) = pixel(0, j - 1) \oplus pixel(0, j). $ 
-		\item For the first pixel of each row, except the first pixel of the first row, $pv(i, 0) = pixel(i - 1, 0) \oplus pixel(i, 0). $ 
-		\item 
-		$pv(i, j) = \left\{ 
-		\begin{array}{rl}
-			max(x_2, x_3)   &, x_1 \leq min(x_2, x_3)\\
-			min(x_2, x_3)   &, x_1 \geq max(x_2, x_3)\\
-			x_2 + x_3 - x_1 &, otherwise
-		\end{array} \right. $ 
-		\item replace the $t+1$ MSB of encrypted $pixel(i, j)$ with the $t+1$ MSB of $pv(i, j)$
-	\end{enumerate}
-	
+	      \begin{enumerate}
+		      \item for the pixel in the first row except reference bytes, $pv(0, j) = pixel(0, j - 1) \oplus pixel(0, j). $
+		      \item For the first pixel of each row, except the first pixel of the first row, $pv(i, 0) = pixel(i - 1, 0) \oplus pixel(i, 0). $
+		      \item 
+		            $pv(i, j) = \left\{
+			            \begin{array}{rl}
+				            max(x_2, x_3)   & , x_1 \leq min(x_2, x_3) \\
+				            min(x_2, x_3)   & , x_1 \geq max(x_2, x_3) \\
+				            x_2 + x_3 - x_1 & , otherwise
+			            \end{array} \right. $
+		      \item replace the $t+1$ MSB of encrypted $pixel(i, j)$ with the $t+1$ MSB of $pv(i, j)$
+	      \end{enumerate}
+	      
 	\item Decrypt the cover image.
 	\item[] INPUT: Encrypted image, key stream
 	\item[] OUTPUT: Cover image
-	
+	      
 \end{enumerate}
-   
-   
-   
+
+\pagebreak
+
+
 \begin{table}
 	\caption{msb\_huffman with Lena}
-\centering
-\begin{tabular}{| c | c | c | c | c | c | c |}
-	\hline
-	 t &     dist &     code &     cap. &    c len &    p len &    delta \\ 
-	 \hline %        -------------------------------------------------------
-	 0 &     9818 &       1E &        1 &        5 &       -4 &   -39272 \\ 
-	 1 &     9742 &       1F &        2 &        5 &       -3 &   -29226 \\ 
-	 2 &    15247 &        E &        3 &        4 &       -1 &   -15247 \\ 
-	 3 &    33246 &        5 &        4 &        3 &        1 &    33246 \\ 
-	 4 &    44509 &        1 &        5 &        2 &        3 &   133527 \\ 
-	 5 &    53359 &        0 &        6 &        2 &        4 &   213436 \\ 
-	 6 &    41758 &        4 &        7 &        3 &        4 &   167032 \\ 
-	 7 &    24353 &        D &        8 &        4 &        4 &    97412 \\ 
-	 8 &    29089 &        C &        8 &        4 &        4 &   116356 \\ 
-	\hline
-\end{tabular}
-
+	\centering
+	\begin{tabular}{| c | r | l | c | c | c | r |}
+		\hline
+		Label & \multicolumn{1}{c|}{Freq.} & \multicolumn{1}{c|}{Code} & Cap. & Code Len. & Payload & \multicolumn{1}{c |}{$\Delta$} \\ 
+		\hline 
+		0     & 9818                        & 11110                      & 1    & 5         & -4      & -39272                         \\ 
+		1     & 9742                        & 11111                      & 2    & 5         & -3      & -29226                         \\ 
+		2     & 15247                       & 1110                       & 3    & 4         & -1      & -15247                         \\ 
+		3     & 33246                       & 101                        & 4    & 3         & 1       & 33246                          \\ 
+		4     & 44509                       & 01                         & 5    & 2         & 3       & 133527                         \\ 
+		5     & 53359                       & 00                         & 6    & 2         & 4       & 213436                         \\ 
+		6     & 41758                       & 100                        & 7    & 3         & 4       & 167032                         \\ 
+		7     & 24353                       & 1101                       & 8    & 4         & 4       & 97412                          \\ 
+		8     & 29089                       & 1100                       & 8    & 4         & 4       & 116356                         \\ 
+		\hline 
+		Total & 261121                      &                            &      & 1470568   & 793304  & 677264                         \\ 
+		\hline 
+	\end{tabular}
 \end{table}
 
 \begin{table}
 	\caption{shorter\_huffman with Lena}
 	\centering
-	\begin{tabular}{| c | c | c | c | c | c | c |}
+	\begin{tabular}{| c | r | l | c | c | c | r |}
 		\hline
-		t &     freq &     code &     cap. &    c len &    p len &    delta \\ 
-		\hline %        -------------------------------------------------------
-		0 &     9867 & 10111    &        1 &        5 &       -4 &   -39468 \\ 
-		1 &     9751 & 10110    &        2 &        5 &       -3 &   -29253 \\ 
-		2 &    15321 & 1010     &        3 &        4 &       -1 &   -15321 \\ 
-		3 &    33303 & 100      &        4 &        3 &        1 &    33303 \\ 
-		4 &    44679 & 111      &        5 &        3 &        2 &    89358 \\ 
-		5 &    53604 & 00       &        6 &        2 &        4 &   214416 \\ 
-		6 &    41938 & 110      &        7 &        3 &        4 &   167752 \\ 
-		7 &    24452 & 010      &        8 &        3 &        5 &   122260 \\ 
-		8 &    29203 & 011      &        8 &        3 &        5 &   146015 \\ 
-		\hline
+		Label & \multicolumn{1}{c |}{Freq.} & \multicolumn{1}{c |}{Code} & Cap. & Code Len. & Payload & \multicolumn{1}{c |}{$\Delta$} \\ 
+		\hline 
+		0     & 9867                        & 10111                      & 1    & 5         & -4      & -39468                         \\ 
+		1     & 9751                        & 10110                      & 2    & 5         & -3      & -29253                         \\ 
+		2     & 15321                       & 1010                       & 3    & 4         & -1      & -15321                         \\ 
+		3     & 33303                       & 100                        & 4    & 3         & 1       & 33303                          \\ 
+		4     & 44679                       & 111                        & 5    & 3         & 2       & 89358                          \\ 
+		5     & 53604                       & 00                         & 6    & 2         & 4       & 214416                         \\ 
+		6     & 41938                       & 110                        & 7    & 3         & 4       & 167752                         \\ 
+		7     & 24452                       & 010                        & 8    & 3         & 5       & 122260                         \\ 
+		8     & 29203                       & 011                        & 8    & 3         & 5       & 146015                         \\ 
+		\hline 
+		Total & 262118                      &                            &      & 1476369   & 787307  & 689062                         \\ 
+		\hline 
 	\end{tabular}
-	
 \end{table}
-	
+
 
 
 

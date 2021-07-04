@@ -38,13 +38,31 @@ void lena()
 	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
 }
 
+void man()
+{
+	string f = "Man";
+	//msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+}
+
+void log_2()
+{
+	for (int i = 0; i <= 256; ++i)
+		cout << i << " " << floor(log2(i)) << ", ";
+}
+
 int main()
 {
 	//testlib();
 	//testtiff();
 
 	//debug();
-	lena();
+	//lena();
+	man();
+
+	
+
+	//system("pause");
 	
 	return 0;
 }

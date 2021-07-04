@@ -119,7 +119,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int size_image = (int)byte_image.size();
 
 	cout << "msb " << path_cover_img << endl;
-	assert(size_image == 512 * 512);
+	//assert(size_image == 512 * 512);
 
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;

@@ -35,7 +35,12 @@ void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
 		len_capacity, header1, header2, LEN_LEN_H_ENCODED_LABELMAP, len_h_encoded_labelmap, len_ref, len_capacity - header1 - header2 - LEN_LEN_H_ENCODED_LABELMAP - len_h_encoded_labelmap - len_ref);
 
 	fprintf(fptr_report, "%8s & %8s & %8s & %8s & %8s & %8s & %8s \\\\ \n", "t", "freq", "code", "cap.", "c len", "p len", "delta");
-	fprintf(fptr_report, "\\hline %% %8s------------------------------------------------------\n", "-");
+	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
+	fprintf(fptr_report, "\t \\hline \n");
+
+	int total_cnt = 0;
+	int total_cap = 0;
+	int total_len = 0;
 
 	for (int t = 0; t < DOMAIN_HCODE; ++t)
 	{
@@ -43,6 +48,10 @@ void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
 		int len = (int)encoder[t].size();
 		int pay = cap - len;
 		int del = pay * cnt_t[t];
+
+		total_cnt += cnt_t[t];
+		total_cap += cap * cnt_t[t];
+		total_len += len * cnt_t[t];
 
 		fprintf(fptr_report, "%8d & %8d & ", t, cnt_t[t]);
 
@@ -59,11 +68,13 @@ void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
 			++j;
 		}
 
-		fprintf(fptr_report, " & %8d & %8d & %8d & %8d \\\\ \n",
-			cap, len, pay, del);
+		fprintf(fptr_report, " & %8d & %8d & %8d & %8d \\\\ \n", cap, len, pay, del);
 	}
 
-	fprintf(fptr_report, "\n");
+	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "%8s & %8d & & & %8d & %8d & %8d \\\\ \n", "Total", total_cnt, total_cap, total_len, total_cap - total_len);
+	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "\n\n");
 }
 
 void reportD_(vector<unsigned char>& bits_embed, int len_h_topology, int len_h_value, int len_h_labmap, int idx_prepare)
