@@ -31,12 +31,20 @@ void debug()
 	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
 }
 
+void lena()
+{
+	string f = "Lena";
+	msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+}
+
 int main()
 {
-	testlib();
-	testtiff();
+	//testlib();
+	//testtiff();
 
-	debug();
+	//debug();
+	lena();
 	
 	return 0;
 }

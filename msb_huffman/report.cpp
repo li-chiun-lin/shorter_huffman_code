@@ -41,8 +41,8 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - len_hcode_header, len_hcode_header);
 
 	// header
-	fprintf(fptr_report, "%8s %8s %8s %8s %8s %8s %8s\n", "t", "dist", "code", "cap.", "c len", "p len", "delta");
-	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
+	fprintf(fptr_report, "%8s & %8s & %8s & %8s & %8s & %8s & %8s \\\\ \n", "t", "dist", "code", "cap.", "c len", "p len", "delta");
+	fprintf(fptr_report, "\\hline %% %8s------------------------------------------------------\n", "-");
 
 	for (int t = 0; t < DOMAIN_HCODE; ++t)
 	{
@@ -51,7 +51,7 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 		int pay = cap - len;
 		int del = pay * cnt_t[t];
 
-		fprintf(fptr_report, "%8d %8d %8X %8d %8d %8d %8d\n",
+		fprintf(fptr_report, "%8d & %8d & %8X & %8d & %8d & %8d & %8d \\\\ \n",
 			t, cnt_t[t], byte_hcode[h_encoder[t]], cap, len, pay, del);
 	}
 
