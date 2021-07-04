@@ -6,11 +6,10 @@ using namespace std;
 # define PRINT 1
 
 # define DIR_IMG "../image/"
-# define DIR_OUT "../out/"
+# define DIR_IMG_OUT DIR_IMG "out/"
+# define DIR_DATA_OUT "../out/"
 
-//# define FN_COVER_IMG "lena512.raw"
 # define FN_COVER_IMG "lena.tiff.raw"
-//# define FN_COVER_IMG "baboon512.raw"
 
 # define EXT_ENC "_encrypt_sh.raw"
 # define EXT_STE "_stego_sh.raw"
@@ -21,16 +20,15 @@ using namespace std;
 
 # define PATH_COVER_IMG DIR_IMG FN_COVER_IMG
 
-# define PATH_ENCRY_IMG DIR_OUT FN_COVER_IMG EXT_ENC
-# define PATH_STEGO_IMG DIR_OUT FN_COVER_IMG EXT_STE
-# define PATH_RESTO_IMG DIR_OUT FN_COVER_IMG EXT_RES
+# define PATH_ENCRY_IMG DIR_IMG_OUT FN_COVER_IMG EXT_ENC
+# define PATH_STEGO_IMG DIR_IMG_OUT FN_COVER_IMG EXT_STE
+# define PATH_RESTO_IMG DIR_IMG_OUT FN_COVER_IMG EXT_RES
 
 
-# define PATH_REPORT DIR_OUT FN_COVER_IMG EXT_REP
+# define PATH_REPORT DIR_DATA_OUT FN_COVER_IMG EXT_REP
 
-
-# define PATH_OG_IMG_HD DIR_OUT FN_COVER_IMG EXT_HEX_OG
-# define PATH_RE_IMG_HD DIR_OUT FN_COVER_IMG EXT_HEX_RE
+# define PATH_OG_IMG_HD DIR_DATA_OUT FN_COVER_IMG EXT_HEX_OG
+# define PATH_RE_IMG_HD DIR_DATA_OUT FN_COVER_IMG EXT_HEX_RE
 
 # define DOMAIN_HCODE 9
 # define RANGE_HCODE 7
@@ -43,7 +41,11 @@ using namespace std;
 
 # define CNT_REF_TREE 7
 # define CNT_REF_LEN 3
-# define CNT_REF_T 2
+
+//# define CNT_REF_T 2
+// this is for Baboon
+# define CNT_REF_T 16
+
 # define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T)
 
 

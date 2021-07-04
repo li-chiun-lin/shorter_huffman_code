@@ -4,7 +4,8 @@
 # define PRINT 1
 
 # define DIR_IMG "../image/"
-# define DIR_OUT "../out/"
+# define DIR_IMG_OUT DIR_IMG "out/"
+# define DIR_DATA_OUT "../out/"
 
 //# define FN_COVER_IMG "lena512.raw"
 # define FN_COVER_IMG "lena.tiff.raw"
@@ -13,20 +14,25 @@
 # define EXT_ENC "_encrypt.raw"
 # define EXT_STE "_stego.raw"
 # define EXT_RES "_restore.raw"
+
 # define EXT_REP "_report.txt"
+
 # define EXT_HEX_OG "_hex.txt"
 # define EXT_HEX_RE "_restore_hex.txt"
 
 # define PATH_COVER_IMG DIR_IMG FN_COVER_IMG
 
-# define PATH_ENCRY_IMG DIR_OUT FN_COVER_IMG EXT_ENC
-# define PATH_STEGO_IMG DIR_OUT FN_COVER_IMG EXT_STE
-# define PATH_RESTO_IMG DIR_OUT FN_COVER_IMG EXT_RES
+# define PATH_ENCRY_IMG DIR_IMG_OUT FN_COVER_IMG EXT_ENC
+# define PATH_STEGO_IMG DIR_IMG_OUT FN_COVER_IMG EXT_STE
+# define PATH_RESTO_IMG DIR_IMG_OUT FN_COVER_IMG EXT_RES
 
-# define PATH_REPORT DIR_OUT FN_COVER_IMG EXT_REP
 
-# define PATH_OG_IMG_HD DIR_OUT FN_COVER_IMG EXT_HEX_OG
-# define PATH_RE_IMG_HD DIR_OUT FN_COVER_IMG EXT_HEX_RE
+# define PATH_REPORT DIR_DATA_OUT FN_COVER_IMG EXT_REP
+
+# define PATH_OG_IMG_HD DIR_DATA_OUT FN_COVER_IMG EXT_HEX_OG
+# define PATH_RE_IMG_HD DIR_DATA_OUT FN_COVER_IMG EXT_HEX_RE
+
+
 
 # define LEN_HC_RULE 32
 # define LEN_LEN_H_ENCODED_LABELMAP 20

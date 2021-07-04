@@ -127,17 +127,19 @@ int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>
 	return len_embed;
 }
 
-int shorter_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex)
+int shr_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
 {
-
-
 	vector<unsigned char> byte_image = readImage(path_cover_img);
 	const int size_image = (int)byte_image.size();
+
+	cout << "shr " << path_cover_img << endl;
+	assert(size_image == 512 * 512);
+
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
 
-	srand(0);
+	srand(seed);
 
 # if REPORT
 	reportBegin(width_image, size_image, path_report.c_str(), path_cover_img.c_str());
@@ -354,12 +356,7 @@ int shorter_huffman(string path_cover_img, string path_report, string path_encry
 	reportF2_(tree_ex);
 # endif
 
-
 	int idx_ex_proceed = it + iv;
-
-
-
-
 	int len_ex_h_encoded_labelmap = 0;
 
 	for (int i = 0; i < LEN_LEN_H_ENCODED_LABELMAP; ++i)
@@ -376,7 +373,6 @@ int shorter_huffman(string path_cover_img, string path_report, string path_encry
 # endif
 
 
-
 	vector<unsigned char> val_ex_labelmap(size_image);
 	int idx_ex_lm = CNT_REF;
 
@@ -387,6 +383,7 @@ int shorter_huffman(string path_cover_img, string path_report, string path_encry
 
 		assert(0 <= p.first && p.first <= MAX_T);
 		assert(p.second);
+		assert(idx_ex_proceed + p.second <= idx_ex);
 
 		unsigned char t = p.first;
 		val_ex_labelmap[idx_ex_lm] = t;

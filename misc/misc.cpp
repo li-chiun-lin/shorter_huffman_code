@@ -63,7 +63,7 @@ void readtiff()
 	errno_t err = fopen_s(&fptr, "../out/Lena.tiff.hd.txt", "w");
 
 	if (err || fptr == NULL)
-		return ;
+		return;
 
 	FILE* fptr_b = NULL;
 	err = fopen_s(&fptr_b, "../out/Lena.tiff.raw", "wb");
@@ -103,14 +103,16 @@ void readtiff()
 
 }
 
-void tiff2raw(string fn_tiff, string fn_raw, string fn_txt = NULL)
+void tiff2raw(string fn_tiff, string fn_raw, string fn_txt)
 {
+	errno_t err = 0;
+
 	TIFF* tif = TIFFOpen(fn_tiff.c_str(), "r");
 	if (tif == NULL)
 		return;
 
 	FILE* fptr = NULL;
-	errno_t err = fopen_s(&fptr, fn_txt.c_str(), "w");
+	err = fopen_s(&fptr, fn_txt.c_str(), "w");
 
 	if (err || fptr == NULL)
 		return;
@@ -197,11 +199,20 @@ void testHuffman()
 
 }
 
+
+void convertTiffs()
+{
+	vector<string> fn = { "Airplane", "Baboon", "Jetplane", "Lena", "Man", "Tiffany" };
+
+	for (string f : fn)
+	{
+		tiff2raw("../image/tiff/" + f + ".tiff", "../image/tiff/" + f + ".raw", "../out/" + f + ".tiff.txt");
+	}
+}
+
 int main()
 {
-	//readtiff();
-
-	testHuffman();
+	convertTiffs();
 
 	return 0;
 }

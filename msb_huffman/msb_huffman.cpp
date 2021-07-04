@@ -113,17 +113,19 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 	}
 }
 
-int msb_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex)
+int msb_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
 {
 	vector<unsigned char> byte_image = readImage(path_cover_img);
 	const int size_image = (int)byte_image.size();
+
+	cout << "msb " << path_cover_img << endl;
+	assert(size_image == 512 * 512);
+
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
 
-	srand(0);
-
-
+	srand(seed);
 
 
 # if REPORT
