@@ -1,0 +1,489 @@
+\begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$t$       & 0    & 1    & 2     & 3     & 4     & 5     & 6     & 7     & 8     \\ \hline
+	$freq(t)$ & 9818 & 9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 \\ \hline
+\end{tabular}
+
+\begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$            & 9742                 & 9818                 & 15247                & 24353                & 29089 & 33246 & 41758 & 44509 & 53359 \\ \hline
+	tree
+	& \Tree[. [.1 ] ]  
+	& \Tree[. [.0 ] ]  
+	& \Tree[. [.2 ] ] 
+	& \Tree[. [.7 ] ] 
+	& \Tree[. [.8 ] ] 
+	& \Tree[. [.3 ] ] 
+	& \Tree[. [.6 ] ] 
+	& \Tree[. [.4 ] ] 
+	& \Tree[. [.5 ] ]      \\
+	\hline
+\end{tabular}
+
+\begin{tabular}{| c | c | c | c | c | c | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$ & 15247  & 19560 & 24353 & 29089 & 33246 & 41758 & 44509 & 53359 \\ \hline
+	tree 
+	& \Tree[. [.2 ] ]
+	& \Tree[. [.9742 [.1 ]] [.9818 [.0 ] ] ]
+	& \Tree[. [.7 ] ]
+	& \Tree[. [.8 ] ]
+	& \Tree[. [.3 ] ]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ] 
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{| c | c | c | c | c  | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$ & 24353 & 29089 & 33246 & 34807 & 41758 & 44509 & 53359 \\ \hline
+	tree
+	& \Tree[. [.7 ] ]
+	& \Tree[. [.8 ] ]
+	& \Tree[. [.3 ] ]
+	& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]  
+	\\	\hline
+\end{tabular}
+
+\begin{tabular}{| c  | c | c | c  | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$   & 33246 & 34807 & 41758 & 44509 & 53359& 53442 \\ \hline
+	tree
+	& \Tree[. [.3 ] ]
+	& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{ | c | c | c  | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$     & 41758 & 44509 & 53359& 53442& 68053 \\ \hline
+	tree
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+	& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{ | c | c  | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$  & 53359& 53442& 68053 & 86267 \\ \hline
+	tree
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+	& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+	& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{ | c  | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$  & 68053 & 86267& 106801 \\ \hline
+	tree
+	& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+	& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+	& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{  | c | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$   & 106801& 154320 \\ \hline
+	tree
+	& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+	& \Tree[. [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{  | c | c |} \hline
+	\rowcolor{lightgray}
+	$freq(t)$   & 261121 \\ \hline
+	tree
+	& \Tree[. [.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] [.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
+	\\ \hline
+\end{tabular}
+
+
+
+
+\pagebreak
+
+
+
+
+\begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
+	$t$       & 0    & 1    & 2     & 3     & 4     & 5     & 6     & 7     & 8     \\ \hline
+	$freq(t)$ & 9818 & 9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 \\ \hline
+\end{tabular}
+
+
+\begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
+	$freq(t)$   &\cellcolor{lightgray} 9818 & \cellcolor{lightgray}9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 \\ \hline
+	tree
+	& \Tree[. [.0 ] ]  
+	& \Tree[. [.1 ] ]  
+	& \Tree[. [.2 ] ] 
+	& \Tree[. [.3 ] ] 
+	& \Tree[. [.4 ] ] 
+	& \Tree[. [.5 ] ] 
+	& \Tree[. [.6 ] ] 
+	& \Tree[. [.7 ] ] 
+	& \Tree[. [.8 ] ]     
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{| c | c | c | c | c | c | c | c | c |} \hline
+	$freq(t)$   &\cellcolor{lightgray} 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 & \cellcolor{lightgray}19560 \\ \hline
+	tree 
+	& \Tree[. [.2 ] ]
+	& \Tree[. [.3 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.7 ] ]
+	& \Tree[. [.8 ] ]  
+	& \Tree[. [.9742 [.1 ]] [.9818 [.0 ] ] ]  
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{| c | c | c | c | c  | c | c | c |} \hline
+	$freq(t)$  & 33246 & 44509 & 53359 & 41758 & \cellcolor{lightgray}24353 & \cellcolor{lightgray}29089 & 34807 \\ \hline
+	tree
+	& \Tree[. [.3 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.7 ] ]
+	& \Tree[. [.8 ] ]   
+	& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{| c  | c | c | c  | c | c | c |} \hline
+	$freq(t)$   & \cellcolor{lightgray}33246   & 44509 & 53359 & 41758 & \cellcolor{lightgray}34807& 53442 \\ \hline
+	tree
+	& \Tree[. [.3 ] ]
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+	& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{ | c | c | c  | c | c | c |} \hline
+	$freq(t)$      & \cellcolor{lightgray}44509 & 53359& \cellcolor{lightgray}41758& 53442& 68053 \\ \hline
+	tree
+	& \Tree[. [.4 ] ]
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.6 ] ]
+	& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+	& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{ | c | c  | c | c | c |} \hline
+	$freq(t)$  & \cellcolor{lightgray}53359& \cellcolor{lightgray}53442& 68053 & 86267 \\ \hline
+	tree
+	& \Tree[. [.5 ] ]
+	& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+	& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+	& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{ | c  | c | c | c |} \hline
+	$freq(t)$  & \cellcolor{lightgray}68053 & \cellcolor{lightgray}86267& 106801 \\ \hline
+	tree
+	& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+	& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+	& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{  | c | c | c |} \hline
+	$freq(t)$   & \cellcolor{lightgray}106801& \cellcolor{lightgray}154320 \\ \hline
+	tree
+	& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+	& \Tree[. [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
+	\\ \hline
+\end{tabular}
+
+\begin{tabular}{  | c | c |} \hline
+	$freq(t)$   & \cellcolor{lightgray}261121 \\ \hline
+	tree
+	& \Tree[. [.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] [.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
+	\\ \hline
+	code
+	& \Tree[. [.0 [.0 \{00\}\\5 ]
+	[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+	[.1 [.0 [.0 \{100\}\\3 ]
+	[.1 [.0 \{1010\}\\2 ]
+	[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+	[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
+	\\ \hline
+	code
+	& \Tree[. [. [. \{00\}\\5 ]
+	[. [. \{010\}\\7 ] [. \{011\}\\8 ]]]
+	[. [. [. \{100\}\\3 ]
+	[. [. \{1010\}\\2 ]
+	[. [. \{10110\}\\1 ] [. \{10111\}\\0 ]]]]
+	[. [. \{110\}\\6 ] [. \{111\}\\4 ]]]] 
+	\\ \hline
+\end{tabular}
+
+\pagebreak
+
+
+
+
+\begin{scriptsize}
+	\begin{tabular}{ c  c  c  c  c  c  c  c  c  c } \toprule
+		$freq(t)$   &\cellcolor{lightgray} 9818 & \cellcolor{lightgray}9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 
+		\\ \midrule
+		tree
+		& \Tree[. [.0 ] ]  
+		& \Tree[. [.1 ] ]  
+		& \Tree[. [.2 ] ] 
+		& \Tree[. [.3 ] ] 
+		& \Tree[. [.4 ] ] 
+		& \Tree[. [.5 ] ] 
+		& \Tree[. [.6 ] ] 
+		& \Tree[. [.7 ] ] 
+		& \Tree[. [.8 ] ]     
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{ c  c  c  c  c  c  c  c  c } \toprule
+		$freq(t)$   &\cellcolor{lightgray} 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 & \cellcolor{lightgray}19560 
+		\\ \midrule
+		tree 
+		& \Tree[. [.2 ] ]
+		& \Tree[. [.3 ] ]
+		& \Tree[. [.4 ] ]
+		& \Tree[. [.5 ] ]
+		& \Tree[. [.6 ] ]
+		& \Tree[. [.7 ] ]
+		& \Tree[. [.8 ] ]  
+		& \Tree[. [.9742 [.1 ]] [.9818 [.0 ] ] ]  
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{ c  c  c  c  c   c  c  c } \toprule
+		$freq(t)$  & 33246 & 44509 & 53359 & 41758 & \cellcolor{lightgray}24353 & \cellcolor{lightgray}29089 & 34807 
+		\\ \midrule
+		tree
+		& \Tree[. [.3 ] ]
+		& \Tree[. [.4 ] ]
+		& \Tree[. [.5 ] ]
+		& \Tree[. [.6 ] ]
+		& \Tree[. [.7 ] ]
+		& \Tree[. [.8 ] ]   
+		& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{ c   c  c  c   c  c  c } \toprule
+		$freq(t)$   & \cellcolor{lightgray}33246   & 44509 & 53359 & 41758 & \cellcolor{lightgray}34807& 53442 
+		\\ \midrule
+		tree
+		& \Tree[. [.3 ] ]
+		& \Tree[. [.4 ] ]
+		& \Tree[. [.5 ] ]
+		& \Tree[. [.6 ] ]
+		& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+		& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{  c  c  c   c  c  c } \toprule
+		$freq(t)$      & \cellcolor{lightgray}44509 & 53359& \cellcolor{lightgray}41758& 53442& 68053 
+		\\ \midrule
+		tree
+		& \Tree[. [.4 ] ]
+		& \Tree[. [.5 ] ]
+		& \Tree[. [.6 ] ]
+		& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+		& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{  c  c   c  c  c } \toprule
+		$freq(t)$  & \cellcolor{lightgray}53359& \cellcolor{lightgray}53442& 68053 & 86267 
+		\\ \midrule
+		tree
+		& \Tree[. [.5 ] ]
+		& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+		& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+		& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{  c   c  c  c } \toprule
+		$freq(t)$  & \cellcolor{lightgray}68053 & \cellcolor{lightgray}86267& 106801 
+		\\ \midrule
+		tree
+		& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+		& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+		& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{ c  c  c } \toprule
+		$freq(t)$   & \cellcolor{lightgray}106801& \cellcolor{lightgray}154320 
+		\\ \midrule
+		tree
+		& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+		& \Tree[. [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
+		\\ \bottomrule
+	\end{tabular}
+	
+	\begin{tabular}{ c  c } \toprule
+		$freq(t)$   & \cellcolor{lightgray}261121 
+		\\ \midrule
+		tree
+		& \Tree[. [.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] [.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
+		\\ \hline
+		code
+		& {\Tree[. [.0 [.0 \{00\}\\5 ]
+			[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+			[.1 [.0 [.0 \{100\}\\3 ]
+			[.1 [.0 \{1010\}\\2 ]
+			[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+			[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] }
+		\\ \bottomrule
+	\end{tabular}
+\end{scriptsize}
+
+\pagebreak
+
+
+\begin{scriptsize}
+	\begin{longtable}{c}
+		\caption{text} 
+		\label{Tab:1}
+		\endfirsthead
+		\caption* {Table \ref{Tab:1} Continued}
+		\endhead
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c  c } \toprule
+			$freq(t)$   &\cellcolor{lightgray} 9818 & \cellcolor{lightgray}9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 
+			\\ \midrule
+			tree
+			& \Tree[. [.0 ] ]  
+			& \Tree[. [.1 ] ]  
+			& \Tree[. [.2 ] ] 
+			& \Tree[. [.3 ] ] 
+			& \Tree[. [.4 ] ] 
+			& \Tree[. [.5 ] ] 
+			& \Tree[. [.6 ] ] 
+			& \Tree[. [.7 ] ] 
+			& \Tree[. [.8 ] ]     
+		\end{tabular}
+		\\
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c } \toprule
+			$freq(t)$   &\cellcolor{lightgray} 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 & \cellcolor{lightgray}19560 
+			\\ \midrule
+			tree 
+			& \Tree[. [.2 ] ]
+			& \Tree[. [.3 ] ]
+			& \Tree[. [.4 ] ]
+			& \Tree[. [.5 ] ]
+			& \Tree[. [.6 ] ]
+			& \Tree[. [.7 ] ]
+			& \Tree[. [.8 ] ]  
+			& \Tree[. [.9742 [.1 ]] [.9818 [.0 ] ] ]  
+		\end{tabular}
+		\\
+		\begin{tabular}{ c  c  c  c  c   c  c  c } \toprule
+			$freq(t)$  & 33246 & 44509 & 53359 & 41758 & \cellcolor{lightgray}24353 & \cellcolor{lightgray}29089 & 34807 
+			\\ \midrule
+			tree
+			& \Tree[. [.3 ] ]
+			& \Tree[. [.4 ] ]
+			& \Tree[. [.5 ] ]
+			& \Tree[. [.6 ] ]
+			& \Tree[. [.7 ] ]
+			& \Tree[. [.8 ] ]   
+			& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+		\end{tabular}
+		\\
+		\begin{tabular}{ c   c  c  c   c  c  c } \toprule
+			$freq(t)$   & \cellcolor{lightgray}33246   & 44509 & 53359 & 41758 & \cellcolor{lightgray}34807& 53442 
+			\\ \midrule
+			tree
+			& \Tree[. [.3 ] ]
+			& \Tree[. [.4 ] ]
+			& \Tree[. [.5 ] ]
+			& \Tree[. [.6 ] ]
+			& \Tree[. [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+			& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
+		\end{tabular}
+		\\
+		\begin{tabular}{  c  c  c   c  c  c } \toprule
+			$freq(t)$      & \cellcolor{lightgray}44509 & 53359& \cellcolor{lightgray}41758& 53442& 68053 
+			\\ \midrule
+			tree
+			& \Tree[. [.4 ] ]
+			& \Tree[. [.5 ] ]
+			& \Tree[. [.6 ] ]
+			& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+			& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+		\end{tabular}
+		\\
+		\begin{tabular}{  c  c   c  c  c } \toprule
+			$freq(t)$  & \cellcolor{lightgray}53359& \cellcolor{lightgray}53442& 68053 & 86267 
+			\\ \midrule
+			tree
+			& \Tree[. [.5 ] ]
+			& \Tree[. [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+			& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+			& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+		\end{tabular}
+		\\
+		\begin{tabular}{  c   c  c  c } \toprule
+			$freq(t)$  & \cellcolor{lightgray}68053 & \cellcolor{lightgray}86267& 106801 
+			\\ \midrule
+			tree
+			& \Tree[. [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+			& \Tree[. [.41758 [.6 ] ] [.44509 [.4 ] ]]
+			& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+		\end{tabular}
+		\\
+		\begin{tabular}{ c  c  c } \toprule
+			$freq(t)$   & \cellcolor{lightgray}106801& \cellcolor{lightgray}154320 
+			\\ \midrule
+			tree
+			& \Tree[. [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+			& \Tree[. [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
+		\end{tabular}
+		\\
+		\begin{tabular}{ c  c } \toprule
+			$freq(t)$   & \cellcolor{lightgray}261121 
+			\\ \midrule
+			tree
+			& \Tree[. [.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] [.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
+			\\ \hline
+			code
+			& {\Tree[. [.0 [.0 \{00\}\\5 ]
+				[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+				[.1 [.0 [.0 \{100\}\\3 ]
+				[.1 [.0 \{1010\}\\2 ]
+				[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+				[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] }
+		\end{tabular}
+		\\
+	\end{longtable}
+\end{scriptsize}
+
+
+
+
