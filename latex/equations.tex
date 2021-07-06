@@ -14,6 +14,15 @@
 \usepackage{caption}
 \usepackage{hyperref}
 \usepackage{IEEEtrantools}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{algorithm}
+%\usepackage{algorithm2e}
+%\usepackage{algorithmic}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
 
 \title{equations}
 \author{}
@@ -22,265 +31,17 @@
 \begin{document}
 	\maketitle
 	
-	\begin{IEEEeqnarray}{rl}
-		pv(i, j) = \left\{ 
-		\begin{array}{rl}
-			max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-			min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-		\end{array} \right.
-		\\
-		, \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{IEEEeqnarray}
-	
-	\begin{equation}
-		\begin{array}{r}
-			pv(i, j) = \left\{ 
-			\begin{array}{rl}
-				max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-				min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-				x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-			\end{array} \right.
-			\\
-			 , \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-		\end{array}
-	\end{equation}
-	
-	
-	\begin{multline}
-		pv(i, j) =  
-		\begin{cases}{rl}
-			max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-			min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-		\end{cases} 
-		\\ , \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{multline}
-	
-	\begin{equation}
-		pv(i, j) = \left\{ 
-		\begin{array}{rl}
-			max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-			min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-		\end{array} \right.
-	\end{equation}
-	
-	\begin{equation}
-		pv(i, j) = 
-		\begin{cases}
-			max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-			min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-		\end{cases} 
-	\end{equation}
-	
-	\begin{equation}
-		pe(i, j) = pv(i, j) \oplus pixel(i, j), \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{equation}
-	
-	\begin{eqnarray}
-		pe(i, j) = pv(i, j) \oplus pixel(i, j), \\
-		\textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{eqnarray}
-	
-	
-	\begin{multline}
-		pe(i, j) = pv(i, j) \oplus pixel(i, j), \\
-		\textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{multline}
-	
-	\begin{equation}
-		pe(i, j) = pv(i, j) \oplus pixel(i, j), \forall 1 \leq i < n, 1 \leq j < m
-	\end{equation}
-	
-	\begin{align}
-		pe(i, j) & = & pv(i, j) \oplus pixel(i, j),  \\
-		& & \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{align}
-	
-	\begin{equation}
-		label(i, j) = \left\{ 
-		\begin{array}{ll}
-			8                       & , pe(i, j) = 0       \\
-			7 - log_2(pe(i, j)) + 1 & , \textrm{otherwise}
-		\end{array} \right.
-	\end{equation}
-	
-	\begin{equation}
-		label(i, j) = 
-		\begin{cases}
-			8                       & , pe(i, j) = 0       \\
-			7 - log_2(pe(i, j)) + 1 & , \textrm{otherwise}
-		\end{cases} 
-	\end{equation}
-	
-	\begin{equation}
-		LM = \sum_{t=0}^{8} (freq[t] \times \textrm{the length of Huffman code of }t)
-	\end{equation}
-	
-	\begin{equation}
-		LM = \sum_{t=0}^{8} (freq[t] \cdot \textrm{the length of Huffman code of }t)
-	\end{equation}
-	
-	\begin{multline}
-		LM = \sum_{t=0}^{8} (freq(t) \cdot \lvert HuffEncode(t) \rvert) , \text{ where } \\
-		HuffEncode(x) \text{ denotes the Huffman code of } x \text{ and } \\ 
-		\lvert y \rvert \text{ denotes the length of } y
-	\end{multline}
-
-	\begin{equation}
-		\begin{aligned}
-			LM & = \sum_{t=0}^{8} (freq(t) \cdot \lvert HuffEncode(t) \rvert) , \\
-			   & \text{ where } \\
-			   & HuffEncode(x) \text{ denotes the Huffman code of } x \text{ and } \\ 
-			   & \lvert y \rvert \text{ denotes the length of } y
-		\end{aligned}
-	\end{equation}
-	
-	\begin{equation}
-		{x_e}\prime(i, j) = \left\{
-		\begin{array}{rl}
-			x_e(i, j) \bmod {2^{7-t}} + \sum_{s=0}^t(b_s \times 2^{7-s}) & , 0 \leq t < 7    \\
-			\sum_{s=1}^8(b_s \times 2^{8-s})                            & , 7 \leq t \leq 8
-		\end{array}
-		\right.
-	\end{equation}
-	
-	\begin{equation}
-		x(i, j) = \left\{
-		\begin{array}{ll}
-			px(i, j) / {2^{7-t}} + b_{t+1} \times 2^{7-t} + x_{ew}(i, j) \bmod {2^{7-t}} & , 0 \leq t < 8    \\
-			px(i, j)                            & ,  t = 8
-		\end{array}
-		\right.
-	\end{equation}
-	
-	\begin{equation}
-		\begin{array}{rcl}
-			MSB(x, b) & = & x ~\&~  (((1 \ll b) - 1) \ll (8 - b))  \\
-			LSB(x, b) & = & x ~\&~  ((1 \ll b) - 1)
-		\end{array}
-	\end{equation}
-	
-	\begin{table}
-		\caption{text}
-		\centering
-		\begin{tabular}{|c | c |}
-			\hline 
-			$x_1$ & $x_2$ \\
-			\hline 
-			$x_3$ & $x$   \\
-			\hline 
-		\end{tabular}
-	\end{table}
-	
-	
-	\begin{figure}
-		\centering
-		\begin{tabular}{|c | c |c | c |c | c |} \hline
-			$x_{0, 0}$ & $x_{0, 1}$ & $x_{0, 2}$                         & $\dots$                           & $\dots$ & $x_{0, m}$ \\ \hline
-			$x_{1, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $\dots$    \\ \hline 
-			$x_{2, 0}$ & $\dots$    & \cellcolor{blue!10} $x_{i-1, j-1}$ & \cellcolor{blue!10}$x_{i - 1, j}$ & $\dots$ & $\dots$    \\ \hline 
-			$\dots$    & $\dots$    & \cellcolor{blue!10}$x_{i, j - 1}$  & \cellcolor{blue!10}$x_{i, j}$     & $\dots$ & $\dots$    \\ \hline 
-			$x_{n, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $x_{n, m}$ \\ \hline 
-		\end{tabular}
-		\caption{text}
-	\end{figure}
-	
-	\begin{figure}
-		\centering
-		\begin{tabular}{|c | c |c | c |c | c |} \hline
-			\rowcolor{lightgray}
-			\cellcolor{lightgray}$N/A$   & $N/A$       & $N/A$     & $\dots$                        & $\dots$ & $N/A$       \\ \hline
-			\cellcolor{lightgray}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, m}$ \\ \hline
-			\cellcolor{lightgray}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
-			\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
-			\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & \cellcolor{blue!10}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
-			\cellcolor{lightgray}$N/A$   & $pv_{n, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{n, m}$ \\ \hline 
-		\end{tabular}
-		\caption{text}
-	\end{figure}
-	
-	
-	
-	
-	
-	\begin{figure}
-		\centering
-		\begin{tabular}{|p{.25 \textwidth} | p{.25 \textwidth} |p{.25 \textwidth} | p{.25 \textwidth} |}
-			\hline 
-			32 bits of Huffman coding rule & 20 bits of the length of the Huffman encoded label map & Huffman encoded label map & 1023 bytes of reference bytes \\ 
-			\hline
-		\end{tabular}
-		\caption{text}
-	\end{figure}
-	
-	\begin{figure}
-		\centering
-		\begin{tabular}{|p{.20 \textwidth} | p{.20 \textwidth} |p{.20 \textwidth} | p{.20 \textwidth}| p{.20 \textwidth} |}
-			\hline 
-			17 bits of Huffman coding tree topology & 36 bits of Huffman coding value & 20 bits of the length of the Huffman encoded label map & Huffman encoded label map & 16 bytes of reference bytes \\ 
-			\hline
-		\end{tabular}
-		\caption{text}
-	\end{figure}
-	
-	
-	
-	
-	
-	\begin{figure}
-		\centering
-		
-		\begin{tabular}{rcl}
-			$x_e$ & $=$     & 
-			\begin{tabular}{| c | c | c | c | c | c | c | c |}
-				\hline
-				\cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 & \cellcolor{gray}1 & 0 & 1 & 0 & 1 \\
-				\hline
-			\end{tabular} 
-			\\
-			& &
-			\begin{tabular}{ c  c  c  c  c  c  c  c }
-			  & $t = 3$ & &  &  & &  & \\
-			\end{tabular} 
-			\\
-			secret bits    & $=$ &
-			\begin{tabular}{| c | c | c | c | c  c  c  c }
-				\cline{1-4}
-				1 & 1 & 0 & 1 & & & & \\
-				\cline{1-4}
-			\end{tabular} 
-			\\
-			\phantom{0}      &  &       
-			\\
-			${x_e}\prime $ &  $=$ &
-			\begin{tabular}{| c | c | c | c | c | c | c | c |}
-				\hline
-				\cellcolor{lightgray}1 & \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{gray}1 & 0 & 1 & 0 & 1 \\
-				\hline
-			\end{tabular}
-		\end{tabular}
-		
-		\caption{text}
-	\end{figure}
-
-	\begin{figure}
-		\centering
-		\begin{multline*}
-			x_e = \underbrace{001}_{t = 3}\underline{1}{0101}
-		\end{multline*}
-	\end{figure}
+	\include{misc}
+	\include{table}
+	\include{algo}
 
 
+	\appendix
+	
 	
 	\include{tree}
-	
 	\include{huffmantree}
-	
 	\include{serialize}
-
 	\include{unserialize}
 	
 	\begin{tikzpicture}
@@ -333,19 +94,6 @@
 		\draw[->, thick] (d2) -- (ul);
 	\end{tikzpicture}
 	
-	\begin{table}
-		\centering
-		\caption{text}
-		\begin{tabular}{|c|c|c|c|c|} \hline
-			Test Image & Total EC & LM & Extra bits & Net Payload \\ \hline
-			Lena & 1470568 & 793304 & 52 & 2.583 \\ 
-			Baboon & 1074384 & 794941 & 52 & 1.066\\
-			Jetplane & 1587880 & 793441 & 52 & 3.030\\
-			Man  \\
-			Airplane & 1659203 & 682803 & 52 &3.724 \\
-			Tiffany & 1526934 & 786527 & 52 & 2.824\\
-		\end{tabular}
-		
-	\end{table}
+	
 	
 \end{document}
