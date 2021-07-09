@@ -29,7 +29,7 @@ void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width
 }
 
 void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
-	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2)
+	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2, int LEN_LEN_H_ENCODED_LABELMAP)
 {
 	fprintf(fptr_report, "C. Huffman Coding, total capacity = %d, \n\theader = %d + %d, length of LM = %d, LM = %d, ref = %d\n\textra-space = %d\n",
 		len_capacity, header1, header2, LEN_LEN_H_ENCODED_LABELMAP, len_h_encoded_labelmap, len_ref, len_capacity - header1 - header2 - LEN_LEN_H_ENCODED_LABELMAP - len_h_encoded_labelmap - len_ref);

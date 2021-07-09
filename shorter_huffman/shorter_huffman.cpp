@@ -129,7 +129,7 @@ int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>
 
 int shr_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
 {
-	vector<unsigned char> byte_image = readImage(path_cover_img);
+	vector<unsigned char> byte_image = readImageRaw(path_cover_img);
 	const int size_image = (int)byte_image.size();
 
 	cout << "shr " << path_cover_img << endl;
@@ -138,6 +138,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
+	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5));
 
 	srand(seed);
 
@@ -205,7 +206,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int len_secret = len_embed - len_sideinfo;
 
 # if REPORT
-	reportC_(cnt_t, h_encoder, len_embed, len_h_encoded_labelmap, len_ref, (int)bit_topology.size(), (int)bit_val.size());
+	reportC_(cnt_t, h_encoder, len_embed, len_h_encoded_labelmap, len_ref, (int)bit_topology.size(), (int)bit_val.size(), LEN_LEN_H_ENCODED_LABELMAP);
 # endif
 # 
 
@@ -442,7 +443,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 
 	restoreImage_(byte_image, val_ex_labelmap, width_image);
 
-	vector<unsigned char> byte_orig = readImage(path_cover_img);
+	vector<unsigned char> byte_orig = readImageRaw(path_cover_img);
 
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);

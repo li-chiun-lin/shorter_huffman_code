@@ -16,7 +16,7 @@ void testlib()
 
 void testtiff()
 {
-	vector<string> fn = { "Airplane", "Baboon", "Jetplane", "Lena", "Tiffany" };
+	vector<string> fn = { "Airplane", "Baboon", "Jetplane", "Man", "Lena", "Tiffany"};
 
 	for (string f : fn)
 	{
@@ -41,8 +41,8 @@ void lena()
 void man()
 {
 	string f = "Man";
-	//msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
-	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+	msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+	//shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
 }
 
 void log_2()
@@ -51,14 +51,29 @@ void log_2()
 		cout << i << " " << floor(log2(i)) << ", ";
 }
 
+void testlen()
+{
+	int len = 1023 * 1023 * 5;
+	cout << log2(len) << endl;
+
+	len = 511 * 511 * 5;
+	cout << log2(len) << endl;
+
+	system("pause");
+}
+
 int main()
 {
 	//testlib();
-	//testtiff();
+	testtiff();
 
 	//debug();
 	//lena();
-	man();
+
+	
+	//testlen();
+
+	//man();
 
 	
 

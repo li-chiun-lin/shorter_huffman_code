@@ -8,30 +8,29 @@
 	\begin{algorithmic}[1]
 		\Require $freq$ : an array of frequency of each value $v$.
 		\Ensure a Huffman coding tree.
-		\Function{BuildHuffmanTree}{$freq$}   
 		
-			\ForAll{$freq[v]$ in $freq$}
+		\Function{BuildHuffmanTree}{$freq$}   
+			\ForAll{value $v$}
 				\State Create a node $n$ with frequency $freq[v]$ and value $v$.
 				\State Put $n$ in an array $nodes$.
 			\EndFor
-		
-			\While{there are more than 1 element in $nodes$}
+			\\
+			\While{there are more than 1 node in $nodes$}
 				\State Find $n1$ in $nodes$ with the least frequency.
 				\State Remove $n1$ from $nodes$.
-				
+				\\
 				\State Find $n2$ in $nodes$ with the least frequency.
 				\State Remove $n2$ from $nodes$.
-				
+				\\
 				\State Create a node $n3$ with 
-				\State\hspace{\algorithmicindent} $frequency \gets n1.frequency + n2.frequency$
-				\State\hspace{\algorithmicindent} $value \gets none$.
-				\State\hspace{\algorithmicindent} $left\_child \gets n1$.
-				\State\hspace{\algorithmicindent} $right\_child \gets n2$.
-					
-				
+					\State\hspace{\algorithmicindent} $frequency \leftarrow n1.frequency + n2.frequency$
+					\State\hspace{\algorithmicindent} $left\_child \leftarrow n1$.
+					\State\hspace{\algorithmicindent} $right\_child \leftarrow n2$.
+				\\
 				\State Put $n3$ back to $nodes$.
 			\EndWhile
-			\State \Return the last element in $nodes$.
+			\\
+			\State \Return the only node in $nodes$.
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
@@ -45,20 +44,18 @@
 		\Require $node$ : the root node of a Huffman coding tree.
 		\Ensure $bit\_topology$ : a bit sequence represents the topology of the tree.
 		\Ensure $bit\_value$ : a bit sequence represents every leaf value $v$ of the tree.
+		
 		\Procedure{SerializeHuffmanTree}{$node$}   
-		
-		\If{$node$ is empty}
-			\State \Return nothing.
-		\EndIf
-		
-		\If{$node$ is a leaf}
-			\State Append a $0$ at the end of $bit\_topology$.
-			\State Append the value $v$ of $node$ at the end of $bit\_value$ bit by bit.
-		\Else
-			\State Append a $1$ at the end of $bit\_topology$.
-			\State \Call{SerializeHuffmanTree}{$node.left\_child$}.
-			\State \Call{SerializeHuffmanTree}{$node.right\_child$}.
-		\EndIf
+			\If{$node$ is empty}
+				\State Do nothing.
+			\ElsIf{$node$ is a leaf}
+				\State Append a $0$ at the end of $bit\_topology$.
+				\State Append the value $v$ of $node$ at the end of $bit\_value$ bit by bit.
+			\Else
+				\State Append a $1$ at the end of $bit\_topology$.
+				\State \Call{SerializeHuffmanTree}{$node.left\_child$}.
+				\State \Call{SerializeHuffmanTree}{$node.right\_child$}.
+			\EndIf
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -71,59 +68,497 @@
 		\Require $bit\_value$ : a bit sequence represents every leaf value $v$ of the tree.
 		\Require $size\_value$ : the size of bits of each value $v$.
 		\Ensure a Huffman coding tree.
+		
 		\Function{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}   
-		
-		\State Read the first bit $b$ from $bit\_topology$.
-		\State Remove $b$ from $bit\_topology$.
-		
-		\If{$b$ is 0}
-			\State Restore value $v$ from the first $size\_value$ bits of $bit\_value$.
-			\State Remove the first $size\_value$ bits from $bit\_value$.
-			\State Create a node $n$ with $v$.
-		\Else
-			\State Acquire $n1 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
-			\State Acquire $n2 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
-			\State Create a node $n$ with
-				\State\hspace{\algorithmicindent} $left\_child \gets n1$.
-				\State\hspace{\algorithmicindent} $right\_child \gets n2$.
-		\EndIf
-		\State \Return $n$.
+			\State Read the first bit $b$ from $bit\_topology$.
+			\State Remove $b$ from $bit\_topology$.
+			\\
+			\If{$b$ is 0}
+				\State Restore value $v$ from the first $size\_value$ bits of $bit\_value$.
+				\State Remove the first $size\_value$ bits from $bit\_value$.
+				\State Create a node $n$ with $v$.
+			\Else
+				\State Acquire $n1 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
+				\State Acquire $n2 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
+				\State Create a node $n$ with
+					\State\hspace{\algorithmicindent} $left\_child \gets n1$.
+					\State\hspace{\algorithmicindent} $right\_child \gets n2$.
+			\EndIf
+			\\
+			\State \Return $n$.
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithmic}
-	\If {$i\geq maxval$}
-	\State $i\gets 0$
-	\Else
-	\If {$i+k\leq maxval$}
-	\State $i\gets i+k$
-	\EndIf
-	\EndIf
-\end{algorithmic}
+\subsection{Their algorithm}
 
 \begin{algorithm}
-	\caption{text}
+	\caption{Generate Label Map from Cover Image}
+	\label{alg:msb:genlm}
+	
 	\begin{algorithmic}[1]
-		\Procedure{Roy}{$a,b$}       \Comment{This is a test}
-		\State System Initialization
-		\State Read the value 
-		\If{$condition = True$}
-		\State Do this
-		\If{$Condition \geq 1$}
-		\State Do that
-		\ElsIf{$Condition \neq 5$}
-		\State Do another
-		\State Do that as well
-		\Else
-		\State Do otherwise
-		\EndIf
-		\EndIf
+		\Require a cover image $I$ of size $w \times h$.
+		\Ensure a label map $T$ of size $w \times h$.
 		
-		\While{$something \not= 0$}  \Comment{put some comments here}
-		\State $var1 \leftarrow var2$  \Comment{another comment}
-		\State $var3 \leftarrow var4$
-		\EndWhile  \label{roy's loop}
-		\EndProcedure
+		\Function{GenerateLabelMap}{$I$}   
+			\State $T \gets \{t_{i, j} = -1 \mid i \in [0, h), j \in [0, w)\}$.
+			\ForAll{$\{x_{i, j} \in I \mid i \in [1, h), j \in [1, w)\}$}
+				\State Calculate $t_{i, j}$ using $\dots$
+			\EndFor
+			\State \Return $T$.
+		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
+
+\begin{algorithm}
+	\caption{Assign values to Huffman coding rule}
+	\label{alg:msb:assignhr}
+	
+	\begin{algorithmic}[1]
+		\Require a label map $T$ of size $w \times h$.
+		\Require a fixed Huffman coding tree $H$ without value.
+		\Ensure a Huffman coding tree $H$ assigned with values $v$.
+		
+		\Function{AssignHuffmanValue}{$T, H$}  
+		 
+			\State $F \gets \{f_n \mid n \in [0, 8]\}$.
+			\\
+			\ForAll{$\{t_{i, j} \in T \mid i \in [1, h), j \in [1, w)\}$}
+				\State Count the frequency $f_{t_{i, j}}$.
+			\EndFor
+			\\
+			\State Sort $V = \{v \in [0, 8]\}$ by $f_v$.
+			\State Assign $V$ to $H$.
+			\\
+			\State \Return $H$.
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Generate encrypted image}
+	\label{alg:msb:genenc}
+	
+	\begin{algorithmic}[1]
+		\Require a cover image $I$ of size $w \times h$.
+		\Require a label map $T$.
+		\Require a key stream $ks$.
+		\Require a Huffman coding tree $H$.
+		\Ensure an encrypted image $I_e$.
+		\Ensure a coordinate $(c_x, c_y)$ in $I_e$ to start information hiding.
+		
+		\Function{EncryptImage}{$I, T, ks, H$}  
+			
+			\State $I_e \gets I \oplus ks$
+			\\
+			\ForAll{$\{t_{i, j} \in T \mid i \in [1, h), j \in [1, w)\}$}
+				\State $code \gets Encode(t_{i, j}, H)$.
+				\State $EncodedLabelMap \gets EncodedLabelMap \Vert code$.
+				\State $len \gets len + \abs{code}$
+			\EndFor
+			\\
+			\State Allocate a bit array $bs$ with
+				\State\hspace{\algorithmicindent} 32 bits for $\{Encode(v, H) \mid v \in [0, 8] \}$.
+				\State\hspace{\algorithmicindent} 20 bits to store $len$.
+				\State\hspace{\algorithmicindent} $len$ bits to store $EncodedLabelMap$.
+				\State\hspace{\algorithmicindent} $w + h - 1$ bytes to store the first row and the first col of $I_e$.
+			\\
+			\State Replace the first row of $I_e$ with $w$ bytes of $bs$.
+			\State Replace the first col of $I_e$ with $h - 1$ bytes of $bs$.
+			\\
+			\ForAll{$ i \in [1, h)$ and $ j \in [1, w)$}
+				\If{there is no more $bs$}
+					\State $(c_x, c_y) \gets (i, j)$
+					\State Leave the loop.
+				\Else
+					\State Replace $t_{i, j}$ bits MSB of $I_{e(i, j)}$ with $bs$. 
+				\EndIf
+			\EndFor
+			\\
+			\State \Return $I_e$ and $(c_x, c_y)$.
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Embed secret bits}
+	\label{alg:msb:embed}
+	
+	\begin{algorithmic}[1]
+		\Require a label map $T$.
+		\Require a location $(c_x, c_y)$ to start information hiding.
+		\Require an encrypted image $I_e$ of $w \times h$.
+		\Require secret bits $sb$.
+		\Ensure an encrypted image $I_e$ embedded with $sb$.
+		
+		\Function{EmbedSecret}{$T, (c_x, c_y), I_e, sb$}  
+			\ForAll{$\{t_{i, j} \in T \mid (i = c_x \wedge j \in [c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
+				\If{there is no more $sb$}
+					\State Leave the loop.
+				\Else
+					\State Replace $t_{i, j}$ bits MSB of $I_{e(i, j)}$ with $sb$. 
+				\EndIf
+			\EndFor
+		
+			\State \Return $I_e$.
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\caption{Extract side information from reference bytes}
+	\label{alg:msb:extsiref}
+	
+	\begin{algorithmic}[1]
+		\Require an encrypted image $I_e$ of size $w \times h$ embedded with $sb$.
+		\Ensure a Huffman coding tree $H$.
+		\Ensure a partial restored label map $T$.
+		\Ensure an index $idx$ of the next value of $T$ waiting to be restored.
+		\Ensure the size of Huffman encoded label map $len$.
+		
+		\Function{ExtractSideInfoRef}{$I_e$}  
+			\State Allocate a bit array $S$ containing
+				\State\hspace{\algorithmicindent} $w$ bytes of the first row of $I_e$.
+				\State\hspace{\algorithmicindent} $h - 1$ bytes of the first col of $I_e$.
+				
+			\State Restore 9 Huffman codes from the first 32 bits of $S$.
+			\State Restore a Huffman coding tree $H$ from the 9 Huffman codes.
+			\State Restore $len$ from the following 20 bits of $S$.
+			\\
+			\State $T \gets \{t_{i, j} = -1 \mid i \in [0, h), j \in [0, w)\}$.
+			\State $idx \gets (1, 1)$
+			\\
+			\ForAll{$\{s_i \in S \mid i > 52\}$}
+				\State $buf \gets buf \Vert s_i$.
+				\If{$buf$ is a valid Huffman code}
+					\State $T_{i, j} \gets HuffmanDecode(buf, H)$.
+					\State Reset $buf$.
+					\State Move $idx$ to next index of $T$.
+				\EndIf
+			\EndFor
+			\\
+			\State \Return $H, T, idx, LM$.
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Extract side information from main part}
+	\label{alg:msb:extsimain}
+	
+	\begin{algorithmic}[1]
+		\Require a Huffman coding tree $H$.
+		\Require a partial restored label map $T$.
+		\Require an encrypted image $I_e$ of size $w \times h$ embedded with $sb$.
+		\Require an index $idx$ of the next value of $T$ waiting to be restored.
+		\Require the size of Huffman encoded label map $len$.
+		
+		\Ensure a label map $T$.
+		
+		\Function{ExtractSideInfoMain}{$I_e$}  
+		
+		too long, give up here.
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
+
+
+
+
+
+\begin{algorithm}
+	\caption{The content owner generates an encrypted image}
+	
+	\begin{algorithmic}[1]
+		\Require a cover image $I$ of $w \times h$ pixels.
+		\Require a key stream $K$.
+		\Require a pre-defined Huffman coding rule $H$.
+		\Ensure an encrypted image $I_e\prime$.
+		\Ensure a coordinate $(c_x, c_y)$ indicates the location to start information hiding.
+		
+		\State $T = \{t_{i, j} \mid i \in [1, h), j \in [1, w)\}$. 
+		\State $F = \{f_n \mid n \in [0, 8]\}$. 
+		\ForAll{$\{x_{i, j} \mid x_{i, j} \in I, i \in [1, h), j \in [1, w)\}$}
+			\State Calculate $t_{i, j}$ using $\dots$
+			\State Count the frequency $f_{t_{i, j}}$.
+		\EndFor
+		\State Sort $V = \{v_i \mid i \in [0, 8], f_{v_i} \geq f_{v_{i + 1}} \}$.
+		\State Assign $V$ to $H$.
+		\State $I_e \gets I \oplus K$
+		\For{$i \gets 1$ to $h - 1$}
+			\For{$j \gets 1$ to $w - 1$}
+				\State $code \gets Encode(t_{i, j}, H)$.
+				\State $EncodedT \gets EncodedT \Vert code$.
+				\State $len \gets len + \abs{code}$
+			\EndFor
+		\EndFor
+		\State Allocate a bit array $A$ with
+			\State\hspace{\algorithmicindent} 32 bits for $\{Encode(v, H) \mid v \in [0, 8] \}$.
+			\State\hspace{\algorithmicindent} 20 bits to store $len$.
+			\State\hspace{\algorithmicindent} $len$ bits to store $EncodedT$.
+			\State\hspace{\algorithmicindent} $w + h - 1$ bytes to store the first row and the first col of $I_e$.
+		\State $I_e\prime \gets I_e$
+		\State Replace the first row of $I_e\prime$ with $w$ bytes of $A$.
+		\State Replace the first col of $I_e\prime$ with $h - 1$ bytes of $A$.
+%		\For{$i \gets 1$ to $h - 1$}
+%			\For{$j \gets 1$ to $w - 1$}
+%				\If{there is no more $A$}
+%					\State $(c_x, c_y) \gets (i, j)$
+%					\State End of process.
+%				\ElsIf{$t_{i, j} = 8$ }
+%					\State Replace ${I_e\prime}_{(i, j)}$ with 8 bits of $A$.
+%				\Else
+%					\State Embed $t_{i, j} + 1$ bits of $A$ into the MSB of ${I_e\prime}_{(i, j)}$.
+%				\EndIf
+%			\EndFor
+%		\EndFor
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, i \in [1, h), j \in [1, w)\}$}
+			\If{there is no more $A$}
+				\State $(c_x, c_y) \gets (i, j)$
+				\State End of process.
+			\ElsIf{$t_{i, j} = 8$ }
+				\State Replace ${I_e\prime}_{(i, j)}$ with 8 bits of $A$.
+			\Else
+				\State Embed $t_{i, j} + 1$ bits of $A$ into the MSB of ${I_e\prime}_{(i, j)}$.
+			\EndIf
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{The content owner generates an encrypted image}
+	
+	\begin{algorithmic}[1]
+		\Require a cover image $I$ of $w \times h$ pixels.
+		\Require a key stream $K$.
+		\Require a pre-defined Huffman coding rule $H$.
+		\Ensure label map $T$.
+		\Ensure an encrypted image $I_e\prime$.
+		\Ensure a coordinate $(c_x, c_y)$ indicates the location to start information hiding.
+		
+		\State $T = \{t_{i, j} \mid i \in [1, h), j \in [1, w)\}$. 
+		\State $F = \{f_n \mid n \in [0, 8]\}$. 
+
+ 
+		\ForAll{pixels in $I$}
+			\State Calculate $t$ using $\dots$
+			\State Count the frequency $f_t$ of $t$.
+		\EndFor
+		
+		\State Let $V$ be the range of $t$ sorted by $f_t$.
+		\State Assign $V$ to $H$.
+		\State $I_e \gets I \oplus K$.
+		
+		\State Concatenate all the $Encode(t, H)$ into $EncodedT$.
+
+
+		\State Let $A$ be
+		\State\hspace{\algorithmicindent} 32 bits of $\{Encode(v, H) \mid v \in [0, 8] \}$,
+		\State\hspace{\algorithmicindent} 20 bits of $len$,
+		\State\hspace{\algorithmicindent} $\abs{EncodedT}$ bits of $EncodedT$, and
+		\State\hspace{\algorithmicindent} $w + h - 1$ bytes of the first row and the first col of $I_e$.
+		\State $I_e\prime \gets I_e$
+		\State Replace the first row and the first col of $I_e\prime$ with $A$.
+		\State Embed $A$ into $I_e\prime$ using ...
+		\State Save the coordinate $(c_x, c_y)$ of the end of embedding $A$ in $I_e\prime$.
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+\begin{algorithm}
+	\caption{The data hider embed secret information into encrypted image}
+	
+	\begin{algorithmic}[1]
+		\Require an encrypted image $I_e\prime$ of $w \times h$ bytes.
+		\Require a coordinate $(c_x, c_y)$ to start information hiding.
+		\Require label map $T$.
+		\Require secret information $S$.
+		\Ensure an stego image $I_w$.
+		
+%		\For{$i \gets c_x$ to $h - 1$}
+%			\For{$j \gets c_y$ to $w - 1$}
+%				\If{there is no more $S$}
+%					\State Leave the loop.
+%				\Else
+%					\State Replace $t_{i, j}$ bits MSB of ${I_e\prime}_{(i, j)}$ with $S$. 
+%				\EndIf
+%			\EndFor
+%		\EndFor
+		
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, (i = c_x \wedge j \in [c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
+			\If{there is no more $S$}
+				\State Leave the loop.
+			\Else
+				\State Replace $t_{i, j}$ bits MSB of ${I_e\prime}_{(i, j)}$ with $S$. 
+			\EndIf
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+\begin{algorithm}
+	\caption{Data Extraction}
+	
+	\begin{algorithmic}[1]
+		\Require an stego image $I_w$ of size $w \times h$.
+		\Ensure a coordinate $(c_x, c_y)$ to start extracting secret information.
+		\Ensure a restored cover image $I$
+		
+		\State Let $B$ be the the first row and first col of $I_w$.
+		
+		\State Restore Huffman coding tree $H$ from the first 32 bits of $B$.
+		\State Restore $len$ from the following 20 bits of $B$.
+
+		\State $T = \{t_{i, j} \mid i \in [1, h), j \in [1, w)\}$.
+		\State $idx \gets (1, 1)$
+		
+		\ForAll{$\{b_i \mid b_i \in B, 52 \leq i \}$}
+			\State $buf \gets buf \Vert b_i$.
+			\If{$buf$ is a valid Huffman code}
+				\State $t_{idx} \gets HuffmanDecode(buf, H)$.
+				\State Reset $buf$.
+				\State Move $idx$ to next index of $T$.
+			\EndIf
+		\EndFor
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, i \in [1, h), j \in [1, w)\}$}
+			\If{$idx$ is at the end of $T$}
+				\State $(x, y) \gets (i, j)$
+				\State Leave the loop.
+			\EndIf
+%			\If{$t_{i, j} = 8$}
+%				\State $buf \gets buf \Vert I_{e(i, j)}$.
+%			\Else
+%				\State $buf \gets buf \Vert t_{i, j} MSB of I_{e(i, j)}$.
+%				\State $buf \gets buf \Vert ~ (the (t_{i, j} + 1)th MSB of I_{e(i, j)})$.
+%			\EndIf
+			\State $buf \gets buf \Vert ...$
+			
+			\If{$buf$ is a valid Huffman code}
+				\State $t_{idx} \gets HuffmanDecode(buf, H)$.
+				\State Reset $buf$.
+				\State Move $idx$ to next index of $T$.
+			\EndIf
+		\EndFor
+		\State $R = \{r_i \mid i \in [0, h + w)\}$
+		\State $k \gets 0$
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, (i = x \wedge j \in [y, w)) \vee (i \in (x, h), j \in [1, w))\}$}
+			\State $buf \gets buf \Vert ...$
+			\If{$\abs{buf} = 8$}
+				\State $R_k \gets buf$.
+				\State Reset $buf$.
+				\State $k \gets k + 1$.
+				\If{$k = h + w$}
+					\State Leave the loop.
+				\EndIf
+			\EndIf
+		\EndFor
+		
+		\State Restore the first row and first col of $I_e$ from $R$
+		\ForAll{$\{x_{i, j} \mid x_{i, j} \in I_e, i \in [1, h), j \in [1, w)\}$}
+			\If{condition}
+				\State $x_{i, j} \gets ...$
+			\Else
+			\EndIf
+		\EndFor
+	
+
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Data Extraction}
+	
+	\begin{algorithmic}[1]
+		\Require an stego image $I_w$ of size $w \times h$.
+		\Require a key stream $K$.
+		\Ensure a coordinate $(c_x, c_y)$ to start extracting secret information.
+		\Ensure a restored cover image $I$
+		
+		\State Let $B$ be the the first row and first col of $I_w$.
+		\State Restore Huffman coding tree $H$ from the first 32 bits of $B$.
+		\State Restore $len$ from the following 20 bits of $B$.
+		
+		\State Restore as many $T$ as possible from the rest of $B$.
+		
+		\State Restore the rest of $T$ from $I_w$ using ...
+		
+		\State Restore $h + w - 1$ byts of reference value $R$ from $I_w$.
+		\State Save the current coordinate $(c_x, c_y)$.
+		
+		\State Restore the first row and first col of $I_e$ from $R$
+		
+		\State Restore the rest of $I_e$ using ...
+		\State $I \gets I_e \oplus K$.
+		
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Data Extraction}
+	
+	\begin{algorithmic}[1]
+		\Require an stego image $I_w$ of size $w \times h$.
+		\Require a coordinate $(c_x, c_y)$ to start extracting secret information.
+		\Require extracted secret information $S$.
+		
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, (i = c_x \wedge j \in [c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
+			\If{$t_{i, j} = 8$}
+				\State $S \gets S \Vert I_{w(i, j)}$
+			\Else
+				\State ... 
+			\EndIf
+		\EndFor
+		
+	\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\caption{Data Extraction}
+	
+	\begin{algorithmic}[1]
+
+		\State $T = \{t_{i, j} \mid i \in [1, h), j \in [1, w)\}$.
+		\State $idx \gets (1, 1)$
+		
+		\ForAll{$\{b_i \mid b_i \in B, 52 \leq i \}$}
+		\State $buf \gets buf \Vert b_i$.
+		\If{$buf$ is a valid Huffman code}
+		\State $t_{idx} \gets HuffmanDecode(buf, H)$.
+		\State Reset $buf$.
+		\State Move $idx$ to next index of $T$.
+		\EndIf
+		\EndFor
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, i \in [1, h), j \in [1, w)\}$}
+		\If{$idx$ is at the end of $T$}
+		\State $(x, y) \gets (i, j)$
+		\State Leave the loop.
+		\EndIf
+		\State $buf \gets buf \Vert ...$
+		
+		\If{$buf$ is a valid Huffman code}
+		\State $t_{idx} \gets HuffmanDecode(buf, H)$.
+		\State Reset $buf$.
+		\State Move $idx$ to next index of $T$.
+		\EndIf
+		\EndFor
+		
+		
+	\end{algorithmic}
+\end{algorithm}
+

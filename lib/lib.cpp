@@ -29,7 +29,7 @@ errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_na
 	return 0;
 }
 
-vector<unsigned char> readImage(string file_name)
+vector<unsigned char> readImageRaw(string file_name)
 {
 	ifstream file(file_name, ios::binary);
 	streampos fileSize;

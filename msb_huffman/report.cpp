@@ -111,7 +111,7 @@ void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed,
 
 void reportD4(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image)
 {
-	fprintf(fptr_report, "D4. reference value, 1st row of enc(image), 512 bytes\n\t");
+	fprintf(fptr_report, "D4. reference value, 1st row of enc(image)\n\t");
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], WRAP(col));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
@@ -136,7 +136,7 @@ void reportD6(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed,
 
 void reportD7(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo)
 {
-	fprintf(fptr_report, "D7. embed into the 1st row of enc(image), 512 bytes\n\t");
+	fprintf(fptr_report, "D7. embed into the 1st row of enc(image)\n\t");
 	for (int col = 0; col < width_image; ++col)
 		fprintf(fptr_report, "%02X %s", byte_image[col], WRAP(col));
 	fprintf(fptr_report, "\n\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);

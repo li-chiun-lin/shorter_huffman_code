@@ -37,7 +37,7 @@ using namespace std;
 # define LEN_H_TOPOLOGY ((2 * DOMAIN_HCODE) - 1)
 # define LEN_H_VALUE (LEN_T * DOMAIN_HCODE)
 
-# define LEN_LEN_H_ENCODED_LABELMAP 20
+//# define LEN_LEN_H_ENCODED_LABELMAP 20
 
 # define CNT_REF_TREE 7
 # define CNT_REF_LEN 3
@@ -51,7 +51,7 @@ using namespace std;
 
 void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode);
 void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
-	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2);
+	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2, int LEN_LEN_H_ENCODED_LABELMAP);
 void reportD_(vector<unsigned char>& bits_embed, int len_h_topology, int len_h_value, int len_h_labmap, int idx_prepare);
 void reportD2_(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int offset);
 void reportD3_(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int cnt_ref);

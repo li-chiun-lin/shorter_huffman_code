@@ -100,7 +100,7 @@ const vector<unsigned char> mask_lsb = { 0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x0
 
 
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
-vector<unsigned char> readImage(string file_name);
+vector<unsigned char> readImageRaw(string file_name);
 void writeImage(string file_name, vector<unsigned char>& byte_buf);
 unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8);
 

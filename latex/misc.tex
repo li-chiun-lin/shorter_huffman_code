@@ -1,16 +1,53 @@
 \section{misc}
 
-\begin{IEEEeqnarray}{rl}
+\subsection{pv}
+
+IEEEeqnarry, multi no., no good 
+\begin{IEEEeqnarray}{r}
 	pv(i, j) = \left\{ 
 	\begin{array}{rl}
 		max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
 		min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
 		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-	\end{array} \right.
-	\\
-	, \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
+	\end{array} \right. \\
+	, \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width} 
 \end{IEEEeqnarray}
 
+\rule{\linewidth}{1px}
+
+array of array, might be okay. 
+\begin{equation}
+	\begin{array}{l}
+		\forall i \in (1, h], \forall j \in (1, w], \\
+		pv(i, j) = \left\{ 
+		\begin{array}{rl}
+			max(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
+			min(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
+			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & \text{otherwise}
+		\end{array} \right.
+		\\
+		, \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
+	\end{array}
+\end{equation}
+
+\rule{\linewidth}{1px}
+
+multline, this seems fine.
+\begin{multline}
+	\forall i \in [1, h), \forall j \in [1, w), \\
+	pv(i, j) = \left\{ 
+	\begin{array}{rl}
+		max(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
+		min(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & \text{otherwise}
+	\end{array} \right.
+% \\ , \text{where } h \text{ and } w \text{ denote the height and the weight of the image, respectively.}
+\end{multline}
+, where  $h$  and  $w$  denote the height and the weight of the image, respectively.
+
+\rule{\linewidth}{1px}
+
+equation, array of array, seems good.
 \begin{equation}
 	\begin{array}{r}
 		pv(i, j) = \left\{ 
@@ -24,18 +61,7 @@
 	\end{array}
 \end{equation}
 
-\begin{equation}
-	\begin{array}{r}
-		pv(i, j) = \left\{ 
-		\begin{array}{rl}
-			max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-			min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-		\end{array} \right.
-		\\
-		, \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
-	\end{array}
-\end{equation}
+\rule{\linewidth}{1px}
 
 
 \begin{multline}
@@ -82,10 +108,10 @@
 \end{multline}
 where
 \begin{eqnarray*}
-		i = \{x \mid x \in \mathbb{N}, 1 \leq x < n\} \\
-		j = \{y \mid y \in \mathbb{N}, 1 \leq y < m\} \\
-		n \text{ is the height of image} \\
-		m \text{ is the width of image} 
+	i = \{x \mid x \in \mathbb{N}, 1 \leq x < n\} \\
+	j = \{y \mid y \in \mathbb{N}, 1 \leq y < m\} \\
+	n \text{ is the height of image} \\
+	m \text{ is the width of image} 
 \end{eqnarray*}
 
 
@@ -111,6 +137,13 @@ where
 	\end{cases} 
 \end{equation}
 
+
+
+
+
+
+\subsection{pe}
+
 \begin{equation}
 	pe(i, j) = pv(i, j) \oplus pixel(i, j), \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
 \end{equation}
@@ -135,6 +168,12 @@ where
 	& & \textrm{where } 1 \leq i < \textrm{image height}, 1 \leq j < \textrm{image width}
 \end{align}
 
+
+
+
+
+\subsection{label map t}
+
 \begin{equation}
 	label(i, j) = \left\{ 
 	\begin{array}{ll}
@@ -150,6 +189,13 @@ where
 		7 - log_2(pe(i, j)) + 1 & , \textrm{otherwise}
 	\end{cases} 
 \end{equation}
+
+
+
+
+
+
+\subsection{length of label map}
 
 \begin{equation}
 	LM = \sum_{t=0}^{8} (freq[t] \times \textrm{the length of Huffman code of }t)
@@ -174,6 +220,11 @@ where
 	\end{aligned}
 \end{equation}
 
+
+
+
+
+\subsection{embed}
 \begin{equation}
 	{x_e}\prime(i, j) = \left\{
 	\begin{array}{rl}
@@ -183,6 +234,10 @@ where
 	\right.
 \end{equation}
 
+
+
+\subsection{extract}
+
 \begin{equation}
 	x(i, j) = \left\{
 	\begin{array}{ll}
@@ -191,6 +246,11 @@ where
 	\end{array}
 	\right.
 \end{equation}
+
+
+
+
+\subsection{misc}
 
 \begin{equation}
 	\begin{array}{rcl}
@@ -284,16 +344,16 @@ where
 		x_e  = \underbrace{001}_{t = 3}\underline{1}{0101} \\
 		x_e = \underbracket{001}_{t=3}\underline{1}{0101}
 	\end{multline*}
-
 	
-		\begin{align}
-			x_e & = \underbrace{001}_{t = 3}\underline{1}{0101} \\
-			x_e &= \underbracket{001}_{t=3}\underline{1}{0101}
-		\end{align}
-
-
 	
-
-
+	\begin{align}
+		x_e & = \underbrace{001}_{t = 3}\underline{1}{0101} \\
+		x_e &= \underbracket{001}_{t=3}\underline{1}{0101}
+	\end{align}
+	
+	
+	
+	
+	
 	\caption{text}
 \end{figure}
