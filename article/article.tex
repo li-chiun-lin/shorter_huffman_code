@@ -1,0 +1,67 @@
+\documentclass{article}
+
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{qtree}
+\usepackage{color, colortbl}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{supertabular}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{IEEEtrantools}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{commath}
+\usepackage{algpseudocode}
+\usepackage{authblk}
+\usepackage{hyperref}
+
+
+%\bibliographystyle{plain}
+%\bibliographystyle{abbrv}
+\bibliographystyle{ieeetr}
+
+
+\title{Here is the title}
+\author{An author}
+\affil{This is some institute}
+
+
+
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		abstract
+	\end{abstract}
+
+	\include{intro}
+	\include{related}
+	\include{proposed}
+	\include{exp}
+	\include{conclusion}
+	
+
+	
+	
+	
+	
+	\bibliography{shorter_huffman}
+	
+	\appendix
+	\include{huffman_tree}
+	\include{huffman_serial}
+	
+	
+	
+\end{document}

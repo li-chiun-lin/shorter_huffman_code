@@ -15,10 +15,10 @@ IEEEeqnarry, multi no., no good
 
 \rule{\linewidth}{1px}
 
-array of array, might be okay. 
+equation with array of array, might be okay. 
 \begin{equation}
 	\begin{array}{l}
-		\forall i \in (1, h], \forall j \in (1, w], \\
+%		\forall i \in (1, h], \forall j \in (1, w], \\
 		pv(i, j) = \left\{ 
 		\begin{array}{rl}
 			max(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
@@ -30,22 +30,15 @@ array of array, might be okay.
 	\end{array}
 \end{equation}
 
-\rule{\linewidth}{1px}
-
-multline, this seems fine.
-\begin{multline}
-	\forall i \in [1, h), \forall j \in [1, w), \\
+equation with array
+\begin{equation}
 	pv(i, j) = \left\{ 
 	\begin{array}{rl}
-		max(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
-		min(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & \text{otherwise}
+		max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
+		min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
 	\end{array} \right.
-% \\ , \text{where } h \text{ and } w \text{ denote the height and the weight of the image, respectively.}
-\end{multline}
-, where  $h$  and  $w$  denote the height and the weight of the image, respectively.
-
-\rule{\linewidth}{1px}
+\end{equation}
 
 equation, array of array, seems good.
 \begin{equation}
@@ -61,29 +54,48 @@ equation, array of array, seems good.
 	\end{array}
 \end{equation}
 
+equation with cases, also okay
+\begin{equation}
+	pv(i, j) = 
+	\begin{cases}
+		max(x_{i - 1, j}, x_{i, j - 1})                ,& x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
+		min(x_{i - 1, j}, x_{i, j - 1})                ,& x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} ,& \textrm{otherwise}
+	\end{cases} 
+\end{equation}
+
 \rule{\linewidth}{1px}
 
+multline with array, this seems fine.
+\begin{multline}
+	\forall i \in [1, h), \forall j \in [1, w), \\
+	pv(i, j) = \left\{ 
+	\begin{array}{rl}
+		max(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
+		min(x_{i - 1, j}, x_{i, j - 1})                & \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & \text{otherwise}
+	\end{array} \right.
+% \\ , \text{where } h \text{ and } w \text{ denote the height and the weight of the image, respectively.}
+\end{multline}
+, where  $h$  and  $w$  denote the height and the weight of the image, respectively.
+
+multline with cases, best so far.
 
 \begin{multline}
 	pv(i, j) =  
 	\begin{cases}
 		max(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
 		min(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}, &  \textrm{otherwise}, \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}, &  \textrm{otherwise}. 
 	\end{cases} 
-	\textrm{where } 1 \leq i < n, 1 \leq j < m
+%	\textrm{where } 1 \leq i < n, 1 \leq j < m
 \end{multline}
 
-\begin{multline}
-	pv(i, j) =  
-	\begin{cases}
-		max(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
-		min(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}, &  \textrm{otherwise}, 
-	\end{cases} \\
-	\textrm{where } i \in [1, n), j \in [1, m)
-\end{multline}
 
+
+\rule{\linewidth}{1px}
+
+multline, this is just too much
 \begin{multline}
 	pv(i, j) =  
 	\begin{cases}
@@ -98,6 +110,7 @@ equation, array of array, seems good.
 	m \text{ is the width of image} 
 \end{multline}
 
+multline with case, seems okay
 \begin{multline}
 	pv(i, j) =  
 	\begin{cases}
@@ -107,35 +120,34 @@ equation, array of array, seems good.
 	\end{cases} 
 \end{multline}
 where
-\begin{eqnarray*}
-	i = \{x \mid x \in \mathbb{N}, 1 \leq x < n\} \\
-	j = \{y \mid y \in \mathbb{N}, 1 \leq y < m\} \\
-	n \text{ is the height of image} \\
-	m \text{ is the width of image} 
-\end{eqnarray*}
+\begin{eqnarray}
+	i = \{x \mid x \in \mathbb{N}, 1 \leq x < n\} \notag \\
+	j = \{y \mid y \in \mathbb{N}, 1 \leq y < m\} \notag \\
+	n \text{ is the height of image} \notag \\
+	m \text{ is the width of image} \notag
+\end{eqnarray}
+
+align with cases and intertext, best so far, but still too much. \\
+the where clause are aligned but the notag thing is kind of annoying.
+\begin{align}
+	pv(i, j) &=  
+		\begin{cases}
+			max(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
+			min(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
+			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}, &  \textrm{otherwise}, 
+		\end{cases}
+	\intertext{where}
+	i &= \{x \mid x \in \mathbb{N}, 1 \leq x < n\} \notag \\
+	j &= \{y \mid y \in \mathbb{N}, 1 \leq y < m\} \notag \\
+	n &\text{ is the height of image} \notag \\
+	m &\text{ is the width of image} \notag
+\end{align}
+
+
+\rule{\linewidth}{1px}
 
 
 
-
-
-\begin{equation}
-	pv(i, j) = \left\{ 
-	\begin{array}{rl}
-		max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-		min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-	\end{array} \right.
-\end{equation}
-
-
-\begin{equation}
-	pv(i, j) = 
-	\begin{cases}
-		max(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}) \\
-		min(x_{i - 1, j}, x_{i, j - 1})                & , x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}) \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & ,  \textrm{otherwise}
-	\end{cases} 
-\end{equation}
 
 
 
