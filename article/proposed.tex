@@ -1,8 +1,6 @@
 \section{Proposed Method}
 
-proposed method, ours
-
-~\cite{Grochowski2020}
+proposed method, ours~\cite{Grochowski2020}
 
 three improvements:
 
@@ -11,3 +9,55 @@ three improvements:
 	\item Reduce the size of Reference Bytes.
 	\item Fix the issue of the 20-bits of length.
 \end{enumerate}
+
+Huffman codes are optimal prefix codes.
+
+
+\begin{algorithm}
+	\caption{Serialize a Huffman coding tree}
+	
+	\begin{algorithmic}[1]
+		\Require $node$ : the root node of a Huffman coding tree.
+		\Ensure $bit\_topology$ : a bit sequence represents the topology of the tree.
+		\Ensure $bit\_value$ : a bit sequence represents every leaf value $v$ of the tree.
+		
+		\Procedure{SerializeHuffmanTree}{$node$}   
+		\If{$node$ is a leaf}
+		\State Append a $0$ at the end of $bit\_topology$.
+		\State Append the value $v$ of $node$ at the end of $bit\_value$ bit by bit.
+		\Else
+		\State Append a $1$ at the end of $bit\_topology$.
+		\State \Call{SerializeHuffmanTree}{$node.left\_child$}.
+		\State \Call{SerializeHuffmanTree}{$node.right\_child$}.
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Unserialize a Huffman coding tree}
+	
+	\begin{algorithmic}[1]
+		\Require $bit\_topology$ : a bit sequence represents the topology of the tree.
+		\Require $bit\_value$ : a bit sequence represents every leaf value $v$ of the tree.
+		\Require $size\_value$ : the size of bits of each value $v$.
+		\Ensure a Huffman coding tree.
+		
+		\Function{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}   
+		\State Read the first bit $b$ from $bit\_topology$.
+		\State Remove $b$ from $bit\_topology$.
+		\If{$b = 0$ }
+		\State Let value $v$ be the first $size\_value$ bits of $bit\_value$.
+		\State Remove the first $size\_value$ bits from $bit\_value$.
+		\State Create a node $n$ with $v$.
+		\Else
+		\State Let $n1 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
+		\State Let $n2 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
+		\State Create a node $n$ with
+		\State\hspace{\algorithmicindent} $left\_child \gets n1$.
+		\State\hspace{\algorithmicindent} $right\_child \gets n2$.
+		\EndIf
+		\State \Return $n$.
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}

@@ -138,7 +138,9 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
-	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5));
+
+	// need more fine tune
+	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
 
 	srand(seed);
 
@@ -206,7 +208,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int len_secret = len_embed - len_sideinfo;
 
 # if REPORT
-	reportC_(cnt_t, h_encoder, len_embed, len_h_encoded_labelmap, len_ref, (int)bit_topology.size(), (int)bit_val.size(), LEN_LEN_H_ENCODED_LABELMAP);
+	reportC_(cnt_t, h_encoder, len_embed, len_h_encoded_labelmap, len_ref, (int)bit_topology.size(), (int)bit_val.size(), LEN_LEN_H_ENCODED_LABELMAP, size_image);
 # endif
 # 
 

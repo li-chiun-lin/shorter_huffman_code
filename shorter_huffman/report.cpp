@@ -29,14 +29,25 @@ void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width
 }
 
 void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
-	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2, int LEN_LEN_H_ENCODED_LABELMAP)
+	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2, int LEN_LEN_H_ENCODED_LABELMAP, int size_image)
 {
-	fprintf(fptr_report, "C. Huffman Coding, total capacity = %d, \n\theader = %d + %d, length of LM = %d, LM = %d, ref = %d\n\textra-space = %d\n",
-		len_capacity, header1, header2, LEN_LEN_H_ENCODED_LABELMAP, len_h_encoded_labelmap, len_ref, len_capacity - header1 - header2 - LEN_LEN_H_ENCODED_LABELMAP - len_h_encoded_labelmap - len_ref);
+	const int len_headers = header1 + header2 + LEN_LEN_H_ENCODED_LABELMAP;
+	const int len_extra = len_capacity - len_headers - len_h_encoded_labelmap - len_ref;
 
-	fprintf(fptr_report, "%8s & %8s & %8s & %8s & %8s & %8s & %8s \\\\ \n", "t", "freq", "code", "cap.", "c len", "p len", "delta");
-	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
-	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "C. Huffman Coding, total capacity = %d, \n\theader = %d + %d, length of LM = %d, %d, LM = %d, ref = %d\n\textra-space = %d, bpp = %.3f\n",
+		len_capacity, 
+		header1, header2, 
+		LEN_LEN_H_ENCODED_LABELMAP, 
+		len_headers, 
+		len_h_encoded_labelmap, 
+		len_ref, 
+		len_extra, 
+		(float)len_extra / size_image);
+
+	fprintf(fptr_report, "\t \\toprule \n");
+	fprintf(fptr_report, "%8s & %8s & %8s & %8s & %8s & %8s & %8s \\\\ \n", "$t$", "$freq_t$", "code", "cap.", "len.", "payload", "$\\Delta$");
+	fprintf(fptr_report, "%8s------------------------------------------------------\n", "%");
+	fprintf(fptr_report, "\t \\midrule \n");
 
 	int total_cnt = 0;
 	int total_cap = 0;
@@ -71,9 +82,9 @@ void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
 		fprintf(fptr_report, " & %8d & %8d & %8d & %8d \\\\ \n", cap, len, pay, del);
 	}
 
-	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "\t \\midrule \n");
 	fprintf(fptr_report, "%8s & %8d & & & %8d & %8d & %8d \\\\ \n", "Total", total_cnt, total_cap, total_len, total_cap - total_len);
-	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "\t \\bottomrule \n");
 	fprintf(fptr_report, "\n\n");
 }
 

@@ -1,3 +1,7 @@
+\section{tree}
+
+
+
 \begin{figure}
 	\centering
 	\Tree[.$\diamond$ [.$\diamond$ [.$\bullet$ \textit{00} ]
@@ -7,22 +11,8 @@
 	[.$\diamond$ [.$\bullet$ \textit{1110} ]
 	[.$\diamond$ [.$\bullet$ \textit{11110} ]
 	[.$\bullet$ \textit{11111} ]]]]]]
-	\caption{text}
+	\caption{diamond bullet fixed tree}
 \end{figure}
-
-\begin{figure}
-	\centering
-	\Tree[.$\diamond$ [.0 [.0 00 ]
-	[.1 01 ]]
-	[.1 [.0 [.0 100 ] [.1 101 ] ]
-	[.1 [.0 [.0 1100 ] [.1 1101 ] ]
-	[.1 [.0 1110 ]
-	[.1 [.0 11110 ]
-	[.1 11111 ]]]]]]
-	\caption{text}
-\end{figure}
-
-\section{tree}
 
 \begin{figure}
 	\centering
@@ -32,29 +22,34 @@
 	[.$\diamond$ [.$\bullet$ \textit{1010} ]
 	[.$\diamond$ [.$\bullet$ \textit{10110} ] [.$\bullet$ \textit{10111} ]]]  ]
 	[.$\diamond$ [.$\bullet$ \textit{110} ] [.$\bullet$ \textit{111} ] ]]]
-	\caption{text}
+	\caption{diamond bullet standard tree}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\Tree[.$\diamond$ [.0 [.0 00 ]
+	\Tree[. [.0 [.0 00 ]
+	[.1 01 ]]
+	[.1 [.0 [.0 100 ] [.1 101 ] ]
+	[.1 [.0 [.0 1100 ] [.1 1101 ] ]
+	[.1 [.0 1110 ]
+	[.1 [.0 11110 ]
+	[.1 11111 ]]]]]]
+	
+	\caption{zero one fixed tree}
+\end{figure}
+
+
+
+
+\begin{figure}
+	\centering
+	\Tree[. [.0 [.0 00 ]
 	[.1 [.0 010 ] [.1 011 ]]]
 	[.1 [.0 [.0 100 ]
 	[.1 [.0 1010 ]
 	[.1 [.0 10110 ] [.1 10111 ]]]]
 	[.1 [.0 110 ] [.1 111 ]]]]
-	\caption{text}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\Tree[.$\diamond$ [.0 [.0 00 ]
-	[.1 [.0 010 ] [.1 011 ]]]
-	[.1 [.0 [.0 100 ]
-	[.1 [.0 1010 ]
-	[.1 [.0 10110 ] [.1 10111 ]]]]
-	[.1 [.0 110 ] [.1 111 ]]]]
-	\caption{text}
+	\caption{zero one standard tree}
 \end{figure}
 
 \begin{figure}
@@ -65,7 +60,7 @@
 	[.$\circ$ [.$\bullet$ 2 ]
 	[.$\circ$ [.$\bullet$ 1 ] [.$\bullet$ 0 ]]]  ]
 	[.$\circ$ [.$\bullet$ 6 ] [.$\bullet$ 4 ] ]]]
-	\caption{text}
+	\caption{circ bullet standard tree with value}
 \end{figure}
 
 \begin{figure}
@@ -76,7 +71,7 @@
 	[.$\circ$ [.$\bullet$ 2 ]
 	[.$\circ$ [.$\bullet$ 1 ] [.$\bullet$ 0 ]]]  ]
 	[.$\circ$ [.$\bullet$ 6 ] [.$\bullet$ 4 ] ]]]
-	\caption{text}
+	\caption{circ bullet standard tree with value and arrow}
 \end{figure}
 
 \begin{figure}
@@ -87,5 +82,5 @@
 	[. [. 2 ]
 	[. [. 1 ] [. 0 ]]]  ]
 	[.$\blacktriangledown$ [. 6 ] [. 4 ] ]]]
-	\caption{text}
+	\caption{circ bullet standard tree with value and triangle}
 \end{figure}

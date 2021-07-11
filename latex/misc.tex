@@ -347,7 +347,7 @@ the where clause are aligned but the notag thing is kind of annoying.
 		\end{tabular}
 	\end{tabular}
 	
-	\caption{text}
+	\caption{Embedding}
 \end{figure}
 
 \begin{figure}
@@ -369,3 +369,132 @@ the where clause are aligned but the notag thing is kind of annoying.
 	
 	\caption{text}
 \end{figure}
+
+\begin{align}
+	MSB^{m}(b_0, \dots, b_m) = \sum_{i = 0}^m b_i \cdot 2^{8 - i} \\
+	\intertext{where}
+	 b_i \in \{0, 1\}, and \notag \\
+	 0 \leq m < 8 \notag
+\end{align}
+
+\begin{align}
+	MSB^{m}(b_0, \dots, b_7) = \sum_{i = 8 - m}^7 b_i \cdot 2^i, \\
+	LSB^{m}(b_0, \dots, b_7) = \sum_{i = 0}^m b_i \cdot 2^{m - i}, \\
+	\intertext{where}
+	b_0 \text{ is the least significant bit}, \notag \\
+	b_7 \text{ is the most significant bit}, \notag \\
+	b_i \in \{0, 1\}, \text{and} \notag \\
+	m \in [0, 7] \notag
+\end{align}
+
+\begin{align}
+	MSB^{m}(b_0, \dots, b_7) = \sum_{i = 8 - m}^7 b_i \cdot 2^i, \\
+	LSB^{m}(b_0, \dots, b_7) = \sum_{i = 0}^m b_i \cdot 2^{m - i}, \\
+\end{align}
+where \\
+\qquad $b_0$ is the least significant bit,  \\
+\qquad $b_7$ is the most significant bit,  \\
+\qquad $b_i \in \{0, 1\}$, and \\
+\qquad $m \in [0, 7]$
+
+\begin{align}
+	MSB^{m}(b_0, \dots, b_7) = \sum_{i = 8 - m}^7 b_i \cdot 2^i, \\
+	LSB^{m}(b_0, \dots, b_7) = \sum_{i = 0}^m b_i \cdot 2^{m - i}, \\
+\end{align}
+where 
+$b_0$ is the least significant bit, 
+$b_7$ is the most significant bit,  
+$b_i \in \{0, 1\}$, and 
+$m \in [0, 7]$
+
+\begin{align}
+	MSB^{m}(b_0, \dots, b_7) = \sum_{i = 8 - m}^7 b_i \cdot 2^i \\
+	LSB^{m}(b_0, \dots, b_7) = \sum_{i = 0}^m b_i \cdot 2^i 
+\end{align}
+where
+\begin{align*}
+	b_0 &\text{ is the least significant bit},  \\
+	b_7 &\text{ is the most significant bit},  \\
+	b_i &\in \{0, 1\}, \text{and}  \\
+	m &\in [0, 7] 
+\end{align*}
+
+\begin{multline}
+	Embed(t, (b_0, \dots, b_7), (s_0, \dots, s_n)) = \\
+	\begin{cases}
+		a, & \text{if } t \in [0, 7] \\
+		b, & \text{if } t  = 8
+	\end{cases}
+\end{multline}
+
+\begin{multline}
+	Embed(t, (b_0, \dots, b_7), (s_k, s_{k + 1}, \dots, s_{k + n})) = \\
+	\begin{dcases}
+		\sum_{i = 7 - (t - 1)}^{t} s_{k + (7 - t)} \cdot 2^i 
+		+ (1 - s_{k + t + 1}) \cdot 2^{7 - t} 
+		+ \sum_{i = 0}^{7 - (t + 1)} b_i \cdot 2^i
+		, & \text{if } t \in [0, 6] 
+		\\
+		\sum_{i = 7 - (t - 1)}^{t} s_{k + (7 - t)} \cdot 2^i 
+		+ (1 - s_{k + t + 1}) \cdot 2^{7 - t}  
+		, & \text{if } t = 7 
+		\\
+		\sum_{i = 7 - (t - 1)}^{t} s_{k + (7 - t)} \cdot 2^i 
+		, & \text{if } t  = 8
+	\end{dcases}
+\end{multline}
+
+\begin{align}
+	Embed(t, X, S) &= 
+	\begin{cases}
+		MSB^{t + 1}(S) 
+		+ LSB^{(7 - t)}(X)
+		, & \text{if } t \in [0, 6] 
+		\\
+		MSB^8(S)
+		, & \text{if } t \in [7, 8]
+	\end{cases}
+\intertext{where}
+	MSB^{m}(B) &= \sum_{i = 8 - m}^7 b_i \cdot 2^i, m \in [1, 8],  \notag \\
+	LSB^{n}(B) &= \sum_{i = 0}^{n - 1} b_i \cdot 2^i, n \in [1, 8], \text{and}  \notag\\
+	B &= \{0, 1\}^*, b_i \in B, i \in [0, 7] \notag 
+\end{align}
+
+\begin{multline}
+	Restore(t, X) = \\
+	\begin{dcases}
+		MSB^{t}(X^\prime) + (1 - x_{(7 - t)}) \cdot 2^{(7 - t)} + LSB^{(7 - t)}(X), & \text{if } t \in [0, 7]\\
+		X^\prime, & \text{if } t = 8
+	\end{dcases}
+\end{multline}
+where
+\begin{align*}
+	X^\prime &= pv(X), \\
+	x_i &\in X^\prime, i \in [0, 7].
+\end{align*}
+
+\begin{multline}
+	Restore(t, X) = \\
+	\begin{dcases}
+		X^\prime, & \text{if } t = 8 \\
+		MSB^{t}(X^\prime) + \underbrace{(1 - x_{(7 - t)}) \cdot 2^{(7 - t)}}_{\text{flip the } (t+1) \text{-th bit}} + LSB^{(7 - t)}(X), & \text{if } t \in [0, 7]
+	\end{dcases}
+\end{multline}
+where
+\begin{align*}
+	X^\prime &= pv(X), \text{and}\\
+	x_i &\in X^\prime, i \in [0, 7].
+\end{align*}
+
+
+
+If we encode letter $a$ with a bit string of length $l_a$, the expected length for
+encoding one letter is
+\begin{align}
+	L = \sum_{a \in A}p_a \cdot l_a
+\end{align}
+
+An optimal code is one where the expected length is as close as possible to the entropy
+\begin{equation}
+	H(entropy) = \sum_i p_i log_2\frac{1}{p_i} = - \sum_i p_i log_2 (p_i )
+\end{equation}

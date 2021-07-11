@@ -154,7 +154,7 @@
 			\ForAll{$\{t_{i, j} \in T \mid i \in [1, h), j \in [1, w)\}$}
 				\State $code \gets Encode(t_{i, j}, H)$.
 				\State $EncodedLabelMap \gets EncodedLabelMap \Vert code$.
-				\State $len \gets len + \abs{code}$
+				\State $len \gets len + \left \vert code \right \vert$
 			\EndFor
 			\\
 			\State Allocate a bit array $bs$ with
@@ -300,7 +300,7 @@
 			\For{$j \gets 1$ to $w - 1$}
 				\State $code \gets Encode(t_{i, j}, H)$.
 				\State $EncodedT \gets EncodedT \Vert code$.
-				\State $len \gets len + \abs{code}$
+				\State $len \gets len + \left \vert code \right \vert$
 			\EndFor
 		\EndFor
 		\State Allocate a bit array $A$ with
@@ -366,7 +366,8 @@
 		\State Let $A$ be
 		\State\hspace{\algorithmicindent} 32 bits of $\{Encode(v, H) \mid v \in [0, 8] \}$,
 		\State\hspace{\algorithmicindent} 20 bits of $len$,
-		\State\hspace{\algorithmicindent} $\abs{EncodedT}$ bits of $EncodedT$, and
+		\State\hspace{\algorithmicindent} $\left \vert EncodedT \right \vert$ bits of $EncodedT$, and
+		
 		\State\hspace{\algorithmicindent} $w + h - 1$ bytes of the first row and the first col of $I_e$.
 		\State $I_e\prime \gets I_e$
 		\State Replace the first row and the first col of $I_e\prime$ with $A$.
@@ -458,7 +459,7 @@
 		\State $k \gets 0$
 		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, (i = x \wedge j \in [y, w)) \vee (i \in (x, h), j \in [1, w))\}$}
 			\State $buf \gets buf \Vert ...$
-			\If{$\abs{buf} = 8$}
+			\If{$\left \vert buf \right \vert = 8$}
 				\State $R_k \gets buf$.
 				\State Reset $buf$.
 				\State $k \gets k + 1$.

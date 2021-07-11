@@ -65,10 +65,10 @@ void testlen()
 int main()
 {
 	//testlib();
-	testtiff();
+	//testtiff();
 
 	//debug();
-	//lena();
+	lena();
 
 	
 	//testlen();

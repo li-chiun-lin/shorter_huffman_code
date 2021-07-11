@@ -1,3 +1,97 @@
 \section{Experimental results}
 
 experimental results
+
+
+\begin{table}
+	\centering
+	\caption{Embedding capacity}
+	\begin{tabular}{ccccc cccc}
+		\toprule
+		           & \multicolumn{4}{c}{Yin et al\.} 
+		           & \multicolumn{4}{c}{Ours}                                                      \\
+		\cmidrule(lr){2-5} \cmidrule(lr){6-9}
+		Test Image & EC                              & LM                       & Extra & bpp   & EC      & LM       & Extra & bpp   \\ 
+		\midrule
+		Lena       & 1470568                         & 793304                   & 52    & 2.583 & 1476577 & 787307   & 73    & 2.628 \\ 
+		Baboon     & 1074384                         & 794941                   & 52    & 1.066 & 1077990 & 789553   & 73    & 1.099 \\
+		Jetplane   & 1587880                         & 793441                   & 52    & 3.030 & 1594681 & 781177   & 73    & 3.102 \\
+		Airplane   & 1659203                         & 682803                   & 52    & 3.724 & 1665774 & 659619 & 73 & 3.837        \\
+		Tiffany    & 1526934                         & 786527                   & 52    & 2.824 & 1533558 & 772751   & 73    & 2.901 \\
+		Man        & 5584907                         & 
+		\makecell{3121508\\(3121506)}&
+		\makecell{52\\(54)}&
+		2.349&5595967&3127374&75&2.354\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}
+	\scriptsize
+	\centering
+	\caption{Embedding capacity in bits (Ours/Yin et al\./$\Delta$)}
+	\begin{tabular}{ccccc}
+		\toprule
+		Image & EC                     & LM               & Extra & bpp      \\ 
+		\midrule
+		Lena       & 1476577/1470568/+6009 & 787307/793304/-5997  & 73/52/+21    & 2.628/2.583/+0.045   \\ 
+		Baboon     & 1077990/1074384/+3606   & 789553/794941/-5388  & 73/52/+21   & 1.099/1.066/+0.033  \\
+		Jetplane   & 1594681/1587880/+6801  & 781177/793441/-12264    & 73/52/+21    & 3.102/3.030/+0.072   \\
+		Airplane   & 1665774/1659203/+6571 & 659619/682803/-23184  & 73/52/+21    & 3.837/3.724+0.113       \\
+		Tiffany    & 1533558/1526934/+6624 & 772751/786527/-13776  & 73/52/+21    & 2.901/2.824/+0.077   \\
+		\midrule
+		Man        & 5595967/5584907/+11060   & 
+		\makecell{3127374/3121508/+5866\\(3127374/3121506/+5868)}&
+		\makecell{75/52/23\\(75/54/21)}& 
+		2.354/2.349/+0.005\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}
+	\centering
+	\caption{Huffman Coding for Lena $512 \times 512$}
+	
+	\subcaption{Yin et al}
+	\begin{tabular}{ccccccc}
+		\toprule 
+		$t$ &   $dist$ &     code &     cap. &     len. &  payload & $\Delta$ \\ 
+		%------------------------------------------------------
+		\midrule 
+		0 &     9818 & 11110    &        1 &        5 &       -4 &   -39272  \\ 
+		1 &     9742 & 11111    &        2 &        5 &       -3 &   -29226  \\ 
+		2 &    15247 & 1110     &        3 &        4 &       -1 &   -15247  \\ 
+		3 &    33246 & 101      &        4 &        3 &        1 &    33246  \\ 
+		4 &    44509 & 01       &        5 &        2 &        3 &   133527  \\ 
+		5 &    53359 & 00       &        6 &        2 &        4 &   213436  \\ 
+		6 &    41758 & 100      &        7 &        3 &        4 &   167032  \\ 
+		7 &    24353 & 1101     &        8 &        4 &        4 &    97412  \\ 
+		8 &    29089 & 1100     &        8 &        4 &        4 &   116356  \\ 
+		\midrule 
+		Total &   261121 & & &  1470568 &   793304 &   677264 \\ 
+		\bottomrule   
+	\end{tabular}
+	
+	
+	\subcaption{Ours}
+	\begin{tabular}{ccccccc}
+		\toprule 
+		$t$ & $freq_t$ &     code &     cap. &     len. &  payload & $\Delta$ \\ 
+		%------------------------------------------------------
+		\midrule 
+		0 &     9867 & 10111    &        1 &        5 &       -4 &   -39468 \\ 
+		1 &     9751 & 10110    &        2 &        5 &       -3 &   -29253 \\ 
+		2 &    15321 & 1010     &        3 &        4 &       -1 &   -15321 \\ 
+		3 &    33303 & 100      &        4 &        3 &        1 &    33303 \\ 
+		4 &    44679 & 111      &        5 &        3 &        2 &    89358 \\ 
+		5 &    53604 & 00       &        6 &        2 &        4 &   214416 \\ 
+		6 &    41938 & 110      &        7 &        3 &        4 &   167752 \\ 
+		7 &    24452 & 010      &        8 &        3 &        5 &   122260 \\ 
+		8 &    29203 & 011      &        8 &        3 &        5 &   146015 \\ 
+		\midrule 
+		Total &   262118 & & &  1476369 &   787307 &   689062 \\ 
+		\bottomrule 
+		$\Delta$ &   +997 & & &  +5801 &   -5997 &   +11798 \\ 
+		\bottomrule 
+	\end{tabular}
+\end{table}

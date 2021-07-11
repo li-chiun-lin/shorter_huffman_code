@@ -57,7 +57,7 @@ const vector< vector<unsigned char> > bits_hcode = {
 };
 
 void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int size_hcode);
-void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header);
+void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header, int size_image);
 void reportD(vector<unsigned char>& bits_embed, int idx_prepare, int len_hc_rule);
 void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_len_h_encoded_labelmap, int len_hc_rule);
 void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_hcode_header);

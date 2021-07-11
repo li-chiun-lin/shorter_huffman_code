@@ -124,7 +124,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
-	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5));
+	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
 
 	srand(seed);
 
@@ -182,7 +182,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret, LEN_HCODE_HEADER);
+	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret, LEN_HCODE_HEADER, size_image);
 # endif
 
 

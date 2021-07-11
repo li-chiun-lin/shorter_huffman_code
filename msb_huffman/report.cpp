@@ -35,15 +35,22 @@ void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_
 	fprintf(fptr_report, "\n\n");
 }
 
-void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header)
+void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret, int len_hcode_header, int size_image)
 {
-	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d\n",
-		len_h_encoded_labelmap + len_secret, len_h_encoded_labelmap, len_secret, len_secret - len_hcode_header, len_hcode_header);
+	const int len_extra = len_secret - len_hcode_header;
+	fprintf(fptr_report, "C. Huffman Coding, %d, LM = %d, extra-capacity = %d = %d + %d, bpp = %.3f\n",
+		len_h_encoded_labelmap + len_secret, 
+		len_h_encoded_labelmap, 
+		len_secret, 
+		len_extra,
+		len_hcode_header, 
+		(float)len_extra / size_image);
 
 	// header
-	fprintf(fptr_report, "%8s %8s %8s %8s %8s %8s %8s \n", "t", "dist", "code", "cap.", "c len", "p len", "delta");
-	fprintf(fptr_report, "%8s------------------------------------------------------\n", "-");
-	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "\t \\toprule \n");
+	fprintf(fptr_report, "%8s & %8s & %8s & %8s & %8s & %8s & %8s \\\\ \n", "$t$", "$freq_t$", "code", "cap.", "len.", "payload", "$\\Delta$");
+	fprintf(fptr_report, "%8s------------------------------------------------------\n", "%");
+	fprintf(fptr_report, "\t \\midrule \n");
 
 	int total_cnt = 0;
 	int total_cap = 0;
@@ -78,9 +85,9 @@ void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_label
 		fprintf(fptr_report, " & %8d & %8d & %8d & %8d  \\\\ \n", cap, len, pay, del);
 	}
 
-	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "\t \\midrule \n");
 	fprintf(fptr_report, "%8s & %8d & & & %8d & %8d & %8d \\\\ \n", "Total", total_cnt, total_cap, total_len, total_cap - total_len);
-	fprintf(fptr_report, "\t \\hline \n");
+	fprintf(fptr_report, "\t \\bottomrule \n");
 	fprintf(fptr_report, "\n\n");
 }
 

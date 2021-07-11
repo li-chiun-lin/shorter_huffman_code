@@ -14,14 +14,23 @@
 \usepackage{caption}
 \usepackage{hyperref}
 \usepackage{IEEEtrantools}
-\usepackage{subfig}
+%\usepackage{subfig}
 \usepackage{float}
 \usepackage{mathtools}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
-\usepackage{commath}
+\usepackage{physics}
+%\usepackage{commath}
 \usepackage{algpseudocode}
+\usepackage{makecell}
+%\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage{tabularx}
+\usepackage{multirow}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
 
 
 \title{equations}
@@ -43,57 +52,5 @@
 	\include{huffmantree}
 	\include{serialize}
 	\include{unserialize}
-	
-	\begin{tikzpicture}
-		\begin{axis}[
-			axis lines = left,
-			xlabel = \(x\),
-			ylabel = {\(f(x)\)},
-			]
-			%Below the red parabola is defined
-			\addplot [
-			domain=-10:10, 
-			samples=100, 
-			color=red,
-			]
-			{x^2 - 2*x - 1};
-			\addlegendentry{\(x^2 - 2x - 1\)}
-			%Here the blue parabola is defined
-			\addplot [
-			domain=-10:10, 
-			samples=100, 
-			color=blue,
-			]
-			{x^2 + 2*x + 1};
-			\addlegendentry{\(x^2 + 2x + 1\)}
-			
-		\end{axis}
-	\end{tikzpicture}
-	
-	
-	\begin{tikzpicture}
-		\matrix [column sep=7mm, row sep=5mm] {
-			\node (se) [draw, shape=rectangle] {Strong existence}; &
-			\node (yw) [draw, shape=circle] {Y-W}; &
-			\node (ul) [draw, shape=rectangle] {Uniqueness in law}; \\
-			\node (d1) [draw, shape=circle] {Defn}; & &
-			\node (d2) [draw, shape=circle] {Defn}; \\
-			\node (we) [draw, shape=rectangle] {Weak existence}; &
-			\node (ec) [draw, shape=circle] {E-C}; &
-			\node (pu) [draw, shape=rectangle] {Pathwise uniqueness}; \\
-		};
-		\draw[->, thick] (se) -- (d1);
-		\draw[->, thick] (d1) -- (we);
-		\draw[->, thick] (we) -- (yw);
-		\draw[->, thick] (yw) -- (se);
-		\draw[->, thick] (se) -- (ec);
-		\draw[->, thick] (ul) -- (ec);
-		\draw[->, thick] (ec) -- (pu);
-		\draw[->, thick] (pu) -- (yw);
-		\draw[->, thick] (pu) -- (d2);
-		\draw[->, thick] (d2) -- (ul);
-	\end{tikzpicture}
-	
-	
 	
 \end{document}
