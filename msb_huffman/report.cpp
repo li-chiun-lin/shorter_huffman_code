@@ -17,7 +17,7 @@ void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_
 
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
-			fprintf(fptr_report, "%d ", val_labelmap[rw + col]);
+			fprintf(fptr_report, "%d ", val_labelmap[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(rw) + col]);
 		fprintf(fptr_report, "\n\t");
 	}
 	fprintf(fptr_report, "\n\tDistribution of t\n");
@@ -104,7 +104,7 @@ void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed,
 {
 	fprintf(fptr_report, "D2. Side Info, length of hEncode(LabelMap) 20 bits\n\t");
 	for (int i = 0; i < len_len_h_encoded_labelmap; ++i)
-		fprintf(fptr_report, "%d ", bits_embed[len_hc_rule + i]);
+		fprintf(fptr_report, "%d ", bits_embed[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(len_hc_rule) + i]);
 	fprintf(fptr_report, "\n\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
@@ -112,7 +112,7 @@ void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed,
 {
 	fprintf(fptr_report, "D3. Side Info, hEncode(LabelMap) LM bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
-		fprintf(fptr_report, "%d %s", bits_embed[len_hcode_header + i], WRAP(i));
+		fprintf(fptr_report, "%d %s", bits_embed[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(len_hcode_header) + i], WRAP(i));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
@@ -128,7 +128,7 @@ void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed,
 	fprintf(fptr_report, "D5. reference value, 1st col of enc(image), 511 bytes\n\t");
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], WRAP(row));
+		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 	fprintf(fptr_report, "\ttotal auxiliary info size = %d bits\n\n", idx_prepare);
 }
@@ -137,7 +137,7 @@ void reportD6(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed,
 {
 	fprintf(fptr_report, "D6. random secret bits, only show first few bits\n\t");
 	for (int i = 0; i < 512; ++i)
-		fprintf(fptr_report, "%d %s", bits_embed[len_auxinfo + i], WRAP(i));
+		fprintf(fptr_report, "%d %s", bits_embed[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(len_auxinfo) + i], WRAP(i));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
@@ -154,7 +154,7 @@ void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image,
 	fprintf(fptr_report, "D8. embed into the 1st col of enc(image), except(0, 0), 511 bytes\n\t");
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], WRAP(row));
+		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n");
 	fprintf(fptr_report, "\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);
 }
@@ -176,7 +176,7 @@ void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image)
 	fprintf(fptr_report, "F2. extract 1st col, except (0, 0)\n\t");
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], WRAP(row));
+		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
 }
 
@@ -187,7 +187,7 @@ void reportF5(vector<unsigned char>& val_ex_labelmap, int idx_ex, int idx_ex_pro
 	{
 		int row = i * width_image;
 		for (int col = 1; col < width_image; ++col)
-			fprintf(fptr_report, "%2d", val_ex_labelmap[row + col]);
+			fprintf(fptr_report, "%2d", val_ex_labelmap[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) + col]);
 		fprintf(fptr_report, "\n\t");
 	}
 	fprintf(fptr_report, "\n");
@@ -206,7 +206,7 @@ void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed,
 	fprintf(fptr_report, "F7. recover first col of enc(image), except(0, 0), proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
 	fprintf(fptr_report, "   ");
 	for (int row = 1; row < width_image; ++row)
-		fprintf(fptr_report, "%02X %s", byte_image[row * width_image], WRAP(row));
+		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n");
 }
 

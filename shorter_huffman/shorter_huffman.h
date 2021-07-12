@@ -46,7 +46,8 @@ using namespace std;
 // this is for Baboon
 # define CNT_REF_T 16
 
-# define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T)
+//# define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T)
+const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T);
 
 
 void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode);

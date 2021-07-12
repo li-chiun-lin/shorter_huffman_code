@@ -78,3 +78,20 @@ void reportG4(vector<unsigned char>& byte_image, const char* fn_restore)
 		fprintf(fptr_report, "%02X %s", byte_image[i], WRAP(i));
 	fprintf(fptr_report, "\n");
 }
+
+void printResult(Result res)
+{
+	printf("--------------------------------------\n");
+	printf("size_image                %8d\n", res.size_image);
+	printf("width_image               %8d\n", res.width_image);
+	printf("len_h_topology            %8d = 2 * %d - 1\n", res.len_h_topology, res.len_h_topology ? (res.len_h_topology + 1) / 2 : 0);
+	printf("len_h_values              %8d\n", res.len_h_values);
+	printf("len_len_hencoded_labelmap %8d\n", res.len_len_h_encoded_labelmap);
+	printf("len_h_encoded_labelmap    %8d\n", res.len_h_encoded_labelmap);
+	printf("len_ref                   %8d = %d * 8\n", res.len_ref, res.len_ref / 8);
+	printf("len_secret                %8d = %.3f bpp\n", res.len_secret, res.size_image ? (float)res.len_secret / res.size_image : 0);
+	printf("capacity                  %8d = %d + %d\n", res.len_h_encoded_labelmap + res.len_secret, res.len_h_encoded_labelmap, res.len_secret);
+
+	for (int i = 0; i < 9; ++i)
+		printf("%d %8d %2x %2d\n", i, res.freq[i], res.code[i], res.len_code[i]);
+}

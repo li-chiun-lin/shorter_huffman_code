@@ -103,6 +103,8 @@ errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_na
 vector<unsigned char> readImageRaw(string file_name);
 void writeImage(string file_name, vector<unsigned char>& byte_buf);
 unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8);
+unsigned char bits2byte(vector<unsigned char>& bit_buf);
+unsigned char bits2byte(vector<int>& bit_buf);
 
 void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image);
@@ -193,3 +195,43 @@ void reportF8(vector<unsigned char>& bit_secret_extra, int idx_ex, int idx_ex_pr
 void reportG(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 void reportG3(vector<unsigned char>& byte_image);
 void reportG4(vector<unsigned char>& byte_image, const char* fn_restore);
+
+
+
+struct Result
+{
+	int size_image;
+	int width_image;
+	int len_h_topology;
+	int len_h_values;
+	int len_h_encoded_labelmap;
+	int len_len_h_encoded_labelmap;
+	int len_ref;
+	int len_secret;
+	//int size_capacity;
+	int freq[9];
+	int len_code[9];
+	unsigned char code[9];
+
+	Result()
+	{
+		this->size_image = 0;
+		this->width_image = 0;
+		this->len_h_topology = 0;
+		this->len_h_values = 0;
+		this->len_h_encoded_labelmap = 0;
+		this->len_len_h_encoded_labelmap = 0;
+		this->len_ref = 0;
+		this->len_secret = 0;
+		//this->size_capacity = 0;
+
+		for (int i = 0; i < 9; ++i)
+		{
+			freq[i] = 0;
+			len_code[i] = 0;
+			code[i] = 0;
+		}
+	}
+};
+
+void printResult(struct Result res);

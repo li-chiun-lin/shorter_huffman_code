@@ -30,7 +30,7 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
 		{
-			int t = val_labelmap[rw + col];
+			int t = val_labelmap[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(rw) + col];
 			int idx_hc = h_encoder[t];
 			int len_hc = (int)bits_hcode[idx_hc].size();
 
@@ -85,7 +85,7 @@ int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_i
 			}
 			else
 			{
-				byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[idx] & mask_lsb[t]);
+				byte_image[idx] = bits2byte(bits_embed, idx_embed, t + 1) + (byte_image[idx] & mask_lsb[t]);
 				idx_embed += t + 1;
 			}
 		}
@@ -113,18 +113,19 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 	}
 }
 
-int msb_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
+struct Result msb_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
 {
 	vector<unsigned char> byte_image = readImageRaw(path_cover_img);
 	const int size_image = (int)byte_image.size();
-
+	
 	cout << "msb " << path_cover_img << endl;
 	//assert(size_image == 512 * 512);
 
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
-	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+	const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+	const int len_hcode_header = LEN_HC_RULE + len_len_h_encoded_labelmap;
 
 	srand(seed);
 
@@ -182,7 +183,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
 
 # if REPORT
-	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret, LEN_HCODE_HEADER, size_image);
+	reportC(h_encoder, cnt_t, len_h_encoded_labelmap, len_secret, len_hcode_header, size_image);
 # endif
 
 
@@ -192,10 +193,10 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	//------------------------------------------------------
 	// D Label Map Embedding
 
-	const int len_sideinfo = LEN_HCODE_HEADER + len_h_encoded_labelmap;
+	const int len_sideinfo = len_hcode_header + len_h_encoded_labelmap;
 	const int len_ref = (width_image + width_image_1) * 8;
 	const int len_auxinfo = len_sideinfo + len_ref;
-	const int len_embed = len_auxinfo + (len_secret -= LEN_HCODE_HEADER);
+	const int len_embed = len_auxinfo + (len_secret -= len_hcode_header);
 
 	vector<unsigned char> bits_rand_secret(len_secret);
 	generate(bits_rand_secret.begin(), bits_rand_secret.end(), rand);
@@ -218,7 +219,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 # endif
 
 	//side info 2, length of encode(lab map) => lm, 20 bits
-	unsigned int mask_bit_long = 1 << (LEN_LEN_H_ENCODED_LABELMAP - 1);
+	unsigned int mask_bit_long = 1 << (len_len_h_encoded_labelmap - 1);
 
 	while (mask_bit_long)
 	{
@@ -227,7 +228,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	}
 
 # if REPORT
-	reportD2(bits_embed, idx_prepare, len_embed, LEN_LEN_H_ENCODED_LABELMAP, LEN_HC_RULE);
+	reportD2(bits_embed, idx_prepare, len_embed, len_len_h_encoded_labelmap, LEN_HC_RULE);
 # endif
 
 	//side info 3, encode(lab map) => lm bits
@@ -237,7 +238,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	assert(idx_prepare == len_sideinfo);
 
 # if REPORT
-	reportD3(bits_embed, idx_prepare, len_embed, LEN_HCODE_HEADER);
+	reportD3(bits_embed, idx_prepare, len_embed, len_hcode_header);
 # endif
 
 	// reference values
@@ -253,7 +254,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	// first col, but except (0, 0)
 	for (int row = 1; row < width_image; ++row)
 		for (int j = 0; j < 8; ++j)
-			bits_embed[idx_prepare++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
+			bits_embed[idx_prepare++] = byte2bits[(unsigned char)byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image]][j];
 
 	assert(idx_prepare == len_auxinfo);
 
@@ -285,7 +286,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	// first col, but except (0, 0)
 	for (int row = 1; row < width_image; ++row)
 	{
-		byte_image[row * width_image] = bits2byte(bits_embed, idx_embed);
+		byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image] = bits2byte(bits_embed, idx_embed);
 		idx_embed += 8;
 	}
 
@@ -337,7 +338,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	// first col, but except (0, 0)
 	for (int row = 1; row < width_image; ++row)
 		for (int j = 0; j < 8; ++j)
-			bit_extract[idx_ex++] = byte2bits[(unsigned char)byte_image[row * width_image]][j];
+			bit_extract[idx_ex++] = byte2bits[(unsigned char)byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image]][j];
 
 # if REPORT
 	reportF2(byte_image, idx_ex, width_image);
@@ -355,16 +356,16 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	for (int i = 0; i < RANGE_HCODE; ++i)
 	{
 		pair<unsigned char, int> p = decode(h_decoder, bit_extract, idx_ex_proceed);
-		assert(p.first != -1 && p.second);
+		assert(p.first != -1 && p.second != 0);
 
 		int len_cur_hcode = p.second;
 
-		assignValue(h_decoder, bit_extract, idx_ex_proceed, idx_ex_proceed + len_cur_hcode, i);
+		assignValue(h_decoder, bit_extract, idx_ex_proceed, static_cast<size_t>(idx_ex_proceed) + len_cur_hcode, i);
 
 # if REPORT
 		fprintf(fptr_report, "\tproceed %2d bits\t %d : ", idx_ex_proceed, i);
 		for (int i = 0; i < len_cur_hcode; ++i)
-			fprintf(fptr_report, "%d ", bit_extract[idx_ex_proceed + i]);
+			fprintf(fptr_report, "%d ", bit_extract[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx_ex_proceed) + i]);
 		fprintf(fptr_report, "\n");
 # endif
 
@@ -375,7 +376,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 
 	int len_ex_h_encoded_labelmap = 0;
 
-	for (int i = 0; i < LEN_LEN_H_ENCODED_LABELMAP; ++i)
+	for (int i = 0; i < len_len_h_encoded_labelmap; ++i)
 	{
 		len_ex_h_encoded_labelmap <<= 1;
 		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
@@ -436,7 +437,7 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 
 	for (int row = 1; row < width_image; ++row)
 	{
-		byte_image[row * width_image] = bits2byte(bit_extract, idx_ex_proceed);
+		byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image] = bits2byte(bit_extract, idx_ex_proceed);
 		idx_ex_proceed += 8;
 	}
 
@@ -489,6 +490,24 @@ int msb_huffman(string path_cover_img, string path_report, string path_encry_img
 	reportEnd();
 # endif
 
-	return 0;
+
+
+	struct Result res;
+	res.size_image = size_image;
+	res.width_image = width_image;
+	res.len_len_h_encoded_labelmap = len_len_h_encoded_labelmap;
+	res.len_h_values = LEN_HC_RULE;
+	for (int i = 0; i < 9; ++i)
+	{
+		res.freq[i] = cnt_t[i];
+		res.len_code[i] = (int)bits_hcode[h_encoder[i]].size();
+		vector<unsigned char> buf = bits_hcode[h_encoder[i]];
+		res.code[i] = bits2byte(buf);
+	}
+	res.len_h_encoded_labelmap = len_h_encoded_labelmap;
+	res.len_secret = len_secret;
+	res.len_ref = len_ref;
+
+	return res;
 }
 

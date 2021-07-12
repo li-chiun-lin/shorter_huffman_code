@@ -27,7 +27,7 @@ int embedMain_(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_
 		}
 		else
 		{
-			byte_image[i] = bits2byte(bits_embed, idx_embed, t + 1) | (byte_image[i] & mask_lsb[t]);
+			byte_image[i] = bits2byte(bits_embed, idx_embed, t + 1) + (byte_image[i] & mask_lsb[t]);
 			idx_embed += t + 1;
 		}
 	}
@@ -45,9 +45,9 @@ void restoreImage_(vector<unsigned char>& byte_image, vector<unsigned char>& val
 		t = val_ex_labelmap[idx];
 
 		if (t < 8)
-			byte_image[idx] = ((byte_image[idx - 1] ^ mask_bit[t]) & mask_msb[t]) | (byte_image[idx] & mask_lsb[t]);
+			byte_image[idx] = ((byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) - 1] ^ mask_bit[t]) & mask_msb[t]) | (byte_image[idx] & mask_lsb[t]);
 		else
-			byte_image[idx] = byte_image[idx - 1];
+			byte_image[idx] = byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) - 1];
 	}
 
 	int r1 = 0;
@@ -90,7 +90,7 @@ int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>
 	// first row
 	for (int col = CNT_REF; col < width_image; ++col)
 	{
-		val_labelmap[col] = pixel2t[byte_image[col - 1] ^ byte_image[col]];
+		val_labelmap[col] = pixel2t[byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(col) - 1] ^ byte_image[col]];
 		++cnt_t[val_labelmap[col]];
 
 		len_embed += val_labelmap[col] < 8 ? val_labelmap[col] + 1 : val_labelmap[col];
@@ -127,7 +127,7 @@ int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>
 	return len_embed;
 }
 
-int shr_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
+struct Result shr_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
 {
 	vector<unsigned char> byte_image = readImageRaw(path_cover_img);
 	const int size_image = (int)byte_image.size();
@@ -140,7 +140,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	const int width_image_1 = width_image - 1;
 
 	// need more fine tune
-	const int LEN_LEN_H_ENCODED_LABELMAP = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+	const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
 
 	srand(seed);
 
@@ -193,6 +193,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	vector<unsigned char> bit_val;
 	serializeHuffmanTree(tree, bit_topology, bit_val, LEN_T);
 
+
 	del(tree);
 
 	assert(bit_topology.size() == LEN_H_TOPOLOGY);
@@ -202,13 +203,11 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 
 	const int len_hcode_header = (int)bit_topology.size() + (int)bit_val.size();
 	const int len_h_encoded_labelmap = (int)bits_h_encoded_labelmap.size();
-
-	const int len_sideinfo = len_hcode_header + LEN_LEN_H_ENCODED_LABELMAP + len_h_encoded_labelmap + len_ref;
-
+	const int len_sideinfo = len_hcode_header + len_len_h_encoded_labelmap + len_h_encoded_labelmap + len_ref;
 	const int len_secret = len_embed - len_sideinfo;
 
 # if REPORT
-	reportC_(cnt_t, h_encoder, len_embed, len_h_encoded_labelmap, len_ref, (int)bit_topology.size(), (int)bit_val.size(), LEN_LEN_H_ENCODED_LABELMAP, size_image);
+	reportC_(cnt_t, h_encoder, len_embed, len_h_encoded_labelmap, len_ref, (int)bit_topology.size(), (int)bit_val.size(), len_len_h_encoded_labelmap, size_image);
 # endif
 # 
 
@@ -225,7 +224,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	for (size_t i = 0; i < bit_val.size(); ++i)
 		bits_embed[idx_prepare++] = bit_val[i];
 
-	unsigned int mask_bit_long = 1 << (LEN_LEN_H_ENCODED_LABELMAP - 1);
+	unsigned int mask_bit_long = 1 << (len_len_h_encoded_labelmap - 1);
 
 	while (mask_bit_long)
 	{
@@ -233,12 +232,12 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 		mask_bit_long >>= 1;
 	}
 
-	assert(idx_prepare == len_hcode_header + LEN_LEN_H_ENCODED_LABELMAP);
+	assert(idx_prepare == len_hcode_header + len_len_h_encoded_labelmap);
 
 
 
 # if REPORT
-	reportD_(bits_embed, LEN_H_TOPOLOGY, LEN_H_VALUE, LEN_LEN_H_ENCODED_LABELMAP, idx_prepare);
+	reportD_(bits_embed, LEN_H_TOPOLOGY, LEN_H_VALUE, len_len_h_encoded_labelmap, idx_prepare);
 # endif
 
 
@@ -248,11 +247,11 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	for (int i = 0; i < len_h_encoded_labelmap; ++i)
 		bits_embed[idx_prepare++] = bits_h_encoded_labelmap[i];
 
-	assert(idx_prepare == len_hcode_header + LEN_LEN_H_ENCODED_LABELMAP + len_h_encoded_labelmap);
+	assert(idx_prepare == len_hcode_header + len_len_h_encoded_labelmap + len_h_encoded_labelmap);
 
 
 # if REPORT
-	reportD2_(bits_embed, idx_prepare, len_embed, len_hcode_header + LEN_LEN_H_ENCODED_LABELMAP);
+	reportD2_(bits_embed, idx_prepare, len_embed, len_hcode_header + len_len_h_encoded_labelmap);
 # endif
 
 
@@ -260,7 +259,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 		for (int j = 0; j < 8; ++j)
 			bits_embed[idx_prepare++] = byte2bits[byte_image[i]][j];
 
-	assert(idx_prepare == len_hcode_header + LEN_LEN_H_ENCODED_LABELMAP + len_h_encoded_labelmap + len_ref);
+	assert(idx_prepare == len_hcode_header + len_len_h_encoded_labelmap + len_h_encoded_labelmap + len_ref);
 
 
 # if REPORT
@@ -362,7 +361,7 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	int idx_ex_proceed = it + iv;
 	int len_ex_h_encoded_labelmap = 0;
 
-	for (int i = 0; i < LEN_LEN_H_ENCODED_LABELMAP; ++i)
+	for (int i = 0; i < len_len_h_encoded_labelmap; ++i)
 	{
 		len_ex_h_encoded_labelmap <<= 1;
 		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
@@ -468,7 +467,27 @@ int shr_huffman(string path_cover_img, string path_report, string path_encry_img
 	reportEnd();
 # endif
 
-	return 0;
+
+
+
+	struct Result res;
+	res.size_image = size_image;
+	res.width_image = width_image;
+	res.len_len_h_encoded_labelmap = len_len_h_encoded_labelmap;
+	res.len_ref = len_ref;
+	res.len_h_topology = (int)bit_topology.size();
+	res.len_h_values = (int)bit_val.size();
+	res.len_h_encoded_labelmap = len_h_encoded_labelmap;
+	res.len_secret = len_secret;
+
+	for (int i = 0; i < 9; ++i)
+	{
+		res.freq[i] = cnt_t[i];
+		res.len_code[i] = (int)h_encoder[i].size();
+		res.code[i] = bits2byte(h_encoder[i]);
+	}
+
+	return res;
 }
 
 

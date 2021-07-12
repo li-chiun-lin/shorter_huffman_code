@@ -61,3 +61,22 @@ Huffman codes are optimal prefix codes.
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
+
+
+\begin{equation}
+	pe(i, j) = 
+	\begin{cases}
+		\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < REF\_BYTES \\
+		x_{i, j - 1} \oplus x_{i, j}, & \text{if } i = 0 \\
+		x_{i - 1, j} \oplus x_{i, j}, & \text{if } j = 0 \\
+		pv(i, j) \oplus x_{i, j}, 	  & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
+	\end{cases}
+\end{equation}
+where
+\begin{align*}
+	REF\_BYTES &\text{ are}  \\
+	& 2 \times n - 1 \text{ bits for Huffman coding tree topology} \\
+	& n \times \lceil log_2(max(Range(t(i, j)))) \rceil \text{ bits for Huffman coding leaf values}\\
+	& length of max HuffEncoded() \\
+	& a little more 
+\end{align*}

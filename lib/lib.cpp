@@ -21,7 +21,7 @@ errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_na
 	{
 		int rw = row * len;
 		for (int col = 0; col < len; ++col)
-			fprintf(fptr, "%02X ", byte_buf[rw + col]);
+			fprintf(fptr, "%02X ", byte_buf[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(rw) + col]);
 		fprintf(fptr, "\n");
 	}
 
@@ -69,10 +69,36 @@ unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len)
 	for (int i = 0; i < len; ++i)
 	{
 		byte_ret <<= 1;
-		byte_ret |= bit_buf[idx + i];
+		byte_ret |= bit_buf[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) + i];
 	}
 
 	return byte_ret << (8 - len);
+}
+
+unsigned char bits2byte(vector<unsigned char>& bit_buf)
+{
+	unsigned char byte_ret = 0;
+
+	for (int i = 0; i < bit_buf.size(); ++i)
+	{
+		byte_ret <<= 1;
+		byte_ret |= bit_buf[i];
+	}
+
+	return byte_ret;
+}
+
+unsigned char bits2byte(vector<int>& bit_buf)
+{
+	unsigned char byte_ret = 0;
+
+	for (int i = 0; i < bit_buf.size(); ++i)
+	{
+		byte_ret <<= 1;
+		byte_ret |= bit_buf[i];
+	}
+
+	return byte_ret;
 }
 
 void del(struct Trie* coder)
@@ -137,7 +163,7 @@ pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_
 		assert(idx == 1 || idx == 0);
 
 		if (coder->isValid)
-			return make_pair(coder->val_t, i - idx_start);
+			return make_pair(coder->val_t, (int)(i - idx_start));
 
 		// integrity check
 		assert(coder->next[idx]);
@@ -276,7 +302,7 @@ pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, siz
 	{
 		// leaf
 		if (tree->next[0] == NULL && tree->next[1] == NULL)
-			return make_pair(tree->val, i - idx_start);
+			return make_pair(tree->val, (int)(i - idx_start));
 
 		int idx = bits_buf[i];
 		assert(idx == 1 || idx == 0);
@@ -299,9 +325,9 @@ unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int wid
 {
 	assert(width_image < idx);
 
-	unsigned char x1 = byte_image[idx - width_image - 1];
-	unsigned char x2 = byte_image[idx - width_image];
-	unsigned char x3 = byte_image[idx - 1];
+	unsigned char x1 = byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) - width_image - 1];
+	unsigned char x2 = byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) - width_image];
+	unsigned char x3 = byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) - 1];
 	unsigned char px = 0;
 
 	if (x1 <= x2 && x1 <= x3)

@@ -64,6 +64,7 @@
 
 \begin{figure}
 	\centering
+	\caption{demo x}
 	\begin{tabular}{|c | c |c | c |c | c |} \hline
 		$x_{0, 0}$ & $x_{0, 1}$ & $x_{0, 2}$                         & $\dots$                           & $\dots$ & $x_{0, m}$ \\ \hline
 		$x_{1, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $\dots$    \\ \hline 
@@ -71,8 +72,116 @@
 		$\dots$    & $\dots$    & \cellcolor{blue!10}$x_{i, j - 1}$  & \cellcolor{blue!10}$x_{i, j}$     & $\dots$ & $\dots$    \\ \hline 
 		$x_{n, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $x_{n, m}$ \\ \hline 
 	\end{tabular}
-	\caption{text}
+	\subcaption{sub 1}
+	
+	\begin{tabular}{|c | c |c | c |c | c |} \hline
+		\rowcolor{lightgray}
+		\cellcolor{lightgray}$N/A$   & $N/A$       & $N/A$       & $\dots$                        & $\dots$ & $N/A$       \\ \hline
+		\cellcolor{lightgray}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, m}$ \\ \hline
+		\cellcolor{lightgray}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & \cellcolor{blue!10}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$N/A$   & $pv_{n, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{n, m}$ \\ \hline 
+	\end{tabular}
+
+	\subcaption{sub 2}
 \end{figure}
+
+
+
+\begin{figure}
+	\centering
+	
+	\begin{subfigure}{\linewidth}
+		\centering
+		
+		\begin{tabular}{|c | c |c | c |c | c |} \hline
+			$x_{0, 0}$ & $x_{0, 1}$ & $x_{0, 2}$                         & $\dots$                           & $\dots$ & $x_{0, m}$ \\ \hline
+			$x_{1, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $\dots$    \\ \hline 
+			$x_{2, 0}$ & $\dots$    & \cellcolor{blue!10} $x_{i-1, j-1}$ & \cellcolor{blue!10}$x_{i - 1, j}$ & $\dots$ & $\dots$    \\ \hline 
+			$\dots$    & $\dots$    & \cellcolor{blue!10}$x_{i, j - 1}$  & \cellcolor{blue!10}$x_{i, j}$     & $\dots$ & $\dots$    \\ \hline 
+			$x_{n, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $x_{n, m}$ \\ \hline 
+		\end{tabular}
+	\caption{cap 1}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\centering
+		
+		\begin{tabular}{|c | c |c | c |c | c |} \hline
+			\rowcolor{lightgray}
+			\cellcolor{lightgray}$N/A$   & $N/A$       & $N/A$       & $\dots$                        & $\dots$ & $N/A$       \\ \hline
+			\cellcolor{lightgray}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, m}$ \\ \hline
+			\cellcolor{lightgray}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+			\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+			\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & \cellcolor{blue!10}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
+			\cellcolor{lightgray}$N/A$   & $pv_{n, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{n, m}$ \\ \hline 
+		\end{tabular}
+		\caption{cap 2}
+	\end{subfigure}
+
+
+	
+	\caption{demo x with subfigure}
+
+\end{figure}
+
+
+
+
+
+\begin{figure}
+	\centering
+	
+
+		\begin{tabularx}{\linewidth}{|*{6}{X|}} 
+		\hline
+		$x_{0, 0}$ & $x_{0, 1}$ & $x_{0, 2}$                         & $\dots$                           & $\dots$ & $x_{0, m}$ \\ \hline
+		$x_{1, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $\dots$    \\ \hline 
+		$x_{2, 0}$ & $\dots$    & \cellcolor{blue!10} $x_{i-1, j-1}$ & \cellcolor{blue!10}$x_{i - 1, j}$ & $\dots$ & $\dots$    \\ \hline 
+		$\dots$    & $\dots$    & \cellcolor{blue!10}$x_{i, j - 1}$  & \cellcolor{blue!10}$x_{i, j}$     & $\dots$ & $\dots$    \\ \hline 
+		$x_{n, 0}$ & $\dots$    & $\dots$                            & $\dots$                           & $\dots$ & $x_{n, m}$ \\ \hline 
+		
+		\multicolumn{6}{c}{text} \\
+
+		\rowcolor{lightgray}
+		\cellcolor{lightgray}$N/A$   & $N/A$       & $N/A$       & $\dots$                        & $\dots$ & $N/A$       \\ \hline
+		\cellcolor{lightgray}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, m}$ \\ \hline
+		\cellcolor{lightgray}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & \cellcolor{blue!10}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$N/A$   & $pv_{n, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{n, m}$ \\ \hline 
+	\end{tabularx}
+	
+	
+	\caption{demo x with pv in the same table}
+\end{figure}
+
+
+
+\begin{figure}
+	\centering
+	\begin{tabular}{|c | c |c | c |c | c |} \hline
+		\rowcolor{lightgray}
+		\cellcolor{lightgray}$N/A$   & $N/A$       & $N/A$       & $\dots$                        & $\dots$ & $N/A$       \\ \hline
+		\cellcolor{lightgray}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, m}$ \\ \hline
+		\cellcolor{lightgray}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & \cellcolor{blue!10}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{lightgray}$N/A$   & $pv_{n, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{n, m}$ \\ \hline 
+	\end{tabular}
+	\caption{demo pv}
+\end{figure}
+
+\begin{equation*}
+	\begin{bmatrix}
+	x_{0, 0} & x_{0, 1} & x_{0, 2}                         & \dots                           & \dots & x_{0, m} \\ 
+	x_{1, 0} & \dots    & \dots                            & \dots                           & \dots & \dots    \\ 
+	x_{2, 0} & \dots    & \cellcolor{blue!10} x_{i-1, j-1} & \cellcolor{blue!10}x_{i - 1, j} & \dots & \dots    \\ 
+	\dots    & \dots    & \cellcolor{blue!10}x_{i, j - 1}  & \cellcolor{blue!10}x_{i, j}     & \dots & \dots    \\ 
+	x_{n, 0} & \dots    & \dots                            & \dots                           & \dots & x_{n, m} \\ 
+	\end{bmatrix}
+\end{equation*}
 
 \subsection{title}
 
@@ -89,16 +198,3 @@
 \end{figure}
 
 
-\begin{figure}
-	\centering
-	\begin{tabular}{|c | c |c | c |c | c |} \hline
-		\rowcolor{lightgray}
-		\cellcolor{lightgray}$N/A$   & $N/A$       & $N/A$       & $\dots$                        & $\dots$ & $N/A$       \\ \hline
-		\cellcolor{lightgray}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, m}$ \\ \hline
-		\cellcolor{lightgray}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
-		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
-		\cellcolor{lightgray}$\dots$ & $\dots$     & $\dots$     & \cellcolor{blue!10}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
-		\cellcolor{lightgray}$N/A$   & $pv_{n, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{n, m}$ \\ \hline 
-	\end{tabular}
-	\caption{text}
-\end{figure}

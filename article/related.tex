@@ -14,7 +14,11 @@ they use Canonical Huffman Codes.
 \end{equation}
 
 \begin{equation}
-	pe(i, j) = pv(i, j) \oplus x_{i, j}
+	pe(i, j) = 
+		\begin{cases}
+			\text{undefined}, & \text{if } i = 0 \vee j = 0 \\
+			pv(i, j) \oplus x_{i, j}, & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
+		\end{cases}
 \end{equation}
 
 \begin{equation}
@@ -87,11 +91,21 @@ where
 \begin{figure}
 	\centering
 	
-	\begin{tabular}{rrclll}
+	\begin{tabular}{rrc l ll}
 		& & &
-		\begin{tabular}{ c  c  c  c  c  c  c  c }
-			& $t(i, j) = 4$ & &  &  & &  & \\
-		\end{tabular} 
+		
+		\begin{tabular}{ l cccccc r }
+			MSB & &&&&& & LSB \\
+			\hline
+		\end{tabular}
+
+		 
+		&&\\
+%		\cline{4-4}
+		&&&&&\\
+		
+		& & &
+		 \qquad $t(i, j) = 4$ 
 		&&\\
 		
 		

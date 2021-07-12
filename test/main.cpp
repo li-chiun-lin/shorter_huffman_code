@@ -20,8 +20,11 @@ void testtiff()
 
 	for (string f : fn)
 	{
-		msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
-		shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+		struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+		struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+
+		printResult(ret_msb);
+		printResult(ret_shr);
 	}
 }
 
@@ -34,8 +37,11 @@ void debug()
 void lena()
 {
 	string f = "Lena";
-	msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
-	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+	struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+	struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+
+	printResult(ret_msb);
+	printResult(ret_shr);
 }
 
 void man()
@@ -62,13 +68,26 @@ void testlen()
 	system("pause");
 }
 
+void testres()
+{
+	string f = "Lena";
+	struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+	struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+
+	printResult(ret_msb);
+	printResult(ret_shr);
+
+	system("pause");
+}
+
 int main()
 {
 	//testlib();
-	//testtiff();
+	testtiff();
 
 	//debug();
 	lena();
+	//testres();
 
 	
 	//testlen();
