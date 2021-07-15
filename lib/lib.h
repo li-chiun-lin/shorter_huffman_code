@@ -102,9 +102,9 @@ const vector<unsigned char> mask_lsb = { 0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x0
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
 vector<unsigned char> readImageRaw(string file_name);
 void writeImage(string file_name, vector<unsigned char>& byte_buf);
-unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len = 8);
-unsigned char bits2byte(vector<unsigned char>& bit_buf);
-unsigned char bits2byte(vector<int>& bit_buf);
+unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx = 0, int len = 8);
+//unsigned char bits2byte(vector<unsigned char>& bit_buf);
+//unsigned char bits2byte(vector<int>& bit_buf);
 
 void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 unsigned char predictedValue(vector<unsigned char>& byte_image, int idx, int width_image);
@@ -151,8 +151,8 @@ public:
 
 Node* buildHuffmanTree(const vector<int>& freq);
 void del(Node* tree);
-vector< vector<int> > buildHuffmanEncoder(const Node* tree, int size_domain);
-void dfs(const Node* tree, vector< vector<int> >& encoder, int* code, int len);
+vector< vector<unsigned char> > buildHuffmanEncoder(const Node* tree, int size_domain);
+void dfs(const Node* tree, vector< vector<unsigned char> >& encoder, int* code, int len);
 void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology, vector<unsigned char>& bit_val, int size_val);
 Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int& it, vector<unsigned char>& bit_val, int& iv, int size_val);
 pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, size_t idx_start);

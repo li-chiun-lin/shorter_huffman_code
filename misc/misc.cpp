@@ -158,7 +158,7 @@ void testHuffman()
 	vector<int> freq = { 9818, 9742, 15247, 33246, 44509, 53359, 41758, 24353, 29089 };
 
 	Node* tree = buildHuffmanTree(freq);
-	vector< vector<int> > encoder = buildHuffmanEncoder(tree, (int)freq.size());
+	vector< vector<unsigned char> > encoder = buildHuffmanEncoder(tree, (int)freq.size());
 
 	for (int i = 0; i < freq.size(); ++i)
 	{
@@ -187,7 +187,7 @@ void testHuffman()
 	int iv = 0;
 	Node* tree2 = unserializeHuffmanTree(bit_topology, it, bit_val, iv, 5);
 
-	vector< vector<int> > encoder2 = buildHuffmanEncoder(tree2, (int)freq.size());
+	vector< vector<unsigned char> > encoder2 = buildHuffmanEncoder(tree2, (int)freq.size());
 
 	for (int i = 0; i < encoder2.size(); ++i)
 	{

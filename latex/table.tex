@@ -198,3 +198,261 @@
 \end{figure}
 
 
+
+\begin{figure}
+	\centering
+	
+	\begin{tabular}[t]{rrc c ll}
+		
+		
+		& & &
+		\begin{tabular}{c cccccc c }
+			MSB & &&&&& & LSB \\
+			%			MSB & \multicolumn{6}{c}{$\underleftarrow{}$} & LSB \\
+			$b_7$ & && \phantom{0}&\phantom{0}&\phantom{0}& & $b_0$ \\
+			\hline
+		\end{tabular}
+		
+		&&\\
+		
+		\phantom{0}&      &  &   &&\\
+		
+		%		& & &
+		%		\begin{tabular}{cccccccc }
+		%			$b_7$ & &&&&& & $b_7$ \\
+		%		\end{tabular}
+		%		
+		%		&&\\
+		
+		
+		
+		%		&&&\downbracefill
+		%		&&\\
+		
+		
+		
+		\multirow{5}{*}{Preprocess $\left \{ \begin{array}{r}
+				\\
+				\\
+				\\
+				\\
+				\\
+			\end{array}  \right.$}
+		
+		
+		
+		&$x_{i, j}$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
+			\hline
+		\end{tabular} 
+		&   & \\
+		
+		
+		&$pv_{i, j}$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 \\
+			\hline
+		\end{tabular} 
+		& &\\
+		
+		&
+		\begin{tabular}{@{}r@{}}
+			$pe_{i, j}$\\
+			\phantom{0} \\
+			$t_{i, j}$
+		\end{tabular}
+		
+		& 
+		\begin{tabular}{@{}r@{}}
+			=\\
+			\phantom{0} \\
+			=
+		\end{tabular}
+		
+		& 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			\cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 
+			& \cellcolor{gray}1 & 0 & 1 & 0 \\
+			\hline
+			\multicolumn{4}{@{}c@{}}{\upbracefill} & \multicolumn{4}{c}{ } \\
+			%			\multicolumn{4}{@{}c@{}}{$4$} & \multicolumn{2}{@{}l}{+1} & \multicolumn{2}{c}{ } \\
+			\multicolumn{4}{@{}c@{}}{$4$} & \multicolumn{4}{c}{ } \\
+		\end{tabular} 
+		& &\\
+		
+		\phantom{0}&      &  &   &&\\
+		
+		
+		\multirow{3}{*}{Encrypt $\left \{ \begin{array}{r}
+				\\
+				\\
+				\\
+			\end{array}  \right.$}
+		
+		&$x_{i, j}$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
+			\hline
+		\end{tabular} 
+		&   & \\
+		
+		&$\oplus \quad K$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+			\hline
+		\end{tabular} 
+		&   & \\
+		
+		&$x^e_{i, j}$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 \\
+			\hline
+		\end{tabular} 
+		&   & \\
+		
+		
+		
+		%		\phantom{0}&      &  &   &&\\
+		
+		&$t_{i, j}$   & $=$ &
+		\begin{tabular}{|cccccccc|}
+			\multicolumn{4}{c}{$4$}& $+1$& \phantom{0} & \phantom{0}& \phantom{0} \\
+		\end{tabular} 
+		&&\\
+		
+		
+		&$S$   & $=$ &
+		\begin{tabular}{| c | c | c | c | c | c  c  c }
+			\cline{1-5}
+			1 & 1 & 0 & 1 & 0 &\phantom{0} & \phantom{0} & \phantom{0} \\
+			\cline{1-5}
+		\end{tabular} 
+		&&\\
+		
+		
+		
+		
+		\phantom{0} &&&&&\\
+		
+		
+		&${x^{e\prime}_{i, j}} $ &  $=$ &
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			\cellcolor{lightgray}1 & \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
+			& \cellcolor{gray}0 & 1 & 0 & 0 \\
+			\hline
+		\end{tabular} 
+		&   
+		
+		
+		\multirow{4}{*}{$\left . \begin{array}{r}
+				\\
+				\\
+				\\
+				\\
+			\end{array}  \right \}$ Extract}
+		
+		&
+		
+		\multirow{8}{*}{$\left . \begin{array}{r}
+				\\
+				\\
+				\\
+				\\
+				\\
+				\\
+				\\
+				\\
+			\end{array}  \right \}$ Restore}
+		\\
+		
+		
+		&
+		\begin{tabular}{@{}r@{}}
+			\phantom{0}\\
+			$t_{i, j}$
+		\end{tabular}
+		
+		& 
+		\begin{tabular}{@{}r@{}}
+			\phantom{0}\\
+			=
+		\end{tabular}
+		
+		& 
+		\begin{tabular}{cccccccc}
+			\phantom{0} & \phantom{0} & \phantom{0} & \phantom{0} & 
+			\phantom{0} & \phantom{0} & \phantom{0} & \phantom{0} \\
+			\multicolumn{4}{@{}c@{}}{$4$} & \multicolumn{2}{@{}l}{+1} & \multicolumn{2}{c}{ } \\
+			%			\multicolumn{4}{@{}c@{}}{\downbracefill} & \multicolumn{4}{c}{ } \\
+			%			\multicolumn{4}{@{}c@{}}{$t(i, j) = 4$} & \multicolumn{4}{c}{ } \\
+		\end{tabular} 
+		& &\\
+		
+		
+		%		&\phantom{0}      &  &&&\\
+		
+		
+		
+		
+		&$S$  & $=$ &
+		\begin{tabular}{| c | c | c | c | c | c  c  c }
+			\cline{1-5}
+			1 & 1 & 0 & 1 & 0 & \phantom{0} & \phantom{0} & \phantom{0} \\
+			\cline{1-5}
+		\end{tabular} 
+		&&\\
+		
+		
+		&\phantom{0}      &  &       
+		&&\\
+		
+		
+		
+		&$pv_{i, j}$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			\cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
+			& 0 & 1 & 1 & 0 \\
+			\hline
+		\end{tabular} 
+		&&\\
+		
+		&${x^{\prime\prime}_{i, j}} $ &  $=$ &
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			\cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
+			& 0 & 1 & 0 & 0 \\
+			\hline
+		\end{tabular} 
+		&& \\
+		
+		&$x_{i, j}$ & $=$     & 
+		\begin{tabular}{| c | c | c | c | c | c | c | c |}
+			\hline
+			1 & 0 & 0 & 1 
+			& \cellcolor{gray}1 & 1 & 0 & 0 \\
+			\hline
+		\end{tabular} 
+		&&\\
+		
+		
+		& & &
+		\begin{tabular}{ c  c  c  c  c  c  c  c }
+			\phantom{0}	& \phantom{0} &\phantom{0} & \phantom{0} 
+			& \makecell[c]{$\uparrow$ \\ flip} & \phantom{0} & \phantom{0} & \phantom{0} \\
+		\end{tabular} 
+		&&\\
+		
+	\end{tabular}
+	
+	\caption{An Example}
+\end{figure}
+

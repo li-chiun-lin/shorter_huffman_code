@@ -2,7 +2,7 @@
 #include "shorter_huffman.h"
 
 
-vector<unsigned char> encodeLabelMap_(vector< vector<int> >& encoder, vector<unsigned char>& val_labelmap)
+vector<unsigned char> encodeLabelMap_(vector< vector<unsigned char> >& encoder, vector<unsigned char>& val_labelmap)
 {
 	vector<unsigned char> bits_h_encoded_labelmap;
 
@@ -188,7 +188,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 	// C Huffman Coding  
 
 	Node* tree = buildHuffmanTree(cnt_t);
-	vector< vector<int> > h_encoder = buildHuffmanEncoder(tree, DOMAIN_HCODE);
+	vector< vector<unsigned char> > h_encoder = buildHuffmanEncoder(tree, DOMAIN_HCODE);
 	vector<unsigned char> bit_topology;
 	vector<unsigned char> bit_val;
 	serializeHuffmanTree(tree, bit_topology, bit_val, LEN_T);

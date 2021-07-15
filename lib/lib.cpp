@@ -66,7 +66,7 @@ unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len)
 
 	unsigned char byte_ret = 0;
 
-	for (int i = 0; i < len; ++i)
+	for (int i = 0; i < len && i < bit_buf.size(); ++i)
 	{
 		byte_ret <<= 1;
 		byte_ret |= bit_buf[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(idx) + i];
@@ -75,31 +75,31 @@ unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx, int len)
 	return byte_ret << (8 - len);
 }
 
-unsigned char bits2byte(vector<unsigned char>& bit_buf)
-{
-	unsigned char byte_ret = 0;
+//unsigned char bits2byte(vector<unsigned char>& bit_buf)
+//{
+//	unsigned char byte_ret = 0;
+//
+//	for (int i = 0; i < bit_buf.size(); ++i)
+//	{
+//		byte_ret <<= 1;
+//		byte_ret |= bit_buf[i];
+//	}
+//
+//	return byte_ret;
+//}
 
-	for (int i = 0; i < bit_buf.size(); ++i)
-	{
-		byte_ret <<= 1;
-		byte_ret |= bit_buf[i];
-	}
-
-	return byte_ret;
-}
-
-unsigned char bits2byte(vector<int>& bit_buf)
-{
-	unsigned char byte_ret = 0;
-
-	for (int i = 0; i < bit_buf.size(); ++i)
-	{
-		byte_ret <<= 1;
-		byte_ret |= bit_buf[i];
-	}
-
-	return byte_ret;
-}
+//unsigned char bits2byte(vector<int>& bit_buf)
+//{
+//	unsigned char byte_ret = 0;
+//
+//	for (int i = 0; i < bit_buf.size(); ++i)
+//	{
+//		byte_ret <<= 1;
+//		byte_ret |= bit_buf[i];
+//	}
+//
+//	return byte_ret;
+//}
 
 void del(struct Trie* coder)
 {
@@ -213,9 +213,9 @@ void del(Node* tree)
 	delete tree;
 }
 
-vector<vector<int>> buildHuffmanEncoder(const Node* tree, int size_domain)
+vector<vector<unsigned char>> buildHuffmanEncoder(const Node* tree, int size_domain)
 {
-	vector<vector<int>> encoder(size_domain);
+	vector<vector<unsigned char>> encoder(size_domain);
 	const int size_range = 10;
 	int code[size_range] = { 0 };
 
@@ -224,14 +224,14 @@ vector<vector<int>> buildHuffmanEncoder(const Node* tree, int size_domain)
 	return encoder;
 }
 
-void dfs(const Node* tree, vector<vector<int>>& encoder, int* code, int len)
+void dfs(const Node* tree, vector<vector<unsigned char>>& encoder, int* code, int len)
 {
 	if (tree == NULL)
 		return;
 
 	if (tree->next[0] == NULL && tree->next[1] == NULL)
 	{
-		encoder[tree->val] = vector<int>(code, code + len);
+		encoder[tree->val] = vector<unsigned char>(code, code + len);
 		return;
 	}
 

@@ -5,68 +5,69 @@ related work, their work ~\cite{Yin2020} ~\cite{IRE} ~\cite{Weinberger2000}
 they use Canonical Huffman Codes.
 
 \begin{equation}
-	pv(i, j) = 
+	pv_{i, j} = 
 	\begin{cases}
-		max(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
-		min(x_{i - 1, j}, x_{i, j - 1})               , &  \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}, &  \textrm{otherwise}. 
+		max(x_{i - 1, j}, x_{i, j - 1})                &  \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
+		min(x_{i - 1, j}, x_{i, j - 1})                &  \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} &  \textrm{otherwise}. 
 	\end{cases} 
 \end{equation}
 
 \begin{equation}
-	pe(i, j) = 
+	pe_{i, j} = 
 		\begin{cases}
-			\text{undefined}, & \text{if } i = 0 \vee j = 0 \\
-			pv(i, j) \oplus x_{i, j}, & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
+			\text{undefined}          & \text{if } i = 0 \vee j = 0 \\
+			pv_{i, j} \oplus x_{i, j} & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
 		\end{cases}
 \end{equation}
 
 \begin{equation}
-	t(i, j) = 
+	t_{i, j} = 
 	\begin{dcases}
-		8                                   ,&  \text{if } pe(i, j) = 0       \\
-		7 - \lfloor log_2(pe(i, j)) \rfloor ,&  \text{otherwise}
+		8                                    &  \text{if } pe_{i, j} = 0 ,      \\
+		7 - \lfloor log_2(pe_{i, j}) \rfloor &  \text{otherwise}.
 	\end{dcases} 
 \end{equation}
 
 \begin{equation}
 	Embed(i, j, S) = 
 	\begin{cases}
-		MSB^{t(i, j) + 1}(S) + LSB^{(7 - t(i, j))}(x_{i, j}) , & \text{if } t(i, j) \in [0, 6] \\
-		MSB^8(S)                                             , & \text{if } t(i, j) \in [7, 8]
+		MSB^{(t_{i, j} + 1)}(S) + LSB^{(7 - t_{i, j})}(x_{i, j}) & \text{if } 0 \leq t_{i, j} < 7 \\
+		MSB^8(S)                                               & \text{if } 7 \leq t_{i, j} \leq  8
 	\end{cases} 
 \end{equation}
 
 \begin{equation}
 	Restore(i, j) = 
 	\begin{cases}
-		pv(i, j), & \text{if } t(i, j) = 8 \\
+		pv_{i, j}                          & \text{if } t_{i, j} = 8 \\
 		\\
 		\begin{aligned}
-			MSB^{t(i, j)}(pv(i, j)) &+ LSB^{(7 - t(i, j))}(x^\prime_{i, j}) \\
-			&+ \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t(i, j))}) \cdot 2^{(7 - t(i, j))}}_
-				{\text{flip the } (t(i, j)+1) \text{-th most significant bit}} 
-		\end{aligned}, & \text{if } t(i, j) \in [0, 7]
+			&MSB^{t_{i, j}}(pv_{i, j}) \\
+			&\qquad + LSB^{(7 - t_{i, j})}(x^\prime_{i, j}) \\
+			&\qquad + \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \cdot 2^{(7 - t_{i, j})}}_
+				{\text{flip the } (t_{i, j}+1) \text{-th MSB}} 
+		\end{aligned} & \text{if } 0 \leq t_{i, j} \leq 7
 	\end{cases}
 \end{equation}
 
 \begin{equation}
-	LM  = \sum_{t=0}^{8} (freq(t) \cdot \lvert HuffEncode(t) \rvert)
+	LM  = \sum_{t=0}^{8} (freq_t \cdot \lvert HuffEncode(t) \rvert)
 \end{equation}
 
 
 where
 \begin{align}
-	x_{i, j}& = \{0, 1\}^8, x_{i, j} \in I\notag &\\ 
-	x_{i, j}^{(u)} &\text{ is the } u \text{-th bit of }x_{i, j} \notag& \\
-	i& = \{u \mid u \in \mathbb{N}, 1 \leq u < h\}, \notag& \\
-	j &= \{v \mid v \in \mathbb{N}, 1 \leq v < w\}, \notag& \\
-	h &\text{ is the height of image, }  \notag &\\ 
-	w &\text{ is the width of image, }  \notag & \\
-	MSB^{m}(B) &= \sum\nolimits_{i = 8 - m}^7 b_i \cdot 2^i, m \in [1, 8],  \notag &\\
-	LSB^{n}(B) &= \sum\nolimits_{i = 0}^{n - 1} b_i \cdot 2^i, n \in [1, 8],  \notag &\\
-	B &= \{0, 1\}^*, b_i \in B, i \in [0, 7], \notag &\\
-	S &= \{0, 1\}^*,  \notag  & \\
+	x_{i, j}     & \in I, \notag &\\ 
+	x_{i, j}^{u} & \text{ is the } u \text{-th bit of }x_{i, j},  \notag& \\
+	i            & = \{u \in \mathbb{N} \mid 1 \leq u < h\}, \notag& \\
+	j            & = \{v \in \mathbb{N} \mid 1 \leq v < w\}, \notag& \\
+	h            & \text{ is the height of image, }  \notag &\\ 
+	w            & \text{ is the width of image, }  \notag & \\
+	MSB^{m}(B)   & = \sum\nolimits_{i = 8 - m}^7 b_i \cdot 2^i, m \in [1, 8],  \notag &\\
+	LSB^{n}(B)   & = \sum\nolimits_{i = 0}^{n - 1} b_i \cdot 2^i, n \in [1, 8],  \notag &\\
+	B            & \in \{0, 1\}^*, b_i \in B, i \in [0, 7], \notag &\\
+	S            & \in \{0, 1\}^*,  \notag  & \\
 	 HuffEncode(x) &\text{ denotes the Huffman code of } x, \notag& \\ 
 	 \lvert y \rvert &\text{ denotes the length of } y \notag &
 \end{align}
@@ -91,157 +92,130 @@ where
 \begin{figure}
 	\centering
 	
-	\begin{tabular}{rrc l ll}
-		& & &
-		
-		\begin{tabular}{ l cccccc r }
-			MSB & &&&&& & LSB \\
-			\hline
-		\end{tabular}
-
-		 
-		&&\\
-%		\cline{4-4}
-		&&&&&\\
-		
-		& & &
-		 \qquad $t(i, j) = 4$ 
-		&&\\
+	\begin{tabular}{@{}r@{}r@{}rc|c|c|c|c|c|c|c|c|ll}
 		
 		
-		\multirow{6}{*}{Embed $\left \{ \begin{array}{r}
-				 \\
-				 \\
-				 \\
-				 \\
-				  \\
-				  \\
+		&& \multicolumn{10}{c}{ } && \\
+		&& & \multicolumn{1}{c}{ }& \multicolumn{2}{@{}l}{MSB}&\multicolumn{4}{c}{ }&\multicolumn{2}{r@{}}{LSB} && \\
+		&& & \multicolumn{1}{c}{ }& \multicolumn{2}{l}{$b_7$}&\multicolumn{4}{c}{ }&\multicolumn{2}{r}{$b_0$} && \\ 
+		\cline{5-12}
+		
+		&& \multicolumn{10}{c}{ } && \\
+		
+		
+		\cline{5-12}
+		&
+		
+		\multirow{5}{*}{Preprocess $\left \{ \begin{array}{r}
+				\\ \\ \\ \\ \\
 			\end{array}  \right.$}
 		
+		& $x_{i, j}$  & = & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 && \\ \cline{5-12}
+		&& $pv_{i, j}$ & = & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 && \\ 
+		\hhline{*{4}{~}*{8}{-}}
+		&& $pe_{i, j}$ & = 
+			& \cellcolor{lightgray}0 &\cellcolor{lightgray}0 &\cellcolor{lightgray}0 &\cellcolor{lightgray}0 
+			& \cellcolor{gray}1      & 0 & 1 & 0    && \\
+		\cline{5-12}
+		&&            &\multicolumn{1}{c}{}        & \multicolumn{4}{@{}c@{}}{\upbracefill}&\multicolumn{4}{c}{ } && \\
+		&& $t_{i, j}$ &\multicolumn{1}{@{}c@{}}{=} & \multicolumn{4}{c}{4}&\multicolumn{4}{c}{ }                  && \\
 		
 		
-		&$x_{i, j}$ & $=$     & 
-		\begin{tabular}{| c | c | c | c | c | c | c | c |}
-			\hline
-			\cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
-			& \cellcolor{gray}1 & 1 & 0 & 0 \\
-			\hline
-		\end{tabular} 
-		&   & \\
+		&& \multicolumn{10}{c}{ } && \\
 		
 		
-		&$pv(i, j)$ & $=$     & 
-		\begin{tabular}{| c | c | c | c | c | c | c | c |}
-			\hline
-			\cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
-			& \cellcolor{gray}0 & 1 & 1 & 0 \\
-			\hline
-		\end{tabular} 
-		& &\\
+		\cline{5-12}
+		&
+		\multirow{3}{*}{Encrypt $\left \{ \begin{array}{r}
+				\\ \\ \\ 
+			\end{array}  \right.$}
 		
-		&\phantom{0}      &  &       
-		&&\\
+		& $x_{i, j}$       & = & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 && \\ \cline{5-12}
+		&& $\oplus \quad K$ & = & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 && \\ \cline{5-12}
+		&& $x^e_{i, j}$     & = & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 && \\ \cline{5-12}
 		
+		&& \multicolumn{10}{c}{ } && \\
 		
+		\cline{5-12}
+		&
 		
+		\multirow{5}{*}{Embed $\left \{ \begin{array}{r}
+				\\ \\ \\ \\ \\ 
+			\end{array}  \right.$}
 		
+		& $x^e_{i, j}$     & = & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 && \\ \cline{5-12}
+		&& $t_{i, j}$ & \multicolumn{1}{@{}c@{}}{=} & \multicolumn{4}{c}{4}&\multicolumn{2}{@{}l}{+1}&\multicolumn{2}{c}{ } && \\
+		\cline{5-9}
+		&& $S$        & = & 1 & 1 & 0 & 1 & 0 &  \multicolumn{3}{c}{ }     && \\ \cline{5-9}
 		
-		&secret bits $S$   & $=$ &
-		\begin{tabular}{| c | c | c | c | c | c  c  c }
-			\cline{1-5}
-			1 & 1 & 0 & 1 & 0 & $\cdots$ &  & \\
-			\cline{1-5}
-		\end{tabular} 
-		&&\\
-		
-		
-		&\phantom{0}      &  &       
-		&&\\
+		&& \multicolumn{10}{c}{ } && \\
 		
 		
-		&${x^\prime_{i, j}} $ &  $=$ &
-		\begin{tabular}{| c | c | c | c | c | c | c | c |}
-			\hline
-			\cellcolor{lightgray}1 & \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
-			& \cellcolor{gray}0 & 1 & 0 & 0 \\
-			\hline
-		\end{tabular} 
-		&   
+		\hhline{*{4}{~}*{8}{-}}
+		&& $x^{e\prime}_{i, j}$ & = 
+			& \cellcolor{lightgray}1 & \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
+			& \cellcolor{gray}0      & 0 & 1 & 1 &    
+			
+			\multirow{4}{*}{$\left . \begin{array}{r}
+					\\ \\ \\ \\
+				\end{array}  \right \}$ Extract} 
+			
+			
+			& \\ 
+		\hhline{*{4}{~}*{8}{-}}
+		&& \multicolumn{10}{c}{ } && \\
+		&& $t_{i, j}$ & \multicolumn{1}{@{}c@{}}{=} & \multicolumn{4}{c}{4}&\multicolumn{2}{@{}l}{+1}&\multicolumn{2}{c}{ } && \\
+		\cline{5-9}
+		&& $S$        & = & 1 & 1 & 0 & 1 & 0 &  \multicolumn{3}{c}{ }     && \\ \cline{5-9}
+		
+		&& \multicolumn{10}{c}{ } && \\
+		
+		
+		
+		
+		\cline{5-12}
+		&& $x^{e\prime}_{i, j}$  & = & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 1 &
 		
 		\multirow{3}{*}{$\left . \begin{array}{r}
-				\\
-				\\
-				\\
-			\end{array}  \right \}$ Extract}
+				\\ \\ \\
+			\end{array}  \right \}$ Decrypt}
 		
-		   &
-		   
-		   \multirow{7}{*}{$\left . \begin{array}{r}
-		   		\\
-		   		\\
-		   		\\
-		   		\\
-		   		\\
-		   		\\
-		   		\\
-		   	\end{array}  \right \}$ Restore}
-		   \\
+		& \\ \cline{5-12}
+		&& $\oplus \quad K$      & = & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 && \\ \cline{5-12}
+		&& $x^\prime_{i, j}$     & = & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 && \\ \cline{5-12}
 		
+		&& \multicolumn{10}{c}{ } && \\
 		
+		&& &\multicolumn{1}{c}{ }& \multicolumn{10}{@{}c}{\begin{scriptsize}
+				\makecell[l]{
+			It must be emphasized that at this moment \\
+			$x_{i-1, j - 1}, x_{i-1, j}$ and $x_{i, j -1}$ are already been restored.
+		}
+		\end{scriptsize}}  \\
 		
+		\hhline{*{4}{~}*{8}{-}}
+		&& $pv_{i, j}$    & = 
+			& \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
+			& \cellcolor{gray}0      & 1 & 1 & 0 &
+			
+			\multirow{3}{*}{$\left . \begin{array}{r}
+					\\ \\ \\ 
+				\end{array}  \right \}$ Restore}
+			
+			& \\
+		\hhline{*{4}{~}*{8}{-}}
+		&& $t_{i, j}$ & \multicolumn{1}{@{}c@{}}{=} & \multicolumn{4}{c}{4}&\multicolumn{2}{@{}l}{+1}&\multicolumn{2}{c}{ } && \\
+		\hhline{*{4}{~}*{8}{-}}
+		&& $x_{i, j}$  & = 
+			& \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
+			& \cellcolor{gray}1 & 1 & 0 & 0 && \\ 
+		\hhline{*{4}{~}*{8}{-}}
 		
-		
-		&\phantom{0}      &  &       
-		&&\\
-		
-		&secret bits  $S$  & $=$ &
-		\begin{tabular}{| c | c | c | c | c | c  c  c }
-			\cline{1-5}
-			1 & 1 & 0 & 1 & 0 & & & \\
-			\cline{1-5}
-		\end{tabular} 
-		&&\\
-		
-		
-		&\phantom{0}      &  &       
-		&&\\
-		
-		&$pv(i, j)$ & $=$     & 
-		\begin{tabular}{| c | c | c | c | c | c | c | c |}
-			\hline
-			\cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
-			& 0 & 1 & 1 & 0 \\
-			\hline
-		\end{tabular} 
-		&&\\
-		
-		&${x^{\prime\prime}_{i, j}} $ &  $=$ &
-		\begin{tabular}{| c | c | c | c | c | c | c | c |}
-			\hline
-			\cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}0 & \cellcolor{lightgray}1 
-			& 0 & 1 & 0 & 0 \\
-			\hline
-		\end{tabular} 
-		&& \\
-		
-		&$x_{i, j}$ & $=$     & 
-		\begin{tabular}{| c | c | c | c | c | c | c | c |}
-			\hline
-			1 & 0 & 0 & 1 
-			& \cellcolor{gray}1 & 1 & 0 & 0 \\
-			\hline
-		\end{tabular} 
-		&&\\
-		
-		
-		& & &
-		\begin{tabular}{ c  c  c  c  c  c  c  c }
-		 \phantom{0}	& \phantom{0} &\phantom{0} & \phantom{0} 
-		 & \makecell[c]{$\uparrow$ \\ flip} & \phantom{0} & \phantom{0} & \phantom{0} \\
-		\end{tabular} 
-		&&\\
+		&&  & \multicolumn{1}{c}{} & \multicolumn{4}{c}{ }&\multicolumn{1}{@{}c@{}}{$\uparrow$}&\multicolumn{3}{c}{ } && \\
+		&&  & \multicolumn{1}{c}{} & \multicolumn{4}{c}{ }&\multicolumn{1}{@{}c@{}}{flip}&\multicolumn{3}{c}{ } && \\
 		
 	\end{tabular}
+	
 	
 	\caption{An Example}
 \end{figure}

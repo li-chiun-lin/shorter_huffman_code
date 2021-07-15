@@ -28,7 +28,7 @@ void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width
 	fprintf(fptr_report, "\n\n");
 }
 
-void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
+void reportC_(vector<int>& cnt_t, vector< vector<unsigned char> >& encoder,
 	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2, int LEN_LEN_H_ENCODED_LABELMAP, int size_image)
 {
 	const int len_headers = header1 + header2 + LEN_LEN_H_ENCODED_LABELMAP;
@@ -103,7 +103,7 @@ void reportD_(vector<unsigned char>& bits_embed, int len_h_topology, int len_h_v
 
 	fprintf(fptr_report, "\n\tlength of encoded LM  ");
 	for (size_t i = 0; i < len_h_labmap; ++i)
-		fprintf(fptr_report, "%d", bits_embed[len_h_topology + len_h_value + i]);
+		fprintf(fptr_report, "%d", bits_embed[static_cast<unsigned long long>(len_h_topology) + len_h_value + i]);
 
 	fprintf(fptr_report, "\n\n\tprepare embeding bits %d \n\n", idx_prepare);
 }
@@ -112,7 +112,7 @@ void reportD2_(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed
 {
 	fprintf(fptr_report, "D2. Side Info, hEncode(LabelMap) LM bits, only show first few bits\n\t");
 	for (int i = 0; i < LEN_SAMPLE; ++i)
-		fprintf(fptr_report, "%d %s", bits_embed[offset + i], WRAP(i));
+		fprintf(fptr_report, "%d %s", bits_embed[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(offset) + i], WRAP(i));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
@@ -135,7 +135,7 @@ void reportD4_(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed
 {
 	fprintf(fptr_report, "D4. random secret bits, only show first few bits\n\t");
 	for (int i = 0; i < LEN_SAMPLE; ++i)
-		fprintf(fptr_report, "%d %s", bits_embed[offset + i], WRAP(i));
+		fprintf(fptr_report, "%d %s", bits_embed[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(offset) + i], WRAP(i));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
 
@@ -163,7 +163,7 @@ void reportF2_(Node* tree)
 {
 	fprintf(fptr_report, "F2. recover Huffman tree\n\t");
 
-	vector< vector<int> > h_encoder = buildHuffmanEncoder(tree, DOMAIN_HCODE);
+	vector< vector<unsigned char> > h_encoder = buildHuffmanEncoder(tree, DOMAIN_HCODE);
 
 	for (int i = 0; i < DOMAIN_HCODE; ++i)
 	{

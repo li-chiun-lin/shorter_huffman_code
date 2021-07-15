@@ -51,7 +51,7 @@ const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T);
 
 
 void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode);
-void reportC_(vector<int>& cnt_t, vector< vector<int> >& encoder,
+void reportC_(vector<int>& cnt_t, vector< vector<unsigned char> >& encoder,
 	int len_capacity, int len_h_encoded_labelmap, int len_ref, int header1, int header2, int LEN_LEN_H_ENCODED_LABELMAP, int size_image);
 void reportD_(vector<unsigned char>& bits_embed, int len_h_topology, int len_h_value, int len_h_labmap, int idx_prepare);
 void reportD2_(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int offset);

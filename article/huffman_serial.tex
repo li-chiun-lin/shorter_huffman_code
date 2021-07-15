@@ -340,6 +340,24 @@ The serialization process of the Huffman tree generated from Lena $512 \times 51
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Unserialization}
 
 The unserialization process of the Huffman tree generated from Lena $512 \times 512$.
@@ -349,79 +367,79 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 	\centering
 	\begin{longtable}{cc}
 		\label{app:unserial}
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			\underline{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ]
-		\end{tabular}
+		\end{tabular} 
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} \underline{1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ] \underline{ } ]
 		\end{tabular}
-		\\
-		\begin{tabular}{l}
+		\\ 
+		\begin{tabular}[t]{l}
 			{1} {1} \underline{0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			\underline{0101}{0111}{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			\underline{0101} {0111} {1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ {$\blacktriangleright 5 \phantom{\blacktriangleright}$} \underline{ } ] \underline{ } ]
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} \underline{1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			\underline{0101}{0111}{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			\underline{0101} {0111} {1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ]] \underline{ } ]
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} \underline{0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}\underline{0111}{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101}\underline{0111} {1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ {$\blacktriangleright 7 \phantom{\blacktriangleright}$} \underline{ } ]] \underline{ } ]
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} \underline{0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}\underline{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111}\underline{1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 {$\blacktriangleright 8 \phantom{\blacktriangleright}$} ]] \underline{ } ]
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} \underline{1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}\underline{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111}\underline{1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
 			[.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ] ] 
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} \underline{1}
 			{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}\underline{1000}{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111}\underline{1000} {0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -429,11 +447,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ] \underline{ } ] ] 
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			\underline{0} {1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}\underline{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000}\underline{0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -441,11 +459,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\circ$ {$\blacktriangleright 3 \phantom{\blacktriangleright}$} \underline{ } ] \underline{ } ] ] 
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} \underline{1} {0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}\underline{0011}{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000}\underline{0011} {0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -454,11 +472,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ] ] \underline{ } ] ] 
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} \underline{0} {1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}\underline{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011}\underline{0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -467,11 +485,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\circ$ {$\blacktriangleright 2 \phantom{\blacktriangleright}$} \underline{ } ] ] \underline{ } ] ] 
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} \underline{1} {0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}\underline{0010}{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011}\underline{0010} {0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -481,11 +499,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ] ] ] \underline{ } ] ] 
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} \underline{0} {0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}\underline{0001}{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011} {0010}\underline{0001} {0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -495,11 +513,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\circ$ {$\blacktriangleright 1 \phantom{\blacktriangleright}$} \underline{ } ] ] ] \underline{ } ] ] 
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} \underline{0} {1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}{0001}\underline{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011} {0010} {0001}\underline{0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -509,11 +527,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\circ$ 1 {$\blacktriangleright 0 \phantom{\blacktriangleright}$} ] ] ] \underline{ } ] ] 
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} \underline{1} {0} {0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}{0001}\underline{0000}{0110}{0100}
+			{0101} {0111} {1000} {0011} {0010} {0001}\underline{0000} {0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -523,11 +541,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\circ$ 1 0 ] ] ] [.$\blacktriangleright\circ\phantom{\blacktriangleright}$ \underline{ } \underline{ } ] ] ] 
 		\end{tabular}
 		&
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} \underline{0} {0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}{0001}{0000}\underline{0110}{0100}
+			{0101} {0111} {1000} {0011} {0010} {0001} {0000}\underline{0110} {0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
@@ -538,11 +556,11 @@ The unserialization process of the Huffman tree generated from Lena $512 \times 
 			[.$\circ$ {$\blacktriangleright 6 \phantom{\blacktriangleright}$} \underline{ } ] ] ] 
 		\end{tabular}
 		\\
-		\begin{tabular}{l}
+		\begin{tabular}[t]{l}
 			{1} {1} {0} {1} {0} {0} {1} {1}
 			{0} {1} {0} {1} {0} {0} {1} {0} \underline{0}
 			\\
-			{0101}{0111}{1000}{0011}{0010}{0001}{0000}{0110}\underline{0100}
+			{0101} {0111} {1000} {0011} {0010} {0001} {0000} {0110}\underline{0100}
 			\\
 			\Tree[.$\circ$ [.$\circ$ 5 
 			[.$\circ$ 7 8 ]] 
