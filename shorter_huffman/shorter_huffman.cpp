@@ -140,7 +140,11 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 	const int width_image_1 = width_image - 1;
 
 	// need more fine tune
-	const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+	//const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+	//const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 3));   // this is oaky
+	const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 3.3));
+
+	//cout << len_len_h_encoded_labelmap << endl;
 
 	srand(seed);
 
@@ -192,6 +196,23 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 	vector<unsigned char> bit_topology;
 	vector<unsigned char> bit_val;
 	serializeHuffmanTree(tree, bit_topology, bit_val, LEN_T);
+
+# if 0
+	int cnt = accumulate(cnt_t.begin(), cnt_t.end(), 0);
+
+	size_t len = 0;
+	for (size_t i = 0; i < cnt_t.size(); ++i)
+	{
+		printf("%d ", cnt_t[i]);
+		len += cnt_t[i] * h_encoder[i].size();
+	}
+	printf("\n");
+
+	printHuffmanEncoder(h_encoder);
+	printf("total count = %d\n", cnt);
+	printf("encoded len = %Iu\n", len);
+	printf("average     = %f\n", (float)len / cnt);
+# endif
 
 
 	del(tree);
@@ -367,7 +388,15 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
 	}
 
+# if 0
+	cout << len_h_encoded_labelmap << endl;
+	cout << (float)len_h_encoded_labelmap / (width_image1 * width_image1) << endl;
+	cout << len_ex_h_encoded_labelmap << endl;
+# endif
+
 	assert(len_ex_h_encoded_labelmap == len_h_encoded_labelmap);
+
+
 
 # if REPORT
 	fprintf(fptr_report, "\nF3. recover length of hEncode(label map) = %d, proceed %d bits\n\n",

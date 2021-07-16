@@ -2,73 +2,68 @@
 
 The Huffman coding tree generation process of Lena $512 \times 512$.
 
+
 \begin{scriptsize}
 	\centering
 	\begin{longtable}{c}
 		\label{app:htree}
-		\begin{tabular}{  c  c  c  c  c  c  c  c  c } \toprule
-			\cellcolor{lightgray} 9818 & \cellcolor{lightgray}9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 
-			\\ 
-			\Tree[ [.0 ] ]  
-			& \Tree[ [.1 ] ]  
-			& \Tree[ [.2 ] ] 
-			& \Tree[ [.3 ] ] 
-			& \Tree[ [.4 ] ] 
-			& \Tree[ [.5 ] ] 
-			& \Tree[ [.6 ] ] 
-			& \Tree[ [.7 ] ] 
-			& \Tree[ [.8 ] ]     
+		\begin{tabular}{ccccccccc} \toprule
+%			\cellcolor{lightgray} 9818 & \cellcolor{lightgray}9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089  \\ 
+			\Tree[.\cellcolor{lightgray}{9818} [.0 ] ] & 
+			\Tree[.\cellcolor{lightgray}{9742} [.1 ] ] & 
+			\Tree[.15247 [.2 ] ] & 
+			\Tree[.33246 [.3 ] ] & 
+			\Tree[.44509 [.4 ] ] & 
+			\Tree[.53359 [.5 ] ] & 
+			\Tree[.41758 [.6 ] ] & 
+			\Tree[.24353 [.7 ] ] & 
+			\Tree[.29089 [.8 ] ]     
 		\end{tabular}
 		\\
-		\begin{tabular}{   c  c  c  c  c  c  c  c } \toprule
-			\cellcolor{lightgray} 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 & \cellcolor{lightgray}19560 
-			\\
-			\Tree[ [.2 ] ]
-			& \Tree[ [.3 ] ]
-			& \Tree[ [.4 ] ]
-			& \Tree[ [.5 ] ]
-			& \Tree[ [.6 ] ]
-			& \Tree[ [.7 ] ]
-			& \Tree[ [.8 ] ]  
-			& \Tree[ [.9742 [.1 ]] [.9818 [.0 ] ] ]  
+		\begin{tabular}{cccccccc} \toprule
+%			\cellcolor{lightgray} 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 & \cellcolor{lightgray}19560  \\
+			\Tree[.\cellcolor{lightgray}{15247} [.2 ] ] & 
+			\Tree[.33246 [.3 ] ] & 
+			\Tree[.44509 [.4 ] ] & 
+			\Tree[.53359 [.5 ] ] & 
+			\Tree[.41758 [.6 ] ] & 
+			\Tree[.24353 [.7 ] ] & 
+			\Tree[.29089 [.8 ] ] & 
+			\Tree[.\cellcolor{lightgray}{19560} [.9742 [.1 ]] [.9818 [.0 ] ] ]  
 		\end{tabular}
 		\\
 		\begin{tabular}{   c  c  c  c   c  c  c } \toprule
-			33246 & 44509 & 53359 & 41758 & \cellcolor{lightgray}24353 & \cellcolor{lightgray}29089 & 34807 
-			\\ 
-			\Tree[ [.3 ] ]
-			& \Tree[ [.4 ] ]
-			& \Tree[ [.5 ] ]
-			& \Tree[ [.6 ] ]
-			& \Tree[ [.7 ] ]
-			& \Tree[ [.8 ] ]   
-			& \Tree[ [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+%			33246 & 44509 & 53359 & 41758 & \cellcolor{lightgray}24353 & \cellcolor{lightgray}29089 & 34807  \\ 
+			\Tree[.33246 [.3 ] ] & 
+			\Tree[.44509 [.4 ] ] & 
+			\Tree[.53359 [.5 ] ] & 
+			\Tree[.41758 [.6 ] ] & 
+			\Tree[.\cellcolor{lightgray}24353 [.7 ] ] & 
+			\Tree[.\cellcolor{lightgray}29089 [.8 ] ] & 
+			\Tree[.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
 		\end{tabular}
 		\\
 		\begin{tabular}{   c  c  c   c  c  c } \toprule
-			\cellcolor{lightgray}33246   & 44509 & 53359 & 41758 & \cellcolor{lightgray}34807& 53442 
-			\\
-			\Tree[ [.3 ] ]
-			& \Tree[ [.4 ] ]
-			& \Tree[ [.5 ] ]
-			& \Tree[ [.6 ] ]
-			& \Tree[ [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
-			& \Tree[ [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
+%			\cellcolor{lightgray}33246   & 44509 & 53359 & 41758 & \cellcolor{lightgray}34807& 53442  \\
+			\Tree[.\cellcolor{lightgray}33246 [.3 ] ] & 
+			\Tree[.44509 [.4 ] ] & 
+			\Tree[.53359 [.5 ] ] & 
+			\Tree[.41758 [.6 ] ] & 
+			\Tree[.\cellcolor{lightgray}34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]] & 
+			\Tree[.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
 		\end{tabular}
 		\\
 		\begin{tabular}{    c  c   c  c  c } \toprule
-			\cellcolor{lightgray}44509 & 53359& \cellcolor{lightgray}41758& 53442& 68053 
-			\\ 
-			\Tree[ [.4 ] ]
-			& \Tree[ [.5 ] ]
-			& \Tree[ [.6 ] ]
-			& \Tree[ [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
-			& \Tree[ [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+%			\cellcolor{lightgray}44509 & 53359& \cellcolor{lightgray}41758& 53442& 68053  \\ 
+			\Tree[.\cellcolor{lightgray}44509 [.4 ] ] & 
+			\Tree[.53359 [.5 ] ] & 
+			\Tree[.\cellcolor{lightgray}41758 [.6 ] ] & 
+			\Tree[.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] & 
+			\Tree[.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
 		\end{tabular}
 		\\
 		\begin{tabular}{    c   c  c  c } \toprule
-			\cellcolor{lightgray}53359& \cellcolor{lightgray}53442& 68053 & 86267 
-			\\ 
+			\cellcolor{lightgray}53359& \cellcolor{lightgray}53442& 68053 & 86267  \\ 
 			\Tree[ [.5 ] ]
 			& \Tree[ [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
 			& \Tree[ [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
@@ -76,33 +71,143 @@ The Huffman coding tree generation process of Lena $512 \times 512$.
 		\end{tabular}
 		\\
 		\begin{tabular}{     c  c  c } \toprule
-			\cellcolor{lightgray}68053 & \cellcolor{lightgray}86267& 106801 
-			\\ 
-			\Tree[ [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
-			& \Tree[ [.41758 [.6 ] ] [.44509 [.4 ] ]]
-			& \Tree[ [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+%			\cellcolor{lightgray}68053 & \cellcolor{lightgray}86267& 106801  \\ 
+			\Tree[.\cellcolor{lightgray}68053 [.33246 [.3 ] ] 
+				[.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] & 
+			\Tree[.\cellcolor{lightgray}86267 [.41758 [.6 ] ] [.44509 [.4 ] ]] & 
+			\Tree[.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
 		\end{tabular}
 		\\
 		\begin{tabular}{   c  c } \toprule
-			\cellcolor{lightgray}106801& \cellcolor{lightgray}154320 
-			\\ 
-			\Tree[ [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
-			& \Tree[ [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
+%			\cellcolor{lightgray}106801& \cellcolor{lightgray}154320  \\ 
+			\Tree[.\cellcolor{lightgray}106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] & 
+			\Tree[.\cellcolor{lightgray}154320 [.68053 [.33246 [.3 ] ] 
+				[.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  
+				[.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
 		\end{tabular}
 		\\
 		\begin{tabular}{   c } \toprule
-			\cellcolor{lightgray}261121 
-			\\ 
-			\Tree[ [.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] [.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
+%			\cellcolor{lightgray}261121  \\ 
+			\Tree[.261121 
+				[.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] 
+				[.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] 
+					[.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  
+					[.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
 			\\ \midrule
 			
 			\Tree[ 
-				[.0 [.0 \{00\}\\5 ]
-				[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
-				[.1 [.0 [.0 \{100\}\\3 ]
-				[.1 [.0 \{1010\}\\2 ]
-				[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
-				[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
+			[.0 [.0 \{00\}\\5 ]
+			[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+			[.1 [.0 [.0 \{100\}\\3 ]
+			[.1 [.0 \{1010\}\\2 ]
+			[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+			[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
 		\end{tabular}
 	\end{longtable}
 \end{scriptsize}
+
+
+%\begin{scriptsize}
+%	\centering
+%	\begin{longtable}{c}
+%%		\label{app:htree}
+%		\begin{tabular}{  c  c  c  c  c  c  c  c  c } \toprule
+%			\cellcolor{lightgray} 9818 & \cellcolor{lightgray}9742 & 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 
+%			\\ 
+%			\Tree[ [.0 ] ]  
+%			& \Tree[ [.1 ] ]  
+%			& \Tree[ [.2 ] ] 
+%			& \Tree[ [.3 ] ] 
+%			& \Tree[ [.4 ] ] 
+%			& \Tree[ [.5 ] ] 
+%			& \Tree[ [.6 ] ] 
+%			& \Tree[ [.7 ] ] 
+%			& \Tree[ [.8 ] ]     
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{   c  c  c  c  c  c  c  c } \toprule
+%			\cellcolor{lightgray} 15247 & 33246 & 44509 & 53359 & 41758 & 24353 & 29089 & \cellcolor{lightgray}19560 
+%			\\
+%			\Tree[ [.2 ] ]
+%			& \Tree[ [.3 ] ]
+%			& \Tree[ [.4 ] ]
+%			& \Tree[ [.5 ] ]
+%			& \Tree[ [.6 ] ]
+%			& \Tree[ [.7 ] ]
+%			& \Tree[ [.8 ] ]  
+%			& \Tree[ [.9742 [.1 ]] [.9818 [.0 ] ] ]  
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{   c  c  c  c   c  c  c } \toprule
+%			33246 & 44509 & 53359 & 41758 & \cellcolor{lightgray}24353 & \cellcolor{lightgray}29089 & 34807 
+%			\\ 
+%			\Tree[ [.3 ] ]
+%			& \Tree[ [.4 ] ]
+%			& \Tree[ [.5 ] ]
+%			& \Tree[ [.6 ] ]
+%			& \Tree[ [.7 ] ]
+%			& \Tree[ [.8 ] ]   
+%			& \Tree[ [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{   c  c  c   c  c  c } \toprule
+%			\cellcolor{lightgray}33246   & 44509 & 53359 & 41758 & \cellcolor{lightgray}34807& 53442 
+%			\\
+%			\Tree[ [.3 ] ]
+%			& \Tree[ [.4 ] ]
+%			& \Tree[ [.5 ] ]
+%			& \Tree[ [.6 ] ]
+%			& \Tree[ [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]
+%			& \Tree[ [.24353 [.7 ] ] [.29089 [.8 ] ] ]   
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{    c  c   c  c  c } \toprule
+%			\cellcolor{lightgray}44509 & 53359& \cellcolor{lightgray}41758& 53442& 68053 
+%			\\ 
+%			\Tree[ [.4 ] ]
+%			& \Tree[ [.5 ] ]
+%			& \Tree[ [.6 ] ]
+%			& \Tree[ [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+%			& \Tree[ [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{    c   c  c  c } \toprule
+%			\cellcolor{lightgray}53359& \cellcolor{lightgray}53442& 68053 & 86267 
+%			\\ 
+%			\Tree[ [.5 ] ]
+%			& \Tree[ [.24353 [.7 ] ] [.29089 [.8 ] ] ]  
+%			& \Tree[ [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+%			& \Tree[ [.41758 [.6 ] ] [.44509 [.4 ] ]]
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{     c  c  c } \toprule
+%			\cellcolor{lightgray}68053 & \cellcolor{lightgray}86267& 106801 
+%			\\ 
+%			\Tree[ [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]] 
+%			& \Tree[ [.41758 [.6 ] ] [.44509 [.4 ] ]]
+%			& \Tree[ [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{   c  c } \toprule
+%			\cellcolor{lightgray}106801& \cellcolor{lightgray}154320 
+%			\\ 
+%			\Tree[ [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ]
+%			& \Tree[ [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]
+%		\end{tabular}
+%		\\
+%		\begin{tabular}{   c } \toprule
+%			\cellcolor{lightgray}261121 
+%			\\ 
+%			\Tree[ [.106801 [.53359 [.5 ] ] [.53442 [.24353 [.7 ] ] [.29089 [.8 ] ] ] ] [.154320 [.68053 [.33246 [.3 ] ] [.34807 [.15247 [.2 ] ] [.19560  [.9742 [.1 ]] [.9818 [.0 ] ] ]]]  [.86267 [.41758 [.6 ] ] [.44509 [.4 ] ]]]]
+%			\\ \midrule
+%			
+%			\Tree[ 
+%				[.0 [.0 \{00\}\\5 ]
+%				[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+%				[.1 [.0 [.0 \{100\}\\3 ]
+%				[.1 [.0 \{1010\}\\2 ]
+%				[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+%				[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
+%		\end{tabular}
+%	\end{longtable}
+%\end{scriptsize}

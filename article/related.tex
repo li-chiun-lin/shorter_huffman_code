@@ -2,32 +2,151 @@
 
 related work, their work ~\cite{Yin2020} ~\cite{IRE} ~\cite{Weinberger2000}
 
-they use Canonical Huffman Codes.
+they use fixed Huffman tree.
 
-\begin{equation}
-	pv_{i, j} = 
+
+
+\subsection{a little describe here}
+
+\subsection{The Content-owner}
+
+\begin{figure}
+	\centering
+	
+	\begin{scriptsize}
+		\begin{tabular}{|c|c|c|c|c|c|} 
+		\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} &
+		\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}}  
+		\\
+		\hline
+		$x_{0, 0}$ & $x_{0, 1}$ & $x_{0, 2}$      & $\dots$    & $\dots$ & $x_{0, w}$ \\ \hline
+		$x_{1, 0}$ & $\dots$    & $\dots$         & $\dots$    & $\dots$ & $\dots$    \\ \hline 
+		$x_{2, 0}$ & $\dots$    & 
+		\cellcolor{black!10} $x_{i-1, j-1}$ & \cellcolor{black!10}$x_{i - 1, j}$ & $\dots$ & $\dots$    \\ \hline 
+		$\dots$    & $\dots$    & 
+		\cellcolor{black!10}$x_{i, j - 1}$  & \cellcolor{black!20}$x_{i, j}$     & $\dots$ & $\dots$    \\ \hline 
+		$x_{h, 0}$ & $\dots$    & $\dots$          & $\dots$       & $\dots$ & $x_{h, w}$ \\ \hline 
+		
+%		\multicolumn{6}{c}{ } \\ 
+		
+		\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} &
+		\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}}  
+		\\
+		
+		\hline
+		\rowcolor{black!30}
+		\cellcolor{black!30}$N/A$   & $N/A$       & $N/A$       & $\dots$                        & $\dots$ & $N/A$       \\ \hline
+		\cellcolor{black!30}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                        & $\dots$ & $pv_{1, w}$ \\ \hline
+		\cellcolor{black!30}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{black!30}$\dots$ & $\dots$     & $\dots$     & $\dots$                        & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{black!30}$\dots$ & $\dots$     & $\dots$     & \cellcolor{black!20}$pv_{i, j}$ & $\dots$ & $\dots$     \\ \hline 
+		\cellcolor{black!30}$N/A$   & $pv_{h, 1}$ & $\dots$     & $\dots$                        & $\dots$ & $pv_{h, w}$ \\ \hline 
+	\end{tabular}
+	\end{scriptsize}
+	
+	
+	\caption{The pixel $x$ and $pv$ value.}
+\end{figure}
+
+for all $x_{i, j} \in I$, the predicted value is defined as~\eqref{eq:pv}.
+The predicted error between each pixel and its predicted value is defined as~\eqref{eq:pe}.
+Each pixel, except those in the first row and the first column, has a corresponding label value $t$, as defined in~\eqref{eq:t}.
+All the label values forms a label map denoted as $T$.
+
+
+\begin{align}
+	\label{eq:pv}
+	pv_{i, j} & = 
 	\begin{cases}
-		max(x_{i - 1, j}, x_{i, j - 1})                &  \text{if } x_{i - 1, j - 1} \leq min(x_{i - 1, j}, x_{i, j - 1}), \\
-		min(x_{i - 1, j}, x_{i, j - 1})                &  \text{if } x_{i - 1, j - 1} \geq max(x_{i - 1, j}, x_{i, j - 1}), \\
-		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} &  \textrm{otherwise}. 
-	\end{cases} 
-\end{equation}
-
-\begin{equation}
-	pe_{i, j} = 
-		\begin{cases}
-			\text{undefined}          & \text{if } i = 0 \vee j = 0 \\
-			pv_{i, j} \oplus x_{i, j} & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
-		\end{cases}
-\end{equation}
-
-\begin{equation}
-	t_{i, j} = 
+		\text{undefined}							   & \text{if } i = 0 \vee j = 0 \\
+		\max(x_{i - 1, j}, x_{i, j - 1})               & \text{if } x_{i - 1, j - 1} \leq \min(x_{i - 1, j}, x_{i, j - 1}) \\
+		\min(x_{i - 1, j}, x_{i, j - 1})               & \text{if } x_{i - 1, j - 1} \geq \max(x_{i - 1, j}, x_{i, j - 1}) \\
+		x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} & \textrm{otherwise} 
+	\end{cases} \\
+%
+	\label{eq:pe}
+	pe_{i, j} & = 
+	\begin{cases}
+		\mathrlap{\text{undefined}}
+		\phantom{x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}}  & \text{if } i = 0 \vee j = 0 \\
+		pv_{i, j} \oplus x_{i, j} & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
+	\end{cases} \\
+%
+	\label{eq:t}
+	t_{i, j} &= 
 	\begin{dcases}
-		8                                    &  \text{if } pe_{i, j} = 0 ,      \\
-		7 - \lfloor log_2(pe_{i, j}) \rfloor &  \text{otherwise}.
-	\end{dcases} 
+		\mathrlap{8} 
+		\phantom{x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}}&  \text{if } pe_{i, j} = 0       \\
+		7 - \lfloor log_2(pe_{i, j}) \rfloor &  \text{if } pe_{i, j} \neq  0
+	\end{dcases}
+\end{align}
+
+The frequency of all the possible values in label map $T$ is described as~\eqref{eq:f}.
+
+\begin{equation}
+	\label{eq:f}
+	F = \{f_v \mid \#(t = v), t \in T, 0\leq v \leq 8\}
 \end{equation}
+
+A predefined Huffman tree $H = \{00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111\}$, the topology is visualized in~\ref{fig:fixtree}.
+
+\begin{figure}
+	\centering
+	\Tree[. [.0 [.0 00 ]
+	[.1 01 ]]
+	[.1 [.0 [.0 100 ] [.1 101 ] ]
+	[.1 [.0 [.0 1100 ] [.1 1101 ] ]
+	[.1 [.0 1110 ]
+	[.1 [.0 11110 ]
+	[.1 11111 ]]]]]]
+	\caption{the fixed Huffman tree}
+	\label{fig:fixtree}
+\end{figure}
+
+Let $V$ be a array consists of all the possible value of $T$ sorted by the frequency.
+
+\begin{equation}
+	V = \{v \in \range(T) \mid \forall v_i, v_j \in V \colon i \leq j \implies f_{v_i} \leq f_{v_j} \}
+\end{equation}
+
+Let $HEncoder$ be a mapping $T \mapsto H$.
+
+\begin{align}
+	& HEncoder(t) = h_c \notag \\
+	& \quad	\text{ where } t \in T \wedge h_c \in H \wedge \exists c \colon v_c \in V \wedge v_c = t. 
+\end{align}
+
+%\begin{equation}
+%	T^\prime = \bigparallel_{\substack{1 \leq i < h \\ 1 \leq j < w}} HEncoder(t_{i, j})
+%\end{equation}
+
+\begin{equation}
+	T^\prime = \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w HEncoder(t_{i, j})}
+\end{equation}
+
+\subsection{The Data-hider}
+
+\subsection{The Receiver}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\begin{equation}
+%	t_{i, j} = 
+%	\begin{dcases}
+%		8                                    &  \text{if } pe_{i, j} = 0       \\
+%		7 - \lfloor log_2(pe_{i, j}) \rfloor &  \text{if } pe_{i, j} \neq  0
+%	\end{dcases} 
+%\end{equation}
 
 \begin{equation}
 	Embed(i, j, S) = 
@@ -44,15 +163,15 @@ they use Canonical Huffman Codes.
 		\\
 		\begin{aligned}
 			&MSB^{t_{i, j}}(pv_{i, j}) \\
-			&\qquad + LSB^{(7 - t_{i, j})}(x^\prime_{i, j}) \\
-			&\qquad + \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \cdot 2^{(7 - t_{i, j})}}_
-				{\text{flip the } (t_{i, j}+1) \text{-th MSB}} 
+			&\quad + LSB^{(7 - t_{i, j})}(x^\prime_{i, j}) \\
+			&\quad + \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \cdot 2^{(7 - t_{i, j})}}_
+				{\text{flip the } (t_{i, j}+1) \text{-th bit}} 
 		\end{aligned} & \text{if } 0 \leq t_{i, j} \leq 7
 	\end{cases}
 \end{equation}
 
 \begin{equation}
-	LM  = \sum_{t=0}^{8} (freq_t \cdot \lvert HuffEncode(t) \rvert)
+	LEN  = \sum_{t=0}^{8} (F_t \cdot \lvert HuffEncode(t, H) \rvert)
 \end{equation}
 
 
@@ -65,28 +184,19 @@ where
 	h            & \text{ is the height of image, }  \notag &\\ 
 	w            & \text{ is the width of image, }  \notag & \\
 	MSB^{m}(B)   & = \sum\nolimits_{i = 8 - m}^7 b_i \cdot 2^i, m \in [1, 8],  \notag &\\
-	LSB^{n}(B)   & = \sum\nolimits_{i = 0}^{n - 1} b_i \cdot 2^i, n \in [1, 8],  \notag &\\
+%	LSB^{n}(B)   & = \sum\nolimits_{i = 0}^{n - 1} b_i \cdot 2^i, n \in [1, 8],  \notag &\\
+	LSB^{n}(B)   & = B \bmod 2^n, n \in [1, 8],  \notag &\\
+%	MSB^{m}(B)   & = B - LSB^{7 - m}(B), m \in [1, 8],  \notag &\\
 	B            & \in \{0, 1\}^*, b_i \in B, i \in [0, 7], \notag &\\
 	S            & \in \{0, 1\}^*,  \notag  & \\
-	 HuffEncode(x) &\text{ denotes the Huffman code of } x, \notag& \\ 
+	 HuffEncode(x, H) &\text{ denotes the Huffman code of } x \text{ following the coding rule } H, \notag& \\ 
 	 \lvert y \rvert &\text{ denotes the length of } y \notag &
 \end{align}
 
 
 
 
-\begin{figure}
-	\centering
-	\Tree[. [.0 [.0 00 ]
-	[.1 01 ]]
-	[.1 [.0 [.0 100 ] [.1 101 ] ]
-	[.1 [.0 [.0 1100 ] [.1 1101 ] ]
-	[.1 [.0 1110 ]
-	[.1 [.0 11110 ]
-	[.1 11111 ]]]]]]
-	
-	\caption{the fixed Huffman tree}
-\end{figure}
+
 
 
 \begin{figure}
@@ -131,7 +241,7 @@ where
 			\end{array}  \right.$}
 		
 		& $x_{i, j}$       & = & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 && \\ \cline{5-12}
-		&& $\oplus \quad K$ & = & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 && \\ \cline{5-12}
+		&& $\oplus \quad K$ & = & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 && \\ \cline{5-12} 
 		&& $x^e_{i, j}$     & = & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 && \\ \cline{5-12}
 		
 		&& \multicolumn{10}{c}{ } && \\
@@ -146,7 +256,7 @@ where
 		& $x^e_{i, j}$     & = & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 && \\ \cline{5-12}
 		&& $t_{i, j}$ & \multicolumn{1}{@{}c@{}}{=} & \multicolumn{4}{c}{4}&\multicolumn{2}{@{}l}{+1}&\multicolumn{2}{c}{ } && \\
 		\cline{5-9}
-		&& $S$        & = & 1 & 1 & 0 & 1 & 0 &  \multicolumn{3}{c}{ }     && \\ \cline{5-9}
+		&& $S^\ast$        & = & 1 & 1 & 0 & 1 & 0 &  \multicolumn{3}{c}{ }     && \\ \cline{5-9}
 		
 		&& \multicolumn{10}{c}{ } && \\
 		
@@ -166,7 +276,7 @@ where
 		&& \multicolumn{10}{c}{ } && \\
 		&& $t_{i, j}$ & \multicolumn{1}{@{}c@{}}{=} & \multicolumn{4}{c}{4}&\multicolumn{2}{@{}l}{+1}&\multicolumn{2}{c}{ } && \\
 		\cline{5-9}
-		&& $S$        & = & 1 & 1 & 0 & 1 & 0 &  \multicolumn{3}{c}{ }     && \\ \cline{5-9}
+		&& $S^\ast$        & = & 1 & 1 & 0 & 1 & 0 &  \multicolumn{3}{c}{ }     && \\ \cline{5-9}
 		
 		&& \multicolumn{10}{c}{ } && \\
 		
@@ -186,12 +296,12 @@ where
 		
 		&& \multicolumn{10}{c}{ } && \\
 		
-		&& &\multicolumn{1}{c}{ }& \multicolumn{10}{@{}c}{\begin{scriptsize}
+		&& & \multicolumn{11}{@{}l}{ \begin{scriptsize}
 				\makecell[l]{
-			It must be emphasized that at this moment \\
-			$x_{i-1, j - 1}, x_{i-1, j}$ and $x_{i, j -1}$ are already been restored.
-		}
-		\end{scriptsize}}  \\
+					It must be emphasized that at this moment \\
+					$x_{i-1, j - 1}, x_{i-1, j}$ and $x_{i, j -1}$ have already been restored.
+				}
+			\end{scriptsize} } \\
 		
 		\hhline{*{4}{~}*{8}{-}}
 		&& $pv_{i, j}$    & = 
@@ -219,3 +329,113 @@ where
 	
 	\caption{An Example}
 \end{figure}
+
+
+\begin{figure}
+	\centering
+	
+	
+	\begin{tabularx}{\linewidth}{lr r@{}c ccc}
+		\hhline{*{2}{~}*{5}{-}}
+		Yin et~al.&
+		$S =$  
+		& \multicolumn{2}{|c|}{\cellcolor{black!10}$h_0, \dots, h_8$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!30}}
+		& \multicolumn{1}{|c|}{\cellcolor{black!40}}  
+		\\ \cline{3-6}
+		&& \multicolumn{2}{c}{\upbracefill} & \upbracefill& \upbracefill&\upbracefill 
+		\\
+		&& \multicolumn{2}{c}{32 bits }
+		& 20 bits
+		& $LEN$ bits 
+		& $(w \times h - 1) $ bytes 
+		\\
+		
+		&&&&&&
+		\\
+		
+		\hhline{*{2}{~}*{5}{-}}
+		Our proposal & $S =$  
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_topology$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_value$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$} 
+		& \multicolumn{1}{|c|}{\cellcolor{black!30}}
+		& \multicolumn{1}{|c|}{\cellcolor{black!40}}
+		\\ \cline{3-6}
+		&&  &  & & \upbracefill& \upbracefill \\
+		
+		&& 
+		&
+		& 
+		& $LEN$ bits 
+		& $REF\_BYTES$ bytes 
+		\\
+		
+		&where 
+		& $ bits\_topology  $ has & \multicolumn{4}{l}{$ 2 \times \range(T) - 1$  bits,} \\
+		&& $ bits\_value  $ has & \multicolumn{4}{l}{$ n \times \lceil \log_2(\max(\range(T))) \rceil$  bits,}\\
+		&& $ LEN  $ has & \multicolumn{4}{l}{$\lceil \log_2((w - 1) \times (h - 1) \times 3.3) \rceil $ bits.}\\
+	\end{tabularx}
+	
+	
+	\caption{the consisting of embedded stream $S$}
+\end{figure}
+
+%& $2 \times n - 1$ bits 
+%& $n \times \lceil \log_2(\max(\range(T))) \rceil$  bits
+%& $\lceil \log_2(((w - 1) \times (h - 1)) \times 3.3) \rceil $ bits 
+%& \makecell[c]{$LEN$ bits  \\of encoded $T$} 
+%& \makecell[l]{$(w \times h - 1) $  bytes  \\of $REF\_BYTES$ bytes}
+
+%\begin{figure}
+%	\centering
+%	
+%	
+%	\begin{tabularx}{\linewidth}{rcccc}
+%		\hhline{*{1}{~}*{4}{-}}
+%		$S =$  
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$h_0, \dots, h_8$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!30}}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!40}}  
+%		\\ \cline{2-5}
+%		& \upbracefill & \upbracefill& \upbracefill&\upbracefill 
+%		\\
+%		& \makecell[c]{32 bits  \\ of Huffman coding rules} 
+%		& \makecell[c]{20 bits  \\ of the length of  encoded $T$ }
+%		& \makecell[c]{$LEN$ bits  \\ of encoded $T$} 
+%		& \makecell[l]{$(w \times h - 1) $ bytes  \\ of references bytes} 
+%	\end{tabularx}
+%
+%	\vspace{1cm}
+%
+%	\begin{tabularx}{\linewidth}{rccc}
+%%		\hhline{*{1}{~}*{5}{-}}
+%		$S =$  
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_topology$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_value$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$} 
+%		\\
+%%		\\ \cline{2-5}
+%		& \upbracefill & \upbracefill & \upbracefill 
+%		\\
+%		& \makecell[c]{$2 \times n - 1$ bits  \\ of tree topology} 
+%		& \makecell[c]{$n \times \lceil \log_2(\max(\range(T))) \rceil$  bits  \\of tree values} 
+%		& \makecell[c]{$\lceil \log_2(((w - 1) \times (h - 1)) \times 3.3) \rceil $ bits  \\of the length of encoded $T$} 
+%		\\
+%		
+%		& \multicolumn{1}{|c|}{\cellcolor{black!30}}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!40}}
+%		&
+%		\\
+%		
+%		& \makecell[c]{$LEN$ bits  \\of encoded $T$} 
+%		& \makecell[l]{$(w \times h - 1) $  bytes  \\of $REF\_BYTES$ bytes}
+%		&
+%		\\
+%	\end{tabularx}
+%
+%	
+%	\caption{the consisting of embedded stream $S$}
+%\end{figure}

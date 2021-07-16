@@ -42,12 +42,12 @@ using namespace std;
 # define CNT_REF_TREE 7
 # define CNT_REF_LEN 3
 
-//# define CNT_REF_T 2
+# define CNT_REF_EXTRA 1
 // this is for Baboon
-# define CNT_REF_T 16
+//# define CNT_REF_EXTRA 16
 
-//# define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T)
-const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_T);
+//# define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_EXTRA)
+const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_EXTRA);
 
 
 void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode);

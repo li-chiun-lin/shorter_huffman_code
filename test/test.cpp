@@ -28,6 +28,20 @@ void testtiff()
 	}
 }
 
+void testtiff_baboon()
+{
+	vector<string> fn = { "Airplane", "Jetplane", "Man", "Lena", "Tiffany" };
+
+	for (string f : fn)
+	{
+		struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+		struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+
+		printResult(ret_msb);
+		printResult(ret_shr);
+	}
+}
+
 void debug()
 {
 	string f = "Baboon";
@@ -83,7 +97,8 @@ void testres()
 int main()
 {
 	//testlib();
-	testtiff();
+	//testtiff();
+	testtiff_baboon();
 
 	//debug();
 	lena();
@@ -96,7 +111,7 @@ int main()
 
 	
 
-	//system("pause");
+	system("pause");
 	
 	return 0;
 }

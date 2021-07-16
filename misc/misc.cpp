@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <vector>
+#include<numeric>
 
 #include "../tiff-4.3.0/libtiff/tiffio.h"
 #include "../lib/lib.h"
@@ -210,9 +211,89 @@ void convertTiffs()
 	}
 }
 
+
+void printTree(Node* tree, int height = 0)
+{
+	if (tree == NULL)
+		return;
+
+	if (tree->next[0] == NULL && tree->next[1] == NULL)
+	{
+		printf("0 (%d) ", tree->val);
+	}
+	else
+	{
+		printf("1 ");
+		printTree(tree->next[0], height + 1);
+		printTree(tree->next[1], height + 1);
+	}
+}
+
+
+void htBoundary_(vector<int>& cnt_t)
+{
+	Node* tree = buildHuffmanTree(cnt_t);
+	vector< vector<unsigned char> > h_encoder = buildHuffmanEncoder(tree, (int)cnt_t.size());
+
+	int cnt = accumulate(cnt_t.begin(), cnt_t.end(), 0);
+
+	size_t len = 0;
+	for (size_t i = 0; i < cnt_t.size(); ++i)
+	{
+		len += cnt_t[i] * h_encoder[i].size();
+	}
+
+	printTree(tree);
+	printf("\n");
+	printHuffmanEncoder(h_encoder);
+	printf("total count = %d\n", cnt);
+	printf("encoded len = %Iu\n", len);
+	printf("average     = %f\n", (float)len / cnt);
+}
+
+void htBoundary()
+{
+	/*vector<int> cnt_t1 = { 1, 1, 2, 4, 8, 16, 32, 64, 128 };
+	htBoundary_(cnt_t1);
+
+
+	vector<int> cnt_t2 = { 1, 1, 1, 1, 1, 1, 1, 1, 128 };
+	htBoundary_(cnt_t2);*/
+
+	vector<int> cnt_t3 = { 0, 1, 1, 2, 4, 8, 16, 32, 64 };
+	htBoundary_(cnt_t3);
+
+	// airplane
+	vector<int> cnt_t4 = { 1793, 13899 , 4896 , 24131 , 27749 , 47275 , 36632  , 1827 , 103916 };
+	htBoundary_(cnt_t4);
+
+	//vector<int> cnt_t5 = { 0, 1, 1, 2, 4, 8, 16, 32, 64 };
+	//int cnt5 = accumulate(cnt_t5.begin(), cnt_t5.end(), 0);
+	//for (size_t i = 0; i < cnt_t5.size(); ++i)
+	//	cnt_t5[i] = cnt_t5[i] * (511 * 511) / cnt5;
+	//	
+	//htBoundary_(cnt_t5);
+
+	vector<int> cnt_t6 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+	htBoundary_(cnt_t6);
+
+	vector<int> cnt_t7 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	htBoundary_(cnt_t7);
+
+	vector<int> cnt_t8 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	int cnt8 = 9;
+	for (size_t i = 0; i < cnt_t8.size(); ++i)
+		cnt_t8[i] = cnt_t8[i] * (511 * 511) / cnt8;
+	htBoundary_(cnt_t8);
+
+
+	system("pause");
+}
+
 int main()
 {
-	convertTiffs();
+	//convertTiffs();
+	htBoundary();
 
 	return 0;
 }

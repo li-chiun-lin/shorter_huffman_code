@@ -17,18 +17,24 @@ Huffman codes are optimal prefix codes.
 	\caption{Serialize a Huffman coding tree}
 	
 	\begin{algorithmic}[1]
-		\Require $node$ : the root node of a Huffman coding tree.
-		\Ensure $bit\_topology$ : a bit sequence represents the topology of the tree.
-		\Ensure $bit\_value$ : a bit sequence represents every leaf value $v$ of the tree.
+		\Require $root$ : the root node of a Huffman coding tree.
+		\Require $s$ : the size of bits of each value $v$.
+		\Ensure $bits\_topology$ : a bit sequence represents the topology of the tree.
+		\Ensure $bits\_value$ : a bit sequence represents every leaf value $v$ of the tree.
 		
-		\Procedure{SerializeHuffmanTree}{$node$}   
-		\If{$node$ is a leaf}
-		\State Append a $0$ at the end of $bit\_topology$.
-		\State Append the value $v$ of $node$ at the end of $bit\_value$ bit by bit.
+		\State $bits\_topology \gets \emptyset$.
+		\State $bits\_value    \gets \emptyset$.
+		
+		\State \Call{SerializeTree}{$root$}.
+		\Procedure{SerializeTree}{$root$}   
+		\If{$root$ is a leaf}
+		\State Let leaf value $v = (v_0, \dots, v_{s-1})$.
+		\State $bits\_topology \gets bits\_topology \Vert 0$.
+		\State $bits\_value \gets bits\_value \Vert v_0 \Vert \dots \Vert v_{s-1}$.
 		\Else
-		\State Append a $1$ at the end of $bit\_topology$.
-		\State \Call{SerializeHuffmanTree}{$node.left\_child$}.
-		\State \Call{SerializeHuffmanTree}{$node.right\_child$}.
+		\State $bits\_topology \gets bits\_topology \Vert 1$.
+		\State \Call{SerializeTree}{$node.left\_child$}.
+		\State \Call{SerializeTree}{$node.right\_child$}.
 		\EndIf
 		\EndProcedure
 	\end{algorithmic}
@@ -38,24 +44,26 @@ Huffman codes are optimal prefix codes.
 	\caption{Unserialize a Huffman coding tree}
 	
 	\begin{algorithmic}[1]
-		\Require $bit\_topology$ : a bit sequence represents the topology of the tree.
-		\Require $bit\_value$ : a bit sequence represents every leaf value $v$ of the tree.
-		\Require $size\_value$ : the size of bits of each value $v$.
+		\Require $bits\_topology$ : a bit sequence represents the topology of the tree.
+		\Require $bits\_value$ : a bit sequence represents every leaf value $v$ of the tree.
+		\Require $s$ : the size of bits of each value $v$.
 		\Ensure a Huffman coding tree.
 		
-		\Function{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}   
-		\State Read the first bit $b$ from $bit\_topology$.
-		\State Remove $b$ from $bit\_topology$.
+		\Function{UnserializeTree}{$bits\_topology, bits\_value, s$}   
+		\State Read 1 bit $b$ from $bits\_topology$.
+%		\State Remove $b$ from $bits\_topology$.
 		\If{$b = 0$ }
-		\State Let value $v$ be the first $size\_value$ bits of $bit\_value$.
-		\State Remove the first $size\_value$ bits from $bit\_value$.
-		\State Create a node $n$ with $v$.
+%		\State Let value $v$ be the first $size\_value$ bits of $bits\_value$.
+%		\State Let value $v = (bits\_value_0, \dots, bits\_value_{s - 1})$
+		\State Create a node $n$ with value $v = (bits\_value_0, \dots, bits\_value_{s - 1})$.
+		\State Remove $s$ bits from $bits\_value$.
+		
 		\Else
-		\State Let $n1 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
-		\State Let $n2 \gets$ \Call{UnserializeHuffmanTree}{$bit\_topology, bit\_value$}.
+%		\State Let $n1 \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
+%		\State Let $n2 \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
 		\State Create a node $n$ with
-		\State\hspace{\algorithmicindent} $left\_child \gets n1$.
-		\State\hspace{\algorithmicindent} $right\_child \gets n2$.
+		\State\hspace{\algorithmicindent} $left\_child \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
+		\State\hspace{\algorithmicindent} $right\_child \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
 		\EndIf
 		\State \Return $n$.
 		\EndFunction
@@ -80,3 +88,18 @@ where
 	& length of max HuffEncoded() \\
 	& a little more 
 \end{align*}
+
+
+
+
+\begin{figure}
+	\centering
+	\begin{equation}
+		\forall t \in [0, 8] \colon freq_t \approx total / 9, \text{ where } total = \sum\nolimits_{i = 0}^8 freq_i
+	\end{equation}
+
+	\Tree[. 
+	[.0 [.0 [.0 2 ] [.1 3 ] ] [.1 [.0 4 ] [.1 5 ]]] 
+	[.1 [.0 [.0 6 ] [.1 7 ] ] [.1 [.0 8 ] [.1 [.0 0 ] [.1 1 ] ]]]]
+	\caption{the worst case Huffman tree}
+\end{figure}

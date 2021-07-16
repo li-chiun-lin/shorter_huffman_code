@@ -5,6 +5,7 @@
 #include <queue>
 #include <cassert>
 #include <algorithm>
+#include <numeric>
 
 using namespace std;
 
@@ -145,7 +146,7 @@ public:
 
 	bool operator()(Node* a, Node* b)
 	{
-		return a->freq > b->freq;
+		return a->freq > b->freq || (a->freq == b->freq && a->val > b->val) ;
 	}
 };
 
@@ -156,6 +157,7 @@ void dfs(const Node* tree, vector< vector<unsigned char> >& encoder, int* code, 
 void serializeHuffmanTree(const Node* tree, vector<unsigned char>& bit_topology, vector<unsigned char>& bit_val, int size_val);
 Node* unserializeHuffmanTree(vector<unsigned char>& bit_topology, int& it, vector<unsigned char>& bit_val, int& iv, int size_val);
 pair<unsigned char, int> decode(Node* tree, vector<unsigned char>& bits_buf, size_t idx_start);
+void printHuffmanEncoder(vector< vector<unsigned char> >& h_encoder);
 
 
 

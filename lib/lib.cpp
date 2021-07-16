@@ -186,6 +186,8 @@ Node* buildHuffmanTree(const vector<int>& freq)
 	for (int t = 0; t < freq.size(); ++t)
 		pq.push(new Node(t, freq[t]));
 
+	//cout << "pq size " << pq.size() << endl;
+
 	while (pq.size() > 1)
 	{
 		Node* node = new Node();
@@ -194,6 +196,9 @@ Node* buildHuffmanTree(const vector<int>& freq)
 		pq.pop();
 		node->next[1] = pq.top();
 		pq.pop();
+
+		//printf("%d (%d) + %d (%d) \n", node->next[0]->freq, node->next[0]->val, node->next[1]->freq, node->next[1]->val);
+
 		node->freq = node->next[0]->freq + node->next[1]->freq;
 
 		pq.push(node);
@@ -347,6 +352,19 @@ void XOR(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_key
 {
 	for (size_t i = 0; i < byte_image.size(); ++i)
 		byte_image[i] ^= byte_rand_keystream[i];
+}
+
+void printHuffmanEncoder(vector< vector<unsigned char> >& h_encoder)
+{
+	printf("size = %Iu\n", h_encoder.size());
+
+	for (size_t i = 0; i < h_encoder.size(); ++i)
+	{
+		printf("%Iu : ", i);
+		for (size_t j = 0; j < h_encoder[i].size(); ++j)
+			printf("%hhu", h_encoder[i][j]);
+		printf("\n");
+	}
 }
 
 
