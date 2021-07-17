@@ -1,6 +1,8 @@
 \section{Proposed Method}
 
-proposed method, ours~\cite{Grochowski2020}
+proposed method, ours
+
+\cite{Grochowski2020}
 
 three improvements:
 
@@ -10,58 +12,57 @@ three improvements:
 	\item Fix the issue of the 20-bits of length.
 \end{enumerate}
 
-Huffman codes are optimal prefix codes.
+%Huffman codes are optimal prefix codes.
 
 
 \begin{algorithm}
-	\caption{Serialize a Huffman coding tree}
+	\caption{Tree Serialization}
 	
 	\begin{algorithmic}[1]
-		\Require $root$ : the root node of a Huffman coding tree.
-		\Require $s$ : the size of bits of each value $v$.
-		\Ensure $bits\_topology$ : a bit sequence represents the topology of the tree.
-		\Ensure $bits\_value$ : a bit sequence represents every leaf value $v$ of the tree.
+		\Require $root$ node of a Huffman tree.
+		\Require size $s$ of bits of each value $v$.
+		\Ensure  bit sequence $bits\_topology$ represents the topology of the tree.
+		\Ensure  bit sequence $bits\_value$ represents every leaf value $v$ of the tree.
 		
 		\State $bits\_topology \gets \emptyset$.
 		\State $bits\_value    \gets \emptyset$.
 		
 		\State \Call{SerializeTree}{$root$}.
+		\\
+		
 		\Procedure{SerializeTree}{$root$}   
 		\If{$root$ is a leaf}
-		\State Let leaf value $v = (v_0, \dots, v_{s-1})$.
-		\State $bits\_topology \gets bits\_topology \Vert 0$.
-		\State $bits\_value \gets bits\_value \Vert v_0 \Vert \dots \Vert v_{s-1}$.
+		\State 		Let leaf value $v$ be presented as $(v_0, \dots, v_{s-1})$.
+		\State 		$bits\_topology \gets bits\_topology \Vert 0$.
+		\State 		$bits\_value \gets bits\_value \Vert v_0 \Vert \dots \Vert v_{s-1}$.
 		\Else
-		\State $bits\_topology \gets bits\_topology \Vert 1$.
-		\State \Call{SerializeTree}{$node.left\_child$}.
-		\State \Call{SerializeTree}{$node.right\_child$}.
+		\State		 $bits\_topology \gets bits\_topology \Vert 1$.
+		\State 		\Call{SerializeTree}{$node.left\_child$}.
+		\State 		\Call{SerializeTree}{$node.right\_child$}.
 		\EndIf
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{Unserialize a Huffman coding tree}
+	\caption{Tree Unserialization}
 	
 	\begin{algorithmic}[1]
-		\Require $bits\_topology$ : a bit sequence represents the topology of the tree.
-		\Require $bits\_value$ : a bit sequence represents every leaf value $v$ of the tree.
-		\Require $s$ : the size of bits of each value $v$.
-		\Ensure a Huffman coding tree.
+		\Require bit sequence $bits\_topology$ represents the topology of the tree.
+		\Require bit sequence $bits\_value$ represents every leaf value $v$ of the tree.
+		\Require size $s$ of bits of each value $v$.
+		\Ensure Huffman tree $H$.
 		
-		\Function{UnserializeTree}{$bits\_topology, bits\_value, s$}   
+		\State \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
+		\\
+		\Function{UnserializeTree}{$bits\_topology, bits\_value$}   
 		\State Read 1 bit $b$ from $bits\_topology$.
-%		\State Remove $b$ from $bits\_topology$.
 		\If{$b = 0$ }
-%		\State Let value $v$ be the first $size\_value$ bits of $bits\_value$.
-%		\State Let value $v = (bits\_value_0, \dots, bits\_value_{s - 1})$
-		\State Create a node $n$ with value $v = (bits\_value_0, \dots, bits\_value_{s - 1})$.
-		\State Remove $s$ bits from $bits\_value$.
+		\State 		Create a node $n$ with value $v = (bits\_value_0, \dots, bits\_value_{s - 1})$.
+		\State 		Remove $s$ bits from $bits\_value$.
 		
 		\Else
-%		\State Let $n1 \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
-%		\State Let $n2 \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
-		\State Create a node $n$ with
+		\State 		Create a node $n$ with
 		\State\hspace{\algorithmicindent} $left\_child \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
 		\State\hspace{\algorithmicindent} $right\_child \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
 		\EndIf
@@ -71,35 +72,80 @@ Huffman codes are optimal prefix codes.
 \end{algorithm}
 
 
-\begin{equation}
-	pe(i, j) = 
+\begin{align}
+	pe(i, j) &= 
 	\begin{cases}
 		\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < REF\_BYTES \\
 		x_{i, j - 1} \oplus x_{i, j}, & \text{if } i = 0 \\
 		x_{i - 1, j} \oplus x_{i, j}, & \text{if } j = 0 \\
 		pv(i, j) \oplus x_{i, j}, 	  & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
-	\end{cases}
+	\end{cases} \\
+	\intertext{where $REF\_BYTES$ are}
+	&\begin{aligned}
+%		REF\_BYTES &\text{ are}  \\
+		& 2 \times n - 1 \text{ bits of Huffman tree topology} \\
+		& n \times (\lfloor log_2(\max(n)) \rfloor + 1) \text{ bits of Huffman tree leaf values}\\
+		& n = \range(T) \\
+%		& length of max HuffEncoded() \\
+		& \text{a little more for loop invariant.} 
+	\end{aligned} \notag
+\end{align}
+%where
+%\begin{align*}
+%	REF\_BYTES &\text{ are}  \\
+%	& 2 \times n - 1 \text{ bits for Huffman coding tree topology} \\
+%	& n \times \lceil log_2(max(Range(t(i, j)))) \rceil \text{ bits for Huffman coding leaf values}\\
+%	& length of max HuffEncoded() \\
+%	& a little more 
+%\end{align*}
+
+
+\begin{equation}
+	\label{eq:worsttree}
+	\forall t \in [0, 8] \colon f_t \approx total / 9, \text{ where } total = \sum\nolimits_{i = 0}^8 f_i
 \end{equation}
-where
-\begin{align*}
-	REF\_BYTES &\text{ are}  \\
-	& 2 \times n - 1 \text{ bits for Huffman coding tree topology} \\
-	& n \times \lceil log_2(max(Range(t(i, j)))) \rceil \text{ bits for Huffman coding leaf values}\\
-	& length of max HuffEncoded() \\
-	& a little more 
-\end{align*}
-
-
-
 
 \begin{figure}
 	\centering
-	\begin{equation}
-		\forall t \in [0, 8] \colon freq_t \approx total / 9, \text{ where } total = \sum\nolimits_{i = 0}^8 freq_i
-	\end{equation}
-
 	\Tree[. 
 	[.0 [.0 [.0 2 ] [.1 3 ] ] [.1 [.0 4 ] [.1 5 ]]] 
 	[.1 [.0 [.0 6 ] [.1 7 ] ] [.1 [.0 8 ] [.1 [.0 0 ] [.1 1 ] ]]]]
-	\caption{the worst case Huffman tree}
+	\caption{The worst case Huffman tree.}
+	\label{fig:worsttree}
+\end{figure}
+
+\begin{figure}
+	\centering
+	
+	
+	\begin{tabularx}{\linewidth}{r r@{}c ccc}
+		
+		
+		
+		&&&& $LEN$ bits & $REF\_BYTES$ bytes \\
+		&&&& \downbracefill& \downbracefill \\
+		
+		
+		\hhline{*{1}{~}*{5}{-}}
+		$S^{header} =$  
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_topology$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_value$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$} 
+		& \multicolumn{1}{|c|}{\cellcolor{black!30}}
+		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}
+		\\ \cline{2-6}
+		
+		%		&&&& \upbracefill& \upbracefill \\
+		%		&&&& $LEN$ bits & $REF\_BYTES$ bytes \\
+		&&&&& \\
+		
+		where 
+		& $ bits\_topology $ has & \multicolumn{4}{l}{$ 2 \times n - 1$  bits,} \\
+		& $ bits\_value    $ has & \multicolumn{4}{l}{$ n \times \lceil \log_2(\max(n)) \rceil$  bits,}\\
+		& $ LEN            $ has & \multicolumn{4}{l}{$\lceil \log_2((w - 1) \times (h - 1) \times 3.3) \rceil $ bits.}\\
+		& $ n  =            $ & \multicolumn{4}{l}{$  \range(T) $} \\
+	\end{tabularx}
+	
+	
+	\caption{The header}
 \end{figure}
