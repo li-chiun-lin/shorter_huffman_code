@@ -1,5 +1,5 @@
 #include "../lib/lib.h"
-#include "shorter_huffman.h"
+#include "s_hm.h"
 
 void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode)
 {

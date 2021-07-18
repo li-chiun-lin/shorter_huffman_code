@@ -32,7 +32,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="report.cpp">
+    <ClCompile Include="l_rep.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>

@@ -14,6 +14,8 @@ three roles.
 
 \subsection{The Content-owner}
 
+\subsubsection{Preprocess}
+
 \begin{figure}
 	\centering
 	
@@ -81,7 +83,7 @@ All the label values forms a label map denoted as $T =\{t_{i, j} \mid 1 \leq i <
 		\mathrlap{8} 
 		\phantom{x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1}}&  \text{if } pe_{i, j} = 0       \\
 		7 - \lfloor log_2(pe_{i, j}) \rfloor &  \text{if } pe_{i, j} \neq  0
-	\end{dcases}
+	\end{dcases} 	
 \end{align}
 
 The frequency of all the possible values in label map $T$ is defined as~\eqref{eq:f}.
@@ -89,6 +91,16 @@ The frequency of all the possible values in label map $T$ is defined as~\eqref{e
 \begin{equation}
 	\label{eq:f}
 	F = \{f_v = \#(t = v) \mid t \in T, 0\leq v \leq 8\}
+\end{equation}
+
+Let $cap(v)$ be a function defined for all $v \in \range(T)$, represents the capacity each $t_{i, j} = v$ can provide.
+
+\begin{equation}
+	cap(v) = 
+	\begin{cases}
+		8     &  \text{if } v = 8       \\
+		v + 1 &  \text{if } 0 \leq v \leq 7
+	\end{cases} 
 \end{equation}
 
 They use a predefined Huffman tree $H = \{00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111\}$. The topology is visualized in Figure~\ref{fig:fixtree}.
@@ -106,23 +118,61 @@ They use a predefined Huffman tree $H = \{00, 01, 100, 101, 1100, 1101, 1110, 11
 	\label{fig:fixtree}
 \end{figure}
 
-Let $V$ be a array consisting of the range of $T$ sorted by their frequencies.
+Let $V$ be a array consisting of all the tag value $v$ in the range of $T$ sorted by their frequencies.
 
 \begin{equation}
 	\label{eq:v}
 	V = \{v \in \range(T) \mid \forall v_i, v_j \in V \colon i \leq j \implies f_{v_i} \leq f_{v_j} \}
 \end{equation}
 
-Let $HEncoder \colon T \mapsto H$ be a mapping, and $HDecoder \colon H \mapsto T$ be its reverse as defined in Equation~\eqref{eq:encode} and~\eqref{eq:decode}.
+Let $HEncoder$ be a mapping from $T$ to $H$, and $HDecoder \colon H \mapsto T$ be its reverse as defined in Equation~\eqref{eq:encode} and~\eqref{eq:decode}.
+
+%\begin{align}
+%	\label{eq:encode}
+%	&HEncoder(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
+%%	
+%	\label{eq:decode}
+%	&HDecoder(h_c) = t,  &&\text{ such that } HEncoder(t) = h_c. 
+%\end{align}
 
 \begin{align}
 	\label{eq:encode}
-	&HEncoder(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
-%	
+	HEncoder(v_i) = h_i \\
 	\label{eq:decode}
-	&HDecoder(h_c) = t,  &&\text{ such that } HEncoder(t) = h_c. 
+	HDecoder(h_i) = v_i 
 \end{align}
 
+The Huffman encoding result of Lena $512 \times 512$ is given in Table~\ref{tab:msblena}.
+We further categorize each $v \in \range(T)$ with Equation~\eqref{eq:type}. We say a tag value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
+For example, in the Table~\ref{tab:msblena}, tag value $v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
+
+\begin{align}
+	\label{eq:type}
+	Type(v) &= 
+	\begin{cases}
+		positive & \text{if } cap(v) > len \\
+		neutral  & \text{if } cap(v) = len \\
+		negative & \text{if } cap(v) < len \\
+	\end{cases} 
+	\\
+	&\text{where }  len = \vert HEncoder(v) \vert \notag
+\end{align}
+
+
+
+\CatchFileDef{\singlelenamsb}{../out/single-res-table-msb-lena.tex}{}
+\begin{table}
+	\scriptsize
+	\begin{tabular}{crlccrr}
+		\toprule 
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}  &  Cap. &    Len.    & Payload  & $\Delta$ \\
+		\midrule 
+		\singlelenamsb
+		\bottomrule
+	\end{tabular}
+	\caption{An example for Lena $512 \times 512$.}
+	\label{tab:msblena}
+\end{table}
 
 Let $T^\prime$ be the concatenation of Huffman code of all the label values in $T$ and $LEN$ be its length.
 
@@ -132,6 +182,8 @@ Let $T^\prime$ be the concatenation of Huffman code of all the label values in $
 	\label{eq:countlen}
 	LEN  &= \sum_{v=0}^{8} (f_v \times \lvert HEncoder(v) \rvert)
 \end{align}
+
+\subsubsection{Encryption and Embedding header}
 
 The cover image $I$ is encrypted with a key stream $K$ using Equation~\eqref{eq:enc}.
 
@@ -144,7 +196,7 @@ Let the first row and the first column of $I_e$ be reference bytes,
 the consistence of embedding header is illustrated in Figure~\ref{fig:header1}, where $S^{header\prime}$ represents the first $w + h - 1$ bytes of $S^{header}$.
 The header embedding process follows Algorithm~\ref{algo:embed1}. 
 The references bytes in the first row and the first column of the encrypted image $I_e$ each is replaced by 8 bits of $S^{header\prime}$.
-The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label value $t_{i, j}$ decides the capacity of embedding each $x^e_{i, j} \in I_e$ can provide.
+The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label value $t_{i, j}$ decides the capacity of embedding each $x^e_{i, j} \in I_e$ can provide. 
 
 \begin{figure}
 	\centering
@@ -152,7 +204,7 @@ The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label 
 	\begin{tabularx}{\linewidth}{r r@{}c cccc}
 		\hhline{*{1}{~}*{6}{-}}
 		$S^{header} =$  
-		& \multicolumn{2}{|c|}{\cellcolor{black!10}$HEncoder(0), \dots, HEncoder(8)$}
+		& \multicolumn{2}{|c|}{\cellcolor{black!10}$HEncoder(0) \Vert \dots \Vert HEncoder(8)$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 		& \multicolumn{2}{|c|}{\cellcolor{black!30}$T^\prime$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}  
@@ -162,7 +214,7 @@ The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label 
 		& \multicolumn{2}{c}{32 bits }
 		& 20 bits
 		& \multicolumn{2}{c}{$LEN$ bits  }
-		& $(w + h - 1) $ bytes 
+		& $w + h - 1 $ bytes 
 		
 		\\
 		
@@ -170,14 +222,14 @@ The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label 
 		
 		\hhline{*{1}{~}*{4}{-}}
 		$S^{header\prime} =$  
-		& \multicolumn{2}{|c|}{\cellcolor{black!10}$HEncoder(0), \dots, HEncoder(8)$}
+		& \multicolumn{2}{|c|}{\cellcolor{black!10}$HEncoder(0) \Vert \dots \Vert HEncoder(8)$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}
-		&   &
+		& \phantom{1}  &
 		\\ \cline{2-5}
 		& \multicolumn{4}{c}{\upbracefill} & &
 		\\
-		& \multicolumn{4}{c}{$(w + h - 1) $ bytes  }
+		& \multicolumn{4}{c}{$w + h - 1 $ bytes  }
 		& 
 	\end{tabularx}
 	
@@ -355,18 +407,19 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\Ensure length $LEN$ of the encoded label map $T^\prime$.
 		
 		\State Let array $R$ contains the bytes of the first row and the first column of $I_w$.
+%		\State $R \gets \{x^w_{i, j} \in I_w \mid i = 0 \vee j = 0\}$.
 		
 		\State Restore 9 Huffman codes from $(r_0 , \dots,  r_{31})$.
 		\State Restore $HEncoder$ and $HDecoder$ from the 9 Huffman codes.
 		\State Restore $LEN$ from $(r_{32} , \dots,  r_{51})$.
 		
 		\State $T \gets \{t_{i, j} = -1 \mid i \in [0, h), j \in [0, w)\}$.
-		\State $(d_x, d_y) \gets (1, 1)$.
+		\State $(d_x, d_y) \gets (1, 1)$.	\label{algo:extractT:idxProce}
 		\State $buf \gets \emptyset$.
 		\ForAll{$\{r_i \in R \mid i > 52\}$}
 		\State	$buf \gets buf \Vert r_i$.
 		\If		{$buf$ is a valid Huffman code}
-		\State 		$T_{i, j} \gets HDecoder(buf)$.
+		\State 		$t_{(d_x, d_y)} \gets HDecoder(buf)$.		\label{algo:extractT:incdref}
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 %		\State 		$d_y \gets d_y + 1$.
@@ -377,17 +430,18 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\EndIf
 		\EndFor
 		
-		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, i \in [1, h), j \in [1, w)\}$}
-		\If		{$d_x = h$}
-		\State		$(c_x, c_y) \gets (i, j)$
-		\State 		End of algorithm.
-		\EndIf
-		\State 	$buf \gets buf \Vert Extract(i, j)$ by Equation~\eqref{eq:extract}.
+		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, i \in [1, h), j \in [1, w)\}$} \label{algo:extractT:idxExt}
+		\State 	$buf \gets buf \Vert Extract(i, j)$ by Equation~\eqref{eq:extract}. \Comment{loop invariant}
+		\label{algo:extractT:nextij}
 		
-		\If		{$buf$ is a valid Huffman code}
-		\State 		$t_{d_x, d_y} \gets HDecoder(buf)$.
+		\If		{$buf$ is a valid Huffman code}		
+		\State 		$t_{(d_x, d_y)} \gets HDecoder(buf)$. \label{algo:extractT:nextd}
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
+		\If			{$d_x = h$}
+		\State			$(c_x, c_y) \gets (i, j)$
+		\State 			End of algorithm.
+		\EndIf
 %		\State 		$d_y \gets d_y + 1$.
 %		\If			{$d_y = w$}
 %		\State			$d_y \gets 1$.
@@ -434,7 +488,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 
 
 
-\subsubsection{Restore Cover Image}
+\subsubsection{Decrypt and Restore Cover Image}
 
 After running Algorithm~\ref{algo:extractT}, the Receiver possesses the stego image $I_w$, the label map $T$ and $w + h - 1$ reference bytes $R$ of $I_e$.
 %
@@ -483,6 +537,7 @@ An example is illustrated in Figure~\ref{fig:example}.
 
 
 \begin{figure}
+	\scriptsize
 	\centering
 	
 	\begin{tabular}{@{}r@{}r@{}rc|c|c|c|c|c|c|c|c|ll}
@@ -610,7 +665,7 @@ An example is illustrated in Figure~\ref{fig:example}.
 	\end{tabular}
 	
 	
-	\caption{An Example}
+	\caption{A visualized example.}
 	\label{fig:example}
 \end{figure}
 

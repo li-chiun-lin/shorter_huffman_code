@@ -1,5 +1,5 @@
 #include "../lib/lib.h"
-#include "msb_huffman.h"
+#include "m_hm.h"
 
 void reportA(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode)
 {

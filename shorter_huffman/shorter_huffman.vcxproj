@@ -140,13 +140,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="report.cpp" />
-    <ClCompile Include="shorter_huffman.cpp" />
+    <ClCompile Include="s_m.cpp" />
+    <ClCompile Include="s_rep.cpp" />
+    <ClCompile Include="s_hm.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="export.h" />
-    <ClInclude Include="shorter_huffman.h" />
+    <ClInclude Include="s_exp.h" />
+    <ClInclude Include="s_hm.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib\lib.vcxproj">

@@ -1,5 +1,7 @@
 \section{Proposed Method}
 
+\CatchFileDef{\singlelenashr}{../out/single-res-table-shr-lena.tex}{}
+
 proposed method, ours
 
 \cite{Grochowski2020}
@@ -12,20 +14,127 @@ three improvements:
 	\item Fix the issue of the 20-bits of length.
 \end{enumerate}
 
+\subsection{Apply the Huffman tree building algorithm}
+\label{sec:improvetree}
+
+We observed that Yin~et~al.~introduced their method based on a predefined Huffman tree as shown in Figure~\ref{fig:fixtree} 
+without clarifying the pros and cons behind this design decision. We found that this fixed predefined tree topology actually constrains the true ability of Huffman coding. When we apply the standard Huffman coding algorithm [cite here], its full power can be released. 
+
+A step by step demonstration of tree constructing process of Lena $512 \times 512$ is given in Appendix~\ref{app:buildtree}.
+The tree topology is shown in Figure~\ref{fig:lenatree} and the statistic data is given in Table. 
+Since in our proposal the tree topology is no longer a pre-shared knowledge between sender and receiver, we have to extend the header to store the tree. A tree serialization algorithm is given in Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
+
+A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes[cite here], each needs one bit to represent its role. We define 1 for an internal node and 0 for a leaf. Each leaf has a value $0 \leq v_i \leq 8$, thus four bits are enough to store each $v_i$, that is $4 \times 9 = 36$ bits. We occupy 7 bytes in the header to store the 17 bits of tree topology and the 36 bits of the leaf values.
+
+\begin{table}
+	\scriptsize
+	\begin{tabular}{crlccrr}
+		\toprule 
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}   &  Cap.&    Len.    & Payload  & $\Delta$ \\ 
+		\midrule  
+		\singlelenashr
+		\bottomrule   
+	\end{tabular}
+	\caption{Here needs a title}
+	\label{tab:shrlena}
+\end{table}
+
+\begin{figure}
+	\scriptsize
+	\Tree[ 
+	[.0 [.0 \{00\}\\5 ]
+	[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+	[.1 [.0 [.0 \{100\}\\3 ]
+	[.1 [.0 \{1010\}\\2 ]
+	[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+	[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
+	\caption{The Huffman coding tree of Lena $512 \times 512$.}
+	\label{fig:lenatree}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Reduce Reference Bytes}
+
+In Yin's method, in order for MED in Equation~\eqref{eq:pv} [explain more or cite here] to work, the first row and the first column , as reference bytes, must be losslessly preserved, and this is the reason why they must concatenate them after $T^\prime$ (as shown in Figure~\ref{fig:header1})and embed them before embedding any secret information. 
+
+Thought this design did not provide any negative effect since they are $neutral$ base on the fact that every reference byte provides 8 bit capacity and occupy 8 bits capacity at the same time, with one more byte being defined as reference bytes, there is one less byte that can be used for information hiding. We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. For the bytes in the first row, we define their predicted error as exclusive-or with the previous byte. Similar logic applies to those in the first column. 
+
+Theoretically, the $x_{0, 0}$ is the only critical byte that must be losslessly preserved, but by the following reasons, we have define $REF$ more than this 1 byte.
+
+Aside from the reason described in Section~\ref{sec:improvetree} that we need 7 bytes to store the Huffman tree, 
+more importantly, we need some more bytes to avoid violating a loop invariant in extracting process.
+
+There are two indexes in Algorithm~\ref{algo:extractT}: the $(d_x, d_y)$ defined at line~\ref{algo:extractT:idxProce} and the $(i, j)$ for the loop at line~\ref{algo:extractT:idxExt}. 
+For Algorithm~\ref{algo:extractT} to work properly, there is an untold loop invariant at line~\ref{algo:extractT:nextij} that $(i, j) < (d_x, d_y)$ must be true for all time. 
+
+While $(i, j)$ is increased with every iteration in the loop, $(d_x, d_y)$ is only increased when the $buf$ at line~\ref{algo:extractT:nextd} contains a proper Huffman code, which is affected by the capacity of each proceeded $t_{i, j}$.
+If the frequency of $negative$ $t_{i, j}$ have a tendency to centralized in some part of $T$ and slow down the incremental speed of $(d_x, d_y)$, Algorithm~\ref{algo:extractT} might encounter exception and fail.
+
+Increase $REF$ helps avoiding this problem. As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT}, after extracting the information about Huffman tree, the rest of the $REF$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reduce the chance of violating the loop invariant.
+Though defining more $REF$ bytes helps amending this issue, it also decreases the bytes that can be dedicate to information hiding.
+
+Even thought the minimum $REF$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF$ beside the basic 7 bytes used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF$ bytes to safely go through Algorithm~\ref{algo:extractT}, we have to define a fixed $REF$ to comply with the whole protocol. 
+
+According to our experiments, define $REF$ equals to $7 + 17$ bytes is enough for all the test images, but we still retain the possibility that it might need to be increased for some more complex cover images.
+
+\begin{equation}
+	(i, j) < (d_x, d_y)
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Remove the redundent length column}
+
+
+While we inspecting Yin's algorithm, we found the unreasonable design of constraining the size of $LEN$ to 20 bits.
+
+
+tell the worst case and the average code length
+
+say the dynamic formula.
+
+Baboon as an example, and show the data.
+
+this does not help much to improve the capacity, but it makes the protocol more compact and solid.
+
 %Huffman codes are optimal prefix codes.
 
 
 \begin{algorithm}
 	\caption{Tree Serialization}
+	\label{algo:serial}
 	
 	\begin{algorithmic}[1]
 		\Require $root$ node of a Huffman tree.
 		\Require size $s$ of bits of each value $v$.
-		\Ensure  bit sequence $bits\_topology$ represents the topology of the tree.
-		\Ensure  bit sequence $bits\_value$ represents every leaf value $v$ of the tree.
+		\Ensure  bit sequence $topology$ represents the topology of the tree.
+		\Ensure  bit sequence $value$ represents every leaf value $v$ of the tree.
 		
-		\State $bits\_topology \gets \emptyset$.
-		\State $bits\_value    \gets \emptyset$.
+		\State $topology \gets \emptyset$.
+		\State $value    \gets \emptyset$.
 		
 		\State \Call{SerializeTree}{$root$}.
 		\\
@@ -33,10 +142,10 @@ three improvements:
 		\Procedure{SerializeTree}{$root$}   
 		\If{$root$ is a leaf}
 		\State 		Let leaf value $v$ be presented as $(v_0, \dots, v_{s-1})$.
-		\State 		$bits\_topology \gets bits\_topology \Vert 0$.
-		\State 		$bits\_value \gets bits\_value \Vert v_0 \Vert \dots \Vert v_{s-1}$.
+		\State 		$bits\_topology \gets topology \Vert 0$.
+		\State 		$bits\_value \gets value \Vert v_0 \Vert \dots \Vert v_{s-1}$.
 		\Else
-		\State		 $bits\_topology \gets bits\_topology \Vert 1$.
+		\State		 $topology \gets topology \Vert 1$.
 		\State 		\Call{SerializeTree}{$node.left\_child$}.
 		\State 		\Call{SerializeTree}{$node.right\_child$}.
 		\EndIf
@@ -46,25 +155,26 @@ three improvements:
 
 \begin{algorithm}
 	\caption{Tree Unserialization}
+	\label{algo:unserial}
 	
 	\begin{algorithmic}[1]
-		\Require bit sequence $bits\_topology$ represents the topology of the tree.
-		\Require bit sequence $bits\_value$ represents every leaf value $v$ of the tree.
+		\Require bit sequence $topology$ represents the topology of the tree.
+		\Require bit sequence $value$ represents every leaf value $v$ of the tree.
 		\Require size $s$ of bits of each value $v$.
 		\Ensure Huffman tree $H$.
 		
-		\State \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
+		\State \Call{UnserializeTree}{$topology, value$}.
 		\\
-		\Function{UnserializeTree}{$bits\_topology, bits\_value$}   
-		\State Read 1 bit $b$ from $bits\_topology$.
+		\Function{UnserializeTree}{$topology, value$}   
+		\State Read 1 bit $b$ from $topology$.
 		\If{$b = 0$ }
-		\State 		Create a node $n$ with value $v = (bits\_value_0, \dots, bits\_value_{s - 1})$.
-		\State 		Remove $s$ bits from $bits\_value$.
+		\State 		Create a node $n$ with value $v = (value_0, \dots, value_{s - 1})$.
+		\State 		Remove $s$ bits from $value$.
 		
 		\Else
 		\State 		Create a node $n$ with
-		\State\hspace{\algorithmicindent} $left\_child \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
-		\State\hspace{\algorithmicindent} $right\_child \gets$ \Call{UnserializeTree}{$bits\_topology, bits\_value$}.
+		\State\hspace{\algorithmicindent} $left\_child \gets$ \Call{UnserializeTree}{$topology, value$}.
+		\State\hspace{\algorithmicindent} $right\_child \gets$ \Call{UnserializeTree}{$topology, value$}.
 		\EndIf
 		\State \Return $n$.
 		\EndFunction
@@ -72,24 +182,19 @@ three improvements:
 \end{algorithm}
 
 
-\begin{align}
-	pe(i, j) &= 
+\begin{equation}
+	\label{eq:pe2}
+	pe(i, j) = 
 	\begin{cases}
-		\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < REF\_BYTES \\
+		\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < REF \\
 		x_{i, j - 1} \oplus x_{i, j}, & \text{if } i = 0 \\
 		x_{i - 1, j} \oplus x_{i, j}, & \text{if } j = 0 \\
 		pv(i, j) \oplus x_{i, j}, 	  & \text{if } 1 \leq i < h \wedge 1 \leq j < w \\
-	\end{cases} \\
-	\intertext{where $REF\_BYTES$ are}
-	&\begin{aligned}
-%		REF\_BYTES &\text{ are}  \\
-		& 2 \times n - 1 \text{ bits of Huffman tree topology} \\
-		& n \times (\lfloor log_2(\max(n)) \rfloor + 1) \text{ bits of Huffman tree leaf values}\\
-		& n = \range(T) \\
-%		& length of max HuffEncoded() \\
-		& \text{a little more for loop invariant.} 
-	\end{aligned} \notag
-\end{align}
+	\end{cases} 
+\end{equation}
+
+where $REF$ consists of 7 bytes for Huffman tree and 17 more bytes for maintaining loop invariant.
+
 %where
 %\begin{align*}
 %	REF\_BYTES &\text{ are}  \\
@@ -105,6 +210,21 @@ three improvements:
 	\forall t \in [0, 8] \colon f_t \approx total / 9, \text{ where } total = \sum\nolimits_{i = 0}^8 f_i
 \end{equation}
 
+%\begin{equation}
+%%	\label{eq:worsttree}
+%	\forall t \in [0, 8] \colon f_t \approx  \left . {\sum\nolimits_{i = 0}^8 f_i} \middle / 9 \right .
+%\end{equation}
+%
+%\begin{equation}
+%%	\label{eq:worsttree}
+%	\forall t \in [0, 8] \colon f_t \approx   {\sum\nolimits_{i = 0}^8 f_i}  / 9 
+%\end{equation}
+%
+%\begin{equation}
+%%	\label{eq:worsttree}
+%	\forall t \in [0, 8] \colon f_t \approx \frac{\sum_{i = 0}^8 f_i}{9}
+%\end{equation}
+
 \begin{figure}
 	\centering
 	\Tree[. 
@@ -114,38 +234,37 @@ three improvements:
 	\label{fig:worsttree}
 \end{figure}
 
+
+
+
+
+
 \begin{figure}
 	\centering
 	
 	
-	\begin{tabularx}{\linewidth}{r r@{}c ccc}
+	\begin{tabularx}{\linewidth}{r r@{}c cc}
+		
+		&&& $LEN$ bits & $REF$ bytes \\
+		&&& \downbracefill& \downbracefill \\
 		
 		
-		
-		&&&& $LEN$ bits & $REF\_BYTES$ bytes \\
-		&&&& \downbracefill& \downbracefill \\
-		
-		
-		\hhline{*{1}{~}*{5}{-}}
+		\hhline{*{1}{~}*{4}{-}}
 		$S^{header} =$  
-		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_topology$}
-		& \multicolumn{1}{|c|}{\cellcolor{black!10}$bits\_value$}
-		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$} 
-		& \multicolumn{1}{|c|}{\cellcolor{black!30}}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$topology$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$value$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!30}$T^\prime$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}
-		\\ \cline{2-6}
+		\\ \cline{2-5}
 		
-		%		&&&& \upbracefill& \upbracefill \\
-		%		&&&& $LEN$ bits & $REF\_BYTES$ bytes \\
-		&&&&& \\
+		&&&& \\
 		
 		where 
-		& $ bits\_topology $ has & \multicolumn{4}{l}{$ 2 \times n - 1$  bits,} \\
-		& $ bits\_value    $ has & \multicolumn{4}{l}{$ n \times \lceil \log_2(\max(n)) \rceil$  bits,}\\
-		& $ LEN            $ has & \multicolumn{4}{l}{$\lceil \log_2((w - 1) \times (h - 1) \times 3.3) \rceil $ bits.}\\
-		& $ n  =            $ & \multicolumn{4}{l}{$  \range(T) $} \\
+		& $ topology $ & \multicolumn{3}{l}{has $ 2 \times n - 1$  bits,} \\
+		& $ value    $ & \multicolumn{3}{l}{has $ n \times (\lfloor \log_2(\max(\range(T))) \rfloor + 1)$  bits,}\\
+		& $ n  =     $ & \multicolumn{3}{l}{$  \vert \range(T) \vert $.} \\
 	\end{tabularx}
 	
 	
-	\caption{The header}
+	\caption{The header.}
 \end{figure}

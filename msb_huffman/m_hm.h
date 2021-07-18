@@ -3,6 +3,8 @@
 # define REPORT 1
 # define PRINT 1
 
+# define LEN20 0
+
 # define DIR_IMG "../image/"
 # define DIR_IMG_OUT DIR_IMG "out/"
 # define DIR_DATA_OUT "../out/"

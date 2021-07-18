@@ -1,6 +1,6 @@
 #include "../lib/lib.h"
-#include "shorter_huffman.h"
-#include "export.h"
+#include "s_hm.h"
+#include "s_exp.h"
 
 int main()
 {

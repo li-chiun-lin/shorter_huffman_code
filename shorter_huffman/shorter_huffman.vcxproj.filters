@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="shorter_huffman.cpp">
+    <ClCompile Include="s_hm.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="report.cpp">
+    <ClCompile Include="s_rep.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="s_m.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shorter_huffman.h">
+    <ClInclude Include="s_hm.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="export.h">
+    <ClInclude Include="s_exp.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

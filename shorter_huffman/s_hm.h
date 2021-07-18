@@ -5,6 +5,27 @@ using namespace std;
 # define REPORT 1
 # define PRINT 1
 
+# define HAS_SIZE_LEN_H_LABEL_MAP 0
+
+# define CNT_REF_EXTRA 17
+// this is for Baboon
+//# define CNT_REF_EXTRA 16
+
+# define CNT_REF_TREE 7
+
+# if HAS_SIZE_LEN_H_LABEL_MAP
+# define CNT_REF_LEN 3
+# else
+# define CNT_REF_LEN 0
+# endif
+
+const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_EXTRA);
+
+
+
+
+
+
 # define DIR_IMG "../image/"
 # define DIR_IMG_OUT DIR_IMG "out/"
 # define DIR_DATA_OUT "../out/"
@@ -39,15 +60,7 @@ using namespace std;
 
 //# define LEN_LEN_H_ENCODED_LABELMAP 20
 
-# define CNT_REF_TREE 7
-# define CNT_REF_LEN 3
 
-# define CNT_REF_EXTRA 1
-// this is for Baboon
-//# define CNT_REF_EXTRA 16
-
-//# define CNT_REF (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_EXTRA)
-const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_EXTRA);
 
 
 void reportA_(vector<unsigned char>& val_labelmap, vector<int>& cnt_t, int width_image, int domain_hcode);

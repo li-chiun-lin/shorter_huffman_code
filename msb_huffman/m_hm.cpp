@@ -1,5 +1,5 @@
 ﻿#include "../lib/lib.h"
-#include "msb_huffman.h"
+#include "m_hm.h"
 
 int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
 {
@@ -124,8 +124,12 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 	const int width_image = (int)sqrt(size_image);
 	const int width_image1 = width_image + 1;
 	const int width_image_1 = width_image - 1;
-	const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
-	const int len_hcode_header = LEN_HC_RULE + len_len_h_encoded_labelmap;
+# if LEN20
+	const int log2_len_h_encoded_labelmap = 20;
+# else
+	const int log2_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+# endif
+	const int len_hcode_header = LEN_HC_RULE + log2_len_h_encoded_labelmap;
 
 	srand(seed);
 
@@ -219,7 +223,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 # endif
 
 	//side info 2, length of encode(lab map) => lm, 20 bits
-	unsigned int mask_bit_long = 1 << (len_len_h_encoded_labelmap - 1);
+	unsigned int mask_bit_long = 1 << (log2_len_h_encoded_labelmap - 1);
 
 	while (mask_bit_long)
 	{
@@ -228,7 +232,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 	}
 
 # if REPORT
-	reportD2(bits_embed, idx_prepare, len_embed, len_len_h_encoded_labelmap, LEN_HC_RULE);
+	reportD2(bits_embed, idx_prepare, len_embed, log2_len_h_encoded_labelmap, LEN_HC_RULE);
 # endif
 
 	//side info 3, encode(lab map) => lm bits
@@ -376,7 +380,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 
 	int len_ex_h_encoded_labelmap = 0;
 
-	for (int i = 0; i < len_len_h_encoded_labelmap; ++i)
+	for (int i = 0; i < log2_len_h_encoded_labelmap; ++i)
 	{
 		len_ex_h_encoded_labelmap <<= 1;
 		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
@@ -495,18 +499,34 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 	struct Result res;
 	res.size_image = size_image;
 	res.width_image = width_image;
-	res.len_len_h_encoded_labelmap = len_len_h_encoded_labelmap;
-	res.len_h_values = LEN_HC_RULE;
+
+	res.header_log2_len_h_encoded_labelmap = log2_len_h_encoded_labelmap;
+	res.header_len_h_values = LEN_HC_RULE;
+
 	for (int i = 0; i < 9; ++i)
 	{
 		res.freq[i] = cnt_t[i];
 		res.len_code[i] = (int)bits_hcode[h_encoder[i]].size();
 		vector<unsigned char> buf = bits_hcode[h_encoder[i]];
-		res.code[i] = bits2byte(buf);
+		res.code_hex[i] = bits2byte(buf);
+
+		size_t j = 0;
+		while (j < bits_hcode[h_encoder[i]].size())
+		{
+			res.code_str[i][j] = '0' + bits_hcode[h_encoder[i]][j];
+			++j;
+		}
+
+		res.code_str[i][j] = 0;
 	}
+
 	res.len_h_encoded_labelmap = len_h_encoded_labelmap;
+
 	res.len_secret = len_secret;
 	res.len_ref = len_ref;
+	// because some where at near step C, len_secret -= len_hcode_header;
+
+	res.deduce();
 
 	return res;
 }

@@ -1,5 +1,5 @@
 ﻿#include "../lib/lib.h"
-#include "shorter_huffman.h"
+#include "s_hm.h"
 
 
 vector<unsigned char> encodeLabelMap_(vector< vector<unsigned char> >& encoder, vector<unsigned char>& val_labelmap)
@@ -142,7 +142,11 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 	// need more fine tune
 	//const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
 	//const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 3));   // this is oaky
+# if HAS_SIZE_LEN_H_LABEL_MAP
 	const int len_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 3.3));
+# else
+	const int len_len_h_encoded_labelmap = 0;
+# endif
 
 	//cout << len_len_h_encoded_labelmap << endl;
 
@@ -245,6 +249,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 	for (size_t i = 0; i < bit_val.size(); ++i)
 		bits_embed[idx_prepare++] = bit_val[i];
 
+# if HAS_SIZE_LEN_H_LABEL_MAP
 	unsigned int mask_bit_long = 1 << (len_len_h_encoded_labelmap - 1);
 
 	while (mask_bit_long)
@@ -252,6 +257,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 		bits_embed[idx_prepare++] = (len_h_encoded_labelmap & mask_bit_long) ? 1 : 0;
 		mask_bit_long >>= 1;
 	}
+# endif
 
 	assert(idx_prepare == len_hcode_header + len_len_h_encoded_labelmap);
 
@@ -382,6 +388,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 	int idx_ex_proceed = it + iv;
 	int len_ex_h_encoded_labelmap = 0;
 
+# if HAS_SIZE_LEN_H_LABEL_MAP
 	for (int i = 0; i < len_len_h_encoded_labelmap; ++i)
 	{
 		len_ex_h_encoded_labelmap <<= 1;
@@ -395,6 +402,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 # endif
 
 	assert(len_ex_h_encoded_labelmap == len_h_encoded_labelmap);
+# endif
 
 
 
@@ -500,21 +508,35 @@ struct Result shr_huffman(string path_cover_img, string path_report, string path
 
 
 	struct Result res;
+
 	res.size_image = size_image;
 	res.width_image = width_image;
-	res.len_len_h_encoded_labelmap = len_len_h_encoded_labelmap;
-	res.len_ref = len_ref;
-	res.len_h_topology = (int)bit_topology.size();
-	res.len_h_values = (int)bit_val.size();
+
+	res.header_log2_len_h_encoded_labelmap = len_len_h_encoded_labelmap;
+	res.header_len_h_topology = (int)bit_topology.size();
+	res.header_len_h_values = (int)bit_val.size();
+
 	res.len_h_encoded_labelmap = len_h_encoded_labelmap;
+	res.len_ref = len_ref;
 	res.len_secret = len_secret;
 
 	for (int i = 0; i < 9; ++i)
 	{
 		res.freq[i] = cnt_t[i];
 		res.len_code[i] = (int)h_encoder[i].size();
-		res.code[i] = bits2byte(h_encoder[i]);
+		res.code_hex[i] = bits2byte(h_encoder[i]);
+
+		size_t j = 0;
+		while (j < h_encoder[i].size())
+		{
+			res.code_str[i][j] = '0' + h_encoder[i][j];
+			++j;
+		}
+
+		res.code_str[i][j] = 0;
 	}
+
+	res.deduce();
 
 	return res;
 }

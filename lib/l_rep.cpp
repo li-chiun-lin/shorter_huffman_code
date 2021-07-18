@@ -82,16 +82,25 @@ void reportG4(vector<unsigned char>& byte_image, const char* fn_restore)
 void printResult(Result res)
 {
 	printf("--------------------------------------\n");
-	printf("size_image                %8d\n", res.size_image);
-	printf("width_image               %8d\n", res.width_image);
-	printf("len_h_topology            %8d = 2 * %d - 1\n", res.len_h_topology, res.len_h_topology ? (res.len_h_topology + 1) / 2 : 0);
-	printf("len_h_values              %8d\n", res.len_h_values);
-	printf("len_len_hencoded_labelmap %8d\n", res.len_len_h_encoded_labelmap);
-	printf("len_h_encoded_labelmap    %8d\n", res.len_h_encoded_labelmap);
-	printf("len_ref                   %8d = %d * 8\n", res.len_ref, res.len_ref / 8);
-	printf("len_secret                %8d = %.3f bpp\n", res.len_secret, res.size_image ? (float)res.len_secret / res.size_image : 0);
-	printf("capacity                  %8d = %d + %d\n", res.len_h_encoded_labelmap + res.len_secret, res.len_h_encoded_labelmap, res.len_secret);
+	printf("size_image                 %8d\n", res.size_image);
+	printf("width_image                %8d\n", res.width_image);
+	printf("\n");
+	printf("len_h_topology             %8d = 2 * %d - 1\n", res.header_len_h_topology, 
+											res.header_len_h_topology ? (res.header_len_h_topology + 1) / 2 : 0);
+	printf("len_len_h_values           %8d\n", res.header_len_h_values);
+	printf("log2_len_hencoded_labelmap %8d\n", res.header_log2_len_h_encoded_labelmap);
+
+	printf("\n");
+	printf("len_h_encoded_labelmap     %8d\n", res.len_h_encoded_labelmap);
+	printf("\n");
+	printf("len_ref                    %8d = %d * 8\n", res.len_ref, res.len_ref / 8);
+	printf("\n");
+	printf("len_secret                 %8d = %.3f bpp\n", res.len_secret, res.size_image ? (float)res.len_secret / res.size_image : 0);
+	printf("\n");
+	printf("capacity                   %8d = %d + %d\n", res.size_capacity_with_header, res.len_h_encoded_labelmap, res.len_secret);
+	printf("\n");
+	printf("capacity without header    %8d = %d + %d\n", res.size_capacity, res.len_h_encoded_labelmap, res.len_secret);
 
 	for (int i = 0; i < 9; ++i)
-		printf("%d %8d %2x %2d\n", i, res.freq[i], res.code[i], res.len_code[i]);
+		printf("%d %8d %2x %2d\n", i, res.freq[i], res.code_hex[i], res.len_code[i]);
 }

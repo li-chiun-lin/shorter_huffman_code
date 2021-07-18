@@ -6,6 +6,7 @@
 #include <cassert>
 #include <algorithm>
 #include <numeric>
+#include <string>
 
 using namespace std;
 
@@ -181,7 +182,7 @@ void reportB(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand
 void reportB3(vector<unsigned char>& byte_image, const char* fn_enc_img);
 //void reportC(vector<int>& h_encoder, vector<int>& cnt_t, int len_h_encoded_labelmap, int len_secret);
 void reportD(vector<unsigned char>& bits_embed, int idx_prepare, int len_hc_rule);
-void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_len_h_encoded_labelmap, int len_hc_rule);
+void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int header_log2_len_h_encoded_labelmap, int len_hc_rule);
 void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_hcode_header);
 void reportD4(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
 void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
@@ -199,40 +200,82 @@ void reportG3(vector<unsigned char>& byte_image);
 void reportG4(vector<unsigned char>& byte_image, const char* fn_restore);
 
 
+// msb:                          header_len_h_values || header_log2_len_h_encoded_labelmap || len_h_encoded_labelmap || Ref || secret
+// shr: header_len_h_topology || header_len_h_values || header_log2_len_h_encoded_labelmap || len_h_encoded_labelmap || Ref || secret
+//      ------------------------------------------------------------------------------------
+//      |-->                                 header                                     <--|
+//
+//      len_secret = capacity - len_h_encoded_labelmap - header
 
 struct Result
 {
 	int size_image;
 	int width_image;
-	int len_h_topology;
-	int len_h_values;
+
+
+	int header_len_h_topology;
+	int header_len_h_values;
+	int header_log2_len_h_encoded_labelmap;
+	int header_len;
+	
 	int len_h_encoded_labelmap;
-	int len_len_h_encoded_labelmap;
+
 	int len_ref;
+
 	int len_secret;
-	//int size_capacity;
+	int len_secret_without_header;
+
+	int size_capacity;
+	int size_capacity_with_header;
+
+	float bbp;
+
 	int freq[9];
 	int len_code[9];
-	unsigned char code[9];
+	unsigned char code_hex[9];
+	char code_str[9][9];
 
 	Result()
 	{
-		this->size_image = 0;
-		this->width_image = 0;
-		this->len_h_topology = 0;
-		this->len_h_values = 0;
-		this->len_h_encoded_labelmap = 0;
-		this->len_len_h_encoded_labelmap = 0;
-		this->len_ref = 0;
-		this->len_secret = 0;
-		//this->size_capacity = 0;
+		size_image = 0;
+		width_image = 0;
+
+		header_len_h_topology = 0;
+		header_len_h_values = 0;
+		header_log2_len_h_encoded_labelmap = 0;
+		header_len = 0;
+
+		len_h_encoded_labelmap = 0;
+
+		len_ref = 0;
+
+		len_secret = 0;
+		len_secret_without_header = 0;
+
+		size_capacity = 0;
+		size_capacity_with_header = 0;
+		
+		bbp = 0.0;
 
 		for (int i = 0; i < 9; ++i)
 		{
 			freq[i] = 0;
 			len_code[i] = 0;
-			code[i] = 0;
+			code_hex[i] = 0;
+			code_str[i][0] = 0;
 		}
+	}
+
+	void deduce()
+	{
+		header_len = header_len_h_topology + header_len_h_values + header_log2_len_h_encoded_labelmap;
+
+		len_secret_without_header = len_secret + header_len;
+
+		size_capacity_with_header = len_h_encoded_labelmap + len_secret;
+		size_capacity = size_capacity_with_header + header_len;
+
+		bbp = (float)len_secret_without_header / size_image;
 	}
 };
 

@@ -139,9 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="msb_huffman.cpp" />
-    <ClCompile Include="report.cpp" />
+    <ClCompile Include="m_m.cpp" />
+    <ClCompile Include="m_hm.cpp" />
+    <ClCompile Include="m_rep.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib\lib.vcxproj">
@@ -149,8 +149,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="export.h" />
-    <ClInclude Include="msb_huffman.h" />
+    <ClInclude Include="m_exp.h" />
+    <ClInclude Include="m_hm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
