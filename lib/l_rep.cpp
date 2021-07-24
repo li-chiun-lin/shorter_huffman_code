@@ -99,7 +99,7 @@ void printResult(Result res)
 	printf("\n");
 	printf("capacity                   %8d = %d + %d\n", res.size_capacity_with_header, res.len_h_encoded_labelmap, res.len_secret);
 	printf("\n");
-	printf("capacity without header    %8d = %d + %d\n", res.size_capacity, res.len_h_encoded_labelmap, res.len_secret);
+	printf("capacity without header    %8d = %d + %d + %d\n", res.size_capacity, res.len_h_encoded_labelmap, res.len_secret, res.header_len);
 
 	for (int i = 0; i < 9; ++i)
 		printf("%d %8d %2x %2d\n", i, res.freq[i], res.code_hex[i], res.len_code[i]);

@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\ttn\Desktop\tiff-4.3.0\tools\tiff2rgba.c">
+    <ClCompile Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\tools\tiff2rgba.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\ttn\Desktop\tiff-4.3.0\port\getopt.c">
+    <ClCompile Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\port\getopt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\ttn\Desktop\tiff-4.3.0\tools\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\tools\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{011C358D-AE52-30EE-BD76-065C81E0355E}</UniqueIdentifier>
+      <UniqueIdentifier>{6ADED83B-4A4A-33B7-B57A-743FEB829785}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

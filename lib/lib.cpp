@@ -6,6 +6,8 @@
 
 #include "lib.h"
 
+#include "libtiff/tiffio.h"
+
 using namespace std;
 
 
@@ -51,6 +53,52 @@ vector<unsigned char> readImageRaw(string file_name)
 		istream_iterator<unsigned char>());
 
 	return byte_buf;
+}
+
+struct tiffInfo readImageTiff(string file, vector<unsigned char>& buf)
+{
+	struct tiffInfo info;
+
+	TIFF* tif = TIFFOpen(file.c_str(), "r");
+	if (tif == NULL)
+		return info;
+
+	
+	int spp = 0;
+	
+
+	TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &spp);
+
+	info.sampleperpixel = spp;
+
+	if (spp != 1)
+		return info;
+
+	int width, height;
+	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &width);
+	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
+
+	info.width = width;
+	info.height = height;
+
+	tmsize_t sls = TIFFScanlineSize(tif);
+	tdata_t buf_tif = _TIFFmalloc(sls);
+
+	for (int row = 0; row < height; row++)
+	{
+		TIFFReadScanline(tif, buf_tif, row);
+		unsigned char* data = (unsigned char*)buf_tif;
+
+		buf.insert(buf.end(), data, data + width);
+	}
+
+	//printf("%d %d %d %zu\n", width, height, spp, sls);
+
+
+	_TIFFfree(buf_tif);
+	TIFFClose(tif);
+
+	return info;
 }
 
 void writeImage(string file_name, vector<unsigned char>& byte_buf)

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ttn/Desktop/tiff-4.3.0/contrib/iptcutil
+# Install script for directory: C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/iptcutil
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

@@ -19,10 +19,4 @@
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\tiff-4.3.0\libtiff\Debug\tiffd.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\..\Desktop\tiff-4.3.0\libtiff\Debug\tiffxxd.dll" />
-  </ItemGroup>
 </Project>

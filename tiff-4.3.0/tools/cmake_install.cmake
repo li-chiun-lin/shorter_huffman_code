@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ttn/Desktop/tiff-4.3.0/tools
+# Install script for directory: C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -42,7 +42,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/fax2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/fax2ps.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/fax2ps.exe")
@@ -52,7 +52,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/fax2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/fax2ps.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/fax2ps.exe")
@@ -62,7 +62,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/fax2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/fax2ps.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/fax2ps.exe")
@@ -72,7 +72,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/fax2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/fax2ps.exe")
   endif()
 endif()
 
@@ -86,7 +86,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/fax2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/fax2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/fax2tiff.exe")
@@ -96,7 +96,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/fax2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/fax2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/fax2tiff.exe")
@@ -106,7 +106,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/fax2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/fax2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/fax2tiff.exe")
@@ -116,7 +116,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/fax2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/fax2tiff.exe")
   endif()
 endif()
 
@@ -130,7 +130,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/pal2rgb.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/pal2rgb.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/pal2rgb.exe")
@@ -140,7 +140,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/pal2rgb.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/pal2rgb.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/pal2rgb.exe")
@@ -150,7 +150,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/pal2rgb.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/pal2rgb.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/pal2rgb.exe")
@@ -160,7 +160,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/pal2rgb.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/pal2rgb.exe")
   endif()
 endif()
 
@@ -174,7 +174,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/ppm2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/ppm2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/ppm2tiff.exe")
@@ -184,7 +184,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/ppm2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/ppm2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/ppm2tiff.exe")
@@ -194,7 +194,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/ppm2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/ppm2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/ppm2tiff.exe")
@@ -204,7 +204,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/ppm2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/ppm2tiff.exe")
   endif()
 endif()
 
@@ -218,7 +218,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/raw2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/raw2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/raw2tiff.exe")
@@ -228,7 +228,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/raw2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/raw2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/raw2tiff.exe")
@@ -238,7 +238,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/raw2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/raw2tiff.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/raw2tiff.exe")
@@ -248,7 +248,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/raw2tiff.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/raw2tiff.exe")
   endif()
 endif()
 
@@ -262,7 +262,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiff2bw.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiff2bw.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2bw.exe")
@@ -272,7 +272,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiff2bw.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiff2bw.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2bw.exe")
@@ -282,7 +282,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiff2bw.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiff2bw.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2bw.exe")
@@ -292,7 +292,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiff2bw.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiff2bw.exe")
   endif()
 endif()
 
@@ -306,7 +306,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiff2pdf.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiff2pdf.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2pdf.exe")
@@ -316,7 +316,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiff2pdf.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiff2pdf.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2pdf.exe")
@@ -326,7 +326,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiff2pdf.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiff2pdf.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2pdf.exe")
@@ -336,7 +336,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiff2pdf.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiff2pdf.exe")
   endif()
 endif()
 
@@ -350,7 +350,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiff2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiff2ps.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2ps.exe")
@@ -360,7 +360,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiff2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiff2ps.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2ps.exe")
@@ -370,7 +370,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiff2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiff2ps.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2ps.exe")
@@ -380,7 +380,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiff2ps.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiff2ps.exe")
   endif()
 endif()
 
@@ -394,7 +394,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiff2rgba.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiff2rgba.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2rgba.exe")
@@ -404,7 +404,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiff2rgba.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiff2rgba.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2rgba.exe")
@@ -414,7 +414,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiff2rgba.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiff2rgba.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff2rgba.exe")
@@ -424,7 +424,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiff2rgba.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiff2rgba.exe")
   endif()
 endif()
 
@@ -438,7 +438,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffcmp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffcmp.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcmp.exe")
@@ -448,7 +448,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffcmp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffcmp.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcmp.exe")
@@ -458,7 +458,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffcmp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffcmp.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcmp.exe")
@@ -468,7 +468,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffcmp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffcmp.exe")
   endif()
 endif()
 
@@ -482,7 +482,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffcp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffcp.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcp.exe")
@@ -492,7 +492,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffcp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffcp.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcp.exe")
@@ -502,7 +502,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffcp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffcp.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcp.exe")
@@ -512,7 +512,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffcp.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffcp.exe")
   endif()
 endif()
 
@@ -526,7 +526,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffcrop.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffcrop.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcrop.exe")
@@ -536,7 +536,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffcrop.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffcrop.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcrop.exe")
@@ -546,7 +546,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffcrop.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffcrop.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffcrop.exe")
@@ -556,7 +556,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffcrop.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffcrop.exe")
   endif()
 endif()
 
@@ -570,7 +570,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffdither.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffdither.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffdither.exe")
@@ -580,7 +580,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffdither.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffdither.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffdither.exe")
@@ -590,7 +590,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffdither.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffdither.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffdither.exe")
@@ -600,7 +600,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffdither.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffdither.exe")
   endif()
 endif()
 
@@ -614,7 +614,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffdump.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffdump.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffdump.exe")
@@ -624,7 +624,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffdump.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffdump.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffdump.exe")
@@ -634,7 +634,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffdump.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffdump.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffdump.exe")
@@ -644,7 +644,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffdump.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffdump.exe")
   endif()
 endif()
 
@@ -658,7 +658,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffinfo.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffinfo.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffinfo.exe")
@@ -668,7 +668,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffinfo.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffinfo.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffinfo.exe")
@@ -678,7 +678,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffinfo.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffinfo.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffinfo.exe")
@@ -688,7 +688,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffinfo.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffinfo.exe")
   endif()
 endif()
 
@@ -702,7 +702,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffmedian.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffmedian.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffmedian.exe")
@@ -712,7 +712,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffmedian.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffmedian.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffmedian.exe")
@@ -722,7 +722,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffmedian.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffmedian.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffmedian.exe")
@@ -732,7 +732,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffmedian.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffmedian.exe")
   endif()
 endif()
 
@@ -746,7 +746,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffset.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffset.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffset.exe")
@@ -756,7 +756,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffset.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffset.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffset.exe")
@@ -766,7 +766,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffset.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffset.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffset.exe")
@@ -776,7 +776,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffset.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffset.exe")
   endif()
 endif()
 
@@ -790,7 +790,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Debug/tiffsplit.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Debug/tiffsplit.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffsplit.exe")
@@ -800,7 +800,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/Release/tiffsplit.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/Release/tiffsplit.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffsplit.exe")
@@ -810,7 +810,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/MinSizeRel/tiffsplit.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/MinSizeRel/tiffsplit.exe")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffsplit.exe")
@@ -820,7 +820,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/tools/RelWithDebInfo/tiffsplit.exe")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE EXECUTABLE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/RelWithDebInfo/tiffsplit.exe")
   endif()
 endif()
 

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ttn/Desktop/tiff-4.3.0
+# Install script for directory: C:/Users/ttn/source/repos/sol/tiff-4.3.0
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -41,19 +41,19 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib/pkgconfig" TYPE FILE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff-4.pc")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib/pkgconfig" TYPE FILE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff-4.pc")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/port/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/tools/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/test/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/contrib/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/build/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/man/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/html/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/port/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/tools/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/test/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/build/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/man/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/cmake_install.cmake")
 
 endif()
 
@@ -65,5 +65,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/ttn/Desktop/tiff-4.3.0/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/ttn/source/repos/sol/tiff-4.3.0/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

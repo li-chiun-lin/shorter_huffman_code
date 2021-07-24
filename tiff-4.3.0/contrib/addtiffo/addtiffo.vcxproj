@@ -22,7 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A2ECB00B-8EE2-3A2C-A271-04143D2A3E26}</ProjectGuid>
+    <ProjectGuid>{887837A0-3247-31D1-AEAB-D22764E352ED}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
@@ -59,25 +59,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">addtiffo.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">addtiffo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">addtiffo.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">addtiffo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">addtiffo.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">addtiffo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">addtiffo.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">addtiffo</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -103,10 +103,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;TIFF_DISABLE_DEPRECATED;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -119,8 +119,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/Debug/addtiffo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/Debug/addtiffo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/Debug/addtiffo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/Debug/addtiffo.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -129,7 +129,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>
       </ExceptionHandling>
@@ -146,10 +146,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;TIFF_DISABLE_DEPRECATED;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -162,8 +162,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/Release/addtiffo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/Release/addtiffo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/Release/addtiffo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/Release/addtiffo.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -172,7 +172,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>
       </ExceptionHandling>
@@ -189,10 +189,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;TIFF_DISABLE_DEPRECATED;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -205,8 +205,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/MinSizeRel/addtiffo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/MinSizeRel/addtiffo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/MinSizeRel/addtiffo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/MinSizeRel/addtiffo.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -215,7 +215,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>
@@ -231,10 +231,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;TIFF_DISABLE_DEPRECATED;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ttn\Desktop\tiff-4.3.0\libtiff;C:\Users\ttn\Desktop\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff;C:\Users\ttn\source\repos\sol\tiff-4.3.0\port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -247,8 +247,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/RelWithDebInfo/addtiffo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/RelWithDebInfo/addtiffo.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/RelWithDebInfo/addtiffo.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/RelWithDebInfo/addtiffo.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -256,11 +256,11 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\CMakeLists.txt">
+    <CustomBuild Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\CMakeLists.txt">
       <StdOutEncoding>UTF-8</StdOutEncoding>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/Desktop/tiff-4.3.0 -BC:/Users/ttn/Desktop/tiff-4.3.0 --check-stamp-file C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/source/repos/sol/tiff-4.3.0 -BC:/Users/ttn/source/repos/sol/tiff-4.3.0 --check-stamp-file C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -269,11 +269,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/Desktop/tiff-4.3.0 -BC:/Users/ttn/Desktop/tiff-4.3.0 --check-stamp-file C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/source/repos/sol/tiff-4.3.0 -BC:/Users/ttn/source/repos/sol/tiff-4.3.0 --check-stamp-file C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -282,11 +282,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/Desktop/tiff-4.3.0 -BC:/Users/ttn/Desktop/tiff-4.3.0 --check-stamp-file C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/source/repos/sol/tiff-4.3.0 -BC:/Users/ttn/source/repos/sol/tiff-4.3.0 --check-stamp-file C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -295,11 +295,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/Desktop/tiff-4.3.0 -BC:/Users/ttn/Desktop/tiff-4.3.0 --check-stamp-file C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ttn/source/repos/sol/tiff-4.3.0 -BC:/Users/ttn/source/repos/sol/tiff-4.3.0 --check-stamp-file C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -308,30 +308,30 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\addtiffo.c" />
-    <ClCompile Include="C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\tif_overview.c" />
-    <ClCompile Include="C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\tif_ovrcache.c" />
-    <ClInclude Include="C:\Users\ttn\Desktop\tiff-4.3.0\contrib\addtiffo\tif_ovrcache.h" />
-    <ClCompile Include="C:\Users\ttn\Desktop\tiff-4.3.0\port\getopt.c" />
+    <ClCompile Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\addtiffo.c" />
+    <ClCompile Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\tif_overview.c" />
+    <ClCompile Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\tif_ovrcache.c" />
+    <ClInclude Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\contrib\addtiffo\tif_ovrcache.h" />
+    <ClCompile Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\port\getopt.c" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\ttn\Desktop\tiff-4.3.0\ZERO_CHECK.vcxproj">
-      <Project>{26A768AD-9554-3FB2-A126-7CAC26DBD520}</Project>
+    <ProjectReference Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\ZERO_CHECK.vcxproj">
+      <Project>{FB42299F-4B27-391C-8A98-78436C34E1F9}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\ttn\Desktop\tiff-4.3.0\port\port.vcxproj">
-      <Project>{388AF2AB-4F98-366F-9FC5-7ECD7176534B}</Project>
+    <ProjectReference Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\port\port.vcxproj">
+      <Project>{11DDB5C8-45A7-3A83-8BCD-DC2C8F694F36}</Project>
       <Name>port</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\ttn\Desktop\tiff-4.3.0\libtiff\tiff.vcxproj">
-      <Project>{858746B6-F430-3CC6-B95B-EFF61915D93D}</Project>
+    <ProjectReference Include="C:\Users\ttn\source\repos\sol\tiff-4.3.0\libtiff\tiff.vcxproj">
+      <Project>{CBC928BF-C1CE-3C39-8ABF-225C1CA0C1CF}</Project>
       <Name>tiff</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,7 +1,15 @@
 
+#include "libtiff/tiffio.h"
+
 #include "../lib/lib.h"
 #include "../msb_huffman/m_exp.h"
 #include "../shorter_huffman/s_exp.h"
+
+
+#include<filesystem>
+
+
+using namespace std::filesystem;
 
 void testlib()
 {
@@ -20,11 +28,11 @@ void testlib()
 //
 //	for (string f : fn)
 //	{
-//		struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
-//		struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+//		struct Result ret_msb_raw = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+//		struct Result ret_shr_raw = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
 //
-//		printResult(ret_msb);
-//		printResult(ret_shr);
+//		printResult(ret_msb_raw);
+//		printResult(ret_shr_raw);
 //	}
 //}
 
@@ -114,7 +122,9 @@ struct ResultDelta writeTableSingle(string tex_fn, struct Result res)
 
 	int sumf = 0;
 	int sumc = 0;
+	int suml = 0;
 	int sumd = 0;
+	
 
 	for (int i = 0; i < 9; ++i)
 	{
@@ -123,14 +133,16 @@ struct ResultDelta writeTableSingle(string tex_fn, struct Result res)
 
 		sumf += res.freq[i];
 		sumc += cap * res.freq[i];
+		suml += res.len_code[i] * res.freq[i];
 		sumd += dif * res.freq[i];
 
-		fprintf(fptr, "%d & %d  & %s & %d & %d & %+d & %+d \\\\ \n", 
+		fprintf(fptr, "%d & %d  & %s & %d & %d & $%+d$ & $%+d$ \\\\ \n", 
 			i, res.freq[i], res.code_str[i], cap, res.len_code[i], dif, dif * res.freq[i]);
 	}
 
 	fprintf(fptr, "\\midrule \n");
-	fprintf(fptr, "Total/Avg. & %d   && %d / %.3f & &   & %+d / %+.3f \\\\ \n", sumf, sumc, (float)sumc / sumf, sumd, (float)sumd / res.size_image);
+	fprintf(fptr, "$\\sum$ & %d   && $%d$ & $%d$ &    $%+d$ & \\\\ \n", sumf, sumc, suml, sumd);
+	//fprintf(fptr, "Total/Avg. & %d   && $%d$ & $%d$ &   \\multicolumn{2}{c}{ $%+d ~/ %+.3f$ }\\\\ \n", sumf, sumc, suml, sumd, (float)sumd / res.size_image);
 	//fprintf(fptr, "Average &  &&& %.3f &   & %+.3f \\\\ \n", (float)sumc / sumf, (float)sumd / res.size_image);
 
 	fclose(fptr);
@@ -165,7 +177,7 @@ void lena()
 	if (ren || !fptr)
 		return;
 
-	fprintf(fptr, "$\\Delta$ &  %+d & &   %+d & &   &  %+d  \\\\ \n", 
+	fprintf(fptr, "$\\Delta$ &  $%+d$ & &   $%+d$ & &   &  $%+d$  \\\\ \n", 
 		d_shr.sumf - d_msb.sumf, d_shr.sumc - d_msb.sumc, d_shr.sumd - d_msb.sumd);
 
 	fclose(fptr);
@@ -228,8 +240,6 @@ void testlen()
 
 	len = 511 * 511 * 5;
 	cout << log2(len) << endl;
-
-	system("pause");
 }
 
 void testres()
@@ -240,30 +250,135 @@ void testres()
 
 	printResult(ret_msb);
 	printResult(ret_shr);
-
-	system("pause");
 }
+
+struct tiffInfo testreadtiff(string file, vector<unsigned char> &buf)
+{
+	struct tiffInfo info;
+
+	TIFF* tif = TIFFOpen(file.c_str(), "r");
+	if (tif == NULL)
+		return info;
+
+	int width, height;
+	int spp = 0;
+	tmsize_t sls = 0;
+	tdata_t buf_tif = 0;
+
+	TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &spp);
+
+	info.sampleperpixel = spp;
+
+	if (spp != 1)
+		return info;
+
+	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &width);
+	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
+
+	info.width = width;
+	info.height = height;
+
+	sls = TIFFScanlineSize(tif);
+	buf_tif = _TIFFmalloc(sls);
+
+	for (int row = 0; row < height; row++)
+	{
+		TIFFReadScanline(tif, buf_tif, row);
+		unsigned char *data = (unsigned char*)buf_tif;
+		
+		buf.insert(buf.end(), data, data + width);
+	}
+	
+
+	
+
+
+	printf("%d %d %d %zu\n", width, height, spp, sls);
+
+
+	_TIFFfree(buf_tif);
+	TIFFClose(tif);
+
+	return info;
+}
+
+void testlist()
+{
+	string path = "C:/Users/ttn/Desktop/xxx/USC-SIPI/misc";
+	for (const auto& entry : directory_iterator(path))
+	{
+		cout << entry.path() << endl;
+
+		vector<unsigned char> buf;
+		struct tiffInfo ret = testreadtiff(entry.path().string(), buf);
+
+		if (ret.sampleperpixel != 1)
+			continue;
+
+		
+		
+
+		break;
+	}
+}
+
+void testreadtifflena()
+{
+	string file = "../image/tiff/Lena.tiff";
+
+	vector<unsigned char> buf;
+	struct tiffInfo ret = testreadtiff(file, buf);
+
+	cout << buf.size() << endl;
+
+	FILE* fptr = NULL;
+	errno_t err = fopen_s(&fptr, "../out/testreadtiff.hd.txt", "w");
+
+	if (err || fptr == NULL)
+		return;
+
+	cout << buf.size() << endl;
+
+	for (size_t i = 0; i < buf.size(); ++i)
+	{
+		fprintf(fptr, "%02X%s", buf[i], i % ret.width == ret.width - 1 ? "\n" : " ");
+	}
+
+	fclose(fptr);
+}
+
+void testrawtiff()
+{
+	string f = "Lena";
+	struct Result ret_msb_raw = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb_raw.txt");
+	printResult(ret_msb_raw);
+
+	struct Result ret_msb_tiff = msb_huffman("../image/tiff/" + f + ".tiff", "../out/" + f + ".tiff_msb_tiff.txt", true);
+	printResult(ret_msb_tiff);
+
+
+	struct Result ret_shr_raw = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr_raw.txt");
+	printResult(ret_shr_raw);
+
+	struct Result ret_shr_tiff = shr_huffman("../image/tiff/" + f + ".tiff", "../out/" + f + ".tiff_shr_tiff.txt", true);
+	printResult(ret_shr_tiff);
+}
+
+
 
 int main()
 {
-	//testlib();
-	//testtiff();
-	// 
-	testtiff(true, true);
 
-	//debug();
-	lena();
-	airplane();
-	//testres();
+	//testtiff(true, true);
+	//lena();
+	//airplane();
 
-	
-	//testlen();
+	//testlist();
+	//testreadtifflena();
 
-	//man();
+	testrawtiff();
 
-	
-
-	//system("pause");
+	system("pause");
 	
 	return 0;
 }

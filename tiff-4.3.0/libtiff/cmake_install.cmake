@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ttn/Desktop/tiff-4.3.0/libtiff
+# Install script for directory: C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -42,7 +42,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Debug/tiffd.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Debug/tiffd.lib")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/lib/tiff.lib")
@@ -52,7 +52,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY O
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Release/tiff.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Release/tiff.lib")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/lib/tiff.lib")
@@ -62,7 +62,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY O
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/MinSizeRel/tiff.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/MinSizeRel/tiff.lib")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/lib/tiff.lib")
@@ -72,7 +72,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY O
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/RelWithDebInfo/tiff.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/RelWithDebInfo/tiff.lib")
   endif()
 endif()
 
@@ -86,7 +86,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Debug/tiffd.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Debug/tiffd.dll")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff.dll")
@@ -96,7 +96,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY F
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Release/tiff.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Release/tiff.dll")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff.dll")
@@ -106,7 +106,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY F
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/MinSizeRel/tiff.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/MinSizeRel/tiff.dll")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiff.dll")
@@ -116,7 +116,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY F
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/RelWithDebInfo/tiff.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/RelWithDebInfo/tiff.dll")
   endif()
 endif()
 
@@ -130,10 +130,10 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
 file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/include" TYPE FILE FILES
-    "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/tiff.h"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/tiffio.h"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/tiffvers.h"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/tiffconf.h"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/tiff.h"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/tiffio.h"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/tiffvers.h"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/tiffconf.h"
     )
 endif()
 
@@ -147,7 +147,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Debug/tiffxxd.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Debug/tiffxxd.lib")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/lib/tiffxx.lib")
@@ -157,7 +157,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY O
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Release/tiffxx.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Release/tiffxx.lib")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/lib/tiffxx.lib")
@@ -167,7 +167,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY O
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/MinSizeRel/tiffxx.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/MinSizeRel/tiffxx.lib")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/lib/tiffxx.lib")
@@ -177,7 +177,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY O
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/RelWithDebInfo/tiffxx.lib")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/lib" TYPE STATIC_LIBRARY OPTIONAL FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/RelWithDebInfo/tiffxx.lib")
   endif()
 endif()
 
@@ -191,7 +191,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Debug/tiffxxd.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Debug/tiffxxd.dll")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffxx.dll")
@@ -201,7 +201,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY F
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/Release/tiffxx.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/Release/tiffxx.dll")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffxx.dll")
@@ -211,7 +211,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY F
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/MinSizeRel/tiffxx.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/MinSizeRel/tiffxx.dll")
   elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "C:/Program Files (x86)/tiff/bin/tiffxx.dll")
@@ -221,7 +221,7 @@ file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY F
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/RelWithDebInfo/tiffxx.dll")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/bin" TYPE SHARED_LIBRARY FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/RelWithDebInfo/tiffxx.dll")
   endif()
 endif()
 
@@ -234,6 +234,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/include" TYPE FILE FILES "C:/Users/ttn/Desktop/tiff-4.3.0/libtiff/tiffio.hxx")
+file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/include" TYPE FILE FILES "C:/Users/ttn/source/repos/sol/tiff-4.3.0/libtiff/tiffio.hxx")
 endif()
 

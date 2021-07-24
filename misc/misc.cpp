@@ -2,7 +2,7 @@
 #include <vector>
 #include<numeric>
 
-#include "../tiff-4.3.0/libtiff/tiffio.h"
+#include "libtiff/tiffio.h"
 #include "../lib/lib.h"
 
 using namespace std;
@@ -293,7 +293,9 @@ void htBoundary()
 int main()
 {
 	//convertTiffs();
-	htBoundary();
+	//htBoundary();
+
+	readtiff();
 
 	return 0;
 }

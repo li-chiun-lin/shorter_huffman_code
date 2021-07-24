@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ttn/Desktop/tiff-4.3.0/contrib
+# Install script for directory: C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,9 +34,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/contrib/addtiffo/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/contrib/dbs/cmake_install.cmake")
-  include("C:/Users/ttn/Desktop/tiff-4.3.0/contrib/iptcutil/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/addtiffo/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/dbs/cmake_install.cmake")
+  include("C:/Users/ttn/source/repos/sol/tiff-4.3.0/contrib/iptcutil/cmake_install.cmake")
 
 endif()
 

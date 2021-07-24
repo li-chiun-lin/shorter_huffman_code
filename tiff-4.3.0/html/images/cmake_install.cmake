@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ttn/Desktop/tiff-4.3.0/html/images
+# Install script for directory: C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -42,22 +42,22 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
 file(INSTALL DESTINATION "C:/Program Files (x86)/tiff/share/doc/tiff/html/images" TYPE FILE FILES
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/back.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/bali.jpg"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/cat.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/cover.jpg"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/cramps.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/dave.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/info.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/jello.jpg"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/jim.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/note.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/oxford.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/quad.jpg"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/ring.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/smallliz.jpg"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/strike.gif"
-    "C:/Users/ttn/Desktop/tiff-4.3.0/html/images/warning.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/back.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/bali.jpg"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/cat.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/cover.jpg"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/cramps.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/dave.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/info.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/jello.jpg"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/jim.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/note.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/oxford.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/quad.jpg"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/ring.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/smallliz.jpg"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/strike.gif"
+    "C:/Users/ttn/source/repos/sol/tiff-4.3.0/html/images/warning.gif"
     )
 endif()
 

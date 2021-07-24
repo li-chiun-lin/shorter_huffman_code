@@ -113,21 +113,38 @@ void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_
 	}
 }
 
-struct Result msb_huffman(string path_cover_img, string path_report, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
+struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff, string path_encry_img, string path_setgo_img, string path_resto_img, string path_ori_hex, string path_res_hex, unsigned int seed)
 {
-	vector<unsigned char> byte_image = readImageRaw(path_cover_img);
-	const int size_image = (int)byte_image.size();
-	
-	cout << "msb " << path_cover_img << endl;
-	//assert(size_image == 512 * 512);
+	vector<unsigned char> byte_image;
+	int size_image = 0;
+	int width_image = 0;
+	int height_image = 0;
 
-	const int width_image = (int)sqrt(size_image);
-	const int width_image1 = width_image + 1;
-	const int width_image_1 = width_image - 1;
+	if (isTiff)
+	{
+		struct tiffInfo info = readImageTiff(path_cover_img, byte_image);
+		if (info.sampleperpixel != 1)
+			return struct Result();
+
+		size_image = (int)byte_image.size();
+		width_image = info.width;
+		height_image = info.height;
+	}
+	else
+	{
+		byte_image = readImageRaw(path_cover_img);
+		size_image = (int)byte_image.size();
+		width_image = (int)sqrt(size_image);
+		height_image = size_image / width_image;
+	}
+
+	const int width_image1 = width_image - 1;
+	const int height_image1 = height_image - 1;
 # if LEN20
 	const int log2_len_h_encoded_labelmap = 20;
 # else
-	const int log2_len_h_encoded_labelmap = (int)ceil(log2(width_image_1 * width_image_1 * 5) - 1);
+	//const int log2_len_h_encoded_labelmap = (int)(floor(log2(width_image1 * height_image1 * 5))) + 1;
+	const int log2_len_h_encoded_labelmap = (int)ceil(log2(width_image1 * height_image1 * 5) - 1);
 # endif
 	const int len_hcode_header = LEN_HC_RULE + log2_len_h_encoded_labelmap;
 
@@ -198,7 +215,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 	// D Label Map Embedding
 
 	const int len_sideinfo = len_hcode_header + len_h_encoded_labelmap;
-	const int len_ref = (width_image + width_image_1) * 8;
+	const int len_ref = (width_image + height_image1) * 8;
 	const int len_auxinfo = len_sideinfo + len_ref;
 	const int len_embed = len_auxinfo + (len_secret -= len_hcode_header);
 
@@ -472,7 +489,12 @@ struct Result msb_huffman(string path_cover_img, string path_report, string path
 
 	restoreImage(byte_image, val_ex_labelmap, width_image);
 
-	vector<unsigned char> byte_orig = readImageRaw(path_cover_img);
+	vector<unsigned char> byte_orig;
+
+	if (isTiff)
+		readImageTiff(path_cover_img, byte_orig);
+	else
+		byte_orig = readImageRaw(path_cover_img);
 
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);

@@ -8,6 +8,8 @@
 #include <numeric>
 #include <string>
 
+
+
 using namespace std;
 
 const unsigned char pixel2t[256] = {
@@ -103,6 +105,9 @@ const vector<unsigned char> mask_lsb = { 0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x0
 
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
 vector<unsigned char> readImageRaw(string file_name);
+struct tiffInfo readImageTiff(string file, vector<unsigned char>& buf);
+
+
 void writeImage(string file_name, vector<unsigned char>& byte_buf);
 unsigned char bits2byte(vector<unsigned char>& bit_buf, int idx = 0, int len = 8);
 //unsigned char bits2byte(vector<unsigned char>& bit_buf);
@@ -212,7 +217,6 @@ struct Result
 	int size_image;
 	int width_image;
 
-
 	int header_len_h_topology;
 	int header_len_h_values;
 	int header_log2_len_h_encoded_labelmap;
@@ -280,3 +284,15 @@ struct Result
 };
 
 void printResult(struct Result res);
+
+
+struct tiffInfo
+{
+	int width;
+	int height;
+	int sampleperpixel;
+
+	tiffInfo() : 
+		width(0), height(0), sampleperpixel(0)
+	{}
+};

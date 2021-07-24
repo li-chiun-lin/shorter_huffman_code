@@ -1,6 +1,6 @@
 \section{Proposed Method}
 
-\CatchFileDef{\singlelenashr}{../out/single-res-table-shr-lena.tex}{}
+
 
 proposed method, ours
 
@@ -28,9 +28,12 @@ A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes[cite here], each need
 
 \begin{table}
 	\scriptsize
-	\begin{tabular}{crlccrr}
+	\centering
+	\CatchFileDef{\singlelenashr}{../out/single-res-table-shr-lena.tex}{}
+	\begin{tabular}{crlcccr}
 		\toprule 
-		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}   &  Cap.&    Len.    & Payload  & $\Delta$ \\ 
+%		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}   &  Cap.&    Len.    & Payload  & $\Delta$ \\ 
+$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encoder(v)$}  &  $cap(v)$ &    $\vert encoder(v) \vert$    & $payload(v)$  & $\Delta$ \\
 		\midrule  
 		\singlelenashr
 		\bottomrule   
@@ -142,8 +145,8 @@ this does not help much to improve the capacity, but it makes the protocol more 
 		\Procedure{SerializeTree}{$root$}   
 		\If{$root$ is a leaf}
 		\State 		Let leaf value $v$ be presented as $(v_0, \dots, v_{s-1})$.
-		\State 		$bits\_topology \gets topology \Vert 0$.
-		\State 		$bits\_value \gets value \Vert v_0 \Vert \dots \Vert v_{s-1}$.
+		\State 		$topology \gets topology \Vert 0$.
+		\State 		$value \gets value \Vert v_0 \Vert \cdots \Vert v_{s-1}$.
 		\Else
 		\State		 $topology \gets topology \Vert 1$.
 		\State 		\Call{SerializeTree}{$node.left\_child$}.

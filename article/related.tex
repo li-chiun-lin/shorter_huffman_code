@@ -1,6 +1,6 @@
 \section{Related Work}
 
-related work, their work ~\cite{Yin2020} ~\cite{IRE} ~\cite{Weinberger2000}
+related work, their work ~\cite{Yin2020} ~\cite{IRE1952} ~\cite{Weinberger2000}
 
 a little describe here.
 \\
@@ -21,6 +21,7 @@ three roles.
 	
 
 		\begin{tabular}{|c|c|c|c|c|} 
+
 			\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} &
 			\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}}  
 			\\
@@ -33,9 +34,10 @@ three roles.
 			\cellcolor{black!10}$x_{i, j - 1}$  & \cellcolor{black!20}$x_{i, j}$     & $\dots$    \\ \hline 
 			$x_{h, 0}$ & $\dots$    & $\dots$          & $\dots$        & $x_{h, w}$ \\ \hline 
 			
-			\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} &
-			\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}}  
-			\\
+%			\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} &
+%			\multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}} & \multicolumn{1}{c}{\phantom{$x_{i-1, j-1}$}}  
+%			\\
+			\multicolumn{5}{c}{{}}\\
 			
 			\hline
 			\rowcolor{black!30}
@@ -43,20 +45,22 @@ three roles.
 			\cellcolor{black!30}$N/A$   & $pv_{1, 1}$ & $pv_{1, 2}$ & $\dots$                         & $pv_{1, w}$ \\ \hline
 			\cellcolor{black!30}$N/A$   & $pv_{2, 1}$ & $\dots$     & $\dots$                         & $\dots$     \\ \hline 
 			\cellcolor{black!30}$\dots$ & $\dots$     & $\dots$     & $\dots$                         & $\dots$     \\ \hline 
-			\cellcolor{black!30}$\dots$ & $\dots$     & $\dots$     & \cellcolor{black!20}$pv_{i, j}$  & $\dots$     \\ \hline 
+			\cellcolor{black!30}$\dots$ & $\dots$     & $\dots$     & \cellcolor{black!20}$pv_{i, j}$ & $\dots$     \\ \hline 
 			\cellcolor{black!30}$N/A$   & $pv_{h, 1}$ & $\dots$     & $\dots$                         & $pv_{h, w}$ \\ \hline 
 		\end{tabular}
 	
 	
 	
-	\caption{The pixel $x_{i, j}$ and its $pv_{i, j}$ value.}
+	\caption{The pixels and its predicted value.}
 	\label{fig:xpv}
 \end{figure}
 
-For all $x_{i, j} $ in the cover image $ I$, the predicted value is defined as~\eqref{eq:pv} and shown in Figure~\ref{fig:xpv}.
-The predicted error between each pixel and its predicted value is defined as~\eqref{eq:pe}.
+%Let $I$ represent the cover image. 
+
+For all $x_{i, j} $ in the cover image $ I$, the predicted value $pv$ is defined as~\eqref{eq:pv} and shown in Figure~\ref{fig:xpv}.
+The predicted error $pe$ between each pixel and its predicted value is defined as~\eqref{eq:pe}.
 Each pixel, except those in the first row and the first column, has a corresponding label value $t$, as defined in~\eqref{eq:t}.
-All the label values forms a label map denoted as $T =\{t_{i, j} \mid 1 \leq i < h, 1\leq j < w\}$, where $h$ and $w$ denote the height and the width of $I$, respectively.
+All the label values forms a label map denoted as $T =[t_{i, j} \mid 1 \leq i < h, 1\leq j < w]$, where $h$ and $w$ denote the height and the width of $I$, respectively.
 
 
 \begin{align}
@@ -86,14 +90,26 @@ All the label values forms a label map denoted as $T =\{t_{i, j} \mid 1 \leq i <
 	\end{dcases} 	
 \end{align}
 
-The frequency of all the possible values in label map $T$ is defined as~\eqref{eq:f}.
+Define $F$ as a set of the frequencies of all possible values in label map $T$.
 
 \begin{equation}
 	\label{eq:f}
-	F = \{f_v = \#(t = v) \mid t \in T, 0\leq v \leq 8\}
+%	F = \{f_v = \#(t = v) \mid t \in T, 0\leq v \leq 8\}
+	F = \{f_v = \#\{t \in T \mid t = v\}\}, \text{where } 0\leq v \leq 8
 \end{equation}
 
-Let $cap(v)$ be a function defined for all $v \in \range(T)$, represents the capacity each $t_{i, j} = v$ can provide.
+
+
+Let $V$ be a monotonically increasing sequence consisting of all the possible value $v$ in $T$ sorted by their frequencies.
+
+\begin{equation}
+	\label{eq:v}
+	%	V = \{v \in \range(T) \mid \forall v_i, v_j \in V \colon i \leq j \implies f_{v_i} \leq f_{v_j} \}
+	V = [v \in \elems(T) \mid \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} ]
+	%	V = [v_0, \cdots, v_8 \mid v_i \in \range(T) \wedge \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} ]
+\end{equation}
+
+Let $cap(v)$ be a function defined for all $v \in V$, represents the capacity each $t_{i, j} = v$ can provide.
 
 \begin{equation}
 	cap(v) = 
@@ -103,9 +119,13 @@ Let $cap(v)$ be a function defined for all $v \in \range(T)$, represents the cap
 	\end{cases} 
 \end{equation}
 
-They use a predefined Huffman tree $H = \{00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111\}$. The topology is visualized in Figure~\ref{fig:fixtree}.
+A predefined Huffman tree is represented as a sequence. $$H = [00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111]$$ The topology is visualized in Figure~\ref{fig:fixtree}.
+Let $encoder$ be a bijection mapping from $V$ onto $H$, and $decoder : H \rightarrow V$ be its reverse as defined in Equation~\eqref{eq:encode} and ~\eqref{eq:decode}.
+
+%They use a predefined Huffman tree $H$. The topology is visualized in Figure~\ref{fig:fixtree}.
 
 \begin{figure}
+	\scriptsize
 	\centering
 	\Tree[. [.0 [.0 00 ]
 	[.1 01 ]]
@@ -118,54 +138,80 @@ They use a predefined Huffman tree $H = \{00, 01, 100, 101, 1100, 1101, 1110, 11
 	\label{fig:fixtree}
 \end{figure}
 
-Let $V$ be a array consisting of all the tag value $v$ in the range of $T$ sorted by their frequencies.
-
-\begin{equation}
-	\label{eq:v}
-	V = \{v \in \range(T) \mid \forall v_i, v_j \in V \colon i \leq j \implies f_{v_i} \leq f_{v_j} \}
-\end{equation}
-
-Let $HEncoder$ be a mapping from $T$ to $H$, and $HDecoder \colon H \mapsto T$ be its reverse as defined in Equation~\eqref{eq:encode} and~\eqref{eq:decode}.
-
-%\begin{align}
-%	\label{eq:encode}
-%	&HEncoder(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
-%%	
-%	\label{eq:decode}
-%	&HDecoder(h_c) = t,  &&\text{ such that } HEncoder(t) = h_c. 
-%\end{align}
 
 \begin{align}
 	\label{eq:encode}
-	HEncoder(v_i) = h_i \\
+	encoder(v_i) = h_i \\
 	\label{eq:decode}
-	HDecoder(h_i) = v_i 
+	decoder(h_i) = v_i 
 \end{align}
+
+
+%\begin{align}
+%	\label{eq:encode}
+%	&encoder(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
+%%	
+%	\label{eq:decode}
+%	&decoder(h_c) = t,  &&\text{ such that } encoder(t) = h_c. 
+%\end{align}
+
+%\begin{align}
+%	\label{eq:encode}
+%	\begin{aligned}
+%		encoder(v_i) = h_i \\
+%%		\label{eq:decode}
+%		decoder(h_i) = v_i 
+%	\end{aligned} & \qquad \forall i \in [0, 8] 
+%\end{align}
+
+%\begin{align}
+%	\label{eq:encode}
+%	encoder(v_i) = h_i \\
+%%	encoder(t) = h_c, \text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
+%	\label{eq:decode}
+%	decoder(h_i) = v_i \\
+%	\forall i \in [0, 8] 
+%\end{align}
 
 The Huffman encoding result of Lena $512 \times 512$ is given in Table~\ref{tab:msblena}.
-We further categorize each $v \in \range(T)$ with Equation~\eqref{eq:type}. We say a tag value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
-For example, in the Table~\ref{tab:msblena}, tag value $v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
+Let $payload(v)$ be the difference between the capacity of $v$ and the length of its Huffman code. 
+We further categorize each $v \in V$ by Equation~\eqref{eq:type}. We say a tag value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
+For example, in Table~\ref{tab:msblena}, tag value $ v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
 
 \begin{align}
+	\label{eq:payload}
+	payload(v) &= cap(v) - \vert encoder(v) \vert \\
 	\label{eq:type}
-	Type(v) &= 
+	type(v) &= 
 	\begin{cases}
-		positive & \text{if } cap(v) > len \\
-		neutral  & \text{if } cap(v) = len \\
-		negative & \text{if } cap(v) < len \\
+		positive & \text{if } payload(v) > 0 \\
+		neutral  & \text{if } payload(v) = 0 \\
+		negative & \text{if } payload(v) < 0 \\
 	\end{cases} 
-	\\
-	&\text{where }  len = \vert HEncoder(v) \vert \notag
 \end{align}
+
+%\begin{align}
+%	\label{eq:type}
+%	payload(v) &= cap(v) - \vert encoder(v) \vert \\
+%	type(v) &= 
+%	\begin{cases}
+%		positive & \text{if } cap(v) > len \\
+%		neutral  & \text{if } cap(v) = len \\
+%		negative & \text{if } cap(v) < len \\
+%	\end{cases} 
+%	\\
+%	&\text{where }  len = \vert encoder(v) \vert \notag
+%\end{align}
 
 
 
 \CatchFileDef{\singlelenamsb}{../out/single-res-table-msb-lena.tex}{}
 \begin{table}
 	\scriptsize
-	\begin{tabular}{crlccrr}
+	\centering
+	\begin{tabular}{crlcccr}
 		\toprule 
-		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}  &  Cap. &    Len.    & Payload  & $\Delta$ \\
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encoder(v)$}  &  $cap(v)$ &    $\vert encoder(v) \vert$    & $payload(v)$  & $\Delta$ \\
 		\midrule 
 		\singlelenamsb
 		\bottomrule
@@ -178,9 +224,9 @@ Let $T^\prime$ be the concatenation of Huffman code of all the label values in $
 
 \begin{align}
 	\label{eq:encodeT1}
-	T^\prime &= \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w HEncoder(t_{i, j})} \\
+	T^\prime &= \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w encoder(t_{i, j})} \\
 	\label{eq:countlen}
-	LEN  &= \sum_{v=0}^{8} (f_v \times \lvert HEncoder(v) \rvert)
+	LEN  &= \sum_{v=0}^{8} (f_v \times \lvert encoder(v) \rvert)
 \end{align}
 
 \subsubsection{Encryption and Embedding header}
@@ -192,65 +238,133 @@ The cover image $I$ is encrypted with a key stream $K$ using Equation~\eqref{eq:
 	I_e = I \oplus K
 \end{equation}
 
-Let the first row and the first column of $I_e$ be reference bytes, 
-the consistence of embedding header is illustrated in Figure~\ref{fig:header1}, where $S^{header\prime}$ represents the first $w + h - 1$ bytes of $S^{header}$.
+Define the first row and the first column of $I_e$ as reference bytes $REF$.
+The consistence of embedding header is illustrated in Figure~\ref{fig:header1}, where $S^{header\prime}$ represents the first $w + h - 1$ bytes of $S^{header}$.
 The header embedding process follows Algorithm~\ref{algo:embed1}. 
-The references bytes in the first row and the first column of the encrypted image $I_e$ each is replaced by 8 bits of $S^{header\prime}$.
-The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label value $t_{i, j}$ decides the capacity of embedding each $x^e_{i, j} \in I_e$ can provide. 
+The references bytes $REF$ in the first row and the first column of the encrypted image $I_e$ each is replaced by 8 bits of $S^{header\prime}$.
+The rest of the $S^{header}$, denoted as $S^{header\prime\prime}$, is embedded into the main body of $I_e$. The label value $t_{i, j}$ decides the capacity of embedding each $x^e_{i, j} \in I_e$ can provide. 
 
 \begin{figure}
+	\scriptsize
 	\centering
 	
-	\begin{tabularx}{\linewidth}{r r@{}c cccc}
-		\hhline{*{1}{~}*{6}{-}}
+	\begin{tabularx}{\linewidth}{r c cccc}
+		\hhline{*{1}{~}*{5}{-}}
 		$S^{header} =$  
-		& \multicolumn{2}{|c|}{\cellcolor{black!10}$HEncoder(0) \Vert \dots \Vert HEncoder(8)$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 		& \multicolumn{2}{|c|}{\cellcolor{black!30}$T^\prime$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}  
-		\\ \cline{2-7}
-		& \multicolumn{2}{c}{\upbracefill} & \upbracefill& \multicolumn{2}{c}{\upbracefill}&\upbracefill 
+		\\ 
+		\hhline{*{1}{~}*{5}{-}}
+		& \multicolumn{1}{c}{\upbracefill} & \upbracefill& \multicolumn{2}{c}{\upbracefill}&\upbracefill 
 		\\
-		& \multicolumn{2}{c}{32 bits }
+		& \multicolumn{1}{c}{32 bits }
 		& 20 bits
 		& \multicolumn{2}{c}{$LEN$ bits  }
 		& $w + h - 1 $ bytes 
-		
 		\\
 		
-		&&&&&&\\
+%		&&&&&\\
 		
-		\hhline{*{1}{~}*{4}{-}}
+		\hhline{*{1}{~}*{3}{-}}
 		$S^{header\prime} =$  
-		& \multicolumn{2}{|c|}{\cellcolor{black!10}$HEncoder(0) \Vert \dots \Vert HEncoder(8)$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}
 		& \phantom{1}  &
-		\\ \cline{2-5}
-		& \multicolumn{4}{c}{\upbracefill} & &
+		\\ 
+		\hhline{*{1}{~}*{3}{-}}
+		& \multicolumn{3}{c}{\upbracefill} & &
 		\\
-		& \multicolumn{4}{c}{$w + h - 1 $ bytes  }
-		& 
+		& \multicolumn{3}{c}{$w + h - 1 $ bytes  }
+		&&
+		\\
+		\hhline{*{4}{~}*{2}{-}}
+		$S^{header\prime\prime} =$  
+		&&& 
+		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}  
+		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}
+		\\ 
+		\hhline{*{4}{~}*{2}{-}}
+		&&&&\multicolumn{2}{c}{\upbracefill}
+		\\
+		&&&&\multicolumn{2}{c}{$LEN + 32 + 20 $ bits  }
+		\\
 	\end{tabularx}
 	
 	\caption{The header of $S$.}
 	\label{fig:header1}
 \end{figure}
 
+%\begin{figure}
+%	\scriptsize
+%	\centering
+%	
+%	\begin{tabularx}{\linewidth}{r c cccc}
+%		\hhline{*{1}{~}*{5}{-}}
+%		$S^{header} =$  
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
+%		& \multicolumn{2}{|c|}{\cellcolor{black!30}$T^\prime$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}  
+%		\\ 
+%		\hhline{*{1}{~}*{5}{-}}
+%		& \multicolumn{1}{c}{\upbracefill} & \upbracefill& \multicolumn{2}{c}{\upbracefill}&\upbracefill 
+%		\\
+%		& \multicolumn{1}{c}{32 bits }
+%		& 20 bits
+%		& \multicolumn{2}{c}{$LEN$ bits  }
+%		& $w + h - 1 $ bytes 
+%		\\
+%		
+%		%		&&&&&\\
+%		
+%		\hhline{*{1}{~}*{5}{-}}
+%		  
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}  
+%		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}
+%		\\ 
+%		\hhline{*{1}{~}*{5}{-}}
+%		& \multicolumn{3}{c}{\upbracefill} 
+%		& \multicolumn{2}{c}{\upbracefill}
+%		\\
+%		& \multicolumn{3}{c}{$w + h - 1 $ bytes  }
+%		& \multicolumn{2}{c}{$LEN + 32 + 20 $ bits  }
+%		\\
+%		& \multicolumn{3}{c}{$S^{header\prime}$   }
+%		& \multicolumn{2}{c}{$S^{header\prime\prime}$   }
+%		\\
+%		
+%	\end{tabularx}
+%	
+%	\caption{The header of $S$.}
+%%	\label{fig:header1}
+%\end{figure}
+
 
 \begin{align}
 	\label{eq:embed1}
 	%	Embed(i, j, S^\ast) & = 
 	x^{e\prime}_{i, j}  &= 
-	\begin{cases}
+	\begin{dcases}
 		MSB^8(S^\ast)                   & \text{if }  i = 0 \vee j = 0 \vee 7 \leq t_{i, j} \leq  8\\
-		&\\
-		\begin{aligned}
-			&MSB^{(t_{(i, j)} + 1)}(S^\ast) \\
-			& \quad + LSB^{(7 - t_{i, j})}(x^e_{i, j})
-		\end{aligned} & \text{if } 0 \leq t_{i, j} < 7 
-	\end{cases} 
-	\intertext{where}  
+%		&\\
+%		\begin{aligned}
+%			&MSB^{(t_{(i, j)} + 1)}(S^\ast) \\
+%			& \quad + LSB^{(7 - t_{i, j})}(x^e_{i, j})
+%		\end{aligned} & \text{if } 0 \leq t_{i, j} < 7 
+		\begin{multlined}
+			MSB^{(t_{(i, j)} + 1)}(S^\ast) \\
+			  + LSB^{(7 - t_{i, j})}(x^e_{i, j})
+		\end{multlined} & \text{if } 0 \leq t_{i, j} < 7 
+	\end{dcases} 
+%	\intertext{where}  
+	\\ 
+	& \text{where} \notag \\
 	&
 	\begin{aligned}
 %		x^e_{i, j} & \in I_e ,  \\
@@ -284,8 +398,8 @@ The rest of the $S^{header}$ is embedded into the main body of $I_e$. The label 
 		\State		Accumulate the frequency $f_t$ of $t$.
 		\EndFor
 		
-		\State Let $V$ be the range of $T$ sorted by $f_t$.
-		\State Define $HEncoder$ using Equation\eqref{eq:encode}.
+		\State Let $V$ be the elements of $T$ sorted by $f_t$.
+		\State Define $encoder$ using Equation\eqref{eq:encode}.
 		\State $I_e \gets I \oplus K$.
 		
 		\State Compute $T^\prime $ and $ LEN$ from Equation\eqref{eq:encodeT1} and Equation\eqref{eq:countlen}.
@@ -364,30 +478,30 @@ write something here.
 Let R be a bit array containing $(w + h - 1)\times 8$ bits of the first row and the first column of $I_w$, and $r_i$ represents the $i$-th bit of R.
 The first 32 bits $r_0 \sim r_{31}$ are the encoded value of 0 to 8 and the following 20 bits $r_{32} \sim r_{51}$ contain the length $LEN$ of the entire encoded label map $T^\prime$, as shown in Figure~\ref{fig:header1}.
 
-For the first 32 bits, using the predefined Huffman tree $H$, they can be divided into 9 different Huffman code unambiguously, each consequently represents the Huffman code of $0 \sim 8$. With this information, the sorted array $V$ from Equation~\eqref{eq:v} and the mapping $HEncoder$ and its reverse $HDecoder$ from Equation~\eqref{eq:encode} and~\eqref{eq:decode} are restored.
+For the first 32 bits, using the predefined Huffman tree $H$, they can be divided into 9 different Huffman code unambiguously, each consequently represents the Huffman code of $0 \sim 8$. With this information, the sorted array $V$ from Equation~\eqref{eq:v} and the mapping $encoder$ and its reverse $decoder$ from Equation~\eqref{eq:encode} and~\eqref{eq:decode} are restored.
 
 
 \begin{equation}
 	\label{eq:r32}
-	(r_0, \dots, r_{31}) = HEncoder(0) \Vert \dots \Vert HEncoder(8)
+	(r_0, \dots, r_{31}) = encoder(0) \Vert \cdots \Vert encoder(8)
 \end{equation}
 
 \begin{equation}
 	LEN  = \sum_{i = 0}^{19} R^{(i + 32)} \times 2^i
 \end{equation}
 
-Let $x^w_{i, j} \in I_w$ be represented as a bit sequence $b_7 \Vert \dots \Vert b_0$ where $b_u$ represents the $u$-th LSB of $x^w_{i, j}$, the extraction function is defined as Equation~\eqref{eq:extract}.
+Let $x^w_{i, j} \in I_w$ be represented as a bit sequence $b_7 \Vert \cdots \Vert b_0$ where $b_u$ represents the $u$-th LSB of $x^w_{i, j}$, the extraction function is defined as Equation~\eqref{eq:extract}.
 
 \begin{align}
 	\label{eq:extract}
 	Extrac(i, j)  &= 
 	\begin{cases}
-		b_7 \Vert \dots \Vert b_0 & \text{if }  7 \leq t_{i, j} \leq 8 \\
-		b_7 \Vert \dots \Vert b_{7 - t_{i, j}} & \text{if }  0 \leq t_{i, j} \leq 6
+		b_7 \Vert \cdots \Vert b_0 & \text{if }  7 \leq t_{i, j} \leq 8 \\
+		b_7 \Vert \cdots \Vert b_{7 - t_{i, j}} & \text{if }  0 \leq t_{i, j} \leq 6
 	\end{cases}
 \end{align}
 
-Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $HDecoder$ and Equation~\eqref{eq:extract}.
+Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $decoder$ and Equation~\eqref{eq:extract}.
 %
 The output $(c_x, c_y)$ are provided to Algorithm~\ref{algo:extractref} to further extract $w + h - 1$ reference bytes $R$ of the first row and the first column of the encrypted image $I_e$.
 %
@@ -410,7 +524,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 %		\State $R \gets \{x^w_{i, j} \in I_w \mid i = 0 \vee j = 0\}$.
 		
 		\State Restore 9 Huffman codes from $(r_0 , \dots,  r_{31})$.
-		\State Restore $HEncoder$ and $HDecoder$ from the 9 Huffman codes.
+		\State Restore $encoder$ and $decoder$ from the 9 Huffman codes.
 		\State Restore $LEN$ from $(r_{32} , \dots,  r_{51})$.
 		
 		\State $T \gets \{t_{i, j} = -1 \mid i \in [0, h), j \in [0, w)\}$.
@@ -419,7 +533,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\ForAll{$\{r_i \in R \mid i > 52\}$}
 		\State	$buf \gets buf \Vert r_i$.
 		\If		{$buf$ is a valid Huffman code}
-		\State 		$t_{(d_x, d_y)} \gets HDecoder(buf)$.		\label{algo:extractT:incdref}
+		\State 		$t_{(d_x, d_y)} \gets decoder(buf)$.		\label{algo:extractT:incdref}
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 %		\State 		$d_y \gets d_y + 1$.
@@ -435,7 +549,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\label{algo:extractT:nextij}
 		
 		\If		{$buf$ is a valid Huffman code}		
-		\State 		$t_{(d_x, d_y)} \gets HDecoder(buf)$. \label{algo:extractT:nextd}
+		\State 		$t_{(d_x, d_y)} \gets decoder(buf)$. \label{algo:extractT:nextd}
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 		\If			{$d_x = h$}
@@ -502,17 +616,18 @@ It must be emphasized that when applying Equation~\eqref{eq:restore} to $x^\prim
 An example is illustrated in Figure~\ref{fig:example}.
 
 
-\begin{equation}
-	I_e^\prime = 
-	\left \{  x_{i, j}^\prime \left |
+\begin{align}
+	I_e^\prime &= 
+	\left \{  x_{i, j}^{e\prime} \left |
 		\begin{aligned}
-			&x_{i, j}^\prime = r_{j}     && \text{ if } i = 0 \\
-			&x_{i, j}^\prime = r_{w + i} && \text{ if } j = 0\\
-			&x_{i, j}^\prime \in I_w     && \text{ otherwise }
+			&x_{i, j}^{e\prime} = r_{j}     && \text{ if } i = 0 \\
+			&x_{i, j}^{e\prime} = r_{w + i}  && \text{ if } j = 0\\
+			&x_{i, j}^{e\prime} = x_{i, j}     && \text{ otherwise }
 		\end{aligned}
 		\right .
-	\right \}
-\end{equation}
+	\right \} \\
+	& \text{where } r_{j}, r_{w + i} \in R, \text{ and } x_{i, j} \in I_w \notag
+\end{align}
 
 
 
