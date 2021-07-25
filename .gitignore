@@ -19,6 +19,7 @@
 *CMakeFiles*
 *.xml
 *.bcf
+*dataset*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

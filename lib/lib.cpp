@@ -10,6 +10,24 @@
 
 using namespace std;
 
+struct Result operator-(struct Result lhs, struct Result rhs)
+{
+	struct Result ret;
+
+	ret.size_capacity = lhs.size_capacity - rhs.size_capacity;
+	ret.size_capacity_pure = lhs.size_capacity_pure - rhs.size_capacity_pure;
+	ret.size_capacity_with_header = lhs.size_capacity_with_header - rhs.size_capacity_with_header;
+
+	ret.header_len = lhs.header_len - rhs.header_len;
+	ret.len_ref = lhs.len_ref - rhs.len_ref;
+
+	ret.len_h_encoded_labelmap = lhs.len_h_encoded_labelmap - rhs.len_h_encoded_labelmap;
+	ret.bbp = lhs.bbp - rhs.bbp;
+
+
+	return ret;
+}
+
 
 errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name)
 {

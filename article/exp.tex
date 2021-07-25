@@ -1,12 +1,30 @@
-\CatchFileDef{\deltatable}{../out/delta-table.tex}{}
-\CatchFileDef{\singlelenamsb}{../out/single-res-table-msb-lena.tex}{}
-\CatchFileDef{\singlelenashr}{../out/single-res-table-shr-lena.tex}{}
-\CatchFileDef{\singlelenadif}{../out/single-res-table-dif-lena.tex}{}
+\CatchFileDef{\deltatable}{delta-table.tex}{}
+\CatchFileDef{\singlelenamsb}{single-res-table-msb-Lena.tex}{}
+\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
+\CatchFileDef{\singlelenadif}{single-res-table-dif-Lena.tex}{}
 
 
 \section{Experimental results}
 
-experimental results
+The experimental results are shown in Table~\ref{tab:big6}. 
+Within each column, there are three sub-columns representing the data of our method, Yin et.al.'s method and the differnece, respectively.
+
+In the column of \emph{Capacity}, our improvement described in Section~\ref{sec:improvetree} created averagely more than five thousand bits for any $512 \times 512$ image.
+
+In the column of \emph{Ref}, our improvement of Section~\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding, which equals to the contribution of around two thousand bits in \emph{Capacity} according to the roughly 2 bits per pixel(BPP).
+
+Though we have to spend more space in the header to store the Huffman tree topology, we also cancel the $LEN$ column from header, as discussed in Section~\ref{sec:improvesize}.
+The column of \emph{Hdr} shows the fact that the header remains almost the same size.
+
+
+BOSSBase~\cite{Bas2011}
+
+BOWS-2~\cite{bows2007}
+
+UCID~\cite{Schaefer2003}
+
+The USC-SIPI Image Database~\cite{USC1966}
+
 
 
 %\begin{table}
@@ -38,7 +56,8 @@ experimental results
 \begin{table}
 	\tiny
 	\centering
-	\caption{Embedding capacity in bits (Ours/Yin et~al./$\Delta$)}
+	\caption{Experimental results of test images (Ours/Yin et~al./$\Delta$)}
+	\label{tab:big6}
 	\begin{tabular}{c c r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r}
 		\toprule
 		Image & Size & 

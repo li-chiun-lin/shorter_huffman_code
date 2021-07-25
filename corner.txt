@@ -1,0 +1,11 @@
+image
+	baboon			16
+
+BOSSbase_101_tif
+	1742			24
+	2714			25
+	5225			38
+	8223			41
+	
+BOWS2OrigEp3_tif
+	3386

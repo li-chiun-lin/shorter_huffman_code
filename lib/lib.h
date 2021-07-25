@@ -135,7 +135,6 @@ void assignValue(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx
 pair<unsigned char, int> decode(struct Trie* coder, vector<unsigned char>& bits_buf, size_t idx_start);
 
 
-
 class Node
 {
 public:
@@ -216,6 +215,7 @@ struct Result
 {
 	int size_image;
 	int width_image;
+	int height_image;
 
 	int header_len_h_topology;
 	int header_len_h_values;
@@ -230,6 +230,7 @@ struct Result
 	int len_secret_without_header;
 
 	int size_capacity;
+	int size_capacity_pure;
 	int size_capacity_with_header;
 
 	float bbp;
@@ -239,10 +240,14 @@ struct Result
 	unsigned char code_hex[9];
 	char code_str[9][9];
 
+	bool isValid;
+	bool loopInvariantViolation;
+
 	Result()
 	{
 		size_image = 0;
 		width_image = 0;
+		height_image = 0;
 
 		header_len_h_topology = 0;
 		header_len_h_values = 0;
@@ -257,6 +262,7 @@ struct Result
 		len_secret_without_header = 0;
 
 		size_capacity = 0;
+		size_capacity_pure = 0;
 		size_capacity_with_header = 0;
 		
 		bbp = 0.0;
@@ -268,6 +274,9 @@ struct Result
 			code_hex[i] = 0;
 			code_str[i][0] = 0;
 		}
+
+		isValid = false;
+		loopInvariantViolation = false;
 	}
 
 	void deduce()
@@ -277,11 +286,15 @@ struct Result
 		len_secret_without_header = len_secret + header_len;
 
 		size_capacity_with_header = len_h_encoded_labelmap + len_secret;
-		size_capacity = size_capacity_with_header + header_len;
+		size_capacity_pure = size_capacity_with_header + header_len;
 
 		bbp = (float)len_secret_without_header / size_image;
 	}
 };
+
+struct Result operator-(struct Result lhs, struct Result rhs);
+
+
 
 void printResult(struct Result res);
 

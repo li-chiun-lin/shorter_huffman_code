@@ -45,9 +45,10 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 }
 
 vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
-	int size_image, int width_image, vector<int>& cnt_t)
+	int size_image, int width_image, vector<int>& cnt_t, int &len_capacity)
 {
 	vector<unsigned char> val_labelmap(size_image);
+	int t = 0;
 
 	// leave first row and first column as ref_value.
 	for (int row = 1; row < width_image; ++row)
@@ -60,7 +61,10 @@ vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
 
 			// this pixel can embed (t + 1) bits.
 			val_labelmap[idx] = pixel2t[byte_image[idx] ^ px];
-			++cnt_t[val_labelmap[idx]];
+			t = val_labelmap[idx];
+			++cnt_t[t];
+
+			len_capacity += t < 8 ? t + 1 : t;
 		}
 	}
 
@@ -144,7 +148,10 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	const int log2_len_h_encoded_labelmap = 20;
 # else
 	//const int log2_len_h_encoded_labelmap = (int)(floor(log2(width_image1 * height_image1 * 5))) + 1;
-	const int log2_len_h_encoded_labelmap = (int)ceil(log2(width_image1 * height_image1 * 5) - 1);
+	const int log2_ = (int)floor(log2(width_image1 * height_image1 * 3.6)) + 1;
+	const int log2_len_h_encoded_labelmap = log2_ < 20 ? 20 : log2_;
+
+	//cout << log2_len_h_encoded_labelmap << endl;
 # endif
 	const int len_hcode_header = LEN_HC_RULE + log2_len_h_encoded_labelmap;
 
@@ -163,8 +170,9 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	//------------------------------------------------------
 	// A Label Map Generation
 	vector<int> cnt_t(DOMAIN_HCODE);
+	int len_capacity = 0;
 	vector<unsigned char> val_labelmap =
-		genLabelMap(byte_image, size_image, width_image, cnt_t);
+		genLabelMap(byte_image, size_image, width_image, cnt_t, len_capacity);
 
 # if REPORT
 	reportA(val_labelmap, cnt_t, width_image, DOMAIN_HCODE);
@@ -403,7 +411,10 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 		len_ex_h_encoded_labelmap |= bit_extract[idx_ex_proceed++];
 	}
 
+# if LEN20
+# else
 	assert(len_ex_h_encoded_labelmap == len_h_encoded_labelmap);
+# endif
 
 # if REPORT
 	fprintf(fptr_report, "\nF4. recover length of hEncode(label map) = %d, proceed %d bits\n\n",
@@ -419,14 +430,22 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	{
 		pair<unsigned char, int> p = decode(h_decoder, bit_extract, idx_ex_proceed);
 
+# if LEN20
+# else
 		assert(0 <= p.first && p.first <= MAX_T);
 		assert(p.second);
+		assert(idx_ex_proceed + p.second <= idx_ex); // loop invariant
+# endif
 
 		unsigned char t = p.first;
 		int idx_ex_lm = idx_row_ex_lm * width_image + idx_col_ex_lm;
 		val_ex_labelmap[idx_ex_lm] = t;
 
+
+# if LEN20
+# else
 		assert(val_ex_labelmap[idx_ex_lm] == val_labelmap[idx_ex_lm]);
+# endif
 
 		for (int j = 0; j <= t && j < MAX_T; ++j)
 			bit_extract[idx_ex++] = ((byte_image[idx_ex_lm] << j) & 0x80) ? 1 : 0;
@@ -496,8 +515,11 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	else
 		byte_orig = readImageRaw(path_cover_img);
 
+# if LEN20
+# else
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);
+# endif
 
 # if REPORT
 	reportG4(byte_image, path_resto_img.c_str());
@@ -521,9 +543,12 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	struct Result res;
 	res.size_image = size_image;
 	res.width_image = width_image;
+	res.height_image = height_image;
 
 	res.header_log2_len_h_encoded_labelmap = log2_len_h_encoded_labelmap;
 	res.header_len_h_values = LEN_HC_RULE;
+
+	res.size_capacity = len_capacity;
 
 	for (int i = 0; i < 9; ++i)
 	{
@@ -546,9 +571,12 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 
 	res.len_secret = len_secret;
 	res.len_ref = len_ref;
+	res.isValid = true;
 	// because some where at near step C, len_secret -= len_hcode_header;
 
 	res.deduce();
+
+	//cout << res.header_len << endl;
 
 	return res;
 }

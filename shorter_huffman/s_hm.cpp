@@ -86,14 +86,16 @@ void restoreImage_(vector<unsigned char>& byte_image, vector<unsigned char>& val
 int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>& cnt_t, vector<unsigned char>& val_labelmap)
 {
 	int len_embed = 0;
+	int t = 0;
 
 	// first row
 	for (int col = CNT_REF; col < width_image; ++col)
 	{
 		val_labelmap[col] = pixel2t[byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(col) - 1] ^ byte_image[col]];
-		++cnt_t[val_labelmap[col]];
+		t = val_labelmap[col];
+		++cnt_t[t];
 
-		len_embed += val_labelmap[col] < 8 ? val_labelmap[col] + 1 : val_labelmap[col];
+		len_embed += t < 8 ? t + 1 : t;
 	}
 
 	int r1 = 0;
@@ -444,7 +446,30 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 
 		assert(0 <= p.first && p.first <= MAX_T);
 		assert(p.second);
-		assert(idx_ex_proceed + p.second <= idx_ex);
+
+		// loop invariant
+# if 0
+		assert(idx_ex_proceed + p.second <= idx_ex); 
+# else
+		if (idx_ex_proceed + p.second <= idx_ex)
+		{
+			
+		}
+		else
+		{
+			struct Result err;
+			err.loopInvariantViolation = true;
+
+# if REPORT
+			reportEnd();
+# endif
+			return err;
+			//assert(false);
+		}
+# endif
+
+
+		assert(idx_ex_proceed + p.second <= idx_ex); // loop invariant
 
 		unsigned char t = p.first;
 		val_ex_labelmap[idx_ex_lm] = t;
@@ -538,6 +563,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 
 	res.size_image = size_image;
 	res.width_image = width_image;
+	res.height_image = height_image;
 
 	res.header_log2_len_h_encoded_labelmap = len_len_h_encoded_labelmap;
 	res.header_len_h_topology = (int)bit_topology.size();
@@ -546,6 +572,9 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 	res.len_h_encoded_labelmap = len_h_encoded_labelmap;
 	res.len_ref = len_ref;
 	res.len_secret = len_secret;
+	res.isValid = true;
+
+	res.size_capacity = len_embed;
 
 	for (int i = 0; i < 9; ++i)
 	{
