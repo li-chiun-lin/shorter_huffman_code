@@ -7,7 +7,7 @@ using namespace std;
 
 # define HAS_SIZE_LEN_H_LABEL_MAP 0
 
-# define CNT_REF_EXTRA 41
+# define CNT_REF_EXTRA 63
 // this is for Baboon
 //# define CNT_REF_EXTRA 16
 

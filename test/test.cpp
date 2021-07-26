@@ -20,7 +20,7 @@ void testlib()
 	shr_huffman(path_cover_img, path_report_sht);
 }
 
-void genCmpTex(bool with_baboon = false, bool with_man = false)
+void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = false)
 {
 	FILE* fptr = NULL;
 
@@ -65,9 +65,10 @@ void genCmpTex(bool with_baboon = false, bool with_man = false)
 		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.len_ref / 8, ret_msb.len_ref / 8, (ret_shr.len_ref / 8) - (ret_msb.len_ref / 8));
 
 		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.size_capacity_pure, ret_msb.size_capacity_pure, ret_shr.size_capacity_pure - ret_msb.size_capacity_pure);
-		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, ret_shr.len_h_encoded_labelmap - ret_msb.len_h_encoded_labelmap);
+		fprintf(fptr, "%d   & %d   & $ %+d $\t ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, ret_shr.len_h_encoded_labelmap - ret_msb.len_h_encoded_labelmap);
 		
-		fprintf(fptr, "%.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, ret_shr.bbp - ret_msb.bbp);
+		if (with_bpp)
+			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, ret_shr.bbp - ret_msb.bbp);
 
 		fprintf(fptr, "\t\\\\");
 
@@ -447,9 +448,6 @@ void listdir(path p, bool(*ptr)(path file))
 
 void bigdata(string dir, string report)
 {
-	//string path = "../dataset/USC-SIPI/misc";
-	//string path = "../image/tiff/Lena.tiff";
-
 	errno_t err = fopen_s(&fptr, report.c_str(), "w");
 
 	if (err || !fptr)
@@ -547,14 +545,24 @@ void testDataSetRefLimit()
 {
 	vector<path> lst = getDataSetList();
 
-	for (size_t i = 0; i < lst.size(); ++i)
+	for (size_t i = 20200; i < lst.size(); ++i)
 	{
 		//cout << i << " " << lst[i] << endl;
 		struct Result ret_shr_tiff = shr_huffman(lst[i].string(), dummy, true);
+		struct Result ret_msb_tiff = msb_huffman(lst[i].string(), dummy, true);
+		
+		//cout << lst[i] << endl;
+		cout << i << ", ";
+
 
 		if (ret_shr_tiff.loopInvariantViolation)
 		{
-			cout << i << " " << lst[i] << endl;
+			cout << i << " shr " << lst[i] << endl;
+		}
+		
+		if (ret_msb_tiff.loopInvariantViolation)
+		{
+			cout << i << " msb " << lst[i] << endl;
 		}
 	}
 }
@@ -562,12 +570,23 @@ void testDataSetRefLimit()
 void testsingle()
 {
 	//string f = "../dataset/BOSSbase_101_tif/8223.tif";
-	string f = "../dataset/BOWS2OrigEp3_tif/3386.tif";
-	struct Result ret_msb = msb_huffman(f, dummy, true);
-	struct Result ret_shr = shr_huffman(f, dummy, true);
+	//string f = "../dataset/BOWS2OrigEp3_tif/3386.tif";
+	//string f = "../dataset/BOSSbase/339.tif";
+	//string f = "../dataset/BOSSbase/8880.tif";
+	//string f = "../dataset/UCID/ucid00067.tif";
+	//string f = "../dataset/UCID/ucid00770.tif";
+	string f = "../dataset/UCID/ucid00851.tif";
 
+
+	struct Result ret_msb = msb_huffman(f, dummy, true);
 	printResult(ret_msb);
+
+	cout << ret_msb.isValid << endl;
+
+	struct Result ret_shr = shr_huffman(f, dummy, true);
 	printResult(ret_shr);
+
+	cout << ret_shr.isValid << endl;
 }
 
 
@@ -770,7 +789,6 @@ int main()
 
 
 	//testsingle();
-
 	//testDataSetRefLimit();
 
 	//testhtBoundary_shr();

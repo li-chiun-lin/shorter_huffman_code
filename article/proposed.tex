@@ -74,7 +74,8 @@ A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes, each needs one bit t
 		
 		\Procedure{SerializeTree}{$root$}   
 		\If{$root$ is a leaf}
-		\State 		Let leaf value $v$ be presented as $[v_0, \dots, v_{s-1}]$.
+%		\State 		Let leaf value $v$ be presented as $[v_0, \dots, v_{s-1}]$.
+		\State 		Let leaf value $v$ be presented as $v_0 \Vert \cdots \Vert v_{s-1}$.
 		\State 		$topology \gets topology \Vert 0$.
 		\State 		$value \gets value \Vert v_0 \Vert \cdots \Vert v_{s-1}$.
 		\Else
@@ -237,19 +238,15 @@ Since $log_2(3121508) = 21.574$, it requires at least 22 bits to represent $LEN$
 %Its logarithm of base 2 equals to $21.574$, which means it require at least 22 bits to represent $LEN$.
 
 This can be amended by allocating enough space in the header by Equation~\eqref{eq:floor}.
-
 \begin{equation}
 	\label{eq:floor}
-	\vert LEN \vert \leq (\lfloor log_2((w - 1) \times (h - 1) \times C) \rfloor) + 1 , 
+	\vert LEN \vert \leq \lfloor log_2((w - 1) \times (h - 1) \times C) \rfloor + 1 , 
 \end{equation}
-
 where the constant $C$ is the average Huffman code length in the worst case when
-
 %\begin{equation}
 %	\label{eq:worsttree}
 %	\forall t \in [0, 8] \colon f_t \approx total / 9, \text{ where } total = \sum\nolimits_{i = 0}^8 f_i, 
 %\end{equation}
-
 \begin{equation}
 	\label{eq:worsttree}
 	\forall f \in F \colon f \approx \bar{f} \text{, where } \bar{f} = \dfrac{\sum_{f \in F} f}{\vert F \vert} 

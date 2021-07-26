@@ -103,7 +103,7 @@ const vector<unsigned char> mask_msb = { 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xf
 const vector<unsigned char> mask_lsb = { 0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00 };
 
 
-errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name);
+errno_t printByteToFile(vector<unsigned char>& byte_buf, int width, int height, string file_name);
 vector<unsigned char> readImageRaw(string file_name);
 struct tiffInfo readImageTiff(string file, vector<unsigned char>& buf);
 
@@ -179,7 +179,7 @@ void printHuffmanEncoder(vector< vector<unsigned char> >& h_encoder);
 
 extern FILE* fptr_report;
 
-int reportBegin(int width_image, int size_image, const char* fn_report, const char* fn_cover_img);
+int reportBegin(int width_image, int height_image, int size_image, const char* fn_report, const char* fn_cover_img);
 void reportEnd();
 
 void reportB(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);

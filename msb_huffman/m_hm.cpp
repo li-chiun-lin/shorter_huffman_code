@@ -1,6 +1,8 @@
 ﻿#include "../lib/lib.h"
 #include "m_hm.h"
 
+//# define DEBUG384 1
+
 int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
 {
 	priority_queue<pair<int, int>> pq;
@@ -20,12 +22,12 @@ int buildHuffmanEncoder(vector<int>& h_encoder, vector<int>& cnt_t)
 	return len_h_encoded_labelmap;
 }
 
-int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
+int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image, int height_image,
 	vector<int>& h_encoder, vector<unsigned char>& bits_h_encoded_labelmap, int& len_secret)
 {
 	int idx_h_encoded_labelmap = 0;
 
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
@@ -45,13 +47,13 @@ int encodeLabelMap(vector<unsigned char>& val_labelmap, int width_image,
 }
 
 vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
-	int size_image, int width_image, vector<int>& cnt_t, int &len_capacity)
+	int size_image, int width_image, int height_image, vector<int>& cnt_t, int &len_capacity)
 {
 	vector<unsigned char> val_labelmap(size_image);
 	int t = 0;
 
 	// leave first row and first column as ref_value.
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
@@ -72,9 +74,9 @@ vector<unsigned char> genLabelMap(vector<unsigned char>& byte_image,
 }
 
 int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_image,
-	vector<unsigned char>& bits_embed, int width_image, int idx_embed)
+	vector<unsigned char>& bits_embed, int width_image, int height_image, int idx_embed)
 {
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
@@ -98,9 +100,9 @@ int embedMain(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_i
 	return idx_embed;
 }
 
-void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
+void restoreImage(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image, int height_image)
 {
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		int rw = row * width_image;
 		for (int col = 1; col < width_image; ++col)
@@ -159,12 +161,12 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 
 
 # if REPORT
-	reportBegin(width_image, size_image, path_report.c_str(), path_cover_img.c_str());
+	reportBegin(width_image, height_image, size_image, path_report.c_str(), path_cover_img.c_str());
 # endif
 
 # if PRINT
 	if (!path_ori_hex.empty())
-		printByteToFile(byte_image, width_image, path_ori_hex);
+		printByteToFile(byte_image, width_image, height_image, path_ori_hex);
 # endif
 
 	//------------------------------------------------------
@@ -172,7 +174,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	vector<int> cnt_t(DOMAIN_HCODE);
 	int len_capacity = 0;
 	vector<unsigned char> val_labelmap =
-		genLabelMap(byte_image, size_image, width_image, cnt_t, len_capacity);
+		genLabelMap(byte_image, size_image, width_image, height_image, cnt_t, len_capacity);
 
 # if REPORT
 	reportA(val_labelmap, cnt_t, width_image, DOMAIN_HCODE);
@@ -206,7 +208,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 
 	int len_secret = 0;
 	vector<unsigned char> bits_h_encoded_labelmap(len_h_encoded_labelmap);
-	int idx_h_encoded_labelmap = encodeLabelMap(val_labelmap, width_image, h_encoder,
+	int idx_h_encoded_labelmap = encodeLabelMap(val_labelmap, width_image, height_image, h_encoder,
 		bits_h_encoded_labelmap, len_secret);
 
 	assert(idx_h_encoded_labelmap == len_h_encoded_labelmap);
@@ -281,14 +283,14 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 # endif
 
 	// first col, but except (0, 0)
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 		for (int j = 0; j < 8; ++j)
 			bits_embed[idx_prepare++] = byte2bits[(unsigned char)byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image]][j];
 
 	assert(idx_prepare == len_auxinfo);
 
 # if REPORT
-	reportD5(byte_image, idx_prepare, len_embed, width_image);
+	reportD5(byte_image, idx_prepare, len_embed, width_image, height_image);
 # endif
 
 	for (int i = 0; i < len_secret; ++i)
@@ -313,14 +315,14 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 # endif
 
 	// first col, but except (0, 0)
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image] = bits2byte(bits_embed, idx_embed);
 		idx_embed += 8;
 	}
 
 # if REPORT
-	reportD8(byte_image, idx_embed, width_image, len_auxinfo);
+	reportD8(byte_image, idx_embed, width_image, height_image, len_auxinfo);
 # endif
 
 
@@ -331,7 +333,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	bool printmark = true;
 # endif
 
-	idx_embed = embedMain(val_labelmap, byte_image, bits_embed, width_image, idx_embed);
+	idx_embed = embedMain(val_labelmap, byte_image, bits_embed, width_image, height_image, idx_embed);
 
 	assert(idx_embed == idx_prepare);
 
@@ -365,12 +367,12 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 # endif
 
 	// first col, but except (0, 0)
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 		for (int j = 0; j < 8; ++j)
 			bit_extract[idx_ex++] = byte2bits[(unsigned char)byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image]][j];
 
 # if REPORT
-	reportF2(byte_image, idx_ex, width_image);
+	reportF2(byte_image, idx_ex, width_image, height_image);
 # endif
 
 # if REPORT
@@ -426,7 +428,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	int idx_col_ex_lm = 1;
 
 	// re-construct lable map
-	while (idx_row_ex_lm < width_image)
+	while (idx_row_ex_lm < height_image)
 	{
 		pair<unsigned char, int> p = decode(h_decoder, bit_extract, idx_ex_proceed);
 
@@ -434,6 +436,28 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 # else
 		assert(0 <= p.first && p.first <= MAX_T);
 		assert(p.second);
+
+
+# if 1
+		if (idx_ex_proceed + p.second <= idx_ex)
+		{
+
+		}
+		else
+		{
+			struct Result err;
+			err.loopInvariantViolation = true;
+
+# if REPORT
+			reportEnd();
+# endif
+			return err;
+			//assert(false);
+		}
+# endif
+
+
+
 		assert(idx_ex_proceed + p.second <= idx_ex); // loop invariant
 # endif
 
@@ -475,14 +499,14 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 	reportF6(byte_image, idx_ex, idx_ex_proceed, width_image);
 # endif
 
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image] = bits2byte(bit_extract, idx_ex_proceed);
 		idx_ex_proceed += 8;
 	}
 
 # if REPORT
-	reportF7(byte_image, idx_ex, idx_ex_proceed, width_image);
+	reportF7(byte_image, idx_ex, idx_ex_proceed, width_image, height_image);
 # endif
 
 	vector<unsigned char> bit_secret_extra(len_secret);
@@ -506,7 +530,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 
 	//-------------------------------------------------------------------
 
-	restoreImage(byte_image, val_ex_labelmap, width_image);
+	restoreImage(byte_image, val_ex_labelmap, width_image, height_image);
 
 	vector<unsigned char> byte_orig;
 
@@ -517,8 +541,11 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 
 # if LEN20
 # else
+# if DEBUG384
+# else
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);
+# endif
 # endif
 
 # if REPORT
@@ -530,7 +557,7 @@ struct Result msb_huffman(string path_cover_img, string path_report, bool isTiff
 
 # if PRINT
 	if (!path_res_hex.empty())
-		printByteToFile(byte_image, width_image, path_res_hex);
+		printByteToFile(byte_image, width_image, height_image, path_res_hex);
 # endif
 
 

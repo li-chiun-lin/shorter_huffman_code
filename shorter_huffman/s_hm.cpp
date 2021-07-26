@@ -1,6 +1,8 @@
 ﻿#include "../lib/lib.h"
 #include "s_hm.h"
 
+//# define DEBUG384 1
+
 
 vector<unsigned char> encodeLabelMap_(vector< vector<unsigned char> >& encoder, vector<unsigned char>& val_labelmap)
 {
@@ -35,7 +37,7 @@ int embedMain_(vector<unsigned char>& val_labelmap, vector<unsigned char>& byte_
 	return idx_embed;
 }
 
-void restoreImage_(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image)
+void restoreImage_(vector<unsigned char>& byte_image, vector<unsigned char>& val_ex_labelmap, int width_image, int height_image)
 {
 	int t = 0;
 
@@ -53,7 +55,7 @@ void restoreImage_(vector<unsigned char>& byte_image, vector<unsigned char>& val
 	int r1 = 0;
 	int rw = width_image;
 
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		// first column
 		t = val_ex_labelmap[rw];
@@ -83,7 +85,7 @@ void restoreImage_(vector<unsigned char>& byte_image, vector<unsigned char>& val
 	}
 }
 
-int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>& cnt_t, vector<unsigned char>& val_labelmap)
+int genLabelMap_(vector<unsigned char>& byte_image, int width_image, int height_image, vector<int>& cnt_t, vector<unsigned char>& val_labelmap)
 {
 	int len_embed = 0;
 	int t = 0;
@@ -101,7 +103,7 @@ int genLabelMap_(vector<unsigned char>& byte_image, int width_image, vector<int>
 	int r1 = 0;
 	int rw = width_image;
 
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 	{
 		// first column
 		val_labelmap[rw] = pixel2t[byte_image[r1] ^ byte_image[rw]];
@@ -177,12 +179,12 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 	srand(seed);
 
 # if REPORT
-	reportBegin(width_image, size_image, path_report.c_str(), path_cover_img.c_str());
+	reportBegin(width_image, height_image, size_image, path_report.c_str(), path_cover_img.c_str());
 # endif
 
 # if PRINT
 	if (!path_ori_hex.empty())
-		printByteToFile(byte_image, width_image, path_ori_hex);
+		printByteToFile(byte_image, width_image, height_image, path_ori_hex);
 # endif
 
 	//------------------------------------------------------
@@ -192,7 +194,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 	vector<int> cnt_t(DOMAIN_HCODE);
 	vector<unsigned char> val_labelmap(size_image);
 	// carefull with this len_ref
-	const int len_embed = genLabelMap_(byte_image, width_image, cnt_t, val_labelmap) + len_ref;
+	const int len_embed = genLabelMap_(byte_image, width_image, height_image, cnt_t, val_labelmap) + len_ref;
 
 # if REPORT
 	reportA_(val_labelmap, cnt_t, width_image, DOMAIN_HCODE);
@@ -448,9 +450,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 		assert(p.second);
 
 		// loop invariant
-# if 0
-		assert(idx_ex_proceed + p.second <= idx_ex); 
-# else
+# if 1
 		if (idx_ex_proceed + p.second <= idx_ex)
 		{
 			
@@ -459,6 +459,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 		{
 			struct Result err;
 			err.loopInvariantViolation = true;
+			cout << "loop invariant " << idx_ex_proceed << endl;
 
 # if REPORT
 			reportEnd();
@@ -526,7 +527,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 	//-------------------------------------------------------------------
 
 
-	restoreImage_(byte_image, val_ex_labelmap, width_image);
+	restoreImage_(byte_image, val_ex_labelmap, width_image, height_image);
 
 	vector<unsigned char> byte_orig;
 
@@ -535,8 +536,11 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 	else
 		byte_orig = readImageRaw(path_cover_img);
 
+# if DEBUG384
+# else
 	for (int i = 0; i < size_image; ++i)
 		assert(byte_image[i] == byte_orig[i]);
+# endif
 
 
 # if REPORT
@@ -548,7 +552,7 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 
 # if PRINT
 	if (!path_res_hex.empty())
-		printByteToFile(byte_image, width_image, path_res_hex);
+		printByteToFile(byte_image, width_image, height_image, path_res_hex);
 # endif
 
 

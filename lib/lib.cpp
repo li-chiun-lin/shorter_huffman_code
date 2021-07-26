@@ -29,7 +29,7 @@ struct Result operator-(struct Result lhs, struct Result rhs)
 }
 
 
-errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_name)
+errno_t printByteToFile(vector<unsigned char>& byte_buf, int width, int height, string file_name)
 {
 	FILE* fptr = NULL;
 	errno_t err = fopen_s(&fptr, file_name.c_str(), "w");
@@ -37,10 +37,10 @@ errno_t printByteToFile(vector<unsigned char>& byte_buf, int len, string file_na
 	if (err || fptr == NULL)
 		return err;
 
-	for (int row = 0; row < len; ++row)
+	for (int row = 0; row < height; ++row)
 	{
-		int rw = row * len;
-		for (int col = 0; col < len; ++col)
+		int rw = row * width;
+		for (int col = 0; col < width; ++col)
 			fprintf(fptr, "%02X ", byte_buf[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(rw) + col]);
 		fprintf(fptr, "\n");
 	}
@@ -93,7 +93,7 @@ struct tiffInfo readImageTiff(string file, vector<unsigned char>& buf)
 		return info;
 
 	int width, height;
-	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &width);
+	TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &width);
 	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
 
 	info.width = width;

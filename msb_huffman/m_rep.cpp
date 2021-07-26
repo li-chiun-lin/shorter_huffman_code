@@ -123,11 +123,11 @@ void reportD4(vector<unsigned char>& byte_image, int idx_prepare, int len_embed,
 		fprintf(fptr_report, "%02X %s", byte_image[col], WRAP(col));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 }
-void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image)
+void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image, int height_image)
 {
 	fprintf(fptr_report, "D5. reference value, 1st col of enc(image), 511 bytes\n\t");
 	fprintf(fptr_report, "   ");
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n\tprepare embeding %d / %d bits\n\n", idx_prepare, len_embed);
 	fprintf(fptr_report, "\ttotal auxiliary info size = %d bits\n\n", idx_prepare);
@@ -149,11 +149,11 @@ void reportD7(vector<unsigned char>& byte_image, int idx_embed, int width_image,
 	fprintf(fptr_report, "\n\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);
 }
 
-void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo)
+void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int height_image, int len_auxinfo)
 {
 	fprintf(fptr_report, "D8. embed into the 1st col of enc(image), except(0, 0), 511 bytes\n\t");
 	fprintf(fptr_report, "   ");
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n");
 	fprintf(fptr_report, "\tembeding progress %d / %d bits \n\n", idx_embed, len_auxinfo);
@@ -171,11 +171,11 @@ void reportF(vector<unsigned char>& byte_image, vector<unsigned char>& bit_extra
 	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
 }
 
-void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image)
+void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image, int height_image)
 {
 	fprintf(fptr_report, "F2. extract 1st col, except (0, 0)\n\t");
 	fprintf(fptr_report, "   ");
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n\textract %d bits\n\n", idx_ex);
 }
@@ -201,11 +201,11 @@ void reportF6(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed,
 	fprintf(fptr_report, "\n");
 }
 
-void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image)
+void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image, int height_image)
 {
 	fprintf(fptr_report, "F7. recover first col of enc(image), except(0, 0), proceed %d / %d bits, show only first few.\n\t", idx_ex_proceed, idx_ex);
 	fprintf(fptr_report, "   ");
-	for (int row = 1; row < width_image; ++row)
+	for (int row = 1; row < height_image; ++row)
 		fprintf(fptr_report, "%02X %s", byte_image[static_cast<std::vector<unsigned char, std::allocator<unsigned char>>::size_type>(row) * width_image], WRAP(row));
 	fprintf(fptr_report, "\n");
 }

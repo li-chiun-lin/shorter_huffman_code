@@ -64,14 +64,14 @@ void reportD(vector<unsigned char>& bits_embed, int idx_prepare, int len_hc_rule
 void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_len_h_encoded_labelmap, int len_hc_rule);
 void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_hcode_header);
 void reportD4(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
-void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
+void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image, int height_image);
 void reportD6(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_auxinfo);
 void reportD7(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo);
-void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo);
+void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int height_image, int len_auxinfo);
 void reportF(vector<unsigned char>& byte_image, vector<unsigned char>& bit_extract, int idx_ex, int width_image);
-void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image);
+void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image, int height_image);
 void reportF5(vector<unsigned char>& val_ex_labelmap, int idx_ex, int idx_ex_proceed, int width_image);
 void reportF6(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image);
-void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image);
+void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image, int height_image);
 void reportF8(vector<unsigned char>& bit_secret_extra, int idx_ex, int idx_ex_proceed);
 
