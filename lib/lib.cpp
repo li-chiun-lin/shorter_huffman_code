@@ -20,9 +20,11 @@ struct Result operator-(struct Result lhs, struct Result rhs)
 
 	ret.header_len = lhs.header_len - rhs.header_len;
 	ret.len_ref = lhs.len_ref - rhs.len_ref;
+	ret.len_ref_byte = lhs.len_ref_byte - rhs.len_ref_byte;
 
 	ret.len_h_encoded_labelmap = lhs.len_h_encoded_labelmap - rhs.len_h_encoded_labelmap;
 	ret.bbp = lhs.bbp - rhs.bbp;
+	ret.avg_code_len = lhs.avg_code_len - rhs.avg_code_len;
 
 
 	return ret;

@@ -189,15 +189,15 @@ void reportD(vector<unsigned char>& bits_embed, int idx_prepare, int len_hc_rule
 void reportD2(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int header_log2_len_h_encoded_labelmap, int len_hc_rule);
 void reportD3(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_hcode_header);
 void reportD4(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
-void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image);
+void reportD5(vector<unsigned char>& byte_image, int idx_prepare, int len_embed, int width_image, int height_image);
 void reportD6(vector<unsigned char>& bits_embed, int idx_prepare, int len_embed, int len_auxinfo);
 void reportD7(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo);
-void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int len_auxinfo);
+void reportD8(vector<unsigned char>& byte_image, int idx_embed, int width_image, int height_image, int len_auxinfo);
 void reportF(vector<unsigned char>& byte_image, vector<unsigned char>& bit_extract, int idx_ex, int width_image);
-void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image);
+void reportF2(vector<unsigned char>& byte_image, int idx_ex, int width_image, int height_image);
 void reportF5(vector<unsigned char>& val_ex_labelmap, int idx_ex, int idx_ex_proceed, int width_image);
 void reportF6(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image);
-void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image);
+void reportF7(vector<unsigned char>& byte_image, int idx_ex, int idx_ex_proceed, int width_image, int height_image);
 void reportF8(vector<unsigned char>& bit_secret_extra, int idx_ex, int idx_ex_proceed);
 void reportG(vector<unsigned char>& byte_image, vector<unsigned char>& byte_rand_keystream);
 void reportG3(vector<unsigned char>& byte_image);
@@ -216,6 +216,7 @@ struct Result
 	int size_image;
 	int width_image;
 	int height_image;
+	int no_available_byte;
 
 	int header_len_h_topology;
 	int header_len_h_values;
@@ -225,6 +226,7 @@ struct Result
 	int len_h_encoded_labelmap;
 
 	int len_ref;
+	int len_ref_byte;
 
 	int len_secret;
 	int len_secret_without_header;
@@ -234,6 +236,7 @@ struct Result
 	int size_capacity_with_header;
 
 	float bbp;
+	float avg_code_len;
 
 	int freq[9];
 	int len_code[9];
@@ -248,6 +251,7 @@ struct Result
 		size_image = 0;
 		width_image = 0;
 		height_image = 0;
+		no_available_byte = 0;
 
 		header_len_h_topology = 0;
 		header_len_h_values = 0;
@@ -257,6 +261,7 @@ struct Result
 		len_h_encoded_labelmap = 0;
 
 		len_ref = 0;
+		len_ref_byte = 0;
 
 		len_secret = 0;
 		len_secret_without_header = 0;
@@ -266,6 +271,7 @@ struct Result
 		size_capacity_with_header = 0;
 		
 		bbp = 0.0;
+		avg_code_len = 0.0;
 
 		for (int i = 0; i < 9; ++i)
 		{
@@ -285,10 +291,14 @@ struct Result
 
 		len_secret_without_header = len_secret + header_len;
 
+		len_ref_byte = len_ref / 8;
+		no_available_byte = size_image - len_ref_byte;
+
 		size_capacity_with_header = len_h_encoded_labelmap + len_secret;
 		size_capacity_pure = size_capacity_with_header + header_len;
 
 		bbp = (float)len_secret_without_header / size_image;
+		avg_code_len = (float)len_h_encoded_labelmap / no_available_byte;
 	}
 };
 

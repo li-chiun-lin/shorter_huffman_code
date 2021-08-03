@@ -18,13 +18,14 @@ three improvements:
 \label{sec:improvetree}
 
 We observed that Yin et al.~introduced their method based on a predefined Huffman tree as shown in Figure~\ref{fig:fixtree} 
-without clarifying the pros and cons behind this design decision. We found that this fixed predefined tree topology actually constrains the true ability of Huffman coding. When we apply the standard Huffman coding algorithm~\cite{IRE1952}, its full power can be released. 
+without clarifying the pros and cons behind this design decision. We found that this fixed predefined tree topology actually constrains the true ability of Huffman coding. When we apply the standard Huffman coding algorithm~\cite{IRE1952, Leeuwen2008a} as shown in Algorithm~\ref{algo:buildtree}, its full power can be released.
 
 \begin{algorithm}
 	\caption{Build a Huffman coding tree}
+	\label{algo:buildtree}
 	
 	\begin{algorithmic}[1]
-		\Require the distribution $F$.
+		\Require the frequency $F$.
 		\Ensure a Huffman coding tree $H$.
 		
 		\State $nodes \gets \emptyset$
@@ -52,9 +53,11 @@ without clarifying the pros and cons behind this design decision. We found that 
 
 A step by step demonstration of tree constructing process of Lena $512 \times 512$ is given in Appendix~\ref{app:buildtree}.
 The tree topology is shown in Figure~\ref{fig:lenatree} and the statistic data is given in Table~\ref{tab:shrlena}. 
-Since in our proposal the tree topology is no longer a pre-shared knowledge between sender and receivers, we have to extend the header to store the tree. A tree serialization algorithm is given in Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
+Since in our proposal the tree topology is no longer a pre-shared knowledge between sender and receivers, we have to extend $S^{header}$ to convey the tree. A tree serialization algorithm is given in Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
 
-A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes, each needs one bit to represent its role~\cite{Pu2006}. A bit 1 is defined for an internal node and 0 for a leaf. Each leaf has a value $0 \leq v \leq 8$, thus four bits are enough to store each $v$, that is $4 \times 9 = 36$ bits. We occupy 7 bytes in the header to store the 17 bits of tree topology and the 36 bits of the leaf values.
+A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes, each needs one bit to represent its role, where 1 is defined for an internal node and 0 for a leaf~\cite{Pu2006}. 
+Each leaf has a value $0 \leq v \leq 8$, thus four bits are enough to store each $v$, i.e., $4 \times 9 = 36$ bits. 
+We occupy 7 bytes in $S^{header}$ to store the 17 bits of tree topology and the 36 bits of the leaf values.
 
 \begin{algorithm}
 	\caption{Tree Serialization}
@@ -122,7 +125,7 @@ A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes, each needs one bit t
 	\begin{tabular}{crlcccr}
 		\toprule 
 %		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}   &  Cap.&    Len.    & Payload  & $\Delta$ \\ 
-$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encoder(v)$}  &  $cap(v)$ &    $\vert encoder(v) \vert$    & $payload(v)$  & $\Delta$ \\
+$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode(v)$}  &  $cap(v)$ &    $\vert encode(v) \vert$    & $payload(v)$  & $\Delta$ \\
 		\midrule  
 		\singlelenashr
 		\bottomrule   
@@ -158,9 +161,25 @@ $v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encoder(v)$}  &  $ca
 \subsection{Reduce Reference Bytes}
 \label{sec:improveref}
 
-In~\cite{Yin2020}, according to the definition of Equation~\eqref{eq:pv}, the bytes in the first row and the first column, which has been defined as $REF$, must be losslessly preserved, and this is the reason why they must concatenate $REF$ after $T^\prime$ as part of $S^{header}$ and embed them before any secret information. 
+In convenience of better explaining our improvement, we further categorize each $v \in V$ into three types by Equation~\eqref{eq:type}. 
+We say a value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
+For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
+\begin{align}
+	\label{eq:type}
+	type(v) = 
+	\begin{cases}
+		positive & \text{if } payload(v) > 0 \\
+		neutral  & \text{if } payload(v) = 0 \\
+		negative & \text{if } payload(v) < 0 \\
+	\end{cases} 
+\end{align}
 
-Though this design did not provide any negative effect since $REF$ are $neutral$ base on the fact that every bytes in $REF$ provides 8 bit capacity and also occupy 8 bits when embedding, with one more byte being defined as reference bytes, there is one less byte that can be used for information hiding. We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. For the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. Similar logic applies to those in the first column. 
+In the method of Yin et al.~\cite{Yin2020}, according to the definition of Equation~\eqref{eq:pv}, the bytes in the first row and the first column, which has been defined as $REF_e$, must be losslessly preserved, and this is the reason why they must concatenate $REF_e$ after $T^\prime$ as part of $S^{header}$ and embed them before any secret information in Algorithm~\ref{algo:embed1}. 
+
+Though this design did not provide any negative effect since $REF_e$ are $neutral$ base on the fact that every bytes in $REF_e$ provides 8 bit capacity and also occupy 8 bits when embedding, with one more byte being defined as reference bytes, there is one less byte that can be used for information hiding. 
+We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. 
+For the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. 
+Similar logic applies to those in the first column. 
 
 \begin{equation}
 	\label{eq:pe2}
@@ -175,33 +194,32 @@ Though this design did not provide any negative effect since $REF$ are $neutral$
 
 %where $REF$ consists of 7 bytes for Huffman tree and 41 more bytes for maintaining loop invariant.
 
-Theoretically, the top-left corner pixel $x_{0, 0}$ is the only critical byte that must be losslessly preserved, but by the following reasons, we have define $REF$ more than this one byte.
-
+Theoretically, the top-left corner pixel $x_{0, 0}$ is the only critical byte that must be losslessly preserved, but for the following reasons, we define $REF_e$ more than this one byte.
 Aside from the reason described in Section~\ref{sec:improvetree} that we need 7 bytes to store the Huffman tree, 
-more importantly, we need some more bytes to avoid violating a loop invariant during Algorithm~\ref{algo:extractT}.
+more importantly, we need some more bytes to avoid violating a loop invariant during Algorithm~\ref{algo:extractT}~\cite{Furia2014}.
 
-There are two indexes in Algorithm~\ref{algo:extractT}, i.e.\ the $(d_x, d_y)$ defined at line~\ref{algo:extractT:idxProce} and the $(i, j)$ for the loop at line~\ref{algo:extractT:idxExt}. 
-For Algorithm~\ref{algo:extractT} to work properly, there is a never mentioned loop invariant at line~\ref{algo:extractT:nextij} that $(i, j) < (d_x, d_y)$ must be true for all time. 
+There are two indexes in Algorithm~\ref{algo:extractT}, i.e., the $(d_x, d_y)$ defined at line~\ref{algo:extractT:idxProce} and the $(i, j)$ for the loop at line~\ref{algo:extractT:idxExt}. 
+For Algorithm~\ref{algo:extractT} to work properly, there is a never mentioned loop invariant at line~\ref{algo:extractT:nextij} that $(i, j) < (d_x, d_y)$ must be true, i.e., the index $(d_x, d_y)$ must be in a more advanced position in $I_w$ than $(i, j)$ for all time.
 
 While $(i, j)$ is increased with every loop iteration, $(d_x, d_y)$ is only increased when the $buf$ at line~\ref{algo:extractT:nextd} contains a proper Huffman code, which is affected by the capacity of each proceeded $t_{i, j}$.
 If the distribution of $negative$ $t_{i, j}$ have a tendency to centralized in some part of $T$ and slow down the incremental speed of $(d_x, d_y)$, Algorithm~\ref{algo:extractT} might encounter exception and fail.
 
-Increase $REF$ helps avoiding this problem. As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT}, after extracting the information about Huffman tree, the rest of the $REF$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reduce the chance of violating the loop invariant.
-Though defining more $REF$ bytes helps amending this issue, it also decreases the bytes that can be dedicate to information hiding.
+Increase $REF_e$ helps avoiding this problem. As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT}, after extracting the information about Huffman tree, the rest of the $REF_e$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reduce the chance of violating the loop invariant.
+Though defining more $REF_e$ bytes helps amending this issue, it also decreases the bytes that can be dedicate to information hiding.
 
-Even thought the minimum $REF$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF$ beside the basic 7 bytes used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF$ bytes to safely go through Algorithm~\ref{algo:extractT}.
-Since this loop invariant only exists in extracting process and remain unnoticed to the sender, we have to define a fixed and large enough $REF$ to comply with the whole protocol. 
+Even thought the minimum $REF_e$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF_e$ beside the basic 7 bytes used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF_e$ bytes to safely go through Algorithm~\ref{algo:extractT}, this loop invariant only exists in extracting process and remain unnoticed to the sender, we have to define a fixed and large enough $REF_e$ to comply with the whole protocol. 
 
-According to our experiments, defining $REF$ equals or larger to $7 + 41$ bytes is enough for all the test images we can acquire, but we still retain the possibility that it might need to be extended for some more complex cover images.
+According to our experiments, defining $REF_e$ equals to or larger than $7 + 63$ bytes is enough for all the test images we can acquire, but we still retain the possibility that it might need to be extended for some more complex cover images.
 
 %\begin{equation}
 %	(i, j) < (d_x, d_y)
 %\end{equation}
 
 It worths emphasizing that we do not introduce this issue, but reveal it. 
-This constrain was there in~\cite{Yin2020}, but because they defined a $REF$ of size $w + h - 1$ bytes, the chance of violating this loop invariant is very low in practice. 
-And since we intended to enlarge the embedding capacity by shrinking the unnecessary large $REF$, while we try to find the minimum limits of $REF$, we inevitably increasing the chance of this exception.
-Though through experiments we concluded that 48 bytes of $REF$ is large enough, it is worthy to spare few more bytes in exchange to further reduce the this chance for better stability.
+This constrain was there in~\cite{Yin2020}, but because they defined a $REF$ of size $w + h - 1$ bytes, the chance of violating this loop invariant is very low in practice.
+%, but nevertheless we still encounter exceptions while apply Yin et. al.'s method in BOSSBase~\cite{Bas2011}
+And since we intended to enlarge the embedding capacity by shrinking the unnecessary large $REF_e$, while we try to find the minimum requirements of $REF_e$, we inevitably increasing the chance of this exception.
+%Though through experiments we concluded that $70$ bytes of $REF_e$ is large enough for general cases, it is worthy to spare few more bytes in exchange to further reducing the chance and thus increasing stability of our method.
 
 
 
@@ -229,35 +247,64 @@ Though through experiments we concluded that 48 bytes of $REF$ is large enough, 
 %	to store the length of the auxiliary information,
 %\end{quote}
 
-While we inspecting Yin's algorithm, we found the unreasonable design of constraining the size of $LEN$ to 20 bits, which is only suitable for images of size no more than $512 \times 512$. 
+While we inspecting the findings of Yin et al., we found the unreasonable design of constraining the size of $LEN$ to 20 bits, which is only suitable for images of size no more than $512 \times 512$. 
 When using an image of larger size, e.g., $1024 \times 1024$, 
 it is understandable that the label map $T$ will be of size $1023 \times 1023$, which is only slightly less than $2^{20}$, then the total $LEN$ of $T^\prime$ will sure be exceeded the size of 20 bits. 
-In fact, according to the data in~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits. 
-Since $log_2(3121508) = 21.574$, it requires at least 22 bits to represent $LEN$.
-
-%Its logarithm of base 2 equals to $21.574$, which means it require at least 22 bits to represent $LEN$.
-
+%In fact, according to the data in~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits. 
+%Since $log_2(3121508) = 21.574$, it requires at least 22 bits to represent $LEN$.
+In fact, according to the data in~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits, which requires at least 22 bits to represent since $log_2(3121508) = 21.574$.
 This can be amended by allocating enough space in the header by Equation~\eqref{eq:floor}.
 \begin{equation}
 	\label{eq:floor}
-	\vert LEN \vert \leq \lfloor log_2((w - 1) \times (h - 1) \times C) \rfloor + 1 , 
+	\vert LEN \vert \leq \lfloor log_2((w - 1) \times (h - 1) \times \lceil C \rceil ) \rfloor + 1 , 
 \end{equation}
-where the constant $C$ is the average Huffman code length in the worst case when
+%where the constant $C$ is the average Huffman code length in the worst case scenario when
 %\begin{equation}
 %	\label{eq:worsttree}
 %	\forall t \in [0, 8] \colon f_t \approx total / 9, \text{ where } total = \sum\nolimits_{i = 0}^8 f_i, 
 %\end{equation}
-\begin{equation}
-	\label{eq:worsttree}
-	\forall f \in F \colon f \approx \bar{f} \text{, where } \bar{f} = \dfrac{\sum_{f \in F} f}{\vert F \vert} 
-\end{equation}
-
-The constant $C$ equals to 3.556 when using the predefined Huffman tree as shown in Figure~\ref{fig:fixtree}, 
-and equals to 3.222 when using our improvement in Section~\ref{sec:improvetree}. In either case, setting $C = 4$ is safe for any Huffman tree of 9 leaves.
+where the constant $C$ is the Shannon entropy~\cite{Shannon1948} representing the lower bound of the number of bits required to encode each value $t \in T$ 
+in the worst case scenario when $F$ is a uniform distribution.
+\begin{equation*}
+	C = - \sum_{i = 0}^{\vert F \vert} p_i \times log_2 p_i, \text{ where } p_i = 1 / {\vert F \vert}
+\end{equation*}
+%the expected length
+%\begin{equation*}
+%	\left (  
+%		\sum_{i = 0}^{\vert F \vert} p_i \cdot log \left\lfloor \frac{1 - p_i}{p_i} \right\rfloor
+%	\right ) + 1
+%\end{equation*}
+%\begin{equation*}
+%	C = - \sum_{i = 0}^n p_i \times log_2 p_i, \text{ where } p_i = 1 / n, n = \vert F \vert
+%\end{equation*}
+%\begin{equation*}
+%	C = - \sum_{i = 0}^n f_i \times log_2{f_i}
+%\end{equation*}
+%\begin{align}
+%	C = - \sum_{i = 0}^n p_i \times log_2 p_i, \\
+%	\intertext{ where } 
+%	\begin{aligned}
+%		&p_i = f_i / (w \times h) \\
+%		&\forall f \in F \colon f \approx \dfrac{w \times h}{\vert F \vert} 
+%	\end{aligned} \notag
+%\end{align}
+%\begin{equation*}
+%	\label{eq:worsttree}
+%	\forall f \in F \colon f \approx \bar{f} \text{, where } \bar{f} = \dfrac{\sum_{f \in F} f}{\vert F \vert} 
+%\end{equation*}
+%\begin{equation*}
+%	\label{eq:worsttree}
+%	\forall f \in F \colon f \approx \dfrac{w \times h}{\vert F \vert} 
+%\end{equation*}
+%3.15
+%The constant $C$ equals to 3.556 when using the predefined Huffman tree as shown in Figure~\ref{fig:fixtree}, 
+%and equals to 3.222 when using our improvement in Section~\ref{sec:improvetree}. 
+%In either case, setting $C = 4$ is safe for any Huffman tree of 9 leaves.
+$C \approx 3.15$ when $n = 9$, hence it is estimated that each value in $T$ is encoded into 4 bits.
 The advantage of this improvement is that the allocated size only depends on the size $(w, h)$ of the cover image and a constant $C$, so that it complies with the protocol translucently.
 This improvement does not aim to increase the embedding capacity, but to make the protocol more compact and solid.
 
-When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the $LEN$ is actually an redundant information. Since for both the secret extracting process described in Section~\ref{sec:extract} and the cover image restoring process described in Section~\ref{sec:restore}, the label map $T$ is an essential information, the $LEN$ is a by-product of the process of re-constructing $T$, hence do not need to be explicitly conveyed in header. 
+When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the $LEN$ is actually an redundant information. Since for both the secret extracting process described in Section~\ref{sec:extract} and the cover image restoring process described in Section~\ref{sec:restore}, the label map $T$ is an essential information, while the $LEN$ is a by-product of the process of re-constructing $T$, hence do not need to be explicitly conveyed in header. 
 In our experiments it is safe to remove the column $LEN$ from header as shown in Figure~\ref{fig:header2}.
 
 

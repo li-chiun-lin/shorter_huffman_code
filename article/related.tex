@@ -87,8 +87,6 @@ Define $T$ as a two dimensional vector containing all $t_{i, j}, 1 \leq i < h, 1
 %\end{equation*}
 %All the label values forms a label map denoted as $T =[t_{i, j} \mid 1 \leq i < h, 1\leq j < w]$ 
 where $h$ and $w$ denote the height and the width of $I$, respectively.
-
-
 \begin{align}
 	\label{eq:pv}
 	pv_{i, j} & = 
@@ -117,7 +115,7 @@ where $h$ and $w$ denote the height and the width of $I$, respectively.
 \end{align}
 
 %Define $F$ as a set of distributions of all possible values in $T$.
-Let $F$ be a vector containing the distribution of all possible values in $T$.
+Let $F$ be a vector containing the frequency of all possible values in $T$.
 
 %\begin{equation*}
 %	\label{eq:f}
@@ -129,7 +127,7 @@ Let $F$ be a vector containing the distribution of all possible values in $T$.
 	\label{eq:f}
 	%	F = \{f_v = \#(t = v) \mid t \in T, 0\leq v \leq 8\}
 %	F = \{f_v = \#\{t \in T \mid t = v\}\}, \text{where } 0\leq v \leq 8.
-	F = (f_0, \dots, f_8), \text{where } f_i = \#\{i \in T\}.
+	F = (f_0, \dots, f_8), \qquad \text{where } f_i = \#\{i \in T\}.
 \end{equation*}
 
 
@@ -146,7 +144,7 @@ Let $V$ be a monotonically increasing vector consisting of all possible values i
 \begin{equation}
 	\label{eq:v}
 %	V = [v \in \elems(T) \mid \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} ]
-	V = (v_0, \dots, v_8), \text{where } \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} 
+	V = (v_0, \dots, v_8), \qquad \text{where } \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} 
 \end{equation}
 
 Let $cap(v)$ be a function defined for all $v \in V$, represents the capacity each $t_{i, j} = v$ can provide.
@@ -180,94 +178,76 @@ The topology of $H$ is visualized in Figure~\ref{fig:fixtree}.
 	\label{fig:fixtree}
 \end{figure}
 
-Let $encoder$ be a bijection mapping from $V$ onto $H$, and $decoder : H \rightarrow V$ be its reverse as defined in Equation~\eqref{eq:encode} and~\eqref{eq:decode}.
+Let $encode$ be a bijection mapping from $V$ onto $H$, and $decode \colon H \to V$ be its reverse 
+%as defined in Equation~\eqref{eq:encode} and~\eqref{eq:decode}
+.
 %They use a predefined Huffman tree $H$. The topology is visualized in Figure~\ref{fig:fixtree}.
 \begin{align}
 	\label{eq:encode}
-	&encoder(t) = c
+	&encode(t) = c
 	\\
 	\label{eq:decode}
-	&decoder(c) = t 
+	&decode(c) = t 
 	\\
 	&\qquad \text{where } \exists i \in [0, 8] : v_i \in V \wedge h_i \in H \wedge v_i = t \wedge h_i = c \notag
 \end{align}
+
+%\begin{align}
+%	\label{eq:encode}
+%	encode(v_i) = h_i \\
+%	\label{eq:decode}
+%	decode(h_i) = v_i 
+%\end{align}
+%\begin{align}
+%	\label{eq:encode}
+%	&encode(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
+%%	
+%	\label{eq:decode}
+%	&decode(h_c) = t,  &&\text{ such that } encode(t) = h_c. 
+%\end{align}
+%\begin{align}
+%	\label{eq:encode}
+%	\begin{aligned}
+%		encode(v_i) = h_i \\
+%%		\label{eq:decode}
+%		decode(h_i) = v_i 
+%	\end{aligned} & \qquad \forall i \in [0, 8] 
+%\end{align}
+%\begin{align}
+%	\label{eq:encode}
+%	encode(v_i) = h_i \\
+%%	encode(t) = h_c, \text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
+%	\label{eq:decode}
+%	decode(h_i) = v_i \\
+%	\forall i \in [0, 8] 
+%\end{align}
+Define $payload(v)$ as the difference between the capacity of $v$ and the length of its Huffman code. 
+
+\begin{equation}
+	\label{eq:payload}
+	payload(v) = cap(v) - \vert encode(v) \vert 
+\end{equation}
 
 The Huffman encoding result of Lena $512 \times 512$ is given in Table~\ref{tab:msblena} as an example.
 
 \CatchFileDef{\singlelenamsb}{single-res-table-msb-Lena.tex}{}
 \begin{table}
-	\scriptsize
+%	\scriptsize
 	\centering
+	\caption{An example of Lena $512 \times 512$.}
+	\label{tab:msblena}
 	\begin{tabular}{crlcccr}
 		\toprule 
-		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encoder(v)$}  &  $cap(v)$ &    $\vert encoder(v) \vert$    & $payload(v)$  & $\Delta$ \\
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode(v)$}  &  $cap(v)$ &    $\vert encode(v) \vert$    & $payload(v)$  & $\Delta$ \\
 		\midrule 
 		\singlelenamsb
 		\bottomrule
 	\end{tabular}
-	\caption{An example of Lena $512 \times 512$.}
-	\label{tab:msblena}
 \end{table}
 
 %\begin{align}
-%	\label{eq:encode}
-%	encoder(v_i) = h_i \\
-%	\label{eq:decode}
-%	decoder(h_i) = v_i 
-%\end{align}
-
-
-%\begin{align}
-%	\label{eq:encode}
-%	&encoder(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
-%%	
-%	\label{eq:decode}
-%	&decoder(h_c) = t,  &&\text{ such that } encoder(t) = h_c. 
-%\end{align}
-
-%\begin{align}
-%	\label{eq:encode}
-%	\begin{aligned}
-%		encoder(v_i) = h_i \\
-%%		\label{eq:decode}
-%		decoder(h_i) = v_i 
-%	\end{aligned} & \qquad \forall i \in [0, 8] 
-%\end{align}
-
-%\begin{align}
-%	\label{eq:encode}
-%	encoder(v_i) = h_i \\
-%%	encoder(t) = h_c, \text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
-%	\label{eq:decode}
-%	decoder(h_i) = v_i \\
-%	\forall i \in [0, 8] 
-%\end{align}
-
-Define $payload(v)$ as the difference between the capacity of $v$ and the length of its Huffman code. 
-
-\begin{equation}
-	\label{eq:payload}
-	payload(v) = cap(v) - \vert encoder(v) \vert 
-\end{equation}
-
-
-
-In convenience of better explaining their method, we further categorize each $v \in V$ into three types by Equation~\eqref{eq:type}. 
-We say a value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
-For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
-\begin{align}
-	\label{eq:type}
-	type(v) = 
-	\begin{cases}
-		positive & \text{if } payload(v) > 0 \\
-		neutral  & \text{if } payload(v) = 0 \\
-		negative & \text{if } payload(v) < 0 \\
-	\end{cases} 
-\end{align}
-
-%\begin{align}
 %	\label{eq:payload}
-%	payload(v) &= cap(v) - \vert encoder(v) \vert \\
+%	payload(v) &= cap(v) - \vert encode(v) \vert \\
 %	\label{eq:type}
 %	type(v) &= 
 %	\begin{cases}
@@ -279,7 +259,7 @@ For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negativ
 
 %\begin{align}
 %	\label{eq:type}
-%	payload(v) &= cap(v) - \vert encoder(v) \vert \\
+%	payload(v) &= cap(v) - \vert encode(v) \vert \\
 %	type(v) &= 
 %	\begin{cases}
 %		positive & \text{if } cap(v) > len \\
@@ -287,15 +267,15 @@ For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negativ
 %		negative & \text{if } cap(v) < len \\
 %	\end{cases} 
 %	\\
-%	&\text{where }  len = \vert encoder(v) \vert \notag
+%	&\text{where }  len = \vert encode(v) \vert \notag
 %\end{align}
-
-Let $T^\prime$ be the concatenation of Huffman code of all the values in $T$ and $LEN$ be its length.
+Let $T^\prime$ be the concatenation of Huffman code of all $t_{i, j} \in T$ and $LEN$ be its expected code length.
 \begin{align}
 	\label{eq:encodeT1}
-	T^\prime &= \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w encoder(t_{i, j})} \\
+	T^\prime &= \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w encode(t_{i, j})} \\
+%	T^\prime &= \Arrowvert_{i = 1}^h  { \bigparallel_{j = 1}^w encode(t_{i, j})} \\
 	\label{eq:countlen}
-	LEN  &= \sum_{v \in V} (f_v \times \lvert encoder(v) \rvert)
+	LEN  &= \sum_{v \in V} (f_v \times \lvert encode(v) \rvert)
 \end{align}
 
 \subsubsection{Encryption and Embedding header}
@@ -308,18 +288,18 @@ The cover image $I$ is encrypted with a key stream $K$ using Equation~\eqref{eq:
 \end{equation}
 
 %Let the bytes in the first row and the first column of $I_e$ be the reference bytes and be denoted as $REF$.
-Define the bytes in the first row and the first column of $I_e$ as reference bytes $REF$.
+Define the bytes in the first row and the first column of $I_e$ as reference bytes $REF_e$.
 \begin{equation*}
 %	REF = [x_{i, j} \mid x_{i, j} \in I_e \wedge (i = 0 \vee j = 0)]
-	REF = (x^e_{0, 0}, \dots, x^e_{0, w - 1}, x^e_{1, 0}, \dots, x^e_{h - 1, 0})
+%	REF = (x^e_{0, 0}, \dots, x^e_{0, w - 1}, x^e_{1, 0}, \dots, x^e_{h - 1, 0})
+	REF_e = (\underbrace{x^e_{0, 0}, \dots, x^e_{0, w - 1}}_{\text{first row}}, \underbrace{x^e_{1, 0}, \dots, x^e_{h - 1, 0}}_{\text{first column}})
 \end{equation*}
 
 The embedding header $S^{header}$ is illustrated in Figure~\ref{fig:header1}, where $S^{header\prime}$ represents the first $w + h - 1$ bytes of $S^{header}$.
 The header embedding process follows Algorithm~\ref{algo:embed1}. 
-The $REF$ of $I_e$ each is replaced by 8 bits of $S^{header\prime}$.
-The rest of the $S^{header}$, denoted as $S^{header\prime\prime}$, is embedded into the main body of $I_e$. 
-Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j} \in I_e$ can provide. 
-
+The $REF_e$ of $I_e$ each is replaced by 8 bits of $S^{header\prime}$.
+The rest of the $S^{header}$, denoted as $S^{header\prime\prime}$, is embedded into the main body of $I_e$ using Equation~\eqref{eq:embed1}. 
+Each value $t_{i, j} \in T$ determines the capacity of embedding the corresponding $x^e_{i, j} \in I_e$ can provide. 
 \begin{figure}
 	\scriptsize
 	\centering
@@ -327,7 +307,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 	\begin{tabularx}{\linewidth}{r c cccc}
 		\hhline{*{1}{~}*{5}{-}}
 		$S^{header} =$  
-		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encode(0) \Vert \cdots \Vert encode(8)$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 		& \multicolumn{2}{|c|}{\cellcolor{black!30}$T^\prime$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}  
@@ -345,7 +325,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 		
 		\hhline{*{1}{~}*{3}{-}}
 		$S^{header\prime} =$  
-		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
+		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encode(0) \Vert \cdots \Vert encode(8)$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}
 		& \phantom{1}  &
@@ -372,7 +352,6 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 	\caption{The header of $S$.}
 	\label{fig:header1}
 \end{figure}
-
 %\begin{figure}
 %	\scriptsize
 %	\centering
@@ -380,7 +359,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 %	\begin{tabularx}{\linewidth}{r c cccc}
 %		\hhline{*{1}{~}*{5}{-}}
 %		$S^{header} =$  
-%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encode(0) \Vert \cdots \Vert encode(8)$}
 %		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 %		& \multicolumn{2}{|c|}{\cellcolor{black!30}$T^\prime$}
 %		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}  
@@ -398,7 +377,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 %		
 %		\hhline{*{1}{~}*{5}{-}}
 %		  
-%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encoder(0) \Vert \cdots \Vert encoder(8)$}
+%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encode(0) \Vert \cdots \Vert encode(8)$}
 %		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
 %		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}
 %		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}  
@@ -420,8 +399,6 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 %	\caption{The header of $S$.}
 %%	\label{fig:header1}
 %\end{figure}
-
-
 \begin{align}
 	\label{eq:embed1}
 	%	Embed(i, j, S^\ast) & = 
@@ -444,13 +421,22 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 	&
 	\begin{aligned}
 %		x^e_{i, j} & \in I_e ,  \\
-		S^\ast     & \text{ is a sequential subset of } S^{header},  \\
-		MSB^{m}(B) & = \sum\nolimits_{i = 8 - m}^7 b_i \times 2^i, m \in [1, 8], \\
-		LSB^{n}(B) & = B \bmod 2^n, n \in [1, 8], \text{ and} \\
+		S^\ast     & = \text{ a subsequence of } S^{header}  \\
+		MSB^{m}(B) & = \sum\nolimits_{i = 8 - m}^7 b_i \times 2^i, m \in [1, 8] \\
+		LSB^{n}(B) & = B \bmod 2^n, n \in [1, 8] \\
 %		B &= [b_i \mid b_i \in \{0, 1\}, i \in [0, 7] ].
-		B &= (b_0, \dots, b_i), b_i \in \{0, 1\}, i \in [0, 7].
+		B &= (b_0, \dots, b_i), b_i \in \{0, 1\}, i \in [0, 7]
 	\end{aligned} \notag
 \end{align}
+%where
+%\begin{eqexpl}
+%%	\eqexplSetIntro{where}
+%	\eqexplSetDelim{=}
+%	\item {$S^\ast$} a sequential subset of $S^{header}$
+%	\item {$MSB^{m}(B)$} $\sum\nolimits_{i = 8 - m}^7 b_i \times 2^i, m \in [1, 8]$
+%	\item {$LSB^{n}(B)$} $B \bmod 2^n, n \in [1, 8]$
+%	\item {$B$} $(b_0, \dots, b_i), b_i \in \{0, 1\}, i \in [0, 7]$
+%\end{eqexpl}
 
 %The embedding process is summarized in Algorithm~\ref{algo:embed1}. 
 
@@ -480,7 +466,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 		\EndFor
 		
 		\State Let $V$ be the elements of $T$ sorted by $f_t$.
-		\State Define $encoder$ using Equation~\eqref{eq:encode}.
+		\State Define $encode$ using Equation~\eqref{eq:encode}.
 		\State $I_e \gets I \oplus K$.
 		
 %		\State Compute $T^\prime $ and $ LEN$ using Equation~\eqref{eq:encodeT1} and~\eqref{eq:countlen}.
@@ -490,7 +476,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding each $x^e_{i, j
 		
 		\State Allocate $S^{header}$ as shown in Figure~\ref{fig:header1}.
 		\State $I_e^\prime \gets I_e$
-		\State Replace $REF$ of $I_e^\prime$ with $S^{header\prime}$.
+		\State Replace $REF_e$ of $I_e^\prime$ with $S^{header\prime}$.
 		
 		\ForAll{$\{(i, j) \mid 0 < i < h, 0 < j < w\}$}
 		\If			{$S^{header\prime\prime} = \emptyset$}
@@ -561,19 +547,19 @@ write something here.
 \subsubsection{Extract Secret}
 \label{sec:extract}
 
-Let R be a vector containing $(w + h - 1)\times 8$ bits of $REF$ of $I_w$, and $r_i$ represents the $i$-th bit of R.
+Let R be a vector containing $(w + h - 1)\times 8$ bits of $REF_w$ of $I_w$, and $r_i$ represents the $i$-th bit of R.
 \begin{equation*}
 %	R = [r_i \mid r_i \in \{0, 1\} \wedge 0 \leq i < \vert REF \vert \times 8]
-	R = (r_0, \dots, r_{n}), \text{where } n = (\vert REF \vert \times 8) - 1, r_i \in \{0, 1\}
+	R = (r_0, \dots, r_{n}), \qquad \text{where } n = (\vert REF_w \vert \times 8) - 1, r_i \in \{0, 1\}
 \end{equation*}
 The first 32 bits $(r_0   , \dots, r_{31})$ are the Huffman encoded value of 0 to 8 and 
 the following 20 bits $(r_{32}, \dots, r_{51})$ contain the length $LEN$ of the entire encoded label map $T^\prime$, as shown in Figure~\ref{fig:header1}.
 For the first 32 bits, using the predefined Huffman tree $H$, they can be divided into 9 unambiguously Huffman codes, each consequently represents the Huffman code from 0 to 8. 
-%With this information, the sorted vector $V$ from Equation~\eqref{eq:v} and the mapping $encoder$ and its reverse $decoder$ from Equation~\eqref{eq:encode} and~\eqref{eq:decode} can be restored by the receiver.
-With this information, the receiver can restore $V$ and $decoder$ from Equation~\eqref{eq:v} and~\eqref{eq:decode}.
+%With this information, the sorted vector $V$ from Equation~\eqref{eq:v} and the mapping $encode$ and its reverse $decode$ from Equation~\eqref{eq:encode} and~\eqref{eq:decode} can be restored by the receiver.
+With this information, the receiver can restore $V$ and $decode$ from Equation~\eqref{eq:v} and~\eqref{eq:decode}.
 \begin{align}
 	\label{eq:r32}
-	&(r_0   , \dots, r_{31}) = encoder(0) \Vert \cdots \Vert encoder(8) \\
+	&(r_0   , \dots, r_{31}) = encode(0) \Vert \cdots \Vert encode(8) \\
 	&(r_{32}, \dots, r_{51}) = LEN^{(0)} \Vert \cdots \Vert LEN^{(19)} \\
 	\intertext{where $LEN^{(i)}$ denotes the $i$-th bit of $LEN$, such that }  
 	\label{eq:len}
@@ -596,7 +582,7 @@ The extraction function is defined as Equation~\eqref{eq:extract}.
 	\end{cases}
 \end{align}
 
-Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $decoder$ and Equation~\eqref{eq:extract}.
+Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $decode$ and Equation~\eqref{eq:extract}.
 %
 The output $(c_x, c_y)$ are provided to Algorithm~\ref{algo:extractref} to further extract reference bytes $R$ of the encrypted image $I_e$.
 %
@@ -610,7 +596,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 	
 	\begin{algorithmic}[1]
 		\Require stego image $I_w$ of $w \times h$.
-		\Ensure Huffman coding $decoder$.
+		\Ensure Huffman coding $decode$.
 		\Ensure label map $T$.
 		\Ensure coordinate $(c_x, c_y)$ indicating where to extract reference bytes.
 		\Ensure length $LEN$ of the encoded label map $T^\prime$.
@@ -620,7 +606,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 %		\State $R \gets \{x^w_{i, j} \in I_w \mid i = 0 \vee j = 0\}$.
 		
 		\State Restore 9 Huffman codes from $(r_0 , \dots,  r_{31})$.
-		\State Restore $decoder$ from the 9 Huffman codes.
+		\State Restore $decode$ from the 9 Huffman codes.
 		\State Restore $LEN$ from $(r_{32} , \dots,  r_{51})$ using Equation~\eqref{eq:len}.
 		
 %		\State $T \gets \{t_{i, j} = -1 \mid i \in [0, h), j \in [0, w)\}$.
@@ -630,7 +616,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\ForAll{$\{r_i \in R \mid i > 52\}$}
 		\State	$buf \gets buf \Vert r_i$.
 		\If		{$buf$ is a valid Huffman code}
-		\State 		$t_{(d_x, d_y)} \gets decoder(buf)$.		\label{algo:extractT:incdref}
+		\State 		$t_{(d_x, d_y)} \gets decode(buf)$.		\label{algo:extractT:incdref}
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 %		\State 		$d_y \gets d_y + 1$.
@@ -647,7 +633,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\label{algo:extractT:nextij}
 		
 		\If		{$buf$ is a valid Huffman code}		
-		\State 		$t_{(d_x, d_y)} \gets decoder(buf)$. \label{algo:extractT:nextd}
+		\State 		$t_{(d_x, d_y)} \gets decode(buf)$. \label{algo:extractT:nextd}
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 		\If			{$d_x = h$}
@@ -674,17 +660,17 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\Require stego image $I_w$ of $w \times h$.
 		\Require label map $T$.
 		\Require coordinate $(c_x, c_y)$ indicate where to extract reference bytes.
-		\Ensure reference bytes $REF$ of $I_e$.
+		\Ensure reference bytes $REF_e$ of $I_e$.
 		\Ensure coordinate $({c_x}^\prime, {c_y}^\prime)$ indicates where to extract secret information.
 		
 %		\State Let $REF$ be a byte sequence $[r_i = 0 \mid i \in [0, h + w)]$.
-		\State Initialize $REF$.
+		\State Initialize $REF_e$.
 		\State $k \gets 0$.
 %		\ForAll{$\{ t_{i, j} \in T \mid (i = c_x \wedge j \in (c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
 		\ForAll{$\{ (i, j) \mid (i = c_x \wedge j \in (c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
 		\State 		$buf \gets buf \Vert Extract(i, j)$ by Equation~\eqref{eq:extract}.
 		\If			{$\left \vert buf \right \vert \geq 8$}
-		\State 			$r_k \gets MSB^8(buf)$.
+		\State 			$r_k \gets MSB^8(buf)$. \Comment{the $k$-th byte of $REF_e$}
 		\State 			Remove 8 bits from $buf$.
 		\State 			$k \gets k + 1$.
 		\If				{$k = h + w$}
@@ -705,17 +691,15 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 \subsubsection{Decrypt and Restore Cover Image}
 \label{sec:restore}
 
-After running Algorithm~\ref{algo:extractT}, the Receiver possesses the stego image $I_w$, the label map $T$ and reference bytes $R$ of $I_e$.
+After running Algorithm~\ref{algo:extractT} and ~\ref{algo:extractref}, the Receiver possesses the stego image $I_w$, the label map $T$ and reference bytes $REF_e$ of $I_e$.
 %
 Define $I_e^\prime$ as the result of $I_w$ replacing the reference bytes with $R$.
 Then $I_e^\prime$ is decrypted by key stream $K$ the same way as Equation~\eqref{eq:enc} and becomes $I^\prime$.
 The cover image $I$ is restored after Equation~\eqref{eq:restore} is applied to all $x^\prime_{i, j} \in I^\prime$.
 % 
-It must be emphasized that when applying Equation~\eqref{eq:restore} to $x^\prime_{i, j}$, the pixels $x_{i - i, j - 1}, x_{i - 1, j}$ and $x_{i, j -1}$ have already been restored from the reference bytes $R$ or the former application of Equation~\eqref{eq:restore}, so that the $pv_{i, j}$ are identical as the embedding process.
+It must be emphasized that when applying Equation~\eqref{eq:restore} to $x^\prime_{i, j}$, the pixels $x_{i - i, j - 1}, x_{i - 1, j}$ and $x_{i, j -1}$ have already been restored from the reference bytes of $REF_e$ or the former application of Equation~\eqref{eq:restore}, so that the $pv_{i, j}$ are identical as the embedding process.
 %
 An example is illustrated in Figure~\ref{fig:example}.
-
-
 \begin{align}
 	I_e^\prime &= 
 	\left \{  x_{i, j}^{e\prime} \left |
@@ -730,7 +714,7 @@ An example is illustrated in Figure~\ref{fig:example}.
 %	\intertext{where $r_{j}, r_{w + i} \in R$, and $ x_{i, j} \in I_w$}  \notag
 \end{align}
 
-where $r_{j}, r_{w + i} \in R$, and $ x_{i, j} \in I_w$.
+where $r_{j}, r_{w + i} \in REF_e$, and $ x_{i, j} \in I_w$.
 
 \begin{equation}
 	\label{eq:restore}

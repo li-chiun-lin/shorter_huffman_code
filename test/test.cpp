@@ -20,7 +20,7 @@ void testlib()
 	shr_huffman(path_cover_img, path_report_sht);
 }
 
-void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = false)
+void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = false, bool with_avg_code_length = false)
 {
 	FILE* fptr = NULL;
 
@@ -57,18 +57,21 @@ void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = 
 		printResult(ret_msb);
 		printResult(ret_shr);
 
-		
+		struct Result delta = ret_shr - ret_msb;
 
 		fprintf(fptr, "%d &", ret_msb.width_image);
 
-		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.header_len, ret_msb.header_len, ret_shr.header_len - ret_msb.header_len);
-		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.len_ref / 8, ret_msb.len_ref / 8, (ret_shr.len_ref / 8) - (ret_msb.len_ref / 8));
+		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.header_len, ret_msb.header_len, delta.header_len);
+		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.len_ref_byte, ret_msb.len_ref_byte, delta.len_ref_byte);
 
-		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.size_capacity_pure, ret_msb.size_capacity_pure, ret_shr.size_capacity_pure - ret_msb.size_capacity_pure);
-		fprintf(fptr, "%d   & %d   & $ %+d $\t ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, ret_shr.len_h_encoded_labelmap - ret_msb.len_h_encoded_labelmap);
+		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.size_capacity_pure, ret_msb.size_capacity_pure, delta.size_capacity_pure);
+		fprintf(fptr, "%d   & %d   & $ %+d $\t ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, delta.len_h_encoded_labelmap);
 		
 		if (with_bpp)
-			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, ret_shr.bbp - ret_msb.bbp);
+			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, delta.bbp);
+
+		if (with_avg_code_length)
+			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.avg_code_len, ret_msb.avg_code_len, delta.avg_code_len);
 
 		fprintf(fptr, "\t\\\\");
 
@@ -369,8 +372,12 @@ FILE* fptr = NULL;
 
 bool proceed2Res(path file)
 {
-	struct Result ret_msb_tiff = msb_huffman(file.string(), dummy, true);
-	struct Result ret_shr_tiff = shr_huffman(file.string(), dummy, true);
+	string report = "../out/tmp/" + file.string();
+
+	//struct Result ret_msb_tiff = msb_huffman(file.string(), dummy, true);
+	//struct Result ret_shr_tiff = shr_huffman(file.string(), dummy, true);
+	struct Result ret_msb_tiff = msb_huffman(file.string(), report + ".msb.txt", true);
+	struct Result ret_shr_tiff = shr_huffman(file.string(), report + ".shr.txt", true);
 
 	if (ret_msb_tiff.isValid && ret_shr_tiff.isValid)
 	{
@@ -396,7 +403,14 @@ bool proceed2Res(path file)
 		return true;
 	}
 	else
+	{
+		if (!ret_msb_tiff.isValid)
+			cout << "error msb " << endl;
+		if (!ret_shr_tiff.isValid)
+			cout << "error shr " << endl;
+
 		return false;
+	}
 }
 
 void listdir_(path p)
@@ -468,10 +482,10 @@ void bigdata(string dir, string report)
 
 void genBigData()
 {
-	bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.txt");
-	bigdata("../dataset/BOSSbase/", "../out/bigreport-boss.txt");
-	bigdata("../dataset/BOWS2/", "../out/bigreport-bows.txt");
-	bigdata("../dataset/UCID/", "../out/bigreport-ucid.txt");
+	bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
+	bigdata("../dataset/BOSSbase/", "../out/bigreport-boss.csv");
+	bigdata("../dataset/BOWS2/", "../out/bigreport-bows2.csv");
+	bigdata("../dataset/UCID/", "../out/bigreport-ucid.csv");
 }
 
 bool tryRef(path file)
@@ -545,11 +559,13 @@ void testDataSetRefLimit()
 {
 	vector<path> lst = getDataSetList();
 
-	for (size_t i = 20200; i < lst.size(); ++i)
+	for (size_t i = 0; i < lst.size(); ++i)
 	{
+		string report = "../out/tmp/" + lst[i].string();
+
 		//cout << i << " " << lst[i] << endl;
-		struct Result ret_shr_tiff = shr_huffman(lst[i].string(), dummy, true);
-		struct Result ret_msb_tiff = msb_huffman(lst[i].string(), dummy, true);
+		struct Result ret_shr_tiff = shr_huffman(lst[i].string(), report + ".shr.txt", true);
+		struct Result ret_msb_tiff = msb_huffman(lst[i].string(), report + ".msb.txt", true);
 		
 		//cout << lst[i] << endl;
 		cout << i << ", ";
@@ -577,13 +593,17 @@ void testsingle()
 	//string f = "../dataset/UCID/ucid00770.tif";
 	string f = "../dataset/UCID/ucid00851.tif";
 
+	string report = "../out/tmp/" + f;
 
-	struct Result ret_msb = msb_huffman(f, dummy, true);
+	cout << report + ".msb.txt" << endl;
+
+
+	struct Result ret_msb = msb_huffman(f, report + ".msb.txt", true);
 	printResult(ret_msb);
 
 	cout << ret_msb.isValid << endl;
 
-	struct Result ret_shr = shr_huffman(f, dummy, true);
+	struct Result ret_shr = shr_huffman(f, report + ".shr.txt", true);
 	printResult(ret_shr);
 
 	cout << ret_shr.isValid << endl;
