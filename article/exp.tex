@@ -1,4 +1,5 @@
 \CatchFileDef{\deltatable}{delta-table.tex}{}
+\CatchFileDef{\deltatablesample}{delta-table-2.tex}{}
 \CatchFileDef{\singlelenamsb}{single-res-table-msb-Lena.tex}{}
 \CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
 \CatchFileDef{\singlelenadif}{single-res-table-dif-Lena.tex}{}
@@ -6,8 +7,11 @@
 
 \section{Experimental results}
 
-The experimental results for some commonly used test images are shown in Table~\ref{tab:big6}. 
-Within each column, there are three sub-columns representing the data of our method, the method of~\cite{Yin2020} and the differnece, respectively.
+The experimental results for some commonly used test images are shown in Table~\ref{tab:common}. 
+Within each column, there are three sub-columns representing the data of our method, the method of~\cite{Yin2020} and the difference, respectively.
+
+
+explain -Yin...
 
 
 
@@ -15,12 +19,15 @@ In the column \emph{Ref}, our improvement of Section~\ref{sec:improveref} introd
 %This improvement increases dramatically with cover images of larger size.
 
 %In the column \emph{Label Map}, our improvement described in Section~\ref{sec:improvetree} created averagely more than five thousand bits for any $512 \times 512$ image.
+
+explain why some plus
+
 In the column \emph{Label Map}, our improvement described in Section~\ref{sec:improvetree} surely reduces the overall length of label map $T$. 
 The detail of the special case of \emph{Man} $1024 \times 1024$ is demonstrated in Table~\ref{tab:man}.
 It is understandable that $T$ is of size $1023 \times 1023$ when applying the method of Yin et al., 
 while it is of size $1024 \times 1024 - (7 + 63)$ when applying our method. 
 Since our method produces a larger $T$, it is inevitable that there will be a longer $T'$ for some images, as we have seem in column \emph{Label Map}. 
-But if we further exam the coding result of \emph{Man} $1024 \times 1024$ in Table~\ref{tab:man}, our method still produce a shorter average code length per value in $T$, which reflects the truth that our method produces a better Huffman coding tree.
+But if we further exam the coding result of \emph{Man} $1024 \times 1024$ in Table~\ref{tab:man}, our method still produce a slightly shorter average code length per value in $T$, which reflects the truth that our method produces a better Huffman coding tree.
 
 Though we have to spend more space in $S^{header}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Section~\ref{sec:improvesize}, hence $S^{header}$ remains almost the same size, as shown in the column \emph{Hdr}.
 
@@ -29,16 +36,20 @@ Though we have to spend more space in $S^{header}$ to store the Huffman tree top
 \begin{table}
 	\scriptsize
 	\centering
-	\caption{Experimental results of test images (Ours/Yin et~al./$\Delta$)}
-	\label{tab:big6}
-	\begin{tabular}{c c r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r }
+	\caption{Experimental results of sample images (Ours/Yin et~al./$\Delta$)}
+	\label{tab:common}
+	\begin{tabular}{l@{}c r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r r@{/}r@{/}r }
 		\toprule
-		Image & Size & 
+		\multicolumn{1}{c}{Image} & Size & 
 		\multicolumn{3}{c}{Hdr(bit)}            & \multicolumn{3}{c}{Ref(byte)}& \multicolumn{3}{c}{Capacity(bit)}& \multicolumn{3}{c}{Label Map(bit)}      \\ 
 		\midrule
 		% paste from here ---------------------------------------------------------------
 		
-		\deltatable
+%		\deltatable
+		
+%		\midrule
+		
+		\deltatablesample
 		
 		% paste till here -----------------------------------------------------------------
 		
@@ -85,8 +96,8 @@ Though we have to spend more space in $S^{header}$ to store the Huffman tree top
 		\midrule
 		BOSSBase  &  6.881 &	5.898	&$+0.984$& 0.716&	0.665&	$+0.051$ & 3.464 &	3.362&	$+0.103$ \\
 		BOWS2   &6.443&	5.622&	$+0.821$ &0.671	&0.629&$+0.042$&3.320&	3.246&	$+0.075$ \\
-		UCID &4.621	&4.523&	$+0.098$   &0.640&	0.593&	$+0.047$ &2.729&	2.663&	$+0.066$ \\
-		USC-SIPI  &6.998 &	5.976&	$+1.021$&0.401	&0.370 &	$+0.031$& 2.293 &	2.233	&$+0.059$ \\
+%		UCID &4.621	&4.523&	$+0.098$   &0.640&	0.593&	$+0.047$ &2.729&	2.663&	$+0.066$ \\
+		USC-SIPI  &6.162 &	5.317&	$+0.845$&0.401	&0.370 &	$+0.031$& 2.122 &	2.084	&$+0.038$ \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -118,15 +129,15 @@ Though we have to spend more space in $S^{header}$ to store the Huffman tree top
 		\includegraphics[scale=0.2]{img/worst-bows2-5547} \\
 		
 		
-		UCID & 00379.tiff& 00341.tiff\\
-		 & 
-		\includegraphics[scale=0.2]{img/best-ucid-00379} & 
-		\includegraphics[scale=0.2]{img/worst-ucid-00341} \\
+%		UCID & 00379.tiff& 00341.tiff\\
+%		 & 
+%		\includegraphics[scale=0.2]{img/best-ucid-00379} & 
+%		\includegraphics[scale=0.2]{img/worst-ucid-00341} \\
 		
 		
-		USC-SIPI & gray21.512.tiff& 1.2.05.tiff\\
+		USC-SIPI & 7.1.02.tiff& 1.2.05.tiff\\
 		 &
-		\includegraphics[scale=0.2]{img/best-usc-gray21.512} & 
+		\includegraphics[scale=0.2]{img/best-usc-7.1.02} & 
 		\includegraphics[scale=0.2]{img/worst-usc-1.2.05} \\
 		\bottomrule
 	\end{tabular}
@@ -165,7 +176,7 @@ Though we have to spend more space in $S^{header}$ to store the Huffman tree top
 	\centering
 	\caption{The encoding result of Man $1024 \times 1024$.}
 	\label{tab:man}
-	\subcaption{When applying~\cite{Yin2020}.}
+	\subcaption{when applying~\cite{Yin2020}.}
 	\label{tab:mana}
 	\begin{tabular}{crlcccr}
 		\toprule 
@@ -176,7 +187,7 @@ Though we have to spend more space in $S^{header}$ to store the Huffman tree top
 		\multicolumn{7}{l}{Average code length per value: $3121506 \divisionsymbol 1046529 = 2.982722$}
 	\end{tabular}
 
-	\subcaption{When applying our method.}
+	\subcaption{when applying our method.}
 	\label{tab:manb}
 	\begin{tabular}{crlcccr}
 		\toprule 
@@ -192,9 +203,11 @@ Though we have to spend more space in $S^{header}$ to store the Huffman tree top
 
 
 
+
+BOSSBase~\cite{Bas2011}
 BOWS-2~\cite{bows2007}
 
-UCID~\cite{Schaefer2003}
+%UCID~\cite{Schaefer2003}
 
 The USC-SIPI Image Database~\cite{USC1966}
 

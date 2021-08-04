@@ -9,6 +9,8 @@
 
 using namespace std::filesystem;
 
+string dummy = "../out/null.txt";
+
 void testlib()
 {
 	string path_cover_img = "../image/tiff/lena.tiff.raw";
@@ -67,6 +69,61 @@ void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = 
 		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.size_capacity_pure, ret_msb.size_capacity_pure, delta.size_capacity_pure);
 		fprintf(fptr, "%d   & %d   & $ %+d $\t ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, delta.len_h_encoded_labelmap);
 		
+		if (with_bpp)
+			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, delta.bbp);
+
+		if (with_avg_code_length)
+			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.avg_code_len, ret_msb.avg_code_len, delta.avg_code_len);
+
+		fprintf(fptr, "\t\\\\");
+
+		fprintf(fptr, "\n");
+	}
+
+	fclose(fptr);
+}
+
+void genCmpTexSample(bool with_bpp = false, bool with_avg_code_length = false)
+{
+	FILE* fptr = NULL;
+
+	// the output file name has been link to /article/, DO NOT change it.
+	int ren = fopen_s(&fptr, "../article/delta-table-2.tex", "w");
+
+	if (ren || !fptr)
+		return;
+
+	vector<string> fn = { 
+		"Airplane", "Baboon", "Baboon-Yin", "Bridge", "Couple", "Jetplane", "Lake", 
+		"Lena", "Lena-Yin", "Milkdrop", "Peppers", "Tiffany", "Lax" , "Man" };
+
+	for (string f : fn)
+	{
+		cout << endl << endl << endl << endl;
+		cout << f << endl;
+
+		if (f == "Lax")
+			fprintf(fptr, "\\midrule \n");
+
+
+		fprintf(fptr, "%-10s& ", f.c_str());
+
+		struct Result ret_msb = msb_huffman("../dataset/SAMPLE/" + f + ".tiff", dummy, true);
+		struct Result ret_shr = shr_huffman("../dataset/SAMPLE/" + f + ".tiff", dummy, true);
+
+		printResult(ret_msb);
+		printResult(ret_shr);
+
+		struct Result delta = ret_shr - ret_msb;
+
+		fprintf(fptr, "%d &", ret_msb.width_image);
+
+		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.header_len, ret_msb.header_len, delta.header_len);
+		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.len_ref_byte, ret_msb.len_ref_byte, delta.len_ref_byte);
+
+		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.size_capacity_pure, ret_msb.size_capacity_pure, delta.size_capacity_pure);
+		fprintf(fptr, "%d   & %d   & $ %+d $\t ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, delta.len_h_encoded_labelmap);
+
 		if (with_bpp)
 			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, delta.bbp);
 
@@ -366,7 +423,7 @@ void testrawtiff()
 	printResult(ret_shr_tiff);
 }
 
-string dummy = "../out/null.txt";
+
 //string bigreport = "../out/bigreport-usc.txt";
 FILE* fptr = NULL;
 
@@ -485,7 +542,7 @@ void genBigData()
 	bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
 	bigdata("../dataset/BOSSbase/", "../out/bigreport-boss.csv");
 	bigdata("../dataset/BOWS2/", "../out/bigreport-bows2.csv");
-	bigdata("../dataset/UCID/", "../out/bigreport-ucid.csv");
+	//bigdata("../dataset/UCID/", "../out/bigreport-ucid.csv");
 }
 
 bool tryRef(path file)
@@ -613,8 +670,8 @@ void testsingle()
 void genDataTex()
 {
 	genCmpTex(true, true);
-	//genLenaTex();
-	//genAirplaneTex();
+	genCmpTexSample();
+	
 	genSingleTex("Lena");
 	genSingleTex("Airplane");
 	genSingleTex("Man");
@@ -798,14 +855,35 @@ void printlog2()
 }
 
 
+void testLenaLena()
+{
+	string f = "Lena";
+	struct Result ret_raw = msb_huffman("../image/tiff/" + f + ".raw", dummy);
+	struct Result ret_tif = msb_huffman("../image/tiff/" + f + ".tiff", dummy, true);
+
+	struct Result ret_mis = msb_huffman("../dataset/MISC/" + f + ".tiff", dummy, true);
+	struct Result ret_sam = msb_huffman("../dataset/SAMPLE/" + f + ".tiff", dummy, true);
+
+	printResult(ret_raw);
+	printResult(ret_tif);
+	printResult(ret_mis);
+	printResult(ret_sam);
+}
+
+
 int main()
 {
-	genDataTex();
+	//genDataTex();
 	//genBigData();
+	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
+	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
+
+	genCmpTexSample();
 
 	//genManTex();
 	//genLenaTex();
 	
+	//testLenaLena();
 
 
 	//testsingle();
