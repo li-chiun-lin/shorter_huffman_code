@@ -877,8 +877,9 @@ int main()
 	//genBigData();
 	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
 	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
+	bigdata("../dataset/TAMPERE17/", "../out/bigreport-tampere17.csv");
 
-	genCmpTexSample();
+	//genCmpTexSample();
 
 	//genManTex();
 	//genLenaTex();

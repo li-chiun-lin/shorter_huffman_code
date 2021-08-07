@@ -1,24 +1,30 @@
 \section{Proposed Method}
+\label{sec:ours}
+
+In this section, we proposed a new reversible data hiding in encrypted images method base on~\cite{Yin2020} with three improvements that results in a significant increment on embedding rate (ER) while still comply with the typical requirements that described in Section~\ref{sec:intro}. 
+
+%proposed method, ours
+%
+%\cite{Grochowski2020}
+%
+%three improvements:
+%
+%\begin{enumerate}
+%	\item Build a Huffman coding tree topology from the frequency.
+%	\item Reduce the size of Reference Bytes.
+%	\item Fix the issue of the 20-bits of length.
+%\end{enumerate}
 
 
 
-proposed method, ours
-
-\cite{Grochowski2020}
-
-three improvements:
-
-\begin{enumerate}
-	\item Build a Huffman coding tree topology from the frequency.
-	\item Reduce the size of Reference Bytes.
-	\item Fix the issue of the 20-bits of length.
-\end{enumerate}
 
 \subsection{Apply the Huffman tree building algorithm}
 \label{sec:improvetree}
 
-We observed that Yin et al.~introduced their method based on a predefined Huffman tree as shown in Figure~\ref{fig:fixtree} 
-without clarifying the pros and cons behind this design decision. We found that this fixed predefined tree topology actually constrains the true ability of Huffman coding. When we apply the standard Huffman coding algorithm~\cite{IRE1952, Leeuwen2008a} as shown in Algorithm~\ref{algo:buildtree}, its full power can be released.
+We observed that Yin et al.\ introduced their method based on a predefined Huffman tree as shown in Figure~\ref{fig:fixtree} 
+without clarifying the pros and cons behind this design decision. 
+We found that this fixed predefined tree topology actually constrains the true ability of Huffman coding. 
+When we apply the standard Huffman coding algorithm as shown in Algorithm~\ref{algo:buildtree}, its full power can be released~\cite{IRE1952, Leeuwen2008a}.
 
 \begin{algorithm}
 	\caption{Build a Huffman coding tree}
@@ -51,13 +57,15 @@ without clarifying the pros and cons behind this design decision. We found that 
 	\end{algorithmic}
 \end{algorithm}
 
-A step by step demonstration of tree constructing process of Lena $512 \times 512$ is given in Appendix~\ref{app:buildtree}.
+%A step by step demonstration of tree constructing process of Lena $512 \times 512$ is given in Appendix~\ref{app:buildtree}.
 The tree topology is shown in Figure~\ref{fig:lenatree} and the statistic data is given in Table~\ref{tab:shrlena}. 
-Since in our proposal the tree topology is no longer a pre-shared knowledge between sender and receivers, we have to extend $S^{header}$ to convey the tree. A tree serialization algorithm is given in Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
+Since in our proposal the tree topology is no longer a preshared knowledge between the Content-Owner, the Data-hider and the Receiver, we have to extend $S^{aux}$ to convey this information. 
+A tree serialization algorithm is given in Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
 
 A Huffman tree of 9 leaves have $2 \times 9 -1 = 17$ nodes, each needs one bit to represent its role, where 1 is defined for an internal node and 0 for a leaf~\cite{Pu2006}. 
 Each leaf has a value $0 \leq v \leq 8$, thus four bits are enough to store each $v$, i.e., $4 \times 9 = 36$ bits. 
-We occupy 7 bytes in $S^{header}$ to store the 17 bits of tree topology and the 36 bits of the leaf values.
+%We occupy 7 bytes in $S^{header}$ to store the 17 bits of tree topology and the 36 bits of the leaf values.
+We occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
 
 \begin{algorithm}
 	\caption{Tree Serialization}
@@ -77,7 +85,7 @@ We occupy 7 bytes in $S^{header}$ to store the 17 bits of tree topology and the 
 		
 		\Procedure{SerializeTree}{$root$}   
 		\If{$root$ is a leaf}
-%		\State 		Let leaf value $v$ be presented as $[v_0, \dots, v_{s-1}]$.
+		%		\State 		Let leaf value $v$ be presented as $[v_0, \dots, v_{s-1}]$.
 		\State 		Let leaf value $v$ be presented as $v_0 \Vert \cdots \Vert v_{s-1}$.
 		\State 		$topology \gets topology \Vert 0$.
 		\State 		$value \gets value \Vert v_0 \Vert \cdots \Vert v_{s-1}$.
@@ -119,13 +127,13 @@ We occupy 7 bytes in $S^{header}$ to store the 17 bits of tree topology and the 
 \end{algorithm}
 
 \begin{table}
-	\scriptsize
+	%	\scriptsize
 	\centering
 	\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
 	\begin{tabular}{crlcccr}
 		\toprule 
-%		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}   &  Cap.&    Len.    & Payload  & $\Delta$ \\ 
-$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode(v)$}  &  $cap(v)$ &    $\vert encode(v) \vert$    & $payload(v)$  & $\Delta$ \\
+		%		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{Code}   &  Cap.&    Len.    & Payload  & $\Delta$ \\ 
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode(v)$}  &  $cap(v)$ &    $\vert encode(v) \vert$    & $payload(v)$  & $\Delta$ \\
 		\midrule  
 		\singlelenashr
 		\bottomrule   
@@ -174,13 +182,13 @@ For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negativ
 	\end{cases} 
 \end{align}
 
-In the method of Yin et al.~\cite{Yin2020}, according to the definition of Equation~\eqref{eq:pv}, the bytes in the first row and the first column, which has been defined as $REF_e$, must be losslessly preserved, and this is the reason why they must concatenate $REF_e$ after $T^\prime$ as part of $S^{header}$ and embed them before any secret information in Algorithm~\ref{algo:embed1}. 
+In the method of Yin et al., according to the definition of Equation~\eqref{eq:pv}, the bytes in the first row and the first column, i.e.\ $REF_e$, must be losslessly preserved, and this is the reason why they must concatenate $REF_e$ after $T^\prime$ as part of $S^{aux}$ and embed them before any secret information in Algorithm~\ref{algo:embed1}. 
 
 Though this design did not provide any negative effect since $REF_e$ are $neutral$ base on the fact that every bytes in $REF_e$ provides 8 bit capacity and also occupy 8 bits when embedding, with one more byte being defined as reference bytes, there is one less byte that can be used for information hiding. 
+
 We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. 
 For the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. 
 Similar logic applies to those in the first column. 
-
 \begin{equation}
 	\label{eq:pe2}
 	pe(i, j) = 
@@ -195,19 +203,19 @@ Similar logic applies to those in the first column.
 %where $REF$ consists of 7 bytes for Huffman tree and 41 more bytes for maintaining loop invariant.
 
 Theoretically, the top-left corner pixel $x_{0, 0}$ is the only critical byte that must be losslessly preserved, but for the following reasons, we define $REF_e$ more than this one byte.
-Aside from the reason described in Section~\ref{sec:improvetree} that we need 7 bytes to store the Huffman tree, 
+Aside from the reason described in Section~\ref{sec:improvetree} that we need 53 bits to store the Huffman tree, 
 more importantly, we need some more bytes to avoid violating a loop invariant during Algorithm~\ref{algo:extractT}~\cite{Furia2014}.
 
 There are two indexes in Algorithm~\ref{algo:extractT}, i.e., the $(d_x, d_y)$ defined at line~\ref{algo:extractT:idxProce} and the $(i, j)$ for the loop at line~\ref{algo:extractT:idxExt}. 
 For Algorithm~\ref{algo:extractT} to work properly, there is a never mentioned loop invariant at line~\ref{algo:extractT:nextij} that $(i, j) < (d_x, d_y)$ must be true, i.e., the index $(d_x, d_y)$ must be in a more advanced position in $I_w$ than $(i, j)$ for all time.
 
 While $(i, j)$ is increased with every loop iteration, $(d_x, d_y)$ is only increased when the $buf$ at line~\ref{algo:extractT:nextd} contains a proper Huffman code, which is affected by the capacity of each proceeded $t_{i, j}$.
-If the distribution of $negative$ $t_{i, j}$ have a tendency to centralized in some part of $T$ and slow down the incremental speed of $(d_x, d_y)$, Algorithm~\ref{algo:extractT} might encounter exception and fail.
+If the distribution of $negative$ $t_{i, j}$ has a tendency to centralized in some part of $T$ and slows down the incremental speed of $(d_x, d_y)$, Algorithm~\ref{algo:extractT} might encounter exception and fail.
 
 Increase $REF_e$ helps avoiding this problem. As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT}, after extracting the information about Huffman tree, the rest of the $REF_e$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reduce the chance of violating the loop invariant.
 Though defining more $REF_e$ bytes helps amending this issue, it also decreases the bytes that can be dedicate to information hiding.
 
-Even thought the minimum $REF_e$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF_e$ beside the basic 7 bytes used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF_e$ bytes to safely go through Algorithm~\ref{algo:extractT}, this loop invariant only exists in extracting process and remain unnoticed to the sender, we have to define a fixed and large enough $REF_e$ to comply with the whole protocol. 
+Even thought the minimum $REF_e$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF_e$ beside the basic 53 bits used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF_e$ bytes to safely go through Algorithm~\ref{algo:extractT}, this loop invariant only exists in extracting process and remain unnoticed to the Content-Owner, we have to define a fixed and large enough $REF_e$ and preshare this knowledge with all three participators in the use case. 
 
 According to our experiments, defining $REF_e$ equals to or larger than $7 + 63$ bytes is enough for all the test images we can acquire, but we still retain the possibility that it might need to be extended for some more complex cover images.
 
@@ -247,13 +255,13 @@ And since we intended to enlarge the embedding capacity by shrinking the unneces
 %	to store the length of the auxiliary information,
 %\end{quote}
 
-While we inspecting the findings of Yin et al., we found the unreasonable design of constraining the size of $LEN$ to 20 bits, which is only suitable for images of size no more than $512 \times 512$. 
+While we inspecting the method of Yin et al., we found the unreasonable design of constraining the size of $LEN$ to 20 bits, which is only suitable for images of size smaller than $512 \times 512$. 
 When using an image of larger size, e.g., $1024 \times 1024$, 
-it is understandable that the label map $T$ will be of size $1023 \times 1023$, which is only slightly less than $2^{20}$, then the total $LEN$ of $T^\prime$ will sure be exceeded the size of 20 bits. 
+it is understandable that the label map $T$ is of size $1023 \times 1023$ by definition, which is only slightly less than $2^{20}$, then the total $LEN$ of $T^\prime$ will sure be exceeded the size of 20 bits. 
 %In fact, according to the data in~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits. 
 %Since $log_2(3121508) = 21.574$, it requires at least 22 bits to represent $LEN$.
-In fact, according to the data in~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits, which requires at least 22 bits to represent since $log_2(3121508) = 21.574$.
-This can be amended by allocating enough space in the header by Equation~\eqref{eq:floor}.
+In fact, according to the experimental data published by~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits, which requires at least 22 bits to represent it since $log_2(3121508) = 21.574$.
+This can be amended by allocating enough space in the auxiliary information by Equation~\eqref{eq:floor}.
 \begin{equation}
 	\label{eq:floor}
 	\vert LEN \vert \leq \lfloor log_2((w - 1) \times (h - 1) \times \lceil C \rceil ) \rfloor + 1 , 
@@ -265,9 +273,9 @@ This can be amended by allocating enough space in the header by Equation~\eqref{
 %\end{equation}
 where the constant $C$ is the Shannon entropy~\cite{Shannon1948} representing the lower bound of the number of bits required to encode each value $t \in T$ 
 in the worst case scenario when $F$ is a uniform distribution.
-\begin{equation*}
+\begin{equation}
 	C = - \sum_{i = 0}^{\vert F \vert} p_i \times log_2 p_i, \text{ where } p_i = 1 / {\vert F \vert}
-\end{equation*}
+\end{equation}
 %the expected length
 %\begin{equation*}
 %	\left (  
@@ -304,8 +312,8 @@ $C \approx 3.15$ when $n = 9$, hence it is estimated that each value in $T$ is e
 The advantage of this improvement is that the allocated size only depends on the size $(w, h)$ of the cover image and a constant $C$, so that it complies with the protocol translucently.
 This improvement does not aim to increase the embedding capacity, but to make the protocol more compact and solid.
 
-When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the $LEN$ is actually an redundant information. Since for both the secret extracting process described in Section~\ref{sec:extract} and the cover image restoring process described in Section~\ref{sec:restore}, the label map $T$ is an essential information, while the $LEN$ is a by-product of the process of re-constructing $T$, hence do not need to be explicitly conveyed in header. 
-In our experiments it is safe to remove the column $LEN$ from header as shown in Figure~\ref{fig:header2}.
+When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the $LEN$ is actually an redundant information. Since for both the secret extracting process described in Section~\ref{sec:extract} and the cover image restoring process described in Section~\ref{sec:restore}, the label map $T$ is an essential information, while the $LEN$ is a by-product of the process of re-constructing $T$ from $I_e^\prime$ or $I_w$, hence do not need to be explicitly conveyed in $S^{aux}$. 
+In our experiments it is safe to remove the column $LEN$ from $S^{aux}$ as shown in Figure~\ref{fig:header2}.
 
 
 
@@ -342,7 +350,7 @@ In our experiments it is safe to remove the column $LEN$ from header as shown in
 		
 		
 		\hhline{*{1}{~}*{4}{-}}
-		$S^{header} =$  
+		$S^{aux} =$  
 		& \multicolumn{1}{|c|}{\cellcolor{black!10}$topology$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!10}$value$}
 		& \multicolumn{1}{|c|}{\cellcolor{black!30}$T^\prime$}
@@ -358,6 +366,6 @@ In our experiments it is safe to remove the column $LEN$ from header as shown in
 	\end{tabularx}
 	
 	
-	\caption{The header of our method.}
+	\caption{The auxiliary information of our method.}
 	\label{fig:header2}
 \end{figure}

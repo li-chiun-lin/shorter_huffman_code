@@ -20,6 +20,7 @@
 *.xml
 *.bcf
 *dataset*
+*.toc
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
