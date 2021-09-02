@@ -1,19 +1,13 @@
 \section{Related Work}
 \label{sec:related}
 
-%related work, their work ~\cite{Yin2020} 
-%
-%a little describe here.
-%\\
-%the big picture.
-%\\
-%three roles.
 
-
-Yin et al.\ proposed a reversible data hiding in encrypted images method
-%, i.e., Reversible Data Hiding in Encrypted Images Based on Multi-MSB Prediction and Huffman Coding~\cite{Yin2020}, 
-base on median edge detector (MED) predictor~\cite{Weinberger2000} and Huffman coding technique~\cite{IRE1952}.
+Yin et al.\ proposed a reversible data hiding in encrypted images method base on median edge detector (MED) predictor~\cite{Weinberger2000} and Huffman coding technique~\cite{IRE1952}.
 Their method complied with the common use case that consists of the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver}.
+The responsibilities of each role are defined as follows.
+
+
+
 
 %\subsection{a little describe here}
 
@@ -58,32 +52,9 @@ Their method complied with the common use case that consists of the \emph{Conten
 	\label{fig:xpv}
 \end{figure}
 
-%\begin{figure}
-%	\begin{align*}
-%		\begin{bmatrix}
-%			x_{0, 0} & x_{0, 1} & x_{0, 2}                         & \dots                           & \dots & x_{0, m} \\ 
-%			x_{1, 0} & \dots    & \dots                            & \dots                           & \dots & \dots    \\ 
-%			x_{2, 0} & \dots    & \cellcolor{blue!10} x_{i-1, j-1} & \cellcolor{blue!10}x_{i - 1, j} & \dots & \dots    \\ 
-%			\dots    & \dots    & \cellcolor{blue!10}x_{i, j - 1}  & \cellcolor{blue!10}x_{i, j}     & \dots & \dots    \\ 
-%			x_{n, 0} & \dots    & \dots                            & \dots                           & \dots & x_{n, m} \\ 
-%		\end{bmatrix} 
-%	\\
-%		\begin{bmatrix}
-%			N/A & N/A & N/A                         & \dots                           & \dots & N/A \\ 
-%			N/A & pv_{1, 1}    & \dots                            & \dots                           & \dots & \dots    \\ 
-%			N/A & \dots    & \dots & \dots & \dots & \dots    \\ 
-%			\dots    & \dots    & \dots  & \cellcolor{blue!10}pv_{i, j}     & \dots & \dots    \\ 
-%			N/A & \dots    & \dots                            & \dots                           & \dots & x_{n, m} \\ 
-%		\end{bmatrix} 
-%	\end{align*}
-%\end{figure}
-
-%Let $I$ represent the cover image. 
-
 For all pixel $x_{i, j} $ in a cover image $ I$, the predicted value $pv$ of median edge detector predictor is defined as Equation~\eqref{eq:pv} and shown in Figure~\ref{fig:xpv}.
 The predicted error $pe$ between each pixel and its predicted value is defined as Equation~\eqref{eq:pe}.
-Each pixel, except those in the first row and the first column, has a corresponding value $t_{i, j}$, as defined in Equation~\eqref{eq:t}.
-%Define $T$ as a sequence containing all $t_{i, j}$, i.e.\
+Each pixel, except those in the first row and the first column, has a corresponding value $0 \leq t_{i, j} \leq 8$, as defined in Equation~\eqref{eq:t}.
 \begin{align}
 	\label{eq:pv}
 	pv_{i, j} & = 
@@ -111,22 +82,10 @@ Each pixel, except those in the first row and the first column, has a correspond
 	\end{dcases} 	
 \end{align}
 
-Define $T$ as a two dimensional vector containing all $t_{i, j}, 1 \leq i < h, 1\leq j < w$.
-%\begin{equation*}
-%	T =[t_{i, j} \mid 1 \leq i < h, 1\leq j < w],
-%\end{equation*}
-%All the label values forms a label map denoted as $T =[t_{i, j} \mid 1 \leq i < h, 1\leq j < w]$ 
+Define $T$ as a two dimensional vector containing all $t_{i, j}$ for $ 1 \leq i < h, 1\leq j < w$,
 where $h$ and $w$ denote the height and the width of $I$, respectively.
-%Define $F$ as a set of distributions of all possible values in $T$.
 
 Let $F$ be a vector containing the count of appearance of each possible value in $T$.
-%
-%\begin{equation*}
-%	\label{eq:f}
-%%	F = \{f_v = \#(t = v) \mid t \in T, 0\leq v \leq 8\}
-%	F = \{f_v = \#\{t \in T \mid t = v\}\}, \text{where } 0\leq v \leq 8.
-%\end{equation*}
-%
 \begin{equation}
 	\label{eq:f}
 	%	F = \{f_v = \#(t = v) \mid t \in T, 0\leq v \leq 8\}
@@ -135,14 +94,6 @@ Let $F$ be a vector containing the count of appearance of each possible value in
 \end{equation}
 
 Let $V$ be a monotonically increasing vector consisting of all possible values in $T$ sorted by $F$.
-
-%\begin{equation}
-%	\label{eq:v}
-%	%	V = \{v \in \range(T) \mid \forall v_i, v_j \in V \colon i \leq j \implies f_{v_i} \leq f_{v_j} \}
-%	V = [v \in \elems(T) \mid \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} ]
-%	%	V = [v_0, \cdots, v_8 \mid v_i \in \range(T) \wedge \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} ]
-%\end{equation}
-
 \begin{equation}
 	\label{eq:v}
 	%	V = [v \in \elems(T) \mid \forall v_i, v_j \in V \colon i \leq j \iff f_{v_i} \leq f_{v_j} ]
@@ -150,8 +101,8 @@ Let $V$ be a monotonically increasing vector consisting of all possible values i
 \end{equation}
 
 Let $cap(v)$ be a function defined for all $v \in V$, representing the capacity each $t_{i, j} = v$ can provide.
-
 \begin{equation}
+	\label{eq:cap}
 	cap(v) = 
 	\begin{cases}
 		8     &  \text{if } v = 8       \\
@@ -159,12 +110,11 @@ Let $cap(v)$ be a function defined for all $v \in V$, representing the capacity 
 	\end{cases} 
 \end{equation}
 
-A predefined Huffman tree $H$ is represented as a vector of bit strings. 
+A predefined Huffman tree $H$ is represented as a vector of a bitstream. 
 The topology of $H$ is visualized in Figure~\ref{fig:fixtree}.
-\begin{equation*}
+\begin{equation}
 	H = (00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111)
-\end{equation*}
-%$$H = [00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111]$$ 
+\end{equation}
 
 \begin{figure}
 	\scriptsize
@@ -180,10 +130,7 @@ The topology of $H$ is visualized in Figure~\ref{fig:fixtree}.
 	\label{fig:fixtree}
 \end{figure}
 
-Let $encode$ be a bijection mapping from $V$ onto $H$, and $decode \colon H \to V$ be its reverse 
-%as defined in Equation~\eqref{eq:encode} and~\eqref{eq:decode}
-.
-%They use a predefined Huffman tree $H$. The topology is visualized in Figure~\ref{fig:fixtree}.
+Let $encode$ be a bijection mapping from $V$ onto $H$, and $decode \colon H \to V$ be its reverse. 
 \begin{align}
 	\label{eq:encode}
 	&encode(t) = c
@@ -194,37 +141,8 @@ Let $encode$ be a bijection mapping from $V$ onto $H$, and $decode \colon H \to 
 	&\qquad \text{where } \exists i \in [0, 8] : v_i \in V \wedge h_i \in H \wedge v_i = t \wedge h_i = c \notag
 \end{align}
 
-%\begin{align}
-%	\label{eq:encode}
-%	encode(v_i) = h_i \\
-%	\label{eq:decode}
-%	decode(h_i) = v_i 
-%\end{align}
-%\begin{align}
-%	\label{eq:encode}
-%	&encode(t) = h_c, &&\text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
-%%	
-%	\label{eq:decode}
-%	&decode(h_c) = t,  &&\text{ such that } encode(t) = h_c. 
-%\end{align}
-%\begin{align}
-%	\label{eq:encode}
-%	\begin{aligned}
-%		encode(v_i) = h_i \\
-%%		\label{eq:decode}
-%		decode(h_i) = v_i 
-%	\end{aligned} & \qquad \forall i \in [0, 8] 
-%\end{align}
-%\begin{align}
-%	\label{eq:encode}
-%	encode(v_i) = h_i \\
-%%	encode(t) = h_c, \text{ where } \exists c \colon v_c \in V \wedge v_c = t. \\
-%	\label{eq:decode}
-%	decode(h_i) = v_i \\
-%	\forall i \in [0, 8] 
-%\end{align}
-Define $payload(v)$ as the differences between the capacity of $v$ and the length of its Huffman code. 
 
+Define $payload$ as the differences between the capacity of $v$ and the length of its Huffman code. 
 \begin{equation}
 	\label{eq:payload}
 	payload(v) = cap(v) - \vert encode(v) \vert 
@@ -239,7 +157,7 @@ Let $T^\prime$ be the concatenation of Huffman code of all $t_{i, j} \in T$ and 
 	LEN  &= \sum_{v \in V} (f_v \times \lvert encode(v) \rvert)
 \end{align}
 
-The Huffman encoding result of Lena $512 \times 512$ is given in Table~\ref{tab:msblena} as an example.
+The Huffman encoding result of \emph{Lena} $512 \times 512$ is given in Table~\ref{tab:msblena} as an example.
 The columns are in conformity with their definitions and the column \emph{$\Delta$} represents the result of $f_v \times payload(v)$. 
 Each cell in the row \emph{$\sum$} represents the weighted summation of the corresponding column.
 
@@ -247,7 +165,7 @@ Each cell in the row \emph{$\sum$} represents the weighted summation of the corr
 \begin{table}
 	%	\scriptsize
 	\centering
-	\caption{An example of Lena $512 \times 512$.}
+	\caption{An example of \emph{Lena} $512 \times 512$.}
 	\label{tab:msblena}
 	\begin{tabular}{crlcccr}
 		\toprule 
@@ -258,31 +176,6 @@ Each cell in the row \emph{$\sum$} represents the weighted summation of the corr
 	\end{tabular}
 \end{table}
 
-%\begin{align}
-%	\label{eq:payload}
-%	payload(v) &= cap(v) - \vert encode(v) \vert \\
-%	\label{eq:type}
-%	type(v) &= 
-%	\begin{cases}
-%		positive & \text{if } payload(v) > 0 \\
-%		neutral  & \text{if } payload(v) = 0 \\
-%		negative & \text{if } payload(v) < 0 \\
-%	\end{cases} 
-%\end{align}
-
-%\begin{align}
-%	\label{eq:type}
-%	payload(v) &= cap(v) - \vert encode(v) \vert \\
-%	type(v) &= 
-%	\begin{cases}
-%		positive & \text{if } cap(v) > len \\
-%		neutral  & \text{if } cap(v) = len \\
-%		negative & \text{if } cap(v) < len \\
-%	\end{cases} 
-%	\\
-%	&\text{where }  len = \vert encode(v) \vert \notag
-%\end{align}
-
 
 \subsubsection{Encryption and Embedding Auxiliary information}
 
@@ -292,8 +185,7 @@ The cover image $I$ is encrypted with a key stream $K_I$ using Equation~\eqref{e
 	I_e = I \oplus K_I
 \end{equation}
 
-%Let the bytes in the first row and the first column of $I_e$ be the reference bytes and be denoted as $REF$.
-Define the bytes in the first row and the first column of $I_e$ as reference bytes $REF_e$.
+Define reference bytes $REF_e$ as the bytes in the first row and the first column of $I_e$.
 \begin{equation*}
 	%	REF = [x_{i, j} \mid x_{i, j} \in I_e \wedge (i = 0 \vee j = 0)]
 	%	REF = (x^e_{0, 0}, \dots, x^e_{0, w - 1}, x^e_{1, 0}, \dots, x^e_{h - 1, 0})
@@ -304,7 +196,7 @@ Define auxiliary information $S^{aux}$ as illustrated in Figure~\ref{fig:header1
 The auxiliary information embedding process follows Algorithm~\ref{algo:embed1}. 
 Each byte in $REF_e$ is replaced by 8 bits of $S^{aux\prime}$.
 The rest of the $S^{aux}$, denoted as $S^{aux\prime\prime}$, is embedded into the main body of $I_e$ using Equation~\eqref{eq:embed1}. 
-Each value $t_{i, j} \in T$ determines the capacity of embedding the corresponding $x^e_{i, j} \in I_e$ can provide. 
+Each value $t_{i, j} \in T$ determines the capacity of embedding the corresponding $x^e_{i, j} \in I_e$ can provide as defined in Equation~\eqref{eq:cap}. 
 \begin{figure}
 	%	\scriptsize
 	\centering
@@ -357,53 +249,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 	\caption{The auxiliary information.}
 	\label{fig:header1}
 \end{figure}
-%\begin{figure}
-%	\scriptsize
-%	\centering
-%	
-%	\begin{tabularx}{\linewidth}{r c cccc}
-%		\hhline{*{1}{~}*{5}{-}}
-%		$S^{header} =$  
-%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encode(0) \Vert \cdots \Vert encode(8)$}
-%		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
-%		& \multicolumn{2}{|c|}{\cellcolor{black!30}$T^\prime$}
-%		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}  
-%		\\ 
-%		\hhline{*{1}{~}*{5}{-}}
-%		& \multicolumn{1}{c}{\upbracefill} & \upbracefill& \multicolumn{2}{c}{\upbracefill}&\upbracefill 
-%		\\
-%		& \multicolumn{1}{c}{32 bits }
-%		& 20 bits
-%		& \multicolumn{2}{c}{$LEN$ bits  }
-%		& $w + h - 1 $ bytes 
-%		\\
-%		
-%		%		&&&&&\\
-%		
-%		\hhline{*{1}{~}*{5}{-}}
-%		  
-%		& \multicolumn{1}{|c|}{\cellcolor{black!10}$encode(0) \Vert \cdots \Vert encode(8)$}
-%		& \multicolumn{1}{|c|}{\cellcolor{black!20}$LEN$}
-%		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}
-%		& \multicolumn{1}{|c|}{\cellcolor{black!30}partial $ T^\prime$}  
-%		& \multicolumn{1}{|c|}{\cellcolor{black!40}reference}
-%		\\ 
-%		\hhline{*{1}{~}*{5}{-}}
-%		& \multicolumn{3}{c}{\upbracefill} 
-%		& \multicolumn{2}{c}{\upbracefill}
-%		\\
-%		& \multicolumn{3}{c}{$w + h - 1 $ bytes  }
-%		& \multicolumn{2}{c}{$LEN + 32 + 20 $ bits  }
-%		\\
-%		& \multicolumn{3}{c}{$S^{header\prime}$   }
-%		& \multicolumn{2}{c}{$S^{header\prime\prime}$   }
-%		\\
-%		
-%	\end{tabularx}
-%	
-%	\caption{The header of $S$.}
-%%	\label{fig:header1}
-%\end{figure}
+
 \begin{align}
 	\label{eq:embed1}
 	%	Embed(i, j, S^\ast) & = 
@@ -433,17 +279,6 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 		B &= (b_0, \dots, b_i), b_i \in \{0, 1\}, i \in [0, 7]
 	\end{aligned} \notag
 \end{align}
-%where
-%\begin{eqexpl}
-%%	\eqexplSetIntro{where}
-%	\eqexplSetDelim{=}
-%	\item {$S^\ast$} a sequential subset of $S^{header}$
-%	\item {$MSB^{m}(B)$} $\sum\nolimits_{i = 8 - m}^7 b_i \times 2^i, m \in [1, 8]$
-%	\item {$LSB^{n}(B)$} $B \bmod 2^n, n \in [1, 8]$
-%	\item {$B$} $(b_0, \dots, b_i), b_i \in \{0, 1\}, i \in [0, 7]$
-%\end{eqexpl}
-
-%The embedding process is summarized in Algorithm~\ref{algo:embed1}. 
 
 \begin{algorithm}
 	\caption{Generate an encrypted image.}
@@ -455,7 +290,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 		\Require pre-defined Huffman coding tree $H$.
 		\Ensure label map $T$.
 		\Ensure encrypted image $I_e^\prime$.
-		\Ensure coordinate $(c_x, c_y)$ indicates the location to start information hiding.
+		\Ensure coordinate $(c_x, c_y)$ to start information hiding.
 		
 		%		\State $T \gets [t_{i, j} = -1 \mid i \in [1, h), j \in [1, w)]$. 
 		%		\State Let $T$ be a 2-dimensional vector of size $w \times h$ with initial values set to $-1$. 
@@ -489,7 +324,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 		\State			$(c_x, c_y) \gets (i, j)$
 		\State			End of algorithm.
 		\Else
-		\State			Embed $S^{aux\prime\prime}$ into $x^e_{i, j}$ by Equation~\eqref{eq:embed1}.
+		\State			Embed $S^{aux\prime\prime}$ into $x^e_{i, j}$ using Equation~\eqref{eq:embed1}.
 		\EndIf
 		\EndFor
 	\end{algorithmic}
@@ -497,15 +332,15 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 
 \subsection{The Data-hider}
 
-When given an encrypted image $I_e^\prime$, a coordinate $(c_x, c_y)$ and a label map $T$, 
-the Data-hider proceeds the information hiding process described in Algorithm~\ref{algo:hider1}, 
+When giving an encrypted image $I_e^\prime$, a coordinate $(c_x, c_y)$ and a label map $T$, 
+the \emph{Data-hider} proceeds the information hiding process describing in Algorithm~\ref{algo:hider1}, 
 where the secret information $S$ is encrypted by another secret key $K_S$, 
 and produces a stego image $I_w$ 
 without the knowledge of the cover image $I$.
-The encryption process in Equation~\eqref{eq:enc} provides the compartmentalization between the Content-owner and the Data-hider.
+The encryption process in Equation~\eqref{eq:enc} provides the compartmentalization between the \emph{Content-owner} and the \emph{Data-hider}.
 
 \begin{algorithm}
-	\caption{Embeds secret information.}
+	\caption{Embed secret information.}
 	\label{algo:hider1}
 	
 	\begin{algorithmic}[1]
@@ -520,7 +355,7 @@ The encryption process in Equation~\eqref{eq:enc} provides the compartmentalizat
 		\If			{$S = \emptyset$}
 		\State			End of algorithm.
 		\Else
-		\State			Embed $S$ into $x^e_{i, j}$ by Equation\eqref{eq:embed1}.
+		\State			Embed $S$ into $x^e_{i, j}$ using Equation~\eqref{eq:embed1}.
 		\EndIf
 		\EndFor
 	\end{algorithmic}
@@ -539,21 +374,20 @@ The encryption process in Equation~\eqref{eq:enc} provides the compartmentalizat
 
 \subsection{The Receiver}
 
-%write something here.
 
 %\subsubsection{Retrieve Header}
 \subsubsection{Extract Secret}
 \label{sec:extract}
 
-Let R be a vector containing $(w + h - 1)\times 8$ bits of $REF_w$ of $I_w$, and $r_i$ represents the $i$-th bit of R.
+Let R be a vector containing $(w + h - 1)\times 8$ bits of $REF_w$ of $I_w$, and let $r_i$ represent the $i$-th bit of R.
 \begin{equation}
 	%	R = [r_i \mid r_i \in \{0, 1\} \wedge 0 \leq i < \vert REF \vert \times 8]
 	R = (r_0, \dots, r_{n}), \qquad \text{where } n = ((w + h - 1) \times 8) - 1, r_i \in \{0, 1\}
 \end{equation}
+
 The first 32 bits $(r_0   , \dots, r_{31})$ are the Huffman encoded value of 0 to 8 and 
 the following 20 bits $(r_{32}, \dots, r_{51})$ contain the length $LEN$ of the entire encoded label map $T^\prime$, as shown in Figure~\ref{fig:header1}.
 For the first 32 bits, using the predefined and preshared Huffman tree $H$, they can be divided into 9 unambiguously Huffman codes, each consequently represents the Huffman code of 0 to 8. 
-%With this information, the sorted vector $V$ from Equation~\eqref{eq:v} and the mapping $encode$ and its reverse $decode$ from Equation~\eqref{eq:encode} and~\eqref{eq:decode} can be restored by the receiver.
 With this information, the receiver can restore $V$ and $decode$ as defined in Equation~\eqref{eq:v} and~\eqref{eq:decode}.
 \begin{align}
 	\label{eq:r32}
@@ -564,13 +398,9 @@ With this information, the receiver can restore $V$ and $decode$ as defined in E
 	&LEN  = \sum_{i = 0}^{19} r_{(i + 32)} \times 2^i
 \end{align}
 
-%\begin{equation}
-%	LEN  = \sum_{i = 0}^{19} R^{(i + 32)} \times 2^i
-%\end{equation}
-
-Let $x^w_{i, j} \in I_w$ be represented as a bit sequence $b_7 \Vert \cdots \Vert b_0$ where $b_u$ represents the $u$-th LSB of $x^w_{i, j}$.
+Let $x^w_{i, j} \in I_w$ be represented as a bit sequence $b_7 \Vert \cdots \Vert b_0$ 
+where $b_u$ represents the $u$-th LSB of $x^w_{i, j}$.
 The extraction function is defined as Equation~\eqref{eq:extract}.
-%
 \begin{align}
 	\label{eq:extract}
 	Extrac(i, j)  &= 
@@ -581,26 +411,24 @@ The extraction function is defined as Equation~\eqref{eq:extract}.
 \end{align}
 
 Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $decode$ and Equation~\eqref{eq:extract}.
-%
-The output $(c_x, c_y)$ are provided to Algorithm~\ref{algo:extractref} to further extract reference bytes $R$ of the encrypted image $I_e$.
-%
-Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted using similar method as described in Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, and finally decrypt with $K_S$.
+The output $(c_x, c_y)$ are provided to Algorithm~\ref{algo:extractref} to further extract reference bytes $REF_e$ of the encrypted image $I_e$.
+Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted using similar method as described in Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, and finally be decrypted with $K_S$.
 
 
 
 \begin{algorithm}
-	\caption{Extract auxiliary information}
+	\caption{Extract auxiliary information.}
 	\label{algo:extractT}
 	
 	\begin{algorithmic}[1]
 		\Require stego image $I_w$ of size $w \times h$.
 		\Ensure Huffman coding $decode$.
 		\Ensure label map $T$.
-		\Ensure coordinate $(c_x, c_y)$ indicating where to extract reference bytes.
+		\Ensure coordinate $(c_x, c_y)$ to extract reference bytes $REF_e$.
 		\Ensure length $LEN$ of the encoded label map $T^\prime$.
 		
 		%		\State Let $R$ be a bit secquence containing $REF$ of $I_w$.
-		\State Let $B$ be a vector containing all bits in $REF_w$ of $I_w$.
+		%		\State Let $B$ be a vector containing all bits in $REF_w$ of $I_w$.
 		%		\State $R \gets \{x^w_{i, j} \in I_w \mid i = 0 \vee j = 0\}$.
 		
 		\State Restore 9 Huffman codes from $(r_0 , \dots,  r_{31})$.
@@ -611,11 +439,12 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\State Initialize $T$.
 		\State $(d_x, d_y) \gets (1, 1)$.	\label{algo:extractT:idxProce}
 		\State $buf \gets \emptyset$.
-		\ForAll{$\{r_i \in R \mid i > 52\}$}
+		\ForAll{$\{r_i \in REF_w \mid i > 52\}$}
 		\State	$buf \gets buf \Vert r_i$.
 		\If		{$buf$ is a valid Huffman code}
-		\State 		$t_{(d_x, d_y)} \gets decode(buf)$.		\label{algo:extractT:incdref}
+		\State 		$t_{(d_x, d_y)} \gets decode(buf)$.		\label{algo:extractT:incdref} \Comment{$t_{(d_x, d_y)} \in T$}
 		\State 		$buf \gets \emptyset$.
+		%		\State 		$buf \gets buf remove t_{(d_x, d_y)}$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 		%		\State 		$d_y \gets d_y + 1$.
 		%		\If			{$d_y = w$}
@@ -631,7 +460,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\label{algo:extractT:nextij}
 		
 		\If		{$buf$ is a valid Huffman code}		
-		\State 		$t_{(d_x, d_y)} \gets decode(buf)$. \label{algo:extractT:nextd}
+		\State 		$t_{(d_x, d_y)} \gets decode(buf)$. \label{algo:extractT:nextd} 
 		\State 		$buf \gets \emptyset$.
 		\State		Move $(d_x, d_y)$ to next location of $T$.
 		\If			{$d_x = h$}
@@ -645,21 +474,19 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		%		\EndIf
 		\EndIf
 		\EndFor
-		
-		%		\Comment{put loop invariant here.}
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{Extract reference bytes}
+	\caption{Extract reference bytes.}
 	\label{algo:extractref}
 	
 	\begin{algorithmic}[1]
 		\Require stego image $I_w$ of size $w \times h$.
 		\Require label map $T$.
-		\Require coordinate $(c_x, c_y)$ indicates where to extract reference bytes.
+		\Require coordinate $(c_x, c_y)$ to extract reference bytes $REF_e$.
 		\Ensure reference bytes $REF_e$ of $I_e$.
-		\Ensure coordinate $({c_x}^\prime, {c_y}^\prime)$ indicates where to extract secret information.
+		\Ensure coordinate $({c_x}^\prime, {c_y}^\prime)$ to extract secret information.
 		
 		%		\State Let $REF$ be a byte sequence $[r_i = 0 \mid i \in [0, h + w)]$.
 		\State Initialize $REF_e$.
@@ -680,7 +507,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 	\end{algorithmic}
 \end{algorithm}
 
-%\subsubsection{Extract Secret}
+
 
 
 
@@ -689,35 +516,31 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 \subsubsection{Decrypt and Restore Cover Image}
 \label{sec:restore}
 
-After running Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, the Receiver possesses the stego image $I_w$, the label map $T$ and reference bytes $REF_e$ of $I_e$.
-%
-Define $I_e^\prime$ as the result of $I_w$ replacing the reference bytes with $R$.
+After running Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, the \emph{Receiver} possesses the stego image $I_w$, the label map $T$ and reference bytes $REF_e$ of $I_e$.
+Define $I_e^\prime$ as the result of $I_w$ replacing the reference bytes $REF_w$ with $REF_e$.
+Each $x_{i, j}^{e\prime} \in I_e^\prime$ is defined as Equation~\eqref{eq:xeprime}.
+\begin{align}
+	\label{eq:xeprime}
+	x_{i, j}^{e\prime} = &
+	\begin{cases}
+		r_{j}     & \text{ if } i = 0 \\
+		r_{w + i}  & \text{ if } j = 0\\
+		x_{i, j}     & \text{ otherwise }
+	\end{cases} \\
+	&\text{where } r_{j}, r_{w + i} \in REF_e \text{ and }  x_{i, j} \in I_w. \notag
+\end{align}
+
 Then $I_e^\prime$ is decrypted by key stream $K_I$ the same way as Equation~\eqref{eq:enc} and becomes $I^\prime$.
-The cover image $I$ is restored after Equation~\eqref{eq:restore} is applied to all $x^\prime_{i, j} \in I^\prime$.
-% 
+The cover image $I$ is restored after Equation~\eqref{eq:restore} being applied to all $x^\prime_{i, j} \in I^\prime$.
 It must be emphasized that when applying Equation~\eqref{eq:restore} to $x^\prime_{i, j}$, the pixels $x_{i - i, j - 1}, x_{i - 1, j}$ and $x_{i, j -1}$ have already been restored from the reference bytes of $REF_e$ or the former application of Equation~\eqref{eq:restore}, so that the $pv_{i, j}$ are identical as the embedding process.
 
 
-An example is illustrated in Figure~\ref{fig:example}.
-\begin{align}
-	I_e^\prime &= 
-	\left \{  x_{i, j}^{e\prime} \left |
-	\begin{aligned}
-		&x_{i, j}^{e\prime} = r_{j}     && \text{ if } i = 0 \\
-		&x_{i, j}^{e\prime} = r_{w + i}  && \text{ if } j = 0\\
-		&x_{i, j}^{e\prime} = x_{i, j}     && \text{ otherwise }
-	\end{aligned}
-	\right .
-	\right \} 
-	%	 \text{where } r_{j}, r_{w + i} \in R, \text{ and } x_{i, j} \in I_w \notag
-	%	\intertext{where $r_{j}, r_{w + i} \in R$, and $ x_{i, j} \in I_w$}  \notag
-\end{align}
 
-where $r_{j}, r_{w + i} \in REF_e$, and $ x_{i, j} \in I_w$.
 
 \begin{equation}
 	\label{eq:restore}
-	Restore(i, j) = 
+	%	Restore(i, j) = 
+	x_{i, j} =
 	\begin{cases}
 		pv_{i, j}                          & \text{if } t_{i, j} = 8 \\
 		\\
@@ -731,7 +554,7 @@ where $r_{j}, r_{w + i} \in REF_e$, and $ x_{i, j} \in I_w$.
 \end{equation}
 
 
-
+An example of preprocessing, encryption, embedding, extraction, decryption, and restoration is illustrated in Figure~\ref{fig:example}.
 
 
 

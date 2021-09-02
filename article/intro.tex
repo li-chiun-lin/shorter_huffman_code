@@ -1,23 +1,22 @@
 \section{Introduction}
 \label{sec:intro}
 
-%The development of data hiding provides a way to transport secret messages without drawing attention 
-
-Data hiding is a technique used to prevent the conveyor from knowing the existence of secret message while transporting it from the sender to the receiver. 
-While the cover image being used to embed secret message might inevitably lose some part of its pixels, a subset of the study of data hiding is dedicated to meet the requirement that the cover image must be losslessly recovered after extracting the secret message, namely \emph{reversible data hiding}. 
-Furthermore, a subset within it even started to study the benefits of hiding secret message into encrypted images, i.e., \emph{reversible data hiding in encrypted images}~\cite{Zhang2011,Liu2020,Jain2021,Di2018}.
+Data hiding is a technique used to prevent the conveyor from knowing the existence of a secret message while transporting it from the sender to the receiver. 
+While the cover image is used to embed secret message might inevitably lose some part of its pixels, a subset of the study of data hiding is dedicated to meet the requirement that the cover image must be losslessly recovered after extracting the secret message, namely \emph{reversible data hiding}. 
+Furthermore, a subset within it even started to study the benefits of hiding secret messages into encrypted images, i.e., \emph{reversible data hiding in encrypted images}~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
 The schemata of reversible data hiding in encrypted images are usually categorized into the following types. 
 
-In \emph{Reserving Room before Encryption}~\cite{Ma2013,Agrawal2017,Liao2015}, as its name implies, a preprocess procedure is applied to a cover image before a encryption procedure is applied to it. 
-This type of schemata normally produce a \emph{label map} containing critical information for a data hiding procedure. 
+In \emph{Reserving Room before Encryption}~\cite{Ma2013, Agrawal2017, Liao2015}, as its name implies, a preprocessing procedure is applied to a cover image before an encryption procedure is applied to it. 
+This type of schemata normally produces a \emph{label map} containing critical information for a data hiding procedure. 
 This \emph{label map} is then considered as \emph{auxiliary information} and embedded into the front part of the cover image.
 
-In \emph{Vacating Room after Encryption}~\cite{Puech2008,Wu2019,Li2018}, on the contrary, a encryption procedure is applied to a cover image before a postprocess procedure can vacate some part of the encrypted cover image for a data hiding procedure.
+In \emph{Vacating Room after Encryption}~\cite{Puech2008, Wu2019, Li2018}, on the contrary, an encryption procedure is applied to a cover image before a post-process procedure can vacate some part of the encrypted cover image for a data hiding procedure.
 
-Though the schemata of \emph{Vacating Room after Encryption} are more concise since the postprocess and the data hiding process can be considered into one process, 
-those schemata of \emph{Reserving Room before Encryption} provides more capacity because they can exploit the similarity of adjacent pixels while the input of the postproess procedure of \emph{Vacating Room after Encryption} are an encrypted cover image, which is equivalent to random bit streams with normal distribution.
+Though the schemata of \emph{Vacating Room after Encryption} are more concise since the post-process and the data hiding process can be considered as one process, 
+those schemata of \emph{Reserving Room before Encryption} provides more capacity because they can exploit the similarity of adjacent pixels while the input of the post process procedure of \emph{Vacating Room after Encryption} is an encrypted cover image, which is equivalent to random bitstreams with bits in the normal distribution.
 
-The schemata in the category of \emph{Vacating Room by Encryption}\cite{Liu2018, Yu2020} are more tricky since they adopt some properties of certain cryptography algorithms to squeeze redundant space for data hiding while applying the encryption procedure.
+The schemata in the category of \emph{Vacating Room by Encryption}\cite{Liu2018, Yu2020} are more tricky since they adopt properties of certain cryptography algorithms to squeeze redundant space for data hiding while applying the encryption procedure, 
+but then they inevitably sacrifice the possibility to fully recover the cover image.
 
 
 
@@ -25,15 +24,16 @@ The schemata in the category of \emph{Vacating Room by Encryption}\cite{Liu2018,
 
 %\subsection{three roles}
 
-When discussing about reversible data hiding in encrypted images, a use case that comprises of three roles, namely the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver} is commonly adopted~\cite{Qin2015}.
+When discussing reversible data hiding in encrypted images, a use case that comprises of three roles, namely the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver} is commonly adopted~\cite{Qin2015}.
 The \emph{Content-owner}, as its name suggested, is responsible for providing cover images, commonly analogies to a cloud service client user.
 The responsibility of the \emph{Data-hider} is to embed some secret message into the cover images that the \emph{Content-owner} provided, e.g., a cloud service provider might need to embed authentication data or annotations into the images owned by its clients. 
-The \emph{Receiver} could be the same \emph{Data-hider} or any other entities that requests the cover images and the embedded information.
-There are two extra requirements in this use case than the fundamental goal to hide the secret message. 
+The \emph{Receiver} could be the same \emph{Data-hider} or any other entities that request the cover images and the embedded information.
+There are two extra requirements in this use case besides the fundamental goal of hiding the secret message. 
 \begin{enumerate}
 	\item The \emph{Receiver} must receive the identical cover image as the \emph{Content-owner} provided.
 	\item The \emph{Data-hider} must not know the content of the cover image.
 \end{enumerate}
+
 Researches in the field of reversible data hiding in encrypted images are hence raised to fulfill these two requirements.
 
 
@@ -43,9 +43,8 @@ Researches in the field of reversible data hiding in encrypted images are hence 
 %\subsection{Yin's method and we proposed}
 
 Yin et al.\ proposed a reversible data hiding method in encrypted images using adaptive multi-MSB prediction and Huffman coding~\cite{Yin2020}.
-Their experimental results demonstrated the superior of their method over the methods of~\cite{Puteaux2018,Chen2019,Puyang2019,Puteaux2019,Yi2019}.
+Their experimental results demonstrated the superiority of their method over the methods of~\cite{Puteaux2018, Chen2019, Puyang2019, Puteaux2019, Yi2019}.
 In this paper
-%, base on the method of Yin et al., 
 we propose three improvements that increase the embedding capacity and the stability of their method.
 
 %\subsection{organization}
