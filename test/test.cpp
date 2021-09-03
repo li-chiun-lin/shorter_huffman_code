@@ -11,16 +11,16 @@ using namespace std::filesystem;
 
 string dummy = "../out/null.txt";
 
-void testlib()
-{
-	string path_cover_img = "../image/tiff/lena.tiff.raw";
-	string path_report_msb = "../out/lena.tiff.raw_report_msb.txt";
-	string path_report_sht = "../out/lena.tiff.raw_report_shr.txt";;
-
-	msb_huffman(path_cover_img, path_report_msb);
-
-	shr_huffman(path_cover_img, path_report_sht);
-}
+//void testlib()
+//{
+//	string path_cover_img = "../image/tiff/lena.tiff.raw";
+//	string path_report_msb = "../out/lena.tiff.raw_report_msb.txt";
+//	string path_report_sht = "../out/lena.tiff.raw_report_shr.txt";;
+//
+//	msb_huffman(path_cover_img, path_report_msb);
+//
+//	shr_huffman(path_cover_img, path_report_sht);
+//}
 
 void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = false, bool with_avg_code_length = false)
 {
@@ -68,7 +68,7 @@ void genCmpTex(bool with_baboon = false, bool with_man = false, bool with_bpp = 
 
 		fprintf(fptr, "%d   & %d   & $ %+d $\t& ", ret_shr.size_capacity_pure, ret_msb.size_capacity_pure, delta.size_capacity_pure);
 		fprintf(fptr, "%d   & %d   & $ %+d $\t ", ret_shr.len_h_encoded_labelmap, ret_msb.len_h_encoded_labelmap, delta.len_h_encoded_labelmap);
-		
+
 		if (with_bpp)
 			fprintf(fptr, "& %.3f & %.3f & $ %+.3f $\t ", ret_shr.bbp, ret_msb.bbp, delta.bbp);
 
@@ -93,8 +93,8 @@ void genCmpTexSample(bool with_bpp = false, bool with_avg_code_length = false)
 	if (ren || !fptr)
 		return;
 
-	vector<string> fn = { 
-		"Airplane", "Baboon", "Baboon-Yin", "Bridge", "Couple", "Jetplane", "Lake", 
+	vector<string> fn = {
+		"Airplane", "Baboon", "Baboon-Yin", "Bridge", "Couple", "Jetplane", "Lake",
 		"Lena", "Lena-Yin", "Milkdrop", "Peppers", "Tiffany", "Lax" , "Man" };
 
 	for (string f : fn)
@@ -167,7 +167,7 @@ struct ResultDelta writeTableSingle(string tex_fn, struct Result res)
 	int sumc = 0;
 	int suml = 0;
 	int sumd = 0;
-	
+
 
 	for (int i = 0; i < 9; ++i)
 	{
@@ -179,7 +179,7 @@ struct ResultDelta writeTableSingle(string tex_fn, struct Result res)
 		suml += res.len_code[i] * res.freq[i];
 		sumd += dif * res.freq[i];
 
-		fprintf(fptr, "%d & %d  & %s & %d & %d & $%+d$ & $%+d$ \\\\ \n", 
+		fprintf(fptr, "%d & %d  & %s & %d & %d & $%+d$ & $%+d$ \\\\ \n",
 			i, res.freq[i], res.code_str[i], cap, res.len_code[i], dif, dif * res.freq[i]);
 	}
 
@@ -210,7 +210,7 @@ void genLenaTex()
 
 	struct ResultDelta d_shr = writeTableSingle("../out/single-res-table-shr-lena.tex", ret_shr);
 	struct ResultDelta d_msb = writeTableSingle("../out/single-res-table-msb-lena.tex", ret_msb);
-	
+
 
 	FILE* fptr = NULL;
 
@@ -219,7 +219,7 @@ void genLenaTex()
 	if (ren || !fptr)
 		return;
 
-	fprintf(fptr, "$\\Delta$ &  $%+d$ & &   $%+d$ & &   &  $%+d$  \\\\ \n", 
+	fprintf(fptr, "$\\Delta$ &  $%+d$ & &   $%+d$ & &   &  $%+d$  \\\\ \n",
 		d_shr.sumf - d_msb.sumf, d_shr.sumc - d_msb.sumc, d_shr.sumd - d_msb.sumd);
 
 	fclose(fptr);
@@ -281,147 +281,147 @@ void genAirplaneTex()
 	fclose(fptr);
 }
 
-void debug()
-{
-	string f = "Baboon";
-	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
-}
+//void debug()
+//{
+//	string f = "Baboon";
+//	shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+//}
 
-void man()
-{
-	string f = "Man";
-	msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
-	//shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
-}
+//void man()
+//{
+//	string f = "Man";
+//	msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+//	//shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+//}
 
-void log_2()
-{
-	for (int i = 0; i <= 256; ++i)
-		cout << i << " " << floor(log2(i)) << ", ";
-}
+//void log_2()
+//{
+//	for (int i = 0; i <= 256; ++i)
+//		cout << i << " " << floor(log2(i)) << ", ";
+//}
 
-void testlen()
-{
-	int len = 1023 * 1023 * 5;
-	cout << log2(len) << endl;
+//void testlen()
+//{
+//	int len = 1023 * 1023 * 5;
+//	cout << log2(len) << endl;
+//
+//	len = 511 * 511 * 5;
+//	cout << log2(len) << endl;
+//}
 
-	len = 511 * 511 * 5;
-	cout << log2(len) << endl;
-}
+//void testres()
+//{
+//	string f = "Lena";
+//	struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
+//	struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+//
+//	printResult(ret_msb);
+//	printResult(ret_shr);
+//}
 
-void testres()
-{
-	string f = "Lena";
-	struct Result ret_msb = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb.txt");
-	struct Result ret_shr = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr.txt");
+//struct tiffInfo testreadtiff(string file, vector<unsigned char> &buf)
+//{
+//	struct tiffInfo info;
+//
+//	TIFF* tif = TIFFOpen(file.c_str(), "r");
+//	if (tif == NULL)
+//		return info;
+//
+//	int width, height;
+//	int spp = 0;
+//	tmsize_t sls = 0;
+//	tdata_t buf_tif = 0;
+//
+//	TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &spp);
+//
+//	info.sampleperpixel = spp;
+//
+//	if (spp != 1)
+//		return info;
+//
+//	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &width);
+//	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
+//
+//	info.width = width;
+//	info.height = height;
+//
+//	sls = TIFFScanlineSize(tif);
+//	buf_tif = _TIFFmalloc(sls);
+//
+//	for (int row = 0; row < height; row++)
+//	{
+//		TIFFReadScanline(tif, buf_tif, row);
+//		unsigned char *data = (unsigned char*)buf_tif;
+//		
+//		buf.insert(buf.end(), data, data + width);
+//	}
+//
+//	printf("%d %d %d %zu\n", width, height, spp, sls);
+//
+//
+//	_TIFFfree(buf_tif);
+//	TIFFClose(tif);
+//
+//	return info;
+//}
 
-	printResult(ret_msb);
-	printResult(ret_shr);
-}
+//void testlist()
+//{
+//	string path = "C:/Users/ttn/Desktop/xxx/USC-SIPI/misc";
+//	for (const auto& entry : directory_iterator(path))
+//	{
+//		cout << entry.path() << endl;
+//
+//		vector<unsigned char> buf;
+//		struct tiffInfo ret = testreadtiff(entry.path().string(), buf);
+//
+//		if (ret.sampleperpixel != 1)
+//			continue;
+//
+//		break;
+//	}
+//}
 
-struct tiffInfo testreadtiff(string file, vector<unsigned char> &buf)
-{
-	struct tiffInfo info;
+//void testreadtifflena()
+//{
+//	string file = "../image/tiff/Lena.tiff";
+//
+//	vector<unsigned char> buf;
+//	struct tiffInfo ret = testreadtiff(file, buf);
+//
+//	cout << buf.size() << endl;
+//
+//	FILE* fptr = NULL;
+//	errno_t err = fopen_s(&fptr, "../out/testreadtiff.hd.txt", "w");
+//
+//	if (err || fptr == NULL)
+//		return;
+//
+//	cout << buf.size() << endl;
+//
+//	for (size_t i = 0; i < buf.size(); ++i)
+//	{
+//		fprintf(fptr, "%02X%s", buf[i], i % ret.width == ret.width - 1 ? "\n" : " ");
+//	}
+//
+//	fclose(fptr);
+//}
 
-	TIFF* tif = TIFFOpen(file.c_str(), "r");
-	if (tif == NULL)
-		return info;
-
-	int width, height;
-	int spp = 0;
-	tmsize_t sls = 0;
-	tdata_t buf_tif = 0;
-
-	TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &spp);
-
-	info.sampleperpixel = spp;
-
-	if (spp != 1)
-		return info;
-
-	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &width);
-	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
-
-	info.width = width;
-	info.height = height;
-
-	sls = TIFFScanlineSize(tif);
-	buf_tif = _TIFFmalloc(sls);
-
-	for (int row = 0; row < height; row++)
-	{
-		TIFFReadScanline(tif, buf_tif, row);
-		unsigned char *data = (unsigned char*)buf_tif;
-		
-		buf.insert(buf.end(), data, data + width);
-	}
-
-	printf("%d %d %d %zu\n", width, height, spp, sls);
-
-
-	_TIFFfree(buf_tif);
-	TIFFClose(tif);
-
-	return info;
-}
-
-void testlist()
-{
-	string path = "C:/Users/ttn/Desktop/xxx/USC-SIPI/misc";
-	for (const auto& entry : directory_iterator(path))
-	{
-		cout << entry.path() << endl;
-
-		vector<unsigned char> buf;
-		struct tiffInfo ret = testreadtiff(entry.path().string(), buf);
-
-		if (ret.sampleperpixel != 1)
-			continue;
-
-		break;
-	}
-}
-
-void testreadtifflena()
-{
-	string file = "../image/tiff/Lena.tiff";
-
-	vector<unsigned char> buf;
-	struct tiffInfo ret = testreadtiff(file, buf);
-
-	cout << buf.size() << endl;
-
-	FILE* fptr = NULL;
-	errno_t err = fopen_s(&fptr, "../out/testreadtiff.hd.txt", "w");
-
-	if (err || fptr == NULL)
-		return;
-
-	cout << buf.size() << endl;
-
-	for (size_t i = 0; i < buf.size(); ++i)
-	{
-		fprintf(fptr, "%02X%s", buf[i], i % ret.width == ret.width - 1 ? "\n" : " ");
-	}
-
-	fclose(fptr);
-}
-
-void testrawtiff()
-{
-	string f = "Lena";
-	struct Result ret_msb_raw = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb_raw.txt");
-	printResult(ret_msb_raw);
-
-	struct Result ret_msb_tiff = msb_huffman("../image/tiff/" + f + ".tiff", "../out/" + f + ".tiff_msb_tiff.txt", true);
-	printResult(ret_msb_tiff);
-
-	struct Result ret_shr_raw = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr_raw.txt");
-	printResult(ret_shr_raw);
-
-	struct Result ret_shr_tiff = shr_huffman("../image/tiff/" + f + ".tiff", "../out/" + f + ".tiff_shr_tiff.txt", true);
-	printResult(ret_shr_tiff);
-}
+//void testrawtiff()
+//{
+//	string f = "Lena";
+//	struct Result ret_msb_raw = msb_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_msb_raw.txt");
+//	printResult(ret_msb_raw);
+//
+//	struct Result ret_msb_tiff = msb_huffman("../image/tiff/" + f + ".tiff", "../out/" + f + ".tiff_msb_tiff.txt", true);
+//	printResult(ret_msb_tiff);
+//
+//	struct Result ret_shr_raw = shr_huffman("../image/tiff/" + f + ".raw", "../out/" + f + ".tiff_shr_raw.txt");
+//	printResult(ret_shr_raw);
+//
+//	struct Result ret_shr_tiff = shr_huffman("../image/tiff/" + f + ".tiff", "../out/" + f + ".tiff_shr_tiff.txt", true);
+//	printResult(ret_shr_tiff);
+//}
 
 
 //string bigreport = "../out/bigreport-usc.txt";
@@ -440,18 +440,18 @@ bool proceed2Res(path file)
 	{
 		struct Result delta = ret_shr_tiff - ret_msb_tiff;
 
-		fprintf(fptr, "%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %.3f, %.3f, %.3f\n", 
-			file.string().c_str(), file.filename().string().c_str(), 
-			ret_msb_tiff.width_image, ret_msb_tiff.height_image, 
-			ret_shr_tiff.header_len, ret_msb_tiff.header_len, 
-			delta.header_len, 
-			ret_shr_tiff.len_ref, ret_msb_tiff.len_ref, 
+		fprintf(fptr, "%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %.3f, %.3f, %.3f\n",
+			file.string().c_str(), file.filename().string().c_str(),
+			ret_msb_tiff.width_image, ret_msb_tiff.height_image,
+			ret_shr_tiff.header_len, ret_msb_tiff.header_len,
+			delta.header_len,
+			ret_shr_tiff.len_ref, ret_msb_tiff.len_ref,
 			delta.len_ref,
 			ret_shr_tiff.size_capacity_pure, ret_msb_tiff.size_capacity_pure,
 			delta.size_capacity_pure,
-			ret_shr_tiff.len_h_encoded_labelmap, ret_msb_tiff.len_h_encoded_labelmap, 
-			delta.len_h_encoded_labelmap, 
-			ret_shr_tiff.bbp, ret_msb_tiff.bbp, 
+			ret_shr_tiff.len_h_encoded_labelmap, ret_msb_tiff.len_h_encoded_labelmap,
+			delta.len_h_encoded_labelmap,
+			ret_shr_tiff.bbp, ret_msb_tiff.bbp,
 			delta.bbp);
 
 		//printResult(ret_msb_tiff);
@@ -524,12 +524,12 @@ void bigdata(string dir, string report)
 	if (err || !fptr)
 		return;
 
-	fprintf(fptr, "%s, %s, %s, %s, %s, %s\n", 
-		"path, file_name, width, height", 
+	fprintf(fptr, "%s, %s, %s, %s, %s, %s\n",
+		"path, file_name, width, height",
 		"header1, header2, delta",
 		"ref1, ref2, delta",
-		"capacity1, capacity2, delta", 
-		"lm1, lm2, delta", 
+		"capacity1, capacity2, delta",
+		"lm1, lm2, delta",
 		"bbp1, bbp2, delta");
 
 	listdir(dir, &proceed2Res);
@@ -558,7 +558,7 @@ bool tryRef(path file)
 	}
 	else
 	{
-		
+
 	}
 
 	return true;
@@ -581,7 +581,7 @@ void testRef()
 	fclose(fptr);
 }
 
-void getDataSetListRec(path p, vector<path> &ret)
+void getDataSetListRec(path p, vector<path>& ret)
 {
 	if (!filesystem::exists(p))
 	{
@@ -612,66 +612,66 @@ vector<path> getDataSetList()
 	return ret;
 }
 
-void testDataSetRefLimit()
-{
-	vector<path> lst = getDataSetList();
+//void testDataSetRefLimit()
+//{
+//	vector<path> lst = getDataSetList();
+//
+//	for (size_t i = 0; i < lst.size(); ++i)
+//	{
+//		string report = "../out/tmp/" + lst[i].string();
+//
+//		//cout << i << " " << lst[i] << endl;
+//		struct Result ret_shr_tiff = shr_huffman(lst[i].string(), report + ".shr.txt", true);
+//		struct Result ret_msb_tiff = msb_huffman(lst[i].string(), report + ".msb.txt", true);
+//
+//		//cout << lst[i] << endl;
+//		cout << i << ", ";
+//
+//
+//		if (ret_shr_tiff.loopInvariantViolation)
+//		{
+//			cout << i << " shr " << lst[i] << endl;
+//		}
+//
+//		if (ret_msb_tiff.loopInvariantViolation)
+//		{
+//			cout << i << " msb " << lst[i] << endl;
+//		}
+//	}
+//}
 
-	for (size_t i = 0; i < lst.size(); ++i)
-	{
-		string report = "../out/tmp/" + lst[i].string();
-
-		//cout << i << " " << lst[i] << endl;
-		struct Result ret_shr_tiff = shr_huffman(lst[i].string(), report + ".shr.txt", true);
-		struct Result ret_msb_tiff = msb_huffman(lst[i].string(), report + ".msb.txt", true);
-		
-		//cout << lst[i] << endl;
-		cout << i << ", ";
-
-
-		if (ret_shr_tiff.loopInvariantViolation)
-		{
-			cout << i << " shr " << lst[i] << endl;
-		}
-		
-		if (ret_msb_tiff.loopInvariantViolation)
-		{
-			cout << i << " msb " << lst[i] << endl;
-		}
-	}
-}
-
-void testsingle()
-{
-	//string f = "../dataset/BOSSbase_101_tif/8223.tif";
-	//string f = "../dataset/BOWS2OrigEp3_tif/3386.tif";
-	//string f = "../dataset/BOSSbase/339.tif";
-	//string f = "../dataset/BOSSbase/8880.tif";
-	//string f = "../dataset/UCID/ucid00067.tif";
-	//string f = "../dataset/UCID/ucid00770.tif";
-	string f = "../dataset/UCID/ucid00851.tif";
-
-	string report = "../out/tmp/" + f;
-
-	cout << report + ".msb.txt" << endl;
-
-
-	struct Result ret_msb = msb_huffman(f, report + ".msb.txt", true);
-	printResult(ret_msb);
-
-	cout << ret_msb.isValid << endl;
-
-	struct Result ret_shr = shr_huffman(f, report + ".shr.txt", true);
-	printResult(ret_shr);
-
-	cout << ret_shr.isValid << endl;
-}
+//void testsingle()
+//{
+//	//string f = "../dataset/BOSSbase_101_tif/8223.tif";
+//	//string f = "../dataset/BOWS2OrigEp3_tif/3386.tif";
+//	//string f = "../dataset/BOSSbase/339.tif";
+//	//string f = "../dataset/BOSSbase/8880.tif";
+//	//string f = "../dataset/UCID/ucid00067.tif";
+//	//string f = "../dataset/UCID/ucid00770.tif";
+//	string f = "../dataset/UCID/ucid00851.tif";
+//
+//	string report = "../out/tmp/" + f;
+//
+//	cout << report + ".msb.txt" << endl;
+//
+//
+//	struct Result ret_msb = msb_huffman(f, report + ".msb.txt", true);
+//	printResult(ret_msb);
+//
+//	cout << ret_msb.isValid << endl;
+//
+//	struct Result ret_shr = shr_huffman(f, report + ".shr.txt", true);
+//	printResult(ret_shr);
+//
+//	cout << ret_shr.isValid << endl;
+//}
 
 
 void genDataTex()
 {
 	genCmpTex(true, true);
 	genCmpTexSample();
-	
+
 	genSingleTex("Lena");
 	genSingleTex("Airplane");
 	genSingleTex("Man");
@@ -751,124 +751,124 @@ void printvec(vector<int>& vec)
 	cout << endl;
 }
 
-void testhtBoundary_shr()
-{
-	vector<int> cnt_t1 = { 1, 1, 2, 4, 8, 16, 32, 64, 128 };
-	cout << "fibonacci" << endl;
-	printvec(cnt_t1);
-	htBoundary_shr(cnt_t1);
+//void testhtBoundary_shr()
+//{
+//	vector<int> cnt_t1 = { 1, 1, 2, 4, 8, 16, 32, 64, 128 };
+//	cout << "fibonacci" << endl;
+//	printvec(cnt_t1);
+//	htBoundary_shr(cnt_t1);
+//
+//
+//	vector<int> cnt_t2 = { 1, 1, 1, 1, 1, 1, 1, 1, 128 };
+//	cout << endl << "very unbalanced" << endl;
+//	printvec(cnt_t2);
+//	htBoundary_shr(cnt_t2);
+//
+//	vector<int> cnt_t3 = { 0, 1, 1, 2, 4, 8, 16, 32, 64 };
+//	cout << endl << "good fibonacci" << endl;
+//	printvec(cnt_t3);
+//	htBoundary_shr(cnt_t3);
+//
+//	// airplane
+//	vector<int> cnt_t4 = { 1793, 13899 , 4896 , 24131 , 27749 , 47275 , 36632  , 1827 , 103916 };
+//	cout << endl << "airplane" << endl;
+//	printvec(cnt_t4);
+//	htBoundary_shr(cnt_t4);
+//
+//	vector<int> cnt_t6 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+//	cout << endl << "sequencial" << endl;
+//	printvec(cnt_t6);
+//	htBoundary_shr(cnt_t6);
+//
+//	vector<int> cnt_t7 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+//	cout << endl << "balanced" << endl;
+//	printvec(cnt_t7);
+//	htBoundary_shr(cnt_t7);
+//
+//	vector<int> cnt_t8 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+//	int cnt8 = 9;
+//	for (size_t i = 0; i < cnt_t8.size(); ++i)
+//		cnt_t8[i] = cnt_t8[i] * (511 * 511) / cnt8;
+//	cout << endl << "balanced many" << endl;
+//	printvec(cnt_t8);
+//	htBoundary_shr(cnt_t8);
+//}
+
+//void testhtBoundary_msb()
+//{
+//	vector<int> cnt_t1 = { 1, 1, 2, 4, 8, 16, 32, 64, 128 };
+//	cout << "fibonacci" << endl;
+//	printvec(cnt_t1);
+//	htBoundary_msb(cnt_t1);
+//
+//
+//	vector<int> cnt_t2 = { 1, 1, 1, 1, 1, 1, 1, 1, 128 };
+//	cout << endl << "very unbalanced" << endl;
+//	printvec(cnt_t2);
+//	htBoundary_msb(cnt_t2);
+//
+//	vector<int> cnt_t3 = { 0, 1, 1, 2, 4, 8, 16, 32, 64 };
+//	cout << endl << "good fibonacci" << endl;
+//	printvec(cnt_t3);
+//	htBoundary_msb(cnt_t3);
+//
+//	// airplane
+//	vector<int> cnt_t4 = { 1793, 13899 , 4896 , 24131 , 27749 , 47275 , 36632  , 1827 , 103916 };
+//	cout << endl << "airplane" << endl;
+//	printvec(cnt_t4);
+//	htBoundary_msb(cnt_t4);
+//
+//	vector<int> cnt_t6 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+//	cout << endl << "sequencial" << endl;
+//	printvec(cnt_t6);
+//	htBoundary_msb(cnt_t6);
+//
+//	vector<int> cnt_t7 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+//	cout << endl << "balanced" << endl;
+//	printvec(cnt_t7);
+//	htBoundary_msb(cnt_t7);
+//
+//	vector<int> cnt_t8 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+//	int cnt8 = 9;
+//	for (size_t i = 0; i < cnt_t8.size(); ++i)
+//		cnt_t8[i] = cnt_t8[i] * (511 * 511) / cnt8;
+//	cout << endl << "balanced many" << endl;
+//	printvec(cnt_t8);
+//	htBoundary_msb(cnt_t8);
+//}
+//
+//void printlog2()
+//{
+//	cout << "Airplane " << log2(682803) << endl;
+//	cout << "Baboon " << log2(794941) << endl;
+//	cout << "Jetplane " << log2(793441) << endl;
+//	cout << "Lena " << log2(793304) << endl;
+//	cout << "Tiffany " << log2(786527) << endl;
+//	cout << "Man " << log2(3121506) << endl;
+//
+//	cout << "511 " << log2(511 * 511) << endl;
+//	cout << "511 3 " << log2(511 * 511 * 3.555) << endl;
+//
+//
+//	cout << "for man" << endl;
+//	cout << "1023 3.5 " << log2(1023 * 1023 * 3.555) << endl;
+//}
 
 
-	vector<int> cnt_t2 = { 1, 1, 1, 1, 1, 1, 1, 1, 128 };
-	cout << endl << "very unbalanced" << endl;
-	printvec(cnt_t2);
-	htBoundary_shr(cnt_t2);
-
-	vector<int> cnt_t3 = { 0, 1, 1, 2, 4, 8, 16, 32, 64 };
-	cout << endl << "good fibonacci" << endl;
-	printvec(cnt_t3);
-	htBoundary_shr(cnt_t3);
-
-	// airplane
-	vector<int> cnt_t4 = { 1793, 13899 , 4896 , 24131 , 27749 , 47275 , 36632  , 1827 , 103916 };
-	cout << endl << "airplane" << endl;
-	printvec(cnt_t4);
-	htBoundary_shr(cnt_t4);
-
-	vector<int> cnt_t6 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-	cout << endl << "sequencial" << endl;
-	printvec(cnt_t6);
-	htBoundary_shr(cnt_t6);
-
-	vector<int> cnt_t7 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-	cout << endl << "balanced" << endl;
-	printvec(cnt_t7);
-	htBoundary_shr(cnt_t7);
-
-	vector<int> cnt_t8 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-	int cnt8 = 9;
-	for (size_t i = 0; i < cnt_t8.size(); ++i)
-		cnt_t8[i] = cnt_t8[i] * (511 * 511) / cnt8;
-	cout << endl << "balanced many" << endl;
-	printvec(cnt_t8);
-	htBoundary_shr(cnt_t8);
-}
-
-void testhtBoundary_msb()
-{
-	vector<int> cnt_t1 = { 1, 1, 2, 4, 8, 16, 32, 64, 128 };
-	cout << "fibonacci" << endl;
-	printvec(cnt_t1);
-	htBoundary_msb(cnt_t1);
-
-
-	vector<int> cnt_t2 = { 1, 1, 1, 1, 1, 1, 1, 1, 128 };
-	cout << endl << "very unbalanced" << endl;
-	printvec(cnt_t2);
-	htBoundary_msb(cnt_t2);
-
-	vector<int> cnt_t3 = { 0, 1, 1, 2, 4, 8, 16, 32, 64 };
-	cout << endl << "good fibonacci" << endl;
-	printvec(cnt_t3);
-	htBoundary_msb(cnt_t3);
-
-	// airplane
-	vector<int> cnt_t4 = { 1793, 13899 , 4896 , 24131 , 27749 , 47275 , 36632  , 1827 , 103916 };
-	cout << endl << "airplane" << endl;
-	printvec(cnt_t4);
-	htBoundary_msb(cnt_t4);
-
-	vector<int> cnt_t6 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-	cout << endl << "sequencial" << endl;
-	printvec(cnt_t6);
-	htBoundary_msb(cnt_t6);
-
-	vector<int> cnt_t7 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-	cout << endl << "balanced" << endl;
-	printvec(cnt_t7);
-	htBoundary_msb(cnt_t7);
-
-	vector<int> cnt_t8 = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-	int cnt8 = 9;
-	for (size_t i = 0; i < cnt_t8.size(); ++i)
-		cnt_t8[i] = cnt_t8[i] * (511 * 511) / cnt8;
-	cout << endl << "balanced many" << endl;
-	printvec(cnt_t8);
-	htBoundary_msb(cnt_t8);
-}
-
-void printlog2()
-{
-	cout << "Airplane " <<  log2(682803) << endl;
-	cout << "Baboon " << log2(794941) << endl;
-	cout << "Jetplane " << log2(793441) << endl;
-	cout << "Lena " << log2(793304) << endl;
-	cout << "Tiffany " << log2(786527) << endl;
-	cout << "Man " << log2(3121506) << endl;
-
-	cout << "511 " << log2(511*511) << endl;
-	cout << "511 3 " << log2(511 * 511 * 3.555) << endl;
-
-
-	cout << "for man" << endl;
-	cout << "1023 3.5 " << log2(1023 * 1023 * 3.555) << endl;
-}
-
-
-void testLenaLena()
-{
-	string f = "Lena";
-	struct Result ret_raw = msb_huffman("../image/tiff/" + f + ".raw", dummy);
-	struct Result ret_tif = msb_huffman("../image/tiff/" + f + ".tiff", dummy, true);
-
-	struct Result ret_mis = msb_huffman("../dataset/MISC/" + f + ".tiff", dummy, true);
-	struct Result ret_sam = msb_huffman("../dataset/SAMPLE/" + f + ".tiff", dummy, true);
-
-	printResult(ret_raw);
-	printResult(ret_tif);
-	printResult(ret_mis);
-	printResult(ret_sam);
-}
+//void testLenaLena()
+//{
+//	string f = "Lena";
+//	struct Result ret_raw = msb_huffman("../image/tiff/" + f + ".raw", dummy);
+//	struct Result ret_tif = msb_huffman("../image/tiff/" + f + ".tiff", dummy, true);
+//
+//	struct Result ret_mis = msb_huffman("../dataset/MISC/" + f + ".tiff", dummy, true);
+//	struct Result ret_sam = msb_huffman("../dataset/SAMPLE/" + f + ".tiff", dummy, true);
+//
+//	printResult(ret_raw);
+//	printResult(ret_tif);
+//	printResult(ret_mis);
+//	printResult(ret_sam);
+//}
 
 
 int main()
@@ -877,13 +877,14 @@ int main()
 	//genBigData();
 	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
 	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
-	bigdata("../dataset/TAMPERE17/", "../out/bigreport-tampere17.csv");
+	//bigdata("../dataset/TAMPERE17/", "../out/bigreport-tampere17.csv");
 
 	//genCmpTexSample();
 
 	//genManTex();
-	//genLenaTex();
-	
+	genLenaTex();
+	genAirplaneTex();
+
 	//testLenaLena();
 
 
@@ -896,6 +897,6 @@ int main()
 	//printlog2();
 
 	system("pause");
-	
+
 	return 0;
 }
