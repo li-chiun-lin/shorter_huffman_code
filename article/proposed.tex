@@ -9,7 +9,8 @@ In this section, we propose a new reversible data hiding in encrypted images met
 \subsection{Apply the Huffman tree building algorithm}
 \label{sec:improvetree}
 
-We observed that Yin et al.\ introduced their method based on a predefined Huffman tree as shown in Figure~\ref{fig:fixtree} 
+We observed that Yin et al.\ introduced their method based on a predefined Huffman tree 
+%as shown in Figure~\ref{fig:fixtree} 
 without clarifying the pros and cons behind this design decision. 
 We found that this fixed predefined tree topology constrains the true ability of Huffman coding. 
 When we apply the standard Huffman coding algorithm, as shown in Algorithm~\ref{algo:buildtree}, its full power can be released~\cite{IRE1952, Leeuwen2008a}.
@@ -157,7 +158,7 @@ Hence we occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
 
 For the convenience of better explaining our improvement, we further categorize each $v \in V$ into three types by Equation~\eqref{eq:type}. 
 We say a value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
-For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
+%For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
 \begin{align}
 	\label{eq:type}
 	type(v) & = 
@@ -169,12 +170,17 @@ For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negativ
 	& \text{where } payload(v) = cap(v) - |encode(v)|, v \in V \notag
 \end{align}
 
-In the method of Yin et al., according to the definition of Equation~\eqref{eq:pv}, the bytes in the first row and the first column, i.e.\ $REF_e$, must be losslessly preserved, and this is the reason why they must concatenate $REF_e$ after $T^\prime$ as part of $S^{aux}$ and embed them before embedding any secret information in Algorithm~\ref{algo:embed1}. 
+In the method of Yin et al.,
+% according to the definition of Equation~\eqref{eq:pv}, 
+the bytes in the first row and the first column, i.e.\ $REF_e$, must be losslessly preserved, and this is the reason why they must concatenate $REF_e$ after $T^\prime$ as part of $S^{aux}$ and embed them before embedding any secret information 
+%in Algorithm~\ref{algo:embed1}
+. 
 
 Though this design does not provide any negative effect since $REF_e$ are $neutral$ base on the fact that every byte in $REF_e$ provides 8-bit capacity while also occupying 8 bits to embed itself, with one more byte being defined as $REF_e$, there is one less byte that can be used for information hiding. 
 
-We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. 
-For the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. 
+%We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. 
+As shown in Equation~\eqref{eq:pe2}, 
+for the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. 
 Similar logic applies to those in the first column. 
 \begin{equation}
 	\label{eq:pe2}
@@ -190,19 +196,43 @@ Similar logic applies to those in the first column.
 
 Theoretically, the top-left corner pixel $x_{0, 0}$ is the only critical byte that must be losslessly preserved, but for the following reasons, we define $REF_e$ more than this one byte.
 Aside from the reason described in Section~\ref{sec:improvetree} that we need 53 bits to store the Huffman tree, 
-more importantly, we need some more bytes in $REF_e$ to avoid violating a loop invariant during Algorithm~\ref{algo:extractT}~\cite{Furia2014}.
+more importantly, we need some more bytes in $REF_e$ to avoid violating a loop invariant during 
+%Algorithm~\ref{algo:extractT}
+their information extraction process~\cite{Furia2014}.
 
-There are two indexes in Algorithm~\ref{algo:extractT}, i.e., the $(d_x, d_y)$ defined at line~\ref{algo:extractT:idxProce} and the $(i, j)$ for the loop at line~\ref{algo:extractT:idxExt}. 
-For Algorithm~\ref{algo:extractT} to work properly, there is a never mentioned loop invariant at line~\ref{algo:extractT:nextij} that $(i, j) < (d_x, d_y)$ must be true, i.e., the index $(d_x, d_y)$ must be in a more advanced position in $I_w$ than $(i, j)$ for all time.
+There are two indexes in 
+%Algorithm~\ref{algo:extractT},
+their information extraction process, 
+i.e., the $(d_x, d_y)$ 
+%defined at line~\ref{algo:extractT:idxProce} 
+and the $(i, j)$ for the loop.
+%at line~\ref{algo:extractT:idxExt}.
+For 
+%Algorithm~\ref{algo:extractT} 
+their information extraction process
+to work properly, there is a never mentioned loop invariant 
+%at line~\ref{algo:extractT:nextij} 
+that $(i, j) < (d_x, d_y)$ must be true, i.e., the index $(d_x, d_y)$ must be in a more advanced position in $I_w$ than $(i, j)$ for all time.
 
-While $(i, j)$ is increased with every loop iteration, $(d_x, d_y)$ is only increased when the $buf$ at line~\ref{algo:extractT:nextd} contains a proper Huffman code, which is affected by the capacity of each proceeded $t_{i, j}$.
-If the distribution of $negative$ $t_{i, j}$ has a tendency to centralized in some part of $T$ and slows down the incremental speed of $(d_x, d_y)$, Algorithm~\ref{algo:extractT} will encounter exception and fail.
+While $(i, j)$ is increased with every loop iteration, $(d_x, d_y)$ is only increased when the $buf$ 
+%at line~\ref{algo:extractT:nextd} 
+contains a proper Huffman code, which is affected by the capacity of each proceeded $t_{i, j}$.
+If the distribution of $negative$ $t_{i, j}$ has a tendency to centralized in some part of $T$ and slows down the incremental speed of $(d_x, d_y)$, 
+%Algorithm~\ref{algo:extractT} 
+their information extraction process
+will encounter exception and fail.
 
 Increase $REF_e$ helps to avoid this problem. 
-As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT}, after extracting the information of Huffman tree, the rest of the $REF_e$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reducing the chance of violating the loop invariant.
+As can be seen 
+%at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT},
+in their information extraction process,
+after extracting the information of Huffman tree, the rest of the $REF_e$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reducing the chance of violating the loop invariant.
 Though defining more $REF_e$ bytes helps to amend this issue, it also decreases the bytes that can be dedicated to information hiding.
 
-Even though the minimum $REF_e$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF_e$ beside the basic 53 bits used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF_e$ bytes to safely go through Algorithm~\ref{algo:extractT}, this loop invariant only exists in extracting process and remain unnoticed to the \emph{Content-Owner}.
+Even though the minimum $REF_e$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF_e$ beside the basic 53 bits used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF_e$ bytes to safely go through 
+%Algorithm~\ref{algo:extractT}, 
+their information extraction process, 
+this loop invariant only exists in extracting process and remain unnoticed to the \emph{Content-Owner}.
 We have to define a fixed and large enough $REF_e$ and preshare this knowledge with all three participators in the use case. 
 
 According to our experiments, defining $REF_e$ equals to or larger than $7 + 63$ bytes is enough for all the test images we can acquire~\cite{UniversityofSouthernCalifornia2020, Bas2011, bows2007}, but we still retain the possibility that it might need to be extended for some more complex cover images.
@@ -252,8 +282,15 @@ Since $C \approx 3.15$ when $n = 9$, hence it is estimated that averagely each v
 The advantage of this improvement is that the allocated size of $|LEN|$ only depends on the size $(w, h)$ of the cover image and a constant $C$ so that it complies with the protocol translucently.
 This improvement does not aim to increase the embedding capacity but to make the protocol more compact and solid.
 
-When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the $LEN$ is redundant information. 
-Since for both the secret extracting process described in Section~\ref{sec:extract} and the cover image restoring process described in Section~\ref{sec:restore}, the label map $T$ is essential information, 
+When we further analyze 
+%Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, 
+their information extraction process, 
+we realized that the $LEN$ is redundant information. 
+Since for both the secret extracting process
+% described in Section~\ref{sec:extract} 
+and the cover image restoring process,  
+% described in Section~\ref{sec:restore}, 
+the label map $T$ is essential information, 
 and the $LEN$ is a by-product of the process of re-constructing $T$ from $I_e^\prime$ or $I_w$, 
 hence do not need to be explicitly conveyed in $S^{aux}$. 
 In our experiments, it is safe to remove the column $LEN$ from $S^{aux}$ as shown in Figure~\ref{fig:header2}.
