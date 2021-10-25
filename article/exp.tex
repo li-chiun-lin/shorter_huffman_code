@@ -48,7 +48,7 @@ the column \emph{LEN} represents the length of $T'$.
 
 %\subsection{explain table data}
 
-In the column \emph{LEN}, our improvement described in Section~\ref{sec:improvetree} surely reduces the overall length of $T'$ since Huffman coding is always optimal~\cite{Long2001}.
+In the column \emph{LEN}, our improvement described in Sec.\,\ref{sec:improvetree} surely reduces the overall length of $T'$ since Huffman coding is always optimal~\cite{Long2001}.
 %
 The reason why our method produces larger $T^\prime$ when applied to \emph{Lake, Peppers, Lax} and \emph{Man} is that we defined a larger $T$ in our method than Yin et al.
 %
@@ -61,11 +61,11 @@ Since our method defined a larger $T$, it is inevitable that there will be a lon
 %
 But when we further exam the coding result of \emph{Man} $1024 \times 1024$ in Table~\ref{tab:man}, our method still produces a slightly shorter average code length per value $t$ in $T$, which reflects the fact that our method adopted a better Huffman coding tree.
 
-In the column \emph{Ref}, our improvement described in Section~\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding for a $512 \times 512$ image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
+In the column \emph{Ref}, our improvement described in Sec.\,\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding for a $512 \times 512$ image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
 This improvement is proportional to the \emph{Size} of the cover image.
 %This improvement increases dramatically with cover images of larger size.
 
-Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Section~\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
+Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Sec.\,\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
 
 
 \CatchFileDef{\singlemanmsb}{single-res-table-msb-Man.tex}{}

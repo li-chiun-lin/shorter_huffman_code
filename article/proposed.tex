@@ -54,6 +54,19 @@ In Algorithm~\ref{algo:serial}, a Huffman tree of 9 leaves has $2 \times 9 -1 = 
 Each leaf has a value $0 \leq v \leq 8$, thus four bits are enough to store each leaf value, i.e., $4 \times 9 = 36$ bits. 
 Hence we occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
 
+\begin{figure}
+	\scriptsize
+	\Tree[ 
+	[.0 [.0 \{00\}\\5 ]
+	[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+	[.1 [.0 [.0 \{100\}\\3 ]
+	[.1 [.0 \{1010\}\\2 ]
+	[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+	[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
+	\caption{The Huffman coding tree of \emph{Lena} $512 \times 512$.}
+	\label{fig:lenatree}
+\end{figure}
+
 \begin{algorithm}
 	\caption{Tree Serialization.}
 	\label{algo:serial}
@@ -116,6 +129,7 @@ Hence we occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
 \begin{table}
 	%	\scriptsize
 	\centering
+	\caption{An example of \emph{Lena} $512 \times 512$ using a different Huffman tree.}
 	\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
 	\begin{tabular}{crlcccr}
 		\toprule 
@@ -125,22 +139,11 @@ Hence we occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
 		\singlelenashr
 		\bottomrule   
 	\end{tabular}
-	\caption{An example of \emph{Lena} $512 \times 512$ using a different Huffman tree.}
+	
 	\label{tab:shrlena}
 \end{table}
 
-\begin{figure}
-	\scriptsize
-	\Tree[ 
-	[.0 [.0 \{00\}\\5 ]
-	[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
-	[.1 [.0 [.0 \{100\}\\3 ]
-	[.1 [.0 \{1010\}\\2 ]
-	[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
-	[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
-	\caption{The Huffman coding tree of \emph{Lena} $512 \times 512$.}
-	\label{fig:lenatree}
-\end{figure}
+
 
 
 
@@ -156,7 +159,7 @@ Hence we occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
 \subsection{Reduce Reference Bytes}
 \label{sec:improveref}
 
-For the convenience of better explaining our improvement, we further categorize each $v \in V$ into three types by Equation~\eqref{eq:type}. 
+For the convenience of better explaining our improvement, we further categorize each $v \in V$ into three types by~\eqref{eq:type}. 
 We say a value $v$ is $negative$ if the capacity it can provide is smaller than the size its Huffman code has to occupy. 
 %For example, in Table~\ref{tab:msblena}, value $ v \in \{0, 1, 2\}$ are $negative$, while others are $positive$.
 \begin{align}
@@ -179,7 +182,7 @@ the bytes in the first row and the first column, i.e.\ $REF_e$, must be lossless
 Though this design does not provide any negative effect since $REF_e$ are $neutral$ base on the fact that every byte in $REF_e$ provides 8-bit capacity while also occupying 8 bits to embed itself, with one more byte being defined as $REF_e$, there is one less byte that can be used for information hiding. 
 
 %We extend Equation~\eqref{eq:pe} to Equation~\eqref{eq:pe2}. 
-As shown in Equation~\eqref{eq:pe2}, 
+As shown in~\eqref{eq:pe2}, 
 for the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. 
 Similar logic applies to those in the first column. 
 \begin{equation}
@@ -266,7 +269,7 @@ While we inspecting the method of Yin et al., we found the unreasonable design o
 When using an image of larger size, e.g., $1024 \times 1024$, 
 it is understandable that the label map $T$ is of size $1023 \times 1023$ by definition, which is only slightly less than $2^{20}$, then the total $LEN$ of $T^\prime$ will sure be exceeded the size of 20 bits. 
 In fact, according to the experimental data published by~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3121508$ bits, which requires at least 22 bits to represent it since $log_2(3121508) = 21.574$.
-This can be amended by allocating enough space in the auxiliary information by Equation~\eqref{eq:floor}.
+This can be amended by allocating enough space in the auxiliary information by~\eqref{eq:floor}.
 \begin{equation}
 	\label{eq:floor}
 	\vert LEN \vert \; \leq \lfloor log_2((w - 1) \times (h - 1) \times C ) \rfloor + 1 , 
@@ -293,7 +296,7 @@ and the cover image restoring process,
 the label map $T$ is essential information, 
 and the $LEN$ is a by-product of the process of re-constructing $T$ from $I_e^\prime$ or $I_w$, 
 hence do not need to be explicitly conveyed in $S^{aux}$. 
-In our experiments, it is safe to remove the column $LEN$ from $S^{aux}$ as shown in Figure~\ref{fig:header2}.
+In our experiments, it is safe to remove the column $LEN$ from $S^{aux}$ as shown in Fig.\,\ref{fig:header2}.
 
 
 
