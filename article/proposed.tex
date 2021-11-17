@@ -316,7 +316,7 @@ In our experiments, it is safe to remove the column $LEN$ from $S^{aux}$ as show
 	\centering
 	
 	
-	\begin{tabularx}{\linewidth}{r r@{}c cc}
+	\begin{tabular}{r r@{}c cc}
 		
 		&&& $LEN$ bits & $REF$ bytes \\
 		&&& \downbracefill& \downbracefill \\
@@ -334,10 +334,10 @@ In our experiments, it is safe to remove the column $LEN$ from $S^{aux}$ as show
 		
 		where 
 		& $ topology $ & \multicolumn{3}{l}{has $ 2 \times n - 1$  bits,} \\
-		& $ value    $ & \multicolumn{3}{l}{has $ n \times (\lfloor \log_2(\max(\range(T))) \rfloor + 1)$  bits,}\\
+		& $ value    $ & \multicolumn{3}{l}{has $ n \times (\lfloor \log_2(\max(\range(T))) \rfloor + 1)$  bits,} \\
 		%		& $ n  =     $ & \multicolumn{3}{l}{$  \vert \range(T) \vert $.} \\
 		& $ n  =     $ & \multicolumn{3}{l}{$  \# \{ \range(T) \} $.} 
-	\end{tabularx}
+	\end{tabular}
 	
 	
 	\caption{The auxiliary information of our method.}
