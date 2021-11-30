@@ -31,19 +31,18 @@ Within each column, there are three sub-columns representing the data of our met
 	\end{tabular}
 \end{table}
 
-
 %\subsection{Yin use 2 images different than USC}
 
 We noticed that in the experimental result of~\cite{Yin2020}, they use the identical sample test images as we acquired from USC-SIPI, except for 2 images, i.e., \emph{Baboon} and \emph{Lena}. 
 To avoid ambiguity, we included both images in Table~\ref{tab:common} and postfix ``-Yin'' to the 2 images used by Yin et al.
 
 %\subsection{explain table columns}
-In Table~\ref{tab:common}, 
-the column \emph{Size} is self-explanatory; 
-the column \emph{Hdr} indicates how many bits are occupied to store the Huffman coding tree; 
-the column \emph{Ref} indicates how many bytes are marked as reference bytes; 
-the column \emph{Capacity} shows the overall capacity the image can provide, without considering the space required to store $T'$;
-the column \emph{LEN} represents the length of $T'$.
+%In Table~\ref{tab:common}, 
+%the column \emph{Size} is self-explanatory; 
+%the column \emph{Hdr} indicates how many bits are occupied to store the Huffman coding tree; 
+%the column \emph{Ref} indicates how many bytes are marked as reference bytes; 
+%the column \emph{Capacity} shows the overall capacity the image can provide, without considering the space required to store $T'$;
+%the column \emph{LEN} represents the length of $T'$.
 %, as defined in Equation\eqref{eq:countlen}.
 
 %\subsection{explain table data}
@@ -65,7 +64,7 @@ In the column \emph{Ref}, our improvement described in Sec.\,\ref{sec:improveref
 This improvement is proportional to the \emph{Size} of the cover image.
 %This improvement increases dramatically with cover images of larger size.
 
-Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Sec.\,\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
+%Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Sec.\,\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
 
 
 \CatchFileDef{\singlemanmsb}{single-res-table-msb-Man.tex}{}
@@ -75,22 +74,29 @@ Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topol
 	\centering
 	\caption{The encoding result of \emph{Man} $1024 \times 1024$.}
 	\label{tab:man}
+	
+
+	
+	
+	
 	\subcaption{when applying~\cite{Yin2020}.}
 	\label{tab:mana}
 	\begin{tabular}{crlcccr}
 		\toprule 
-		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode(v)$}  &  $cap(v)$ &    $\vert encode(v) \vert$    & $payload(v)$  & $\Delta$ \\
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode$}  &  $cap$ &    $\vert encode \vert$    & $payload$  & $\Delta$ \\
 		\midrule 
 		\singlemanmsb
 		\bottomrule
 		\multicolumn{7}{l}{Average code length per value: $3121506 \divisionsymbol 1046529 = 2.982722$}
 	\end{tabular}
 	
+	
+	
 	\subcaption{when applying our method.}
 	\label{tab:manb}
 	\begin{tabular}{crlcccr}
 		\toprule 
-		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode(v)$}  &  $cap(v)$ &    $\vert encode(v) \vert$    & $payload(v)$  & $\Delta$ \\
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode$}  &  $cap$ &    $\vert encode \vert$    & $payload$  & $\Delta$ \\
 		\midrule 
 		\singlemanshr
 		\bottomrule

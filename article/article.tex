@@ -1,4 +1,15 @@
-\documentclass{llncs}
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+%\urldef{\mailsa}\path|{alfred.hofmann, ursula.barth, ingrid.haas, frank.holzwarth,|
+%\urldef{\mailsb}\path|anna.kramer, leonie.kunz, christine.reiss, nicole.sator,|
+%\urldef{\mailsc}\path|erika.siebert-cole, peter.strasser, lncs}@springer.com|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
 
 \usepackage[table]{xcolor}
 \usepackage{tabularx}
@@ -70,15 +81,76 @@
 \bibliographystyle{splncs}
 
 
-\title{A High Capacity Reversible Data Hiding in Encrypted Images Using Multi-MSB Prediction and Huffman Coding}
-\author{An author}
-\affil{This is some institute}
+%\title{A High Capacity Reversible Data Hiding in Encrypted Images Using Multi-MSB Prediction and Huffman Coding}
+%\author{Li-Chiun Lin, Cheng-Ta Huang and Shiuh-Jeng Wang}
+%\affil{This is some institute}
 
 
 
 
 \begin{document}
 	
+	\mainmatter  % start of an individual contribution
+	
+	% first the title is needed
+	\title{
+%		Lecture Notes in Computer Science:\\
+%		Authors' Instructions for the Preparation\\
+%		of Camera-Ready Contributions\\
+%		to LNCS/LNAI/LNBI Proceedings
+		A High Capacity Reversible Data Hiding in Encrypted Images Using Multi-MSB Prediction and Huffman Coding
+	}
+	
+	% a short form should be given in case it is too long for the running head
+	\titlerunning{Reversible Data Hiding Using Multi-MSB Prediction and Huffman Coding}
+	
+	% the name(s) of the author(s) follow(s) next
+	%
+	% NB: Chinese authors should write their first names(s) in front of
+	% their surnames. This ensures that the names appear correctly in
+	% the running heads and the author index.
+	%
+	\author{
+		Li-Chiun Lin
+		%
+%		\thanks{
+%%			Please note that the LNCS Editorial assumes that all authors have used
+%%			the western naming convention, with given names preceding surnames. This determines
+%%			the structure of the names in the running heads and the author index.
+%		}
+%
+		\and Cheng-Ta Huang 
+		\and Shiuh-Jeng Wang
+%		\and Frank Holzwarth\and\\
+%		Anna Kramer\and Leonie Kunz\and Christine Rei\ss\and\\
+%		Nicole Sator\and Erika Siebert-Cole\and Peter Stra\ss er
+	}
+	%
+	\authorrunning{
+%		Lecture Notes in Computer Science: Authors' Instructions
+	}
+	% (feature abused for this document to repeat the title also on left hand pages)
+	
+	% the affiliations are given next; don't give your e-mail address
+	% unless you accept that it will be published
+	\institute{
+%		Springer-Verlag, Computer Science Editorial,\\
+%		Tiergartenstr. 17, 69121 Heidelberg, Germany\\
+%		\mailsa\\
+%		\mailsb\\
+%		\mailsc\\
+%		\url{http://www.springer.com/lncs}
+	}
+	
+	%
+	% NB: a more complex sample for affiliations and the mapping to the
+	% corresponding authors can be found in the file "llncs.dem"
+	% (search for the string "\mainmatter" where a contribution starts).
+	% "llncs.dem" accompanies the document class "llncs.cls".
+	%
+	
+	\toctitle{Lecture Notes in Computer Science}
+	\tocauthor{Authors' Instructions}
 	\maketitle
 	
 	%\coffeestainA{0.9}{0.85}{-25}{5cm}{1.3cm}
