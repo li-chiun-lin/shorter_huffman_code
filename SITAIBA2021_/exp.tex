@@ -1,8 +1,6 @@
-\CatchFileDef{\deltatable}{delta-table.tex}{}
 \CatchFileDef{\deltatablesample}{delta-table-2.tex}{}
-\CatchFileDef{\singlelenamsb}{single-res-table-msb-Lena.tex}{}
-\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
-\CatchFileDef{\singlelenadif}{single-res-table-dif-Lena.tex}{}
+\CatchFileDef{\singlemanmsb}{single-res-table-msb-Man.tex}{}
+\CatchFileDef{\singlemanshr}{single-res-table-shr-Man.tex}{}
 
 
 \section{Experimental results}
@@ -24,28 +22,14 @@ Within each column, there are three sub-columns representing the data of our met
 		\multicolumn{1}{c}{Image} & Size & 
 		\multicolumn{3}{c}{Hdr(bit)}            & \multicolumn{3}{c}{Ref(byte)}& \multicolumn{3}{c}{Capacity(bit)}& \multicolumn{3}{c}{LEN(bit)}      \\ 
 		\midrule
-		%		\deltatable
 		%		\midrule
 		\deltatablesample
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-%\subsection{Yin use 2 images different than USC}
-
 We noticed that in the experimental result of~\cite{Yin2020}, they use the identical sample test images as we acquired from USC-SIPI, except for 2 images, i.e., \emph{Baboon} and \emph{Lena}. 
 To avoid ambiguity, we included both images in Table~\ref{tab:common} and postfix ``-Yin'' to the 2 images used by Yin et al.
-
-%\subsection{explain table columns}
-%In Table~\ref{tab:common}, 
-%the column \emph{Size} is self-explanatory; 
-%the column \emph{Hdr} indicates how many bits are occupied to store the Huffman coding tree; 
-%the column \emph{Ref} indicates how many bytes are marked as reference bytes; 
-%the column \emph{Capacity} shows the overall capacity the image can provide, without considering the space required to store $T'$;
-%the column \emph{LEN} represents the length of $T'$.
-%, as defined in Equation\eqref{eq:countlen}.
-
-%\subsection{explain table data}
 
 In the column \emph{LEN}, our improvement described in Sec.\,\ref{sec:improvetree} surely reduces the overall length of $T'$ since Huffman coding is always optimal~\cite{Long2001}.
 %
@@ -62,13 +46,8 @@ But when we further exam the coding result of \emph{Man} $1024 \times 1024$ in T
 
 In the column \emph{Ref}, our improvement described in Sec.\,\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding for a $512 \times 512$ image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
 This improvement is proportional to the \emph{Size} of the cover image.
-%This improvement increases dramatically with cover images of larger size.
-
-%Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Sec.\,\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
 
 
-\CatchFileDef{\singlemanmsb}{single-res-table-msb-Man.tex}{}
-\CatchFileDef{\singlemanshr}{single-res-table-shr-Man.tex}{}
 \begin{table}
 	%	\scriptsize
 	\centering
@@ -76,9 +55,6 @@ This improvement is proportional to the \emph{Size} of the cover image.
 	\label{tab:man}
 	
 
-	
-	
-	
 	\subcaption{when applying~\cite{Yin2020}.}
 	\label{tab:mana}
 	\begin{tabular}{crlcccr}
@@ -103,77 +79,4 @@ This improvement is proportional to the \emph{Size} of the cover image.
 		\multicolumn{7}{l}{Average code length per value: $3127243 \divisionsymbol 1048506 = 2.982570$}
 	\end{tabular}
 \end{table}
-
-
-%\subsection{explain some anomaly}
-
-%\subsection{Large datasets}
-%
-%We use BOSSBase~\cite{Bas2011} and BOWS-2~\cite{bows2007} image datasets to evaluate the performance of our method and compare it with the method of Yin et al. 
-%Both dataset contain 10,000 $512 \times 512$ greyscale images.
-%The experimental result is given in Table~\ref{tab:exp3}, where we use ER, as defined in Equation~\eqref{eq:er}, to evaluate both methods and presents the best, worst and average cases.
-%The cover image that involved in the best case and the worst case of both dataset are shown in Figure~\ref{fig:best} and Figure~\ref{fig:worst}.
-%\begin{equation}
-%	\text{ER} = \frac{\sum_{v \in V} payload(v) \times f_v}{w \times h}, \qquad \text{where } f_v \in F
-%	\label{eq:er}
-%\end{equation}
-%
-%\begin{table}
-%	%	\scriptsize
-%	\centering
-%	\caption{Experimental results of image datasets (Ours/Yin et~al./$\Delta$)}
-%	\label{tab:bestworst}
-%	\label{tab:exp3}
-%	\begin{tabular}{l@{}c@{/}c@{/}c c@{/}c@{/}c c@{/}c@{/}c}
-%		\toprule
-%		ER (bits per pixel) & \multicolumn{3}{c}{Best Case} & \multicolumn{3}{c}{Worst Case} & \multicolumn{3}{c}{Average} \\
-%		\midrule
-%		BOSSBase &6.881 &	5.898	&$+0.984$& 0.716 &0.665& $+0.051$& 3.464 &	3.362&	$+0.103$ \\
-%		BOWS2    &6.443 &	5.622   &$+0.821$& 0.671 &0.629& $+0.042$& 3.320 &	3.246&	$+0.075$ \\
-%		%		UCID &4.621	&4.523&	$+0.098$   &0.640&	0.593&	$+0.047$ &2.729&	2.663&	$+0.066$ \\
-%		%		USC-SIPI  &6.162 &	5.317&	$+0.845$&0.401	&0.370 &	$+0.031$& 2.122 &	2.084	&$+0.038$ \\
-%		\bottomrule
-%	\end{tabular}
-%\end{table}
-%
-%
-%
-%
-%Though our method outperforms the method of Yin et al.\ in every scenario, it is worths mentioning that, 
-%as expected, both methods perform better when applied on smooth images since similar adjacent pixels produce larger $t$ in $T$, hence increase the capacity. 
-%But with rough images, such as those shown in Figure~\ref{fig:worst}, both methods produce less satisfactory results.
-%
-%\begin{figure}
-%	\centering
-%	\begin{subfigure}{.3\linewidth}
-%		\includegraphics[scale=0.2]{img/best-boss-5162}
-%		\caption{BOSSBase/5162.tiff}
-%	\end{subfigure}
-%	\begin{subfigure}{.3\linewidth}
-%		\includegraphics[scale=0.2]{img/best-bows2-1478}
-%		\caption{BOWS2/1478.tiff}
-%	\end{subfigure}
-%	%	\begin{subfigure}{.3\linewidth}
-%	%		\includegraphics[scale=0.2]{img/best-usc-7.1.02}
-%	%		\caption{USC-SIPI}
-%	%	\end{subfigure}
-%	\caption{Images with maximum capacity.}
-%	\label{fig:best}
-%	
-%	
-%	\begin{subfigure}{.3\linewidth}
-%		\includegraphics[scale=0.2]{img/worst-boss-1377}
-%		\caption{BOSSBase/1377.tiff}
-%	\end{subfigure}
-%	\begin{subfigure}{.3\linewidth}
-%		\includegraphics[scale=0.2]{img/worst-bows2-5547}
-%		\caption{BOWS2/5547.tiff}
-%	\end{subfigure}
-%	%	\begin{subfigure}{.3\linewidth}
-%	%		\includegraphics[scale=0.2]{img/worst-usc-1.2.05}
-%	%		\caption{USC-SIPI}
-%	%	\end{subfigure}
-%	\caption{Images with minimum capacity.}
-%	\label{fig:worst}
-%\end{figure}
 
