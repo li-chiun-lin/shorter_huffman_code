@@ -1,10 +1,3 @@
-\CatchFileDef{\deltatable}{delta-table.tex}{}
-\CatchFileDef{\deltatablesample}{delta-table-2.tex}{}
-\CatchFileDef{\singlelenamsb}{single-res-table-msb-Lena.tex}{}
-\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
-\CatchFileDef{\singlelenadif}{single-res-table-dif-Lena.tex}{}
-
-
 \section{Experimental results}
 \label{sec:experimental}
 
@@ -15,6 +8,7 @@ The experimental results are shown in Table~\ref{tab:common}.
 Within each column, there are three sub-columns representing the data of our method, the method of Yin et al.\ and the differences, respectively.
 
 \begin{table}
+	\CatchFileDef{\deltatablesample}{delta-table-2.tex}{}
 	\scriptsize
 	\centering
 	\caption{Experimental results of benchmark images (Ours/Yin et~al./$\Delta$)}
@@ -47,7 +41,7 @@ the column \emph{LEN} represents the length of $T'$, as defined in Equation\eqre
 
 %\subsection{explain table data}
 
-In the column \emph{LEN}, our improvement described in Section~\ref{sec:improvetree} surely reduces the overall length of $T'$ since Huffman coding is always optimal~\cite{Long2001}.
+In the column \emph{LEN}, our improvement described in Sec.\,\ref{sec:improvetree} surely reduces the overall length of $T'$ since Huffman coding is always optimal~\cite{Long2001}.
 %
 The reason why our method produces larger $T^\prime$ when applied to \emph{Lake, Peppers, Lax} and \emph{Man} is that we defined a larger $T$ in our method than Yin et al.
 %
@@ -60,11 +54,11 @@ Since our method defined a larger $T$, it is inevitable that there will be a lon
 %
 But when we further exam the coding result of \emph{Man} $1024 \times 1024$ in Table~\ref{tab:man}, our method still produces a slightly shorter average code length per value $t$ in $T$, which reflects the fact that our method adopted a better Huffman coding tree.
 
-In the column \emph{Ref}, our improvement described in Section~\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding for a $512 \times 512$ image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
+In the column \emph{Ref}, our improvement described in Sec.\,\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding for a $512 \times 512$ image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
 This improvement is proportional to the \emph{Size} of the cover image.
 %This improvement increases dramatically with cover images of larger size.
 
-Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Section~\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
+Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topology, we also remove the $LEN$ column, as discussed in Sec.\,\ref{sec:improvesize}, hence $S^{aux}$ remains almost the same size($\pm 1$), as shown in the column \emph{Hdr}.
 
 
 \CatchFileDef{\singlemanmsb}{single-res-table-msb-Man.tex}{}
@@ -102,10 +96,10 @@ Though we have to spend extra space in $S^{aux}$ to store the Huffman tree topol
 
 \subsection{Large datasets}
 
-We use BOSSBase~\cite{Bas2011} and BOWS-2~\cite{bows2007} image datasets to evaluate the performance of our method and compare it with the method of Yin et al. 
+We use BOSSBase~\cite{Bas2011} and BOWS-2~\cite{Filler2010} image datasets to evaluate the performance of our method and compare it with the method of Yin et al. 
 Both dataset contain 10,000 $512 \times 512$ greyscale images.
 The experimental result is given in Table~\ref{tab:exp3}, where we use ER, as defined in Equation~\eqref{eq:er}, to evaluate both methods and presents the best, worst and average cases.
-The cover image that involved in the best case and the worst case of both dataset are shown in Figure~\ref{fig:best} and Figure~\ref{fig:worst}.
+The cover image that involved in the best case and the worst case of both dataset are shown in Fig.\,\ref{fig:best} and Fig.\,\ref{fig:worst}.
 \begin{equation}
 	\text{ER} = \frac{\sum_{v \in V} payload(v) \times f_v}{w \times h}, \qquad \text{where } f_v \in F
 	\label{eq:er}
@@ -134,7 +128,7 @@ The cover image that involved in the best case and the worst case of both datase
 
 Though our method outperforms the method of Yin et al.\ in every scenario, it is worths mentioning that, 
 as expected, both methods perform better when applied on smooth images since similar adjacent pixels produce larger $t$ in $T$, hence increase the capacity. 
-But with rough images, such as those shown in Figure~\ref{fig:worst}, both methods produce less satisfactory results.
+But with rough images, such as those shown in Fig.\,\ref{fig:worst}, both methods produce less satisfactory results.
 
 \begin{figure}
 	\centering

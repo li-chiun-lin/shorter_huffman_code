@@ -52,9 +52,9 @@ The responsibilities of each role are defined as follows.
 	\label{fig:xpv}
 \end{figure}
 
-For all pixel $x_{i, j} $ in a cover image $ I$, the predicted value $pv$ of median edge detector predictor is defined as Equation~\eqref{eq:pv} and shown in Figure~\ref{fig:xpv}.
-The predicted error $pe$ between each pixel and its predicted value is defined as Equation~\eqref{eq:pe}.
-Each pixel, except those in the first row and the first column, has a corresponding value $0 \leq t_{i, j} \leq 8$, as defined in Equation~\eqref{eq:t}.
+For all pixel $x_{i, j} $ in a cover image $ I$, the predicted value $pv$ of median edge detector predictor is defined as~\eqref{eq:pv} and shown in Fig.\,\ref{fig:xpv}.
+The predicted error $pe$ between each pixel and its predicted value is defined as~\eqref{eq:pe}.
+Each pixel, except those in the first row and the first column, has a corresponding value $0 \leq t_{i, j} \leq 8$, as defined in~\eqref{eq:t}.
 \begin{align}
 	\label{eq:pv}
 	pv_{i, j} & = 
@@ -111,7 +111,7 @@ Let $cap(v)$ be a function defined for all $v \in V$, representing the capacity 
 \end{equation}
 
 A predefined Huffman tree $H$ is represented as a vector of a bitstream. 
-The topology of $H$ is visualized in Figure~\ref{fig:fixtree}.
+The topology of $H$ is visualized in Fig.\,\ref{fig:fixtree}.
 \begin{equation}
 	H = (00, 01, 100, 101, 1100, 1101, 1110, 11110, 11111)
 \end{equation}
@@ -179,7 +179,7 @@ Each cell in the row \emph{$\sum$} represents the weighted summation of the corr
 
 \subsubsection{Encryption and Embedding Auxiliary information}
 
-The cover image $I$ is encrypted with a key stream $K_I$ using Equation~\eqref{eq:enc}.
+The cover image $I$ is encrypted with a key stream $K_I$ using~\eqref{eq:enc}.
 \begin{equation}
 	\label{eq:enc}
 	I_e = I \oplus K_I
@@ -192,11 +192,11 @@ Define reference bytes $REF_e$ as the bytes in the first row and the first colum
 	REF_e = (\underbrace{x^e_{0, 0}, \dots, x^e_{0, w - 1}}_{\text{first row}}, \underbrace{x^e_{1, 0}, \dots, x^e_{h - 1, 0}}_{\text{first column}}), \qquad \text{where } x^e_{i, j} \in I_e
 \end{equation*}
 
-Define auxiliary information $S^{aux}$ as illustrated in Figure~\ref{fig:header1}, where $S^{aux\prime}$ represents the first $w + h - 1$ bytes of $S^{aux}$.
+Define auxiliary information $S^{aux}$ as illustrated in Fig.\,\ref{fig:header1}, where $S^{aux\prime}$ represents the first $w + h - 1$ bytes of $S^{aux}$.
 The auxiliary information embedding process follows Algorithm~\ref{algo:embed1}. 
 Each byte in $REF_e$ is replaced by 8 bits of $S^{aux\prime}$.
-The rest of the $S^{aux}$, denoted as $S^{aux\prime\prime}$, is embedded into the main body of $I_e$ using Equation~\eqref{eq:embed1}. 
-Each value $t_{i, j} \in T$ determines the capacity of embedding the corresponding $x^e_{i, j} \in I_e$ can provide as defined in Equation~\eqref{eq:cap}. 
+The rest of the $S^{aux}$, denoted as $S^{aux\prime\prime}$, is embedded into the main body of $I_e$ using~\eqref{eq:embed1}. 
+Each value $t_{i, j} \in T$ determines the capacity of embedding the corresponding $x^e_{i, j} \in I_e$ can provide as defined in~\eqref{eq:cap}. 
 \begin{figure}
 	%	\scriptsize
 	\centering
@@ -301,21 +301,21 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 		
 		%		\ForAll{$\{x_{i, j} \in I \mid x_{i, j} \notin REF\}$}
 		\ForAll{$\{(i, j) \mid 0 < i < h, 0 < j < w\}$}
-		\State		Compute $t$ using Equation~\eqref{eq:t}.
+		\State		Compute $t$ using~\eqref{eq:t}.
 		\State		$f_t \gets f_t + 1$.
 		\EndFor
 		
 		%		\State Let $V$ be the elements of $T$ sorted by $f_t$.
 		\State Let $V$ be an vector containing the elements of $T$ sorted by $F$.
-		\State Define $encode$ as Equation~\eqref{eq:encode}.
+		\State Define $encode$ as~\eqref{eq:encode}.
 		\State $I_e \gets I \oplus K_I$.
 		
 		%		\State Compute $T^\prime $ and $ LEN$ using Equation~\eqref{eq:encodeT1} and~\eqref{eq:countlen}.
-		\State Compute $T^\prime $ using Equation~\eqref{eq:encodeT1}.
-		\State Compute $LEN$ using Equation~\eqref{eq:countlen}.
+		\State Compute $T^\prime $ using~\eqref{eq:encodeT1}.
+		\State Compute $LEN$ using~\eqref{eq:countlen}.
 		
 		
-		\State Allocate $S^{aux}$ as shown in Figure~\ref{fig:header1}.
+		\State Allocate $S^{aux}$ as shown in Fig.\,\ref{fig:header1}.
 		\State $I_e^\prime \gets I_e$
 		\State Replace $REF_e$ of $I_e^\prime$ with $S^{aux\prime}$.
 		
@@ -324,7 +324,7 @@ Each value $t_{i, j} \in T$ determines the capacity of embedding the correspondi
 		\State			$(c_x, c_y) \gets (i, j)$
 		\State			End of algorithm.
 		\Else
-		\State			Embed $S^{aux\prime\prime}$ into $x^e_{i, j}$ using Equation~\eqref{eq:embed1}.
+		\State			Embed $S^{aux\prime\prime}$ into $x^e_{i, j}$ using~\eqref{eq:embed1}.
 		\EndIf
 		\EndFor
 	\end{algorithmic}
@@ -337,7 +337,7 @@ the \emph{Data-hider} proceeds the information hiding process describing in Algo
 where the secret information $S$ is encrypted by another secret key $K_S$, 
 and produces a stego image $I_w$ 
 without the knowledge of the cover image $I$.
-The encryption process in Equation~\eqref{eq:enc} provides the compartmentalization between the \emph{Content-owner} and the \emph{Data-hider}.
+The encryption process in~\eqref{eq:enc} provides the compartmentalization between the \emph{Content-owner} and the \emph{Data-hider}.
 
 \begin{algorithm}
 	\caption{Embed secret information.}
@@ -355,7 +355,7 @@ The encryption process in Equation~\eqref{eq:enc} provides the compartmentalizat
 		\If			{$S = \emptyset$}
 		\State			End of algorithm.
 		\Else
-		\State			Embed $S$ into $x^e_{i, j}$ using Equation~\eqref{eq:embed1}.
+		\State			Embed $S$ into $x^e_{i, j}$ using~\eqref{eq:embed1}.
 		\EndIf
 		\EndFor
 	\end{algorithmic}
@@ -386,9 +386,9 @@ Let R be a vector containing $(w + h - 1)\times 8$ bits of $REF_w$ of $I_w$, and
 \end{equation}
 
 The first 32 bits $(r_0   , \dots, r_{31})$ are the Huffman encoded value of 0 to 8 and 
-the following 20 bits $(r_{32}, \dots, r_{51})$ contain the length $LEN$ of the entire encoded label map $T^\prime$, as shown in Figure~\ref{fig:header1}.
+the following 20 bits $(r_{32}, \dots, r_{51})$ contain the length $LEN$ of the entire encoded label map $T^\prime$, as shown in Fig.\,\ref{fig:header1}.
 For the first 32 bits, using the predefined and preshared Huffman tree $H$, they can be divided into 9 unambiguously Huffman codes, each consequently represents the Huffman code of 0 to 8. 
-With this information, the receiver can restore $V$ and $decode$ as defined in Equation~\eqref{eq:v} and~\eqref{eq:decode}.
+With this information, the receiver can restore $V$ and $decode$ as defined in~\eqref{eq:v} and~\eqref{eq:decode}.
 \begin{align}
 	\label{eq:r32}
 	&(r_0   , \dots, r_{31}) = encode(0) \Vert \cdots \Vert encode(8) \\
@@ -400,7 +400,7 @@ With this information, the receiver can restore $V$ and $decode$ as defined in E
 
 Let $x^w_{i, j} \in I_w$ be represented as a bit sequence $b_7 \Vert \cdots \Vert b_0$ 
 where $b_u$ represents the $u$-th LSB of $x^w_{i, j}$.
-The extraction function is defined as Equation~\eqref{eq:extract}.
+The extraction function is defined as~\eqref{eq:extract}.
 \begin{align}
 	\label{eq:extract}
 	Extrac(i, j)  &= 
@@ -410,7 +410,7 @@ The extraction function is defined as Equation~\eqref{eq:extract}.
 	\end{cases}
 \end{align}
 
-Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $decode$ and Equation~\eqref{eq:extract}.
+Algorithm~\ref{algo:extractT} describes the detail of how to restore label map $T$ using $decode$ and~\eqref{eq:extract}.
 The output $(c_x, c_y)$ are provided to Algorithm~\ref{algo:extractref} to further extract reference bytes $REF_e$ of the encrypted image $I_e$.
 Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted using similar method as described in Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, and finally be decrypted with $K_S$.
 
@@ -433,7 +433,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		
 		\State Restore 9 Huffman codes from $(r_0 , \dots,  r_{31})$.
 		\State Restore $decode$ from the 9 Huffman codes.
-		\State Restore $LEN$ from $(r_{32} , \dots,  r_{51})$ using Equation~\eqref{eq:len}.
+		\State Restore $LEN$ from $(r_{32} , \dots,  r_{51})$ using~\eqref{eq:len}.
 		
 		%		\State $T \gets \{t_{i, j} = -1 \mid i \in [0, h), j \in [0, w)\}$.
 		\State Initialize $T$.
@@ -456,7 +456,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		
 		%		\ForAll{$\{t_{i, j} \mid t_{i, j} \in T, i \in [1, h), j \in [1, w)\}$} \label{algo:extractT:idxExt}
 		\ForAll{$\{(i, j) \mid 0 < i < h, 0 < j < w\}$} \label{algo:extractT:idxExt}
-		\State 	$buf \gets buf \Vert Extract(i, j)$ by Equation~\eqref{eq:extract}. \Comment{loop invariant}
+		\State 	$buf \gets buf \Vert Extract(i, j)$ by~\eqref{eq:extract}. \Comment{loop invariant}
 		\label{algo:extractT:nextij}
 		
 		\If		{$buf$ is a valid Huffman code}		
@@ -493,7 +493,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 		\State $k \gets 0$.
 		%		\ForAll{$\{ t_{i, j} \in T \mid (i = c_x \wedge j \in (c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
 		\ForAll{$\{ (i, j) \mid (i = c_x \wedge j \in (c_y, w)) \vee (i \in (c_x, h), j \in [1, w))\}$}
-		\State 		$buf \gets buf \Vert Extract(i, j)$ by Equation~\eqref{eq:extract}.
+		\State 		$buf \gets buf \Vert Extract(i, j)$ by~\eqref{eq:extract}.
 		\If			{$\left \vert buf \right \vert \geq 8$}
 		\State 			$r_k \gets MSB^8(buf)$. \Comment{the $k$-th byte of $REF_e$}
 		\State 			Remove 8 bits from $buf$.
@@ -518,7 +518,7 @@ Starting from $({c_x}^\prime, {c_y}^\prime)$, the secret bits can be extracted u
 
 After running Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, the \emph{Receiver} possesses the stego image $I_w$, the label map $T$ and reference bytes $REF_e$ of $I_e$.
 Define $I_e^\prime$ as the result of $I_w$ replacing the reference bytes $REF_w$ with $REF_e$.
-Each $x_{i, j}^{e\prime} \in I_e^\prime$ is defined as Equation~\eqref{eq:xeprime}.
+Each $x_{i, j}^{e\prime} \in I_e^\prime$ is defined as~\eqref{eq:xeprime}.
 \begin{align}
 	\label{eq:xeprime}
 	x_{i, j}^{e\prime} = &
@@ -530,9 +530,9 @@ Each $x_{i, j}^{e\prime} \in I_e^\prime$ is defined as Equation~\eqref{eq:xeprim
 	&\text{where } r_{j}, r_{w + i} \in REF_e \text{ and }  x_{i, j} \in I_w. \notag
 \end{align}
 
-Then $I_e^\prime$ is decrypted by key stream $K_I$ the same way as Equation~\eqref{eq:enc} and becomes $I^\prime$.
-The cover image $I$ is restored after Equation~\eqref{eq:restore} being applied to all $x^\prime_{i, j} \in I^\prime$.
-It must be emphasized that when applying Equation~\eqref{eq:restore} to $x^\prime_{i, j}$, the pixels $x_{i - i, j - 1}, x_{i - 1, j}$ and $x_{i, j -1}$ have already been restored from the reference bytes of $REF_e$ or the former application of Equation~\eqref{eq:restore}, so that the $pv_{i, j}$ are identical as the embedding process.
+Then $I_e^\prime$ is decrypted by key stream $K_I$ the same way as~\eqref{eq:enc} and becomes $I^\prime$.
+The cover image $I$ is restored after~\eqref{eq:restore} being applied to all $x^\prime_{i, j} \in I^\prime$.
+It must be emphasized that when applying~\eqref{eq:restore} to $x^\prime_{i, j}$, the pixels $x_{i - i, j - 1}, x_{i - 1, j}$ and $x_{i, j -1}$ have already been restored from the reference bytes of $REF_e$ or the former application of~\eqref{eq:restore}, so that the $pv_{i, j}$ are identical as the embedding process.
 
 
 
@@ -554,7 +554,7 @@ It must be emphasized that when applying Equation~\eqref{eq:restore} to $x^\prim
 \end{equation}
 
 
-An example of preprocessing, encryption, embedding, extraction, decryption, and restoration is illustrated in Figure~\ref{fig:example}.
+An example of preprocessing, encryption, embedding, extraction, decryption, and restoration is illustrated in Fig.\,\ref{fig:example}.
 
 
 

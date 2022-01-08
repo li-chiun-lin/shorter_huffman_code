@@ -1,4 +1,13 @@
-\documentclass{article}
+%\documentclass[runningheads,a4paper]{llncs}
+\documentclass{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
 
 \usepackage[table]{xcolor}
 \usepackage{tabularx}
@@ -63,26 +72,51 @@
 %\bibliographystyle{plain}
 %\bibliographystyle{abbrv}
 %\bibliographystyle{abbrvnat}
-\bibliographystyle{ieeetr}
+\bibliographystyle{splncs04}
 %\bibliographystyle{author-year}
 %\bibliographystyle{ieeetrnat}
 
 
-\title{t.b.d. A High Capacity Reversible Data Hiding in Encrypted Images using Multi-MSB Prediction and Huffman Coding}
-\author{An author}
-\affil{This is some institute}
+
+
 
 
 
 
 \begin{document}
 	
-	\maketitle
+	\mainmatter  
 	
+	\title{
+		A High Capacity Reversible Data Hiding in Encrypted Images Using Multi-MSB Prediction and Huffman Coding
+	}
+	
+%	\titlerunning{Reversible Data Hiding Using Multi-MSB Prediction and Huffman Coding}
+	
+	
+	\author{
+		Li-Chiun Lin$^1$ 	\and
+		Cheng-Ta Huang$^{2, 3}$  \and
+		Shiuh-Jeng Wang$^\star$
+	}
+	
+%	\authorrunning{
+%		autherrunning
+%	}
+	
+	\institute{
+		$^1$ Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan\\
+		$^2$ Internationa Bachelor Program in informatics, Yuan Ze University, Taoyuan, Taiwan \\
+		$^3$ Department of Information Management, Yuan Ze University, Taoyuan, Taiwan \\
+		$^\star$ Department of Information Management, Central Police University, Taoyuan, Taiwan\\
+		$^\star$ Whom correspondenc: \url{sjwang@mail.cpu.edu.tw}
+	}
+	
+	\maketitle
 	%\coffeestainA{0.9}{0.85}{-25}{5cm}{1.3cm}
 	
 	\begin{abstract}
-		The prosperity of cloud services stimulates the study of reversible data hiding in encrypted images, for which researchers dedicate to find better methods to adopt the new assumption that the ones who provide the cover images, a.k.a.\ the \emph{Conent-owner}, are no longer the same as the ones who hide the secret message into them, a.k.a.\ the \emph{Data-hider}, and the \emph{Data-hider} might not always be allowed to know the actual content of cover image the \emph{Conent-owner} provided, while the one who receives the stego image must be able to restore the exact cover image after extracting the secret.
+		The prosperity of cloud services stimulates the study of reversible data hiding in encrypted images, for which researchers dedicate to find better methods to adopt the new assumption that the ones who provide the cover images, a.k.a.\ the \emph{Content-owner}, are no longer the same as the ones who hide the secret message into them, a.k.a.\ the \emph{Data-hider}, and the \emph{Data-hider} might not always be allowed to know the actual content of cover image the \emph{Content-owner} provided, while the one who receives the stego image must be able to restore the exact cover image after extracting the secret.
 		A method of such reversible data hiding in encrypted images has been proposed and 
 		we propose improvements to enhance its performance and make it more generalized and stable. 
 		Experimental results show that our proposal improves its performance even in the worst-case scenario.
@@ -99,7 +133,8 @@
 	
 	
 	
-	
+	\subsubsection*{Acknowledgments}
+	This research was partially supported by the Ministry of Science and Technology of the Republic of China under the Grants MOST 110-2221-E-015-001-MY3.
 	
 	
 	\bibliography{shorter_huffman}
