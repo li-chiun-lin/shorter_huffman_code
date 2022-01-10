@@ -1,0 +1,155 @@
+\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
+
+\section{Proposed Method}
+\label{sec:ours}
+
+In this section, we propose a new reversible data hiding in encrypted images method base on~\cite{Yin2020} with three improvements that have a significant increment on embedding rate (ER) while still complying with the typical requirements described in Section~\ref{sec:intro}. 
+
+
+
+\subsection{Apply the Huffman tree building algorithm}
+\label{sec:improvetree}
+
+We observed that Yin et al.\ introduced their method based on a predefined Huffman tree 
+without clarifying the pros and cons behind this design decision. 
+We found that this fixed predefined tree topology constrains the true ability of Huffman coding. 
+When we apply the standard Huffman coding algorithm
+, its full power can be released~\cite{IRE1952, Leeuwen2008a}.
+
+The tree topology of 
+\emph{Lena} $512 \times 512$ is shown in Figure~\ref{fig:lenatree} and the statistic data is given in Table~\ref{tab:shrlena}. 
+Since in our proposal the tree topology is no longer a preshared knowledge between the \emph{Content-Owner}, the \emph{Data-hider} and the \emph{Receiver}, we have to extend $S^{aux}$ to convey this information. 
+ 
+A Huffman tree of 9 leaves has $2 \times 9 -1 = 17$ nodes, each needs one bit to represent its role, where 1 is defined for an internal node and 0 for a leaf~\cite{Pu2006}. 
+Each leaf has a value $0 \leq v \leq 8$, thus four bits are enough to store each leaf value, i.e., $4 \times 9 = 36$ bits. 
+Hence we occupy 53 bits in $S^{aux}$ to store the tree topology and leaf values.
+
+\begin{figure}
+	\scriptsize
+	\Tree[ 
+	[.0 [.0 \{00\}\\5 ]
+	[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+	[.1 [.0 [.0 \{100\}\\3 ]
+	[.1 [.0 \{1010\}\\2 ]
+	[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
+	[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
+	\caption{The Huffman coding tree of \emph{Lena} $512 \times 512$.}
+	\label{fig:lenatree}
+\end{figure}
+
+
+\begin{table}
+	%	\scriptsize
+	\centering
+	\caption{\emph{Lena} $512 \times 512$ using a different Huffman tree.}
+	
+	\begin{tabular}{crlcccr}
+		\toprule 
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode$}  &  $cap$ &    $\vert encode \vert$    & $payload$  & $\Delta$ \\
+		\midrule  
+		\singlelenashr
+		\bottomrule   
+	\end{tabular}
+	
+	\label{tab:shrlena}
+\end{table}
+
+\subsection{Reduce Reference Bytes}
+\label{sec:improveref}
+
+In the method of Yin et al.,
+the bytes in the first row and the first column, i.e.\ $REF_e$, must be losslessly preserved, and this is the reason why they must concatenate $REF_e$ after $T^\prime$ as part of $S^{aux}$ and embed them before embedding any secret information 
+. 
+
+Though this design does not provide any negative effect since $REF_e$ are $neutral$ base on the fact that every byte in $REF_e$ provides 8-bit capacity while also occupying 8 bits to embed itself, with one more byte being defined as $REF_e$, there is one less byte that can be used for information hiding. 
+
+As shown in~\eqref{eq:pe2}, 
+for the bytes in the first row, we define their predicted error $pv$ as exclusive-or with the previous byte. 
+Similar logic applies to those in the first column. 
+\begin{equation}
+	\label{eq:pe2}
+	pe(i, j) = 
+	\begin{cases}
+		\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < |REF_e| \\
+		x_{i, j - 1} \oplus x_{i, j}, & \text{if } i = 0 \\
+		x_{i - 1, j} \oplus x_{i, j}, & \text{if } j = 0 \\
+		pv(i, j) \oplus x_{i, j}, 	  & \text{if } 1 \leq i < h \wedge 1 \leq j < w\,. \\
+	\end{cases} 
+\end{equation}
+
+Theoretically, the top-left corner pixel $x_{0, 0}$ is the only critical byte that must be losslessly preserved, but for the following reasons, we define $REF_e$ more than this one byte.
+Aside from the reason described in Section~\ref{sec:improvetree} that we need 53 bits to store the Huffman tree, 
+more importantly, we need some more bytes in $REF_e$ to avoid violating a loop invariant during 
+their information extraction process~\cite{Furia2014}.
+
+There are two indexes in 
+their information extraction process, 
+i.e., the $(d_x, d_y)$ 
+and the $(i, j)$ for the loop.
+For 
+their information extraction process
+to work properly, there is a never mentioned loop invariant  
+that $(i, j) < (d_x, d_y)$ must be true, i.e., the index $(d_x, d_y)$ must be in a more advanced position in $I_w$ than $(i, j)$ for all time.
+
+While $(i, j)$ is increased with every loop iteration, $(d_x, d_y)$ is only increased when the $buf$ 
+contains a proper Huffman code, which is affected by the capacity of each proceeded $t_{i, j}$.
+If the distribution of $negative$ $t_{i, j}$ has a tendency to centralized in some part of $T$ and slows down the incremental speed of $(d_x, d_y)$, 
+their information extraction process
+will encounter exception and fail.
+
+Increase $REF_e$ helps to avoid this problem. 
+As can be seen 
+in their information extraction process,
+after extracting the information of Huffman tree, the rest of the $REF_e$ will be consumed to produce more $t_{(d_x, d_y)}$ and put $(d_x, d_y)$ at a more advanced position, thus reducing the chance of violating the loop invariant.
+Though defining more $REF_e$ bytes helps to amend this issue, it also decreases the bytes that can be dedicated to information hiding.
+
+Even though the minimum $REF_e$ requirement differs from image to image, for example, the Airplane $512 \times 512$ needs only 1 extra $REF_e$ beside the basic 53 bits used to convey the coding tree, while Baboon $512 \times 512$ asks for 16 more $REF_e$ bytes to safely go through 
+their information extraction process, 
+this loop invariant only exists in extracting process and remain unnoticed to the \emph{Content-Owner}.
+We have to define a fixed and large enough $REF_e$ and preshare this knowledge with all three participators in the use case. 
+
+According to our experiments, defining $REF_e$ equals to or larger than $7 + 63$ bytes is enough for all the test images we can acquire~\cite{UniversityofSouthernCalifornia2020, Bas2011, bows2007}, but we still retain the possibility that it might need to be extended for some more complex cover images.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Remove the redundant length column}
+\label{sec:improvesize}
+
+
+While we inspecting the method of Yin et al., we found the unreasonable design of constraining the size of $LEN$ to 20 bits, which is only suitable for images of size smaller than or equal to $512 \times 512$. 
+When using an image of larger size, e.g., $1024 \times 1024$, 
+it is understandable that the label map $T$ is of size $1023 \times 1023$ by definition, which is only slightly less than $2^{20}$, then the total $LEN$ of $T^\prime$ will sure be exceeded the size of 20 bits. 
+In fact, according to the experimental data published by~\cite{Yin2020}, the image \emph{Man $1024 \times 1024$} has $LEN = 3,121,508$ bits, which requires at least 22 bits to represent it since $log_2(3,121,508) = 21.574$.
+This can be amended by allocating enough space in the auxiliary information by~\eqref{eq:floor}.
+\begin{equation}
+	\label{eq:floor}
+	\vert LEN \vert \; \leq \lfloor log_2((w - 1) \times (h - 1) \times C ) \rfloor + 1 , 
+\end{equation}
+where the constant $C$ is the Shannon entropy~\cite{Shannon1948} representing the lower bound of the number of bits required to encode each value $t \in T$ 
+in the worst-case scenario when $F$ is a uniform distribution.
+
+When we further analyze 
+their information extraction process, 
+we realized that the $LEN$ is redundant information. 
+Since for both the secret extracting process
+and the cover image restoring process,  
+the label map $T$ is essential information, 
+and the $LEN$ is a by-product of the process of re-constructing $T$ from $I_e^\prime$ or $I_w$, 
+hence do not need to be explicitly conveyed in $S^{aux}$. 
+In our experiments, it is safe to remove the column $LEN$ from $S^{aux}$ 
+.

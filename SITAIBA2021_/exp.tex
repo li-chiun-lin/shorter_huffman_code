@@ -1,0 +1,82 @@
+\CatchFileDef{\deltatablesample}{delta-table-2.tex}{}
+\CatchFileDef{\singlemanmsb}{single-res-table-msb-Man.tex}{}
+\CatchFileDef{\singlemanshr}{single-res-table-shr-Man.tex}{}
+
+
+\section{Experimental results}
+\label{sec:experimental}
+
+\subsection{Commonly used test images}
+
+We apply the method of ours and Yin et al.\ on common test images collected from the USC-SIPI image dataset~\cite{UniversityofSouthernCalifornia2020}.
+The experimental results are shown in Table~\ref{tab:common}. 
+Within each column, there are three sub-columns representing the data of our method, the method of Yin et al.\ and the differences, respectively.
+
+\begin{table}
+	\scriptsize
+	\centering
+	\caption{Experimental results of benchmark images (Ours/Yin et~al./$\Delta$)}
+	\label{tab:common}
+	\begin{tabular}{l@{}c  @{\quad}  r@{/}r@{/}r  @{\quad} r@{/}r@{/}r  @{\quad} r@{/}r@{/}r  @{\quad} r@{/}r@{/}r }
+		\toprule
+		\multicolumn{1}{c}{Image} & Size & 
+		\multicolumn{3}{c}{Hdr(bit)}            & \multicolumn{3}{c}{Ref(byte)}& \multicolumn{3}{c}{Capacity(bit)}& \multicolumn{3}{c}{LEN(bit)}      \\ 
+		\midrule
+		%		\midrule
+		\deltatablesample
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+We noticed that in the experimental result of~\cite{Yin2020}, they use the identical sample test images as we acquired from USC-SIPI, except for 2 images, i.e., \emph{Baboon} and \emph{Lena}. 
+To avoid ambiguity, we included both images in Table~\ref{tab:common} and postfix ``-Yin'' to the 2 images used by Yin et al.
+
+In the column \emph{LEN}, our improvement described in Sec.\,\ref{sec:improvetree} surely reduces the overall length of $T'$ since Huffman coding is always optimal~\cite{Long2001}.
+%
+The reason why our method produces larger $T^\prime$ when applied to \emph{Lake, Peppers, Lax} and \emph{Man} is that we defined a larger $T$ in our method than Yin et al.
+%
+Take \emph{Man} $1024 \times 1024$ for an example, 
+it is understandable that $T$ is of size $1023 \times 1023$ when applying the method of Yin et al., 
+while it is of size $1024 \times 1024 - (7 + 63)$ when applying our method, 
+where we use 7 bytes to store the 53 bits of \emph{Hdr} and 63 bytes are defined as $REF_e$.
+%
+Since our method defined a larger $T$, it is inevitable that there will be a longer $T'$ for some images, as we have witnessed in the column \emph{LEN}. 
+%
+But when we further exam the coding result of \emph{Man} $1024 \times 1024$ in Table~\ref{tab:man}, our method still produces a slightly shorter average code length per value $t$ in $T$, which reflects the fact that our method adopted a better Huffman coding tree.
+
+In the column \emph{Ref}, our improvement described in Sec.\,\ref{sec:improveref} introduced almost a thousand bytes that can be used for information hiding for a $512 \times 512$ image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
+This improvement is proportional to the \emph{Size} of the cover image.
+
+
+\begin{table}
+	%	\scriptsize
+	\centering
+	\caption{The encoding result of \emph{Man} $1024 \times 1024$.}
+	\label{tab:man}
+	
+
+	\subcaption{when applying~\cite{Yin2020}.}
+	\label{tab:mana}
+	\begin{tabular}{crlcccr}
+		\toprule 
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode$}  &  $cap$ &    $\vert encode \vert$    & $payload$  & $\Delta$ \\
+		\midrule 
+		\singlemanmsb
+		\bottomrule
+		\multicolumn{7}{l}{Average code length per value: $3121506 \divisionsymbol 1046529 = 2.982722$}
+	\end{tabular}
+	
+	
+	
+	\subcaption{when applying our method.}
+	\label{tab:manb}
+	\begin{tabular}{crlcccr}
+		\toprule 
+		$v$ &   \multicolumn{1}{c}{$f_v$} &     \multicolumn{1}{c}{$encode$}  &  $cap$ &    $\vert encode \vert$    & $payload$  & $\Delta$ \\
+		\midrule 
+		\singlemanshr
+		\bottomrule
+		\multicolumn{7}{l}{Average code length per value: $3127243 \divisionsymbol 1048506 = 2.982570$}
+	\end{tabular}
+\end{table}
+

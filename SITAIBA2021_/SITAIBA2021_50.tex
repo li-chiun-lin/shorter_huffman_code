@@ -1,0 +1,156 @@
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+%\urldef{\mailsa}\path|{alfred.hofmann, ursula.barth, ingrid.haas, frank.holzwarth,|
+%\urldef{\mailsb}\path|anna.kramer, leonie.kunz, christine.reiss, nicole.sator,|
+%\urldef{\mailsc}\path|erika.siebert-cole, peter.strasser, lncs}@springer.com|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{qtree}
+\usepackage{color, colortbl}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{supertabular}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{IEEEtrantools}
+%\usepackage{subfig}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+%\usepackage{commath}
+\usepackage{physics}
+\usepackage{algpseudocode}
+\usepackage{authblk}
+\usepackage{hyperref}
+\usepackage{eqexpl}
+\usepackage{makecell}
+\usepackage{subcaption}
+%\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{soul}
+\usepackage{hhline}
+\usepackage{stmaryrd}
+\usepackage{import}
+%\usepackage{filecontents}
+\usepackage{catchfile}
+%\usepackage{biblatex}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+%\usepackage{natbib}
+\usepackage{cite}
+\usepackage{flexisym}
+
+
+\usepackage{coffeestains}
+
+
+
+
+\DeclareMathOperator{\capacity}{Cap}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\elems}{elems}
+%\DeclareMathOperator{\range}{\mathfrak{R}}
+\DeclareMathOperator{\HEncoder}{HEncoder}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+
+\pgfplotsset{compat=1.18}
+
+
+\bibliographystyle{splncs03}
+
+
+
+\begin{document}
+	
+	\mainmatter  
+	
+
+	\title{
+		A High Capacity Reversible Data Hiding in Encrypted Images Using Multi-MSB Prediction and Huffman Coding
+	}
+	
+	% a short form should be given in case it is too long for the running head
+	\titlerunning{Reversible Data Hiding Using Multi-MSB Prediction and Huffman Coding}
+	
+	% the name(s) of the author(s) follow(s) next
+	\author{
+		Li-Chiun Lin$^1$ 	\and
+		Cheng-Ta Huang$^{2, 3}$  \and
+		Shiuh-Jeng Wang$^\star$
+	}
+	
+	\authorrunning{
+%		Lecture Notes in Computer Science: Authors' Instructions
+	}
+
+
+	% the affiliations are given next; don't give your e-mail address
+	% unless you accept that it will be published
+	\institute{
+		$^1$ Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan\\
+		$^2$ Internationa Bachelor Program in informatics, Yuan Ze University, Taoyuan, Taiwan \\
+		$^3$ Department of Information Management, Yuan Ze University, Taoyuan, Taiwan \\
+		$^\star$ Department of Information Management, Central Police University, Taoyuan, Taiwan\\
+		$^\star$ Whom correspondenc: \url{sjwang@mail.cpu.edu.tw}
+	}
+	
+	%
+	% NB: a more complex sample for affiliations and the mapping to the
+	% corresponding authors can be found in the file "llncs.dem"
+	% (search for the string "\mainmatter" where a contribution starts).
+	% "llncs.dem" accompanies the document class "llncs.cls".
+	%
+	
+%	\toctitle{Lecture Notes in Computer Science}
+%	\tocauthor{Authors' Instructions}
+	
+	
+	\maketitle
+	
+	%\coffeestainA{0.9}{0.85}{-25}{5cm}{1.3cm}
+	
+	\begin{abstract}
+		The prosperity of cloud services stimulates the study of reversible data hiding in encrypted images, for which researchers dedicate to find better methods to adopt the new assumption that the ones who provide the cover images, a.k.a.\ the \emph{Content-owner}, are no longer the same as the ones who hide the secret message into them, a.k.a.\ the \emph{Data-hider}, and the \emph{Data-hider} might not always be allowed to know the actual content of cover image the \emph{Content-owner} provided, while the one who receives the stego image must be able to restore the exact cover image after extracting the secret.
+		A method of such reversible data hiding in encrypted images has been proposed and 
+		we propose improvements to enhance its performance and make it more generalized and stable. 
+		Experimental results show that our proposal improves its performance even in the worst-case scenario.
+	\end{abstract}
+	
+	%	\tableofcontents
+	
+	
+	\include{intro}
+	
+	\include{proposed}
+	\include{exp}
+	\include{conclusion}
+	
+	
+	\subsubsection*{Acknowledgments}
+	This research was partially supported by the Ministry of Science and Technology of the Republic of China under the Grants MOST 110-2221-E-015-001-MY3.
+	
+	
+	
+	\bibliography{shorter_huffman}
+	
+	
+	
+	
+\end{document}
