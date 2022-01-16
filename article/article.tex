@@ -92,7 +92,7 @@
 		\IEEEmembership{Fellow, IEEE}
 		
 		\thanks{Li-Chiun Lin and Shiuh-Jeng Wang are with Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan(e-mail \url{sjwang@mail.cpu.edu.tw}).}
-		\thanks{Cheng-Ta Huang is with International Bachelor Program in informatics, Yuan Ze University, Taoyuan, Taiwan.}
+		\thanks{Cheng-Ta Huang is with International Bachelor Program in informatics and Department of Information Management, Yuan Ze University, Taoyuan, Taiwan.}
 	}
 	
 %	\institute{
@@ -374,7 +374,7 @@
 	
 	Define auxiliary information \(S^{aux}\) as illustrated in Fig.\,\ref{fig:header1}, where \(S^{aux\prime}\) represents the first \(w + h - 1\) bytes of \(S^{aux}\).
 	The auxiliary information embedding process follows Algorithm~\ref{algo:embed1}. 
-	Each byte in \(REF_e\) is replaced by 8 bits of \(S^{aux\prime}\).
+	Each byte in \(REF_e\) is replaced by \(8\) bits of \(S^{aux\prime}\).
 	The rest of the \(S^{aux}\), denoted as \(S^{aux\prime\prime}\), is embedded into the main body of \(I_e\) using~\eqref{eq:embed1}. 
 	Each value \(t_{i, j} \in \mathbf{T}\) determines the capacity of embedding the corresponding \(x^e_{i, j} \in I_e\) can provide as defined in~\eqref{eq:cap}. 
 	
@@ -393,8 +393,8 @@
 			\hhline{*{1}{~}*{5}{-}}
 			& \multicolumn{1}{c}{\upbracefill} & \upbracefill& \multicolumn{2}{c}{\upbracefill}&\upbracefill 
 			\\
-			& \multicolumn{1}{c}{32 bits }
-			& 20 bits
+			& \multicolumn{1}{c}{\(32\) bits }
+			& \(20\) bits
 			& \multicolumn{2}{c}{\(LEN\) bits  }
 			& \(w + h - 1 \) bytes 
 			\\
@@ -553,9 +553,9 @@
 		 \text{where } n = ((w + h - 1) \times 8) - 1, r_i \in \{0, 1\}
 	\end{multline}
 	
-	The first 32 bits \((r_0   , \dots, r_{31})\) are the Huffman encoded value of 0 to 8 and 
-	the following 20 bits \((r_{32}, \dots, r_{51})\) contain the length \(LEN\) of the entire encoded label map \(\mathbf{T^\prime}\), as shown in Fig.\,\ref{fig:header1}.
-	For the first 32 bits, using the predefined and preshared Huffman tree \(\mathbf{H}\), they can be divided into 9 unambiguously Huffman codes, each consequently represents the Huffman encoding of 0 to 8. 
+	The first \(32\) bits \((r_0   , \dots, r_{31})\) are the Huffman encoded value of 0 to 8 and 
+	the following \(20\) bits \((r_{32}, \dots, r_{51})\) contain the length \(LEN\) of the entire encoded label map \(\mathbf{T^\prime}\), as shown in Fig.\,\ref{fig:header1}.
+	For the first \(32\) bits, using the predefined and preshared Huffman tree \(\mathbf{H}\), they can be divided into 9 unambiguously Huffman codes, each consequently represents the Huffman encoding of 0 to 8. 
 	With this information, the receiver can restore \(\mathbf{V}\) and \(\text{decode}(c)\) as defined in~\eqref{eq:v} and~\eqref{eq:decode}.
 	\begin{align}
 		\label{eq:r32}
@@ -652,7 +652,7 @@
 			\State 		\(buf \gets buf \Vert \text{Extract}(i, j)\) by~\eqref{eq:extract}.
 			\If			{\(\left \vert buf \right \vert \geq 8\)}
 			\State 			\(r_k \gets \text{MSB}^8(buf)\). \Comment{the \(k\)-th byte of \(REF_e\)}
-			\State 			Remove 8 bits from \(buf\).
+			\State 			Remove \(8\) bits from \(buf\).
 			\State 			\(k \gets k + 1\).
 			\If				{\(k = h + w\)}
 			\State				\(({c_x}^\prime, {c_y}^\prime) \gets (i, j)\)
@@ -905,7 +905,7 @@
 	
 	In Algorithm~\ref{algo:serial}, a Huffman tree of 9 leaves has \(2 \times 9 -1 = 17\) nodes, each needs one bit to represent its role, where 1 is defined for an internal node and 0 for a leaf~\cite{Pu2006}. 
 	Each leaf has a value \(0 \leq v \leq 8\), thus four bits are enough to store each leaf value, i.e., \(4 \times 9 = 36\) bits. 
-	Hence we occupy 53 bits in \(S^{aux}\) to store the tree topology and leaf values.
+	Hence we occupy \(53\) bits in \(S^{aux}\) to store the tree topology and leaf values.
 	
 	\begin{figure}[!t]
 		\begin{algorithm}[H]
@@ -1026,7 +1026,7 @@
 	
 	In the method of Yin et al., according to the definition of~\eqref{eq:pv}, the bytes in the first row and the first column, i.e.\ \(REF_e\), must be losslessly preserved, and this is the reason why they must concatenate \(REF_e\) after \(\mathbf{T^\prime}\) as part of \(S^{aux}\) and embed them before embedding any secret information in Algorithm~\ref{algo:embed1}. 
 	
-	Though this design does not provide any negative effect since \(REF_e\) are \emph{neutral} base on the fact that every byte in \(REF_e\) provides 8-bit capacity while also occupying 8 bits to embed itself, with one more byte being defined as \(REF_e\), there is one less byte that can be used for information hiding. 
+	Though this design does not provide any negative effect since \(REF_e\) are \emph{neutral} base on the fact that every byte in \(REF_e\) provides 8-bit capacity while also occupying \(8\) bits to embed itself, with one more byte being defined as \(REF_e\), there is one less byte that can be used for information hiding. 
 	
 	We extend~\eqref{eq:pe} to~\eqref{eq:pe2}. 
 	For the bytes in the first row, we define their predicted error \(pv\) as exclusive-or with the previous byte. 
@@ -1044,7 +1044,7 @@
 	
 	
 	Theoretically, the top-left corner pixel \(x_{0, 0}\) is the only critical byte that must be losslessly preserved, but for the following reasons, we define \(REF_e\) more than this one byte.
-	Aside from the reason described in Sec.\,\ref{sec:improvetree} that we need 53 bits to store the Huffman tree, 
+	Aside from the reason described in Sec.\,\ref{sec:improvetree} that we need \(53\) bits to store the Huffman tree, 
 	more importantly, we need some more bytes in \(REF_e\) to avoid violating a loop invariant during Algorithm~\ref{algo:extractT}~\cite{Furia2014}.
 	
 	There are two indexes in Algorithm~\ref{algo:extractT}, i.e., the \((d_x, d_y)\) defined at line~\ref{algo:extractT:idxProce} and the \((i, j)\) for the loop at line~\ref{algo:extractT:idxExt}. 
@@ -1057,7 +1057,7 @@
 	As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractT}, after extracting the information of Huffman tree, the rest of the \(REF_e\) will be consumed to produce more \(t_{(d_x, d_y)}\) and put \((d_x, d_y)\) at a more advanced position, thus reducing the chance of violating the loop invariant.
 	Though defining more \(REF_e\) bytes helps to amend this issue, it also decreases the bytes that can be dedicated to information hiding.
 	
-	Even though the minimum \(REF_e\) requirement differs from image to image, for example, the Airplane \(512 \times 512\) needs only 1 extra \(REF_e\) beside the basic 53 bits used to convey the coding tree, while Baboon \(512 \times 512\) asks for 16 more \(REF_e\) bytes to safely go through Algorithm~\ref{algo:extractT}, this loop invariant only exists in extracting process and remain unnoticed to the \emph{Content-Owner}.
+	Even though the minimum \(REF_e\) requirement differs from image to image, for example, the Airplane \(512 \times 512\) needs only 1 extra \(REF_e\) beside the basic \(53\) bits used to convey the coding tree, while Baboon \(512 \times 512\) asks for 16 more \(REF_e\) bytes to safely go through Algorithm~\ref{algo:extractT}, this loop invariant only exists in extracting process and remain unnoticed to the \emph{Content-Owner}.
 	We have to define a fixed and large enough \(REF_e\) and preshare this knowledge with all three participators in the use case. 
 	
 	According to our experiments, defining \(REF_e\) equals to or larger than \(7 + 63\) bytes is enough for all the test images we can acquire~\cite{UniversityofSouthernCalifornia2020, Bas2011, Filler2010}, but we still retain the possibility that it might need to be extended for some more complex cover images.
