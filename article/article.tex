@@ -262,7 +262,7 @@
 		t_{i, j} &= 
 		\begin{cases}
 			8,&  \text{if } pe_{i, j} = 0,       \\
-			7 - \lfloor log_2(pe_{i, j}) \rfloor ,&  \text{if } pe_{i, j} \neq  0.
+			7 - \lfloor \log_2(pe_{i, j}) \rfloor ,&  \text{if } pe_{i, j} \neq  0.
 		\end{cases} 	
 	\end{align}
 	
@@ -571,7 +571,7 @@
 	The extraction function is defined as~\eqref{eq:extract}.
 	\begin{align}
 		\label{eq:extract}
-		\text{Extrac}(i, j)  &= 
+		\text{Extract}(i, j)  &= 
 		\begin{cases}
 			b_7 \Vert \cdots \Vert b_0 & \text{if }  7 \leq t_{i, j} \leq 8 \\
 			b_7 \Vert \cdots \Vert b_{7 - t_{i, j}} & \text{if }  0 \leq t_{i, j} \leq 6
@@ -1090,17 +1090,17 @@
 	While we inspecting the method of Yin et al., we found the unreasonable design of constraining the size of \(LEN\) to \(20\) bits, which is only suitable for images of size smaller than or equal to \(512 \times 512\). 
 	When using an image of larger size, e.g., \(1024 \times 1024\), 
 	it is understandable that the label map \(\mathbf{T}\) is of size \(1023 \times 1023\) by definition, which is only slightly less than \(2^{20}\), then the total \(LEN\) of \(\mathbf{T^\prime}\) will sure be exceeded the size of \(20\) bits. 
-	In fact, according to the experimental data published by~\cite{Yin2020}, the image \emph{Man \(1024 \times 1024\)} has \(LEN = 3121508\) bits, which requires at least \(22\) bits to represent it since \(log_2(3121508) = 21.574\).
+	In fact, according to the experimental data published by~\cite{Yin2020}, the image \emph{Man \(1024 \times 1024\)} has \(LEN = 3121508\) bits, which requires at least \(22\) bits to represent it since \(\log_2(3121508) = 21.574\).
 	This can be amended by allocating enough space in the auxiliary information by~\eqref{eq:floor}.
 	\begin{equation}
 		\label{eq:floor}
-		\vert LEN \vert \; \leq \lfloor log_2((w - 1) \times (h - 1) \times C ) \rfloor + 1 , 
+		\vert LEN \vert \; \leq \lfloor \log_2((w - 1) \times (h - 1) \times C ) \rfloor + 1 , 
 	\end{equation}
 	
 	where the constant \(C\) is the Shannon entropy~\cite{Shannon1948} representing the lower bound of the number of bits required to encode each value \(t \in \mathbf{T}\) 
 	in the worst-case scenario when \(\mathbf{F}\) is a uniform distribution.
 	\begin{equation}
-		C = - \sum_{i = 0}^{\vert \mathbf{F} \vert} p_i \times log_2 (p_i), \text{ where } p_i = 1 / {\vert \mathbf{F} \vert}
+		C = - \sum_{i = 0}^{\vert \mathbf{F} \vert} p_i \times \log_2 (p_i), \text{ where } p_i = 1 / {\vert \mathbf{F} \vert}
 	\end{equation}
 	
 	Since \(C \approx 3.15\) when \(n = 9\), hence it is estimated that averagely each value in \(\mathbf{T}\) is encoded into \(3.15\) bits.
