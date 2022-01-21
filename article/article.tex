@@ -68,7 +68,7 @@
 
 \pgfplotsset{compat=1.18}
 
-\bibliographystyle{ieeetran}
+\bibliographystyle{IEEEtran}
 
 
 
@@ -80,18 +80,15 @@
 \begin{document}
 	
 	\title{
+		To Be Determined. \\
 		A High Capacity Reversible Data Hiding in Encrypted Images Using Multi-MSB Prediction and Huffman Coding
 	}
 	
 	\author{
-		Li-Chiun Lin
-		,
-		Cheng-Ta Huang
-		and
-		Shiuh-Jeng Wang
-		\IEEEmembership{Fellow, IEEE}
+		Li-Chiun Lin,	Cheng-Ta Huang and	 Shiuh-Jeng WANG*
 		
-		\thanks{Li-Chiun Lin and Shiuh-Jeng Wang are with Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan(e-mail \url{sjwang@mail.cpu.edu.tw}).}
+		
+		\thanks{Li-Chiun Lin and Shiuh-Jeng WANG* are with Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan. Whom correspondence: Shiuh-Jeng WANG* \url{sjwang@mail.cpu.edu.tw}.}
 		\thanks{Cheng-Ta Huang is with International Bachelor Program in informatics and Department of Information Management, Yuan Ze University, Taoyuan, Taiwan.}
 	}
 	
@@ -279,7 +276,7 @@
 	\begin{multline}
 		\label{eq:v}
 		\mathbf{V} = (v_0, \dots, v_8), \\
-		\text{where } \forall v_i, v_j \in \mathbf{V} \colon i \leq j \iff f_{v_i} \leq f_{v_j} 
+		\text{where } \forall v_i, v_j \in \mathbf{V} \colon i \leq j \iff f_{v_i} \leq f_{v_j} .
 	\end{multline}
 	
 	Let cap\((v)\) be a function defined for all \(v \in \mathbf{V}\), representing the capacity each \(t_{i, j} = v\) can provide.
@@ -348,7 +345,7 @@
 		\centering
 		\caption{An example of \emph{Lena} \(512 \times 512\).}
 		\label{tab:msblena}
-		\begin{tabular}{c@{}rl@{}ccc@{}r}
+		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule 
 			\(v\) &   \multicolumn{1}{c}{\(f_v\)} &     \multicolumn{1}{c}{\(\text{encode}\)}  &  \(\text{cap}(v)\) &    \(\vert \text{encode}(v) \vert\)    & \(\text{payload}(v)\)  & \(\Delta\) \\
 			\midrule 
@@ -363,13 +360,13 @@
 	The cover image \(I\) is encrypted with a key stream \(K_I\) using~\eqref{eq:enc}.
 	\begin{equation}
 		\label{eq:enc}
-		I_e = I \oplus K_I
+		I_e = I \oplus K_I 
 	\end{equation}
 	
 	Define reference bytes \(REF_e\) as the bytes in the first row and the first column of \(I_e\).
 	\begin{multline}
 		REF_e = (\underbrace{x^e_{0, 0}, \dots, x^e_{0, w - 1}}_{\text{first row}}, \underbrace{x^e_{1, 0}, \dots, x^e_{h - 1, 0}}_{\text{first column}}), \\
-		\quad \text{where } x^e_{i, j} \in I_e
+		\quad \text{where } x^e_{i, j} \in I_e .
 	\end{multline}
 	
 	Define auxiliary information \(S^{aux}\) as illustrated in Fig.\,\ref{fig:header1}, where \(S^{aux\prime}\) represents the first \(w + h - 1\) bytes of \(S^{aux}\).
@@ -441,13 +438,13 @@
 			\quad \text{if } 0 \leq t_{i, j} < 7 ,
 		\end{dcases}  
 		\\ 
-		& \text{where} \notag \\
+%		& \text{where} \notag \\
 		&
 		\begin{aligned}
 			%		x^e_{i, j} & \in I_e ,  \\
-			S^\ast     & \text{ is a subsequence of } S^{aux}.  \\
+			\text{where } S^\ast     & \text{ is a subsequence of } S^{aux},  \\
 			\text{MSB}^{m}(B) & = \sum\nolimits_{i = 8 - m}^7 b_i \times 2^i, m \in [1, 8], \\
-			\text{LSB}^{n}(B) & = B \bmod 2^n, n \in [1, 8], \\
+			\text{LSB}^{n}(B) & = B \bmod 2^n, n \in [1, 8] \text{ and } \\
 			B &= (b_0, \dots, b_i), b_i \in \{0, 1\}, i \in [0, 7].
 		\end{aligned} \notag
 	\end{align}
@@ -573,8 +570,8 @@
 		\label{eq:extract}
 		\text{Extract}(i, j)  &= 
 		\begin{cases}
-			b_7 \Vert \cdots \Vert b_0 & \text{if }  7 \leq t_{i, j} \leq 8 \\
-			b_7 \Vert \cdots \Vert b_{7 - t_{i, j}} & \text{if }  0 \leq t_{i, j} \leq 6
+			b_7 \Vert \cdots \Vert b_0 ,& \text{if }  7 \leq t_{i, j} \leq 8 ,\\
+			b_7 \Vert \cdots \Vert b_{7 - t_{i, j}} ,& \text{if }  0 \leq t_{i, j} \leq 6 .
 		\end{cases}
 	\end{align}
 	
@@ -701,9 +698,9 @@
 			pv_{i, j}                          ,& \text{if } t_{i, j} = 8, \\
 			\\
 			\begin{aligned}
-				&\text{MSB}^{t_{i, j}}(pv_{i, j}) + \\
-				&\quad  \text{LSB}^{(7 - t_{i, j})}(x^\prime_{i, j}) +\\
-				&\quad  \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \times 2^{(7 - t_{i, j})}}_
+				&\text{MSB}^{t_{i, j}}(pv_{i, j})  \\
+				&\quad {+}\: \text{LSB}^{(7 - t_{i, j})}(x^\prime_{i, j}) \\
+				&\quad {+} \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \times 2^{(7 - t_{i, j})}}_
 				{\text{flip the } (t_{(i, j)}+1) \text{-th bit}} ,
 			\end{aligned} & \text{if } 0 \leq t_{i, j} \leq 7.
 		\end{cases}
@@ -903,7 +900,7 @@
 	Since in our proposal the tree topology is no longer a preshared knowledge between the \emph{Content-Owner}, the \emph{Data-hider} and the \emph{Receiver}, we have to extend \(S^{aux}\) to convey this information. 
 	A tree serialization algorithm is given in Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
 	
-	In Algorithm~\ref{algo:serial}, a Huffman tree of 9 leaves has \(2 \times 9 -1 = 17\) nodes, each needs one bit to represent its role, where 1 is defined for an internal node and 0 for a leaf~\cite{Pu2006}. 
+	In Algorithm~\ref{algo:serial}, a Huffman tree of \(9\) leaves has \(2 \times 9 -1 = 17\) nodes, each needs one bit to represent its role, where 1 is defined for an internal node and 0 for a leaf~\cite{Pu2006}. 
 	Each leaf has a value \(0 \leq v \leq 8\), thus four bits are enough to store each leaf value, i.e., \(4 \times 9 = 36\) bits. 
 	Hence we occupy \(53\) bits in \(S^{aux}\) to store the tree topology and leaf values.
 	
@@ -986,7 +983,7 @@
 		\centering
 		\caption{\emph{Lena} \(512 \times 512\) using a different Huffman tree.}
 		\CatchFileDef{\singlelenashr}{single-res-table-shr-Lena.tex}{}
-		\begin{tabular}{c@{}rl@{}ccc@{}r}
+		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule  
 			\(v\) &   \multicolumn{1}{c}{\(f_v\)} &     \multicolumn{1}{c}{\(\text{encode}(v)\)}  &  \(\text{cap}(v)\) &    \(\vert \text{encode}(v) \vert\)    & \(\text{payload}(v)\)  & \(\Delta\) \\
 			\midrule  
@@ -1026,7 +1023,7 @@
 	
 	In the method of Yin et al., according to the definition of~\eqref{eq:pv}, the bytes in the first row and the first column, i.e.\ \(REF_e\), must be losslessly preserved, and this is the reason why they must concatenate \(REF_e\) after \(\mathbf{T^\prime}\) as part of \(S^{aux}\) and embed them before embedding any secret information in Algorithm~\ref{algo:embed1}. 
 	
-	Though this design does not provide any negative effect since \(REF_e\) are \emph{neutral} base on the fact that every byte in \(REF_e\) provides 8-bit capacity while also occupying \(8\) bits to embed itself, with one more byte being defined as \(REF_e\), there is one less byte that can be used for information hiding. 
+	Though this design does not provide any negative effect since \(REF_e\) are \emph{neutral} base on the fact that every byte in \(REF_e\) provides 8 bits to the total capacity while also occupying \(8\) bits to embed itself, with one more byte being defined as \(REF_e\), there is one less byte that can be used for information hiding. 
 	
 	We extend~\eqref{eq:pe} to~\eqref{eq:pe2}. 
 	For the bytes in the first row, we define their predicted error \(pv\) as exclusive-or with the previous byte. 
@@ -1107,7 +1104,7 @@
 	The advantage of this improvement is that the allocated size of \(|LEN|\) only depends on the size \((w, h)\) of the cover image and a constant \(C\) so that it complies with the protocol translucently.
 	This improvement does not aim to increase the embedding capacity but to make the protocol more compact and solid.
 	
-	When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the \(LEN\) is redundant information. 
+	When we further analyze Algorithm~\ref{algo:extractT} and~\ref{algo:extractref}, we realized that the \(LEN\) is redundant. 
 	Since for both the secret extracting process described in Sec.\,\ref{sec:extract} and the cover image restoring process described in Sec.\,\ref{sec:restore}, the label map \(\mathbf{T}\) is essential information, 
 	and the \(LEN\) is a by-product of the process of re-constructing \(\mathbf{T}\) from \(I_e^\prime\) or \(I_w\), 
 	hence do not need to be explicitly conveyed in \(S^{aux}\). 
@@ -1212,7 +1209,7 @@
 	The reason why our method produces larger \(\mathbf{T^\prime}\) when applied to \emph{Lake, Peppers, Lax} and \emph{Man} is that we defined a larger \(\mathbf{T}\) in our method than Yin et al.
 	%
 	Take \emph{Man} \(1024 \times 1024\) for an example, 
-	it is understandable that $T$ is of size \(1023 \times 1023\) when applying the method of Yin et al., 
+	it is understandable that \(\mathbf{T}\) is of size \(1023 \times 1023\) when applying the method of Yin et al., 
 	while it is of size \(1024 \times 1024 - (7 + 63)\) when applying our method, 
 	where we use \(7\) bytes to store the \(53\) bits of \emph{Hdr} and \(63\) bytes are defined as \(REF_e\).
 	%
@@ -1236,7 +1233,7 @@
 		\label{tab:man}
 		\subcaption{when applying~\cite{Yin2020}.}
 		\label{tab:mana}
-		\begin{tabular}{c@{}rlccc@{}r}
+		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule 
 			\(v\) &   \multicolumn{1}{c}{\(f_v\)} &     \multicolumn{1}{c}{\(\text{encode}(v)\)}  &  \(\text{cap}(v)\) &    \(\vert \text{encode}(v) \vert\)    & \(\text{payload}(v)\)  & \(\Delta\) \\
 			\midrule 
@@ -1247,7 +1244,7 @@
 		
 		\subcaption{when applying our method.}
 		\label{tab:manb}
-		\begin{tabular}{c@{}rlccc@{}r}
+		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule 
 			\(v\) &   \multicolumn{1}{c}{\(f_v\)} &     \multicolumn{1}{c}{\(\text{encode}(v)\)}  &  \(\text{cap}(v)\) &    \(\vert \text{encode}(v) \vert\)    & \(\text{payload}(v)\)  & \(\Delta\) \\
 			\midrule 
@@ -1267,7 +1264,7 @@
 	The experimental result is given in Table~\ref{tab:exp3}, where we use ER, as defined in Equation~\eqref{eq:er}, to evaluate both methods and presents the best, worst and average cases.
 	The cover image that involved in the best case and the worst case of both dataset are shown in Fig.\,\ref{fig:best} and Fig.\,\ref{fig:worst}.
 	\begin{equation}
-		\text{ER} = \frac{\sum_{v \in \mathbf{V}} \text{payload}(v) \times f_v}{w \times h}, \qquad \text{where } f_v \in \mathbf{F}
+		\text{ER} = \frac{\sum_{v \in \mathbf{V}} \text{payload}(v) \times f_v}{w \times h}, \qquad \text{where } f_v \in \mathbf{F} .
 		\label{eq:er}
 	\end{equation}
 	
@@ -1277,9 +1274,9 @@
 		\caption{Experimental results of image datasets (Ours/Yin et~al./$\Delta$)}
 		\label{tab:bestworst}
 		\label{tab:exp3}
-		\begin{tabular}{@{}l@{}c@{/}c@{/}c  c@{/}c@{/}c c@{/}c@{/}c@{}}
+		\begin{tabular}{@{}l@{\;}c@{/}c@{/}c c@{/}c@{/}c c@{/}c@{/}c@{}}
 			\toprule
-			ER (bits per pixel) & \multicolumn{3}{c}{Best Case} & \multicolumn{3}{c}{Worst Case} & \multicolumn{3}{c}{Average} \\
+			ER (bpp) & \multicolumn{3}{c}{Best Case} & \multicolumn{3}{c}{Worst Case} & \multicolumn{3}{c}{Average} \\
 			\midrule
 			BOSSBase &6.881 &	5.898	&\(+\)0.984& 0.716 &0.665& \(+\)0.051& 3.464 &	3.362&	\(+\)0.103 \\
 			BOWS2    &6.443 &	5.622   &\(+\)0.821& 0.671 &0.629& \(+\)0.042& 3.320 &	3.246&	\(+\)0.075 \\
@@ -1334,7 +1331,7 @@ We focused our comparison on the embedding capacity, i.e., BPP, and the experime
 	
 	
 	\subsubsection*{Acknowledgments}
-	This research was partially supported by the Ministry of Science and Technology of the Republic of China under the Grants MOST 110-2221-E-015-001-MY3.
+	This research was partially supported by the Ministry of Science and Technology of the Republic of China under the Grants MOST 110-2221-E-015-001-MY3 and MOST 110-2218-E-218-001.
 	
 	
 	\bibliography{shorter_huffman}
@@ -1342,6 +1339,20 @@ We focused our comparison on the embedding capacity, i.e., BPP, and the experime
 	%	\appendix
 	%	\include{huffman_tree}
 	%	\include{huffman_serial}
+	
+	\begin{IEEEbiographynophoto}{Li-Chiun Lin}
+		received the master's degree in computer science and engineering from the Université Catholique de Louvain, Belgium.
+	\end{IEEEbiographynophoto}
+	
+	\begin{IEEEbiographynophoto}{Cheng-Ta Huang}
+		received the Ph.D.~degree in computer science and information engineering from the National Central University, Taiwan, in 2013. 
+		He is currently an Assistant Professor of International Bachelor Program in Informatics and Department of Information Management, Yuan Ze University, Taiwan. His research interests include information security and Image processing.
+	\end{IEEEbiographynophoto}
+	
+	\begin{IEEEbiographynophoto}{Shiuh-Jeng WANG}
+		received the Ph.D.~degree in electrical engineering from the National Taiwan University, Taiwan. He is currently a Professor of information management, Central Police University, Taiwan. His research interests include information security, evidence ability and forensic analysis.
+		
+	\end{IEEEbiographynophoto}
 	
 	
 	
