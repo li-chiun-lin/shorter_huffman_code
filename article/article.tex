@@ -57,18 +57,10 @@
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 	\noindent\keywordname\enspace\ignorespaces#1}
 
-%\DeclareMathOperator{\capacity}{Cap}
-%\DeclareMathOperator{\range}{range}
-%\DeclareMathOperator{\elems}{elems}
-%\DeclareMathOperator{\range}{\mathfrak{R}}
-%\DeclareMathOperator{\HEncoder}{HEncoder}
-
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 
-
 \bibliographystyle{IEEEtran}
-
 
 \begin{document}
 	
@@ -78,7 +70,6 @@
 	
 	\author{
 		Li-Chiun Lin,	Cheng-Ta Huang and	 Shiuh-Jeng WANG*
-		
 		
 		\thanks{Li-Chiun Lin and Shiuh-Jeng WANG* are with Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan. Whom correspondence: Shiuh-Jeng WANG* \url{sjwang@mail.cpu.edu.tw}.}
 		\thanks{Cheng-Ta Huang is with International Bachelor Program in informatics and Department of Information Management, Yuan Ze University, Taoyuan, Taiwan.}
@@ -121,10 +112,12 @@
 	The responsibility of the \emph{Data-hider} is to embed some secret message into the cover images, e.g., a cloud service provider might request to embed authentication data or annotations into the images. 
 	The \emph{Receiver} could be the same as \emph{Data-hider} or any other entities that request the cover images and/or the embedded secret message.
 	There are two extra requirements in this use case besides the fundamental goal of hiding secret message. 
+%	
 	\begin{enumerate}
 		\item The \emph{Receiver} must receive the identical cover image as the \emph{Content-owner} provided.
 		\item The \emph{Data-hider} must not know the content of the cover image.
 	\end{enumerate}
+%
 	Researches in the field of RDHEI are hence raised to fulfill these two requirements.
 	In this paper, we propose a new RDHEI method that achieve better embedding capacity than other state-of-the-art methods.
 
@@ -144,6 +137,7 @@
 	and Huffman coding technique~\cite{Yin2020}.
 	Their method complied with the common use case that consists of the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver}.
 	Their method consists of the following steps. 
+%	
 	\begin{enumerate}
 		\item The \emph{Content-owner} 
 		\begin{enumerate}
@@ -328,7 +322,7 @@
 		\label{fig:lenatree}
 	\end{figure}
 
-	\begin{table}
+	\begin{table}[!t]
 		\centering
 		\caption{Huffman coding of \emph{Lena} \(512 \times 512\).}
 		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
@@ -865,7 +859,7 @@
 	
 	\subsection{USC-SIPI}
 	
-	\begin{table*}
+	\begin{table*}[!t]
 		\centering
 		\caption{USC-SIPI (Ours/Yin et~al./$\Delta$)}
 		\label{tab:common}
@@ -894,7 +888,7 @@
 		\end{tabular}
 	\end{table*}
 	
-	\begin{table}
+	\begin{table}[!t]
 		\centering
 		\caption{The encoding result of \emph{Man} \(1024 \times 1024\)}
 		\label{tab:man}
@@ -992,7 +986,7 @@
 	
 	\subsection{Large datasets}
 	
-	\begin{table}
+	\begin{table}[!t]
 		\centering
 		\caption{BOSSBase and BOWS-2 (Ours/Yin et~al./$\Delta$)}
 		\label{tab:bestworst}
@@ -1009,7 +1003,7 @@
 		\end{tabular}
 	\end{table}
 	
-	\begin{table}
+	\begin{table}[!t]
 		\centering
 		\caption{Average Capacity Comparison(bpp).}
 		\label{tab:compare}
