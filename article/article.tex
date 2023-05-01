@@ -65,7 +65,7 @@
 \begin{document}
 	
 	\title{
-		Prediction-based Data Hiding of Multi-MSB Encrypted Images Using Huffman Coding in Cloud Services
+		Prediction-based Data Hiding of Multi-MSB Substitution in Encrypted Images Using Huffman Coding
 	}
 	
 	\author{
@@ -78,7 +78,8 @@
 	\maketitle
 	
 	\begin{abstract}
-		The prosperity of cloud services has been stimulating the study of reversible data hiding in encrypted images. Researchers dedicate to find better methods to adopt the new assumption that those who provide the cover images, a.k.a.\ the \emph{Content-owner}, are no longer the same as those who hide the secret message into them, a.k.a.\ the \emph{Data-hider}, and the \emph{Data-hider} might not always be allowed to know the actual content of cover image, while the one who receives the stego image must be able to restore the identical cover image after extracting the exact secret.
+		Reversible data hiding in encrypted images is a research domain aimed to perform data hiding in encrypted images. 
+		Researchers dedicate to find better methods to adopt the new assumption that those who provide the cover images, i.e.\ the \emph{Content-owner}, are no longer the same as those who hide the secret message into them, i.e.\ the \emph{Data-hider}, and the \emph{Data-hider} might not always be allowed to know the actual content of cover image, while the one who receives the stego image must be able to restore the identical cover image after extracting the embedded secret.
 		In this paper, we propose a new reversible data hiding in encrypted images algorithm that achieves better embedding capacity even in the worst-case scenario.
 	\end{abstract}
 	
@@ -91,26 +92,25 @@
 	
 	\IEEEPARstart{D}{ata}
 	hiding is a technique used to prevent the conveyor from knowing the existence of a secret message while transporting it from the sender to the receiver. 
-	While the cover image might inevitably suffer from distortion, a subset of the studies of data hiding is dedicated to meet the requirements that the cover image must be losslessly recovered after extracting the secret message, namely \emph{reversible data hiding} (RDH)~\cite{Coatrieux2009, Gao2009, Li2020}. 
-	Furthermore, a subset within which even started to study the benefits of hiding secret messages into encrypted images, i.e., \emph{reversible data hiding in encrypted images} (RDHEI)~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
+	While the cover image might inevitably suffer from distortion, a subset of the studies of data hiding is dedicated to meet the requirements that the cover image must be losslessly recovered after extracting the secret message, namely \emph{Reversible Data Hiding} (RDH)~\cite{Coatrieux2009, Gao2009, Li2020}. 
+	Furthermore, a subset within which even started to study the benefits of hiding secret messages into encrypted images, i.e., \emph{Reversible Data Hiding in Encrypted Images} (RDHEI)~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
 	The schemata are usually categorized into the following types. 
 	
-	In \emph{reserving room before encryption} (RRBE)~\cite{Ma2013, Agrawal2017, Liao2015}, as its name implies, a pre-processing procedure is applied to a cover image before it is encrypted. 
+	In \emph{Reserving Room Before Encryption} (RRBE)~\cite{Ma2013, Agrawal2017, Liao2015}, as its name implies, a pre-processing procedure is applied to a cover image before it is encrypted. 
 	This type of schemata normally produces a \emph{label map} containing critical information for the following data hiding procedure. 
 	This \emph{label map} is then considered as \emph{auxiliary information} and embedded into the cover image together with the secret message.
 	
-	In \emph{vacating room after encryption} (VRAE)~\cite{Puech2008, Wu2019, Li2018}, on the contrary, a cover image is encrypted, then a post-processing procedure vacates some part of the encrypted image for a following data hiding procedure.
+	In \emph{Vacating Room After Encryption} (VRAE)~\cite{Puech2008, Wu2019, Li2018}, on the contrary, a cover image is encrypted, then a post-processing procedure vacates some part of the encrypted image for a following data hiding procedure.
 	
 	Though the schemata of VRAE are more concise since the post-processing procedure and the data hiding procedure can be considered as one procedure, 
 	those schemata of RRBE provides more embedding capacity because they exploits the high correlation of adjacent pixels while the input of the post-processing procedure of VRAE is an encrypted image, which is equivalent to low correlation random bytes.
 	
-	The schemata in the category of \emph{vacating room by encryption} (VRBE)~\cite{Liu2018, Yu2020} are more tricky since they adopt properties of certain cryptography algorithms to squeeze redundant space for data hiding when applying the encryption procedure, 
-	but they inevitably sacrifice the possibility to losslessly recover the cover image.
+	The schemata in the category of \emph{Vacating Room By Encryption} (VRBE)~\cite{Liu2018, Yu2020} are more tricky since they adopt properties of certain cryptography algorithms to squeeze redundant space for data hiding when applying the encryption procedure, but they inevitably sacrifice the possibility to losslessly recover the cover image.
 	
 	In the discussing of RDHEI, a use case that comprises of three roles, namely the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver} is commonly adopted~\cite{Qin2015}.
-	The \emph{Content-owner}, as its name suggested, is responsible for providing cover images, commonly analogies to a cloud service client user.
-	The responsibility of the \emph{Data-hider} is to embed some secret message into the cover images, e.g., a cloud service provider might request to embed authentication data or annotations into the images. 
-	The \emph{Receiver} could be the same as \emph{Data-hider} or any other entities that request the cover images and/or the embedded secret message.
+	The \emph{Content-owner}, as its name suggested, is responsible for providing encrypted images, commonly analogies to a cloud service client user.
+	The responsibility of the \emph{Data-hider} is to embed some secret message into the encrypted images, e.g., a cloud service provider might request to embed authentication data or annotations into the encrypted images. 
+	The \emph{Receiver} could be the same as \emph{Data-hider} or any other entities that request the encrypted images and/or the embedded secret message.
 	There are two extra requirements in this use case besides the fundamental goal of hiding secret message. 
 %	
 	\begin{enumerate}
@@ -118,8 +118,8 @@
 		\item The \emph{Data-hider} must not know the content of the cover image.
 	\end{enumerate}
 %
-	Researches in the field of RDHEI are hence raised to fulfill these two requirements.
-	In this paper, we propose a new RDHEI method that achieve better embedding capacity than other state-of-the-art methods.
+	Researches in the field of RDHEI are hence raised to fulfill these two additional requirements.
+	In this paper, we propose a new RRBE RDHEI method that achieve better embedding capacity than other state-of-the-art methods.
 
 	The rest of the paper is organized as follows. 
 	Related works are explained in Sec.\,\ref{sec:related}. Our proposal is described in Sec.\,\ref{sec:ours}. 
@@ -172,7 +172,7 @@
 		\label{fig:flowchart}
 	\end{figure*}
 	
-	In this section, we propose a new RDHEI method base on the same use case as~\cite{Yin2020}.  
+	In this section, we propose a new RRBE RDHEI method base on the same use case as~\cite{Yin2020}.  
 	Our method complies with the typical requirements described in Sec.\,\ref{sec:intro} and achieves higher embedding capacity than those mentioned in Sec.\,\ref{sec:related}. 
 	The flow char of our proposal is demonstrated as Fig.\,\ref{fig:flowchart}, each procedure is explained as follows.
 	
@@ -529,7 +529,7 @@
 		LEN = CodeLength \times w \times h
 	\end{equation}
 %
-	We define \(REF\) as \(70\).
+	We set \(REF = 70\) base on our experiment results.
 	We define auxiliary information \(S_a\) as illustrated in Fig.\,\ref{fig:header2} and let \(S_{a1}\) represent the first \(REF\) bytes of \(S_a\), and \(S_{a2}\) be the rest of \(S_a\). 
 	Every subsequence of \(S_a\) is embedded into \(I_e\) using~\eqref{eq:embed1}, where \(S^\ast\) is a subsequence of \(S_a\). $\mathrm{MSB}$ and $\mathrm{LSB}$ are defined as~\eqref{eq:msb} and~\eqref{eq:lsb}, respectively. 
 	The embedding process follows Algorithm~\ref{algo:embed1}.
@@ -847,7 +847,7 @@
 				&\mathrm{MSB}^{(t_{i, j})}(pv_{i, j})  \\
 				&\quad {+}\: \mathrm{LSB}^{(7 - t_{i, j})}(x^\prime_{i, j}) \\
 				&\quad {+} \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \times 2^{(7 - t_{i, j})}}_
-				{\text{flip the } (t_{(i, j)}+1) \text{-th bit}} ,
+				{\text{flip the } (t_{i, j}+1) \text{-th bit}} ,
 			\end{aligned} & \text{otherwise}.
 		\end{cases}
 	\end{equation}
@@ -1056,7 +1056,7 @@
 	\section{Conclusion}
 	\label{sec:conclusion}
 	
-	In this paper, we proposed a new RDHEI methods that have significant incremental in embedding capacity.
+	In this paper, we proposed a new RRBE RDHEI methods that have significant incremental in embedding capacity.
 	Since the method within our discussion is a reversible data hiding method, 
 	which can losslessly restore the cover image after extracting secret message, 
 	and also because the stego image is actually an encrypted image, 

@@ -1,0 +1,4 @@
+Puteaux		An Efficient MSB Prediction-Based Method for High-Capacity Reversible Data Hiding in Encrypted Images
+take1		Prediction-based Data Hiding of Multi-MSB Encrypted Images Using Huffman Coding in Cloud Services
+take2		Prediction-based Data Hiding of Multi-MSB Substitution in Encrypted Images Using Huffman Coding
+			High-performance reversible data hiding in encrypted images with adaptive Huffman code

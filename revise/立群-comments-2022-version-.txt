@@ -1,0 +1,115 @@
+
+Manuscript: MM-014161, "Prediction-based Data Hiding of Multi-MSB Encrypted Images Using Huffman Coding in Cloud Services".
+
+
+Reviewer Comments:
+
+Reviewer: 1
+
+Recommendation: R - Reject
+
+Comments:
+The manuscript revises the scheme proposed in [14] with the following three major modifications:
+1. Replacing the predefined Huffman coding in [14] with a Huffman coding tree dynamically built on the actual data.
+2. Applying prediction to some pixels in the top row and left column to reduce REF bytes (and thus increase the embedding capacity). The prediction is similar to that used in scheme in [14] to predict pixels not in REF.
+3. Removing the LEN bits from the auxiliary information since the ending of Huffman codes can be automatically determined during Huffman decoding (and thus there is no need to indicate the number of bits for Huffman codes).
+
+These modifications, while technically sound and improving the embedding capability, are well-known to researchers and practitioners in the field, and thus straightforward from the research point of view. I believe that the research innovation of the manuscript is insufficient to justify being published in this transaction.
+
+以研究的角度來說，這些改進的創意不足。
+
+Additional comments:
+1. I don’t see why the proposed scheme is closely related to cloud services/applications (as the title and the abstract emphasize). For cloud applications, a content-owner, Alice, should encrypt her images before uploading them to a cloud. To make the proposed scheme work, Alice needs to provide the auxiliary information of an encrypted and uploaded image for a data-hider, who is typically different from the content-owner, to embed data into the encrypted image. In a typical cloud application, Alice does not provide such auxiliary information for her uploaded images (since she has no idea that her uploaded images would be used as host images for data embedding). As a result, I don’t see that the proposed scheme fits cloud applications if content-owners and data-hiders are separate entities.
+
+依照這篇的方法，content-owner除了提供encrypted image之外，還要再提供 auxiliary information，但在一般的cloud application，content-owner應該只提供 encrypted image。
+
+2. There are some symbols/terms undefined, which makes it hard to understand. I have to read [14] to understand these symbols and terms.
+
+有些符號沒有定義，必須要參考 [14] 才能理解。
+
+3. The authors tend to write definitions and equations without providing sufficient descriptions of their meanings. It is harder to understand the manuscript than [14] (esp. for a reader who has no idea of the scheme proposed in [14] and does not read [14]).
+
+作者對於定義及公式缺乏詳細的解釋，尤其是對於沒有讀過 [14] 的人，很難理解。
+
+
+Additional Questions:
+1. Is the topic appropriate for publication in these transactions?:
+
+1. Is the topic appropriate for publication in these transactions?: Adequate Match
+
+1. Is the paper technically sound?: Yes
+
+2. How would you rate the technical novelty of the paper?: Not Novel
+
+創意不足
+
+Explain: This manuscript proposes a scheme with three modifications on the scheme proposed in [14]. The three modifications are based on well-known knowledge and thus straightforward technically. More explanation can be found in the full review of the manuscript.
+
+3. Is the contribution significant?: Not Significant
+
+貢獻不足
+
+4. Is the coverage of the topic sufficiently comprehensive and balanced?: Yes
+
+5. Rate the Bibliography: Satisfactory
+
+1. How would you rate the overall organization of the paper?: Could be improved
+
+結構待加強
+
+2. Are the title and abstract satisfactory?: No
+
+標題及摘要不合適
+
+3. Is the length of the paper appropriate? If not, recommend what should be added or eliminated.: Yes
+
+4. Are symbols, terms, and concepts adequately defined?: Not always
+
+符號未明確定義
+
+5. How do you rate the English usage?: Satisfactory
+
+
+Reviewer: 2
+
+Recommendation: AQ - Publish With Minor, Required Changes
+
+Comments:
+Both technical novelty and contributions should be highlighted in the abstract and introduction.
+
+創新及貢獻應該在摘要強調
+
+Additional Questions:
+1. Is the topic appropriate for publication in these transactions?:
+
+1. Is the topic appropriate for publication in these transactions?: Excellent Match
+
+1. Is the paper technically sound?: Yes
+
+2. How would you rate the technical novelty of the paper?: Novel Enough for Publication
+
+Explain: Improvements on reversible data hiding in encrypted images is proposed to make it more generalized and stable. Experimental results are available to show that the proposed method improves its performance even in the worst-case scenario.
+
+3. Is the contribution significant?: Moderately Significant
+
+貢獻度 還好而已
+
+4. Is the coverage of the topic sufficiently comprehensive and balanced?: Yes
+
+5. Rate the Bibliography: Satisfactory
+
+1. How would you rate the overall organization of the paper?: Could be improved
+
+結構待加強
+
+2. Are the title and abstract satisfactory?: No
+
+標題及摘要不合適
+
+3. Is the length of the paper appropriate? If not, recommend what should be added or eliminated.: Yes
+
+4. Are symbols, terms, and concepts adequately defined?: Yes
+
+5. How do you rate the English usage?: Needs improvement
+
+英文待加強

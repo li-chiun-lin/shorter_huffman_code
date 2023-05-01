@@ -1,0 +1,15 @@
+Reviewer: 1 
+
+
+Comments: 
+The manuscript revises the scheme proposed in [14] with the following three major modifications: 
+1. Replacing the predefined Huffman coding in [14] with a Huffman coding tree dynamically built on the actual data. 
+2. Applying prediction to some pixels in the top row and left column to reduce REF bytes (and thus increase the embedding capacity). The prediction is similar to that used in scheme in [14] to predict pixels not in REF. 
+3. Removing the LEN bits from the auxiliary information since the ending of Huffman codes can be automatically determined during Huffman decoding (and thus there is no need to indicate the number of bits for Huffman codes). 
+
+These modifications, while technically sound and improving the embedding capability, are well-known to researchers and practitioners in the field, and thus straightforward from the research point of view. I believe that the research innovation of the manuscript is insufficient to justify being published in this transaction. 
+
+Additional comments: 
+1. I don’t see why the proposed scheme is closely related to cloud services/applications (as the title and the abstract emphasize). For cloud applications, a content-owner, Alice, should encrypt her images before uploading them to a cloud. To make the proposed scheme work, Alice needs to provide the auxiliary information of an encrypted and uploaded image for a data-hider, who is typically different from the content-owner, to embed data into the encrypted image. In a typical cloud application, Alice does not provide such auxiliary information for her uploaded images (since she has no idea that her uploaded images would be used as host images for data embedding). As a result, I don’t see that the proposed scheme fits cloud applications if content-owners and data-hiders are separate entities. 
+2. There are some symbols/terms undefined, which makes it hard to understand. I have to read [14] to understand these symbols and terms. 
+3. The authors tend to write definitions and equations without providing sufficient descriptions of their meanings. It is harder to understand the manuscript than [14] (esp. for a reader who has no idea of the scheme proposed in [14] and does not read [14]).
