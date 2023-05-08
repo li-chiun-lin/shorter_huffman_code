@@ -71,7 +71,7 @@
 	\author{
 		Li-Chiun Lin,	Cheng-Ta Huang and	 Shiuh-Jeng WANG*
 		
-		\thanks{Li-Chiun Lin and Shiuh-Jeng WANG* are with Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan. Whom correspondence: Shiuh-Jeng WANG* \url{sjwang@mail.cpu.edu.tw}.}
+		\thanks{Li-Chiun Lin and Shiuh-Jeng WANG* are with Information Cryptology Construction Lab, Department of Information Management, Central Police University, Taoyuan, Taiwan. Whom correspondence: Shiuh-Jeng WANG* \url{dopwang@gmail.com}.}
 		\thanks{Cheng-Ta Huang is with International Bachelor Program in informatics and Department of Information Management, Yuan Ze University, Taoyuan, Taiwan.}
 	}
 	
@@ -127,7 +127,7 @@
 	Sec.\,\ref{sec:conclusion} concludes this paper. 
 
 
-	\section{Related Work}
+	\section{Related Works}
 	\label{sec:related}
 	
 	Puteaux et~al.\ proposed a MSB-prediction based RDHEI method~\cite{Puteaux2018}, which exploited the interesting fact that neighboring pixels will very likely to have same MSB values, thus can be used for data hiding. 
@@ -427,7 +427,7 @@
 %	
 	\begin{equation}
 		\label{eq:enc}
-		I_e = I \oplus K_I 
+		I_e = I \oplus K_I .
 	\end{equation}
 
 	\subsection{Embed Auxiliary Information}
@@ -519,14 +519,14 @@
 	in the worst-case scenario when \(\mathbf{F}\) is a uniform distribution.
 %	
 	\begin{equation}
-		C = - \sum_{i = 0}^{\vert \mathbf{F} \vert} p_i \times \log_2 (p_i), \text{ where } p_i = 1 / {\vert \mathbf{F} \vert}
+		C = - \sum_{i = 0}^{\vert \mathbf{F} \vert} p_i \times \log_2 (p_i), \text{ where } p_i = 1 / {\vert \mathbf{F} \vert}.
 	\end{equation}
 %
 	Let \(LEN\) be the upper bound of the length of \(\mathbf{T^\prime}\).
 %	
 	\begin{equation}
 		\label{eq:len}
-		LEN = CodeLength \times w \times h
+		LEN = CodeLength \times w \times h.
 	\end{equation}
 %
 	We set \(REF = 70\) base on our experiment results.
@@ -543,15 +543,20 @@
 			\mathrm{MSB}^{(t_{(i, j)} + 1)}(S^\ast) + \mathrm{LSB}^{(7 - t_{i, j})}(x^e_{i, j}),  \\
 			\quad \text{if } 0 \leq t_{i, j} < 7 ,
 		\end{dcases}  
-		\\ 
-		\label{eq:msb}
-		\mathrm{MSB}^{m}(B) & = \sum\nolimits_{i = 8 - m}^7 b_i \times 2^i, \\
-		\label{eq:lsb}
-		\mathrm{LSB}^{n}(B) & = B \bmod 2^n
 	\end{align}
-
+	where 
+	\begin{equation}
+		\label{eq:msb}
+		\mathrm{MSB}^{m}(B)  = \sum\nolimits_{i = 8 - m}^7 b_i \times 2^i
+	\end{equation}
+	and 
+	\begin{equation}
+	   	\label{eq:lsb}
+	   	\mathrm{LSB}^{n}(B)  = B \bmod 2^n .
+	\end{equation}
+		
 	
-	
+	%
 	\subsection{Extract Auxiliary Information}
 
 	\begin{figure}[!t]
@@ -651,7 +656,7 @@
 %	
 	\begin{equation}
 		\label{eq:ens2}
-		S_e = S \oplus K_S 
+		S_e = S \oplus K_S .
 	\end{equation}
 	
 
@@ -892,7 +897,8 @@
 		\centering
 		\caption{The encoding result of \emph{Man} \(1024 \times 1024\)}
 		\label{tab:man}
-		\subcaption{using~\cite{Yin2020}.}
+		
+		
 		\label{tab:mana}
 		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule 
@@ -916,10 +922,13 @@
 			\midrule 
 			$\sum$ & $1046529$   && $5584907$ & $3121506$ &    $+2463401$ & \\ 
 			\bottomrule
-			\multicolumn{7}{l}{Average code length: \(3121506 \divisionsymbol 1046529 = 2.982722\)}
+			\multicolumn{7}{l}{Average code length: \(3121506 \divisionsymbol 1046529 = 2.982722\)} \\
+			\bottomrule
 		\end{tabular}
+		\subcaption{using~\cite{Yin2020}.}
 		
-		\subcaption{using our method.}
+		\vskip .5cm
+		
 		\label{tab:manb}
 		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule 
@@ -939,8 +948,10 @@
 			$\sum$ & $1048506$   && $5595534$ & $3127243$ &    $+2468291$ & \\ 
 			
 			\bottomrule
-			\multicolumn{7}{l}{Average code length: \(3127243 \divisionsymbol 1048506 = 2.982570\)}
+			\multicolumn{7}{l}{Average code length: \(3127243 \divisionsymbol 1048506 = 2.982570\)} \\
+			\bottomrule
 		\end{tabular}
+		\subcaption{using our method.}
 	\end{table}
 	
 	We apply our method on USC-SIPI image dataset~\cite{UniversityofSouthernCalifornia2020}.
@@ -971,7 +982,7 @@
 	For Algorithm~\ref{algo:extractA} to work properly, there is a loop invariant at line~\ref{algo:extractT:nextij} that \((i, j) < (d_x, d_y)\) must be hold, i.e., the index \((d_x, d_y)\) must be in a more advanced position than \((i, j)\) for all time.
 %	
 	While \((i, j)\) increases with every loop iteration, \((d_x, d_y)\) only increases when the \(buf\) at line~\ref{algo:extractT:nextd} contains a proper Huffman code, which is affected by the capacity of each proceeded \(t_{i, j}\).
-	If the distribution of small \(t_{i, j}\) has a tendency to cluster in some part of \(\mathbf{I_w}\) and thus slows down the incremental speed of \((d_x, d_y)\), Algorithm~\ref{algo:extractA} will fail.
+	If the distribution of small \(t_{i, j}\) has a tendency to cluster in some part of \(I_w\) and thus slows down the incremental speed of \((d_x, d_y)\), Algorithm~\ref{algo:extractA} will fail.
 %	
 	Increase \(REF\) helps to avoid this problem. 
 	As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractA}, after extracting the encoded Huffman tree, the rest of the \(REF\) bytes will be consumed to produce more \(t_{(d_x, d_y)}\) and put \((d_x, d_y)\) at a more advanced position, thus reduces the chance of violating the loop invariant.
@@ -1009,7 +1020,7 @@
 		\label{tab:compare}
 		\begin{tabular}{cccccc}
 			\toprule
-			Dataset  & \cite{Puteaux2018} & \cite{Yi2019} & \cite{Chen2019} & \cite{Yin2020}  & Our Proposal \\
+			Dataset  & \cite{Puteaux2018} & \cite{Yi2019} & \cite{Chen2019} & \cite{Yin2020}  & Our method \\
 			\midrule
 			BOSSBase & 0.966 & 1.957 & 2.323 & 3.361 & 3.464 \\
 			BOWS-2 	 & 0.968 & 1.881 & 2,245 & 3.246 & 3.320 \\
@@ -1049,8 +1060,8 @@
 		\label{eq:er}
 	\end{equation}
 %
-	Though our method outperforms the method of other's (as shown in Table~\ref{tab:compare}), it is worths mentioning that, 
-	as expected, our method perform better when applied on smooth images since similar adjacent pixels produce larger \(t\), hence increase the embedding capacity. 
+	Though our method outperforms those of other's (as shown in Table~\ref{tab:compare}), it is worths mentioning that, 
+	as expected, our method performs better when applied on smooth images since similar adjacent pixels produce larger \(t\), hence increase the embedding capacity. 
 	But with rough images, such as those shown in Fig.\,\ref{fig:worst}, our method produce less satisfactory results.
 
 	\section{Conclusion}
@@ -1064,7 +1075,9 @@
 	We focused our comparison on the embedding capacity and the experimental result shows that our proposal is superior even in the worst case scenario when applying on rough images. 
 	
 	
-	\subsubsection*{Acknowledgments}
+%	\subsubsection*{Acknowledgments}
+	\section*{Acknowledgments}
+	\noindent
 	This research was partially supported by the Ministry of Science and Technology of the Republic of China under the Grants MOST 110-2221-E-015-001-MY3 and MOST 110-2218-E-218-001.
 	
 	\bibliography{shorter_huffman}
