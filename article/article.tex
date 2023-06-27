@@ -79,8 +79,10 @@
 	
 	\begin{abstract}
 		Reversible data hiding in encrypted images is a research domain aimed to perform data hiding in encrypted images. 
-		Researchers dedicate to find better methods to adopt the new assumption that those who provide the cover images, i.e.\ the \emph{Content-owner}, are no longer the same as those who hide the secret message into them, i.e.\ the \emph{Data-hider}, and the \emph{Data-hider} might not always be allowed to know the actual content of cover image, while the one who receives the stego image must be able to restore the identical cover image after extracting the embedded secret.
-		In this paper, we propose a new reversible data hiding in encrypted images algorithm that adopting error prediction and multi-MSB substitution technique that achieves better embedding capacity even in the worst-case scenario.
+		In this research domain, there are three roles in the use case: the \emph{Content-owner}, \emph{Data-hider} and the \emph{Receiver}.
+		The \emph{Content-owner} is responsible for providing encrypted cover images for the \emph{Data-hider} to embedding secret data into them. Since the cover images are encrypted, the \emph{Data-hider} is presumed not knowing the actual content of the cover image. 
+		The \emph{Receiver} can perform two operations when receiving encrypted images carrying secret data, i.e.\ to \emph{extract} the secret data and/or to \emph{restore} the encrypted images and then decrypted them.
+		In this paper, we propose a new reversible data hiding method in the encrypted image domain. Our proposal exploits the advantage of error prediction and multi-MSB substitution to achieve higher embedding capacity in average and in the worst-case.
 	\end{abstract}
 	
 	\begin{IEEEkeywords}
@@ -90,36 +92,35 @@
 	\section{Introduction}
 	\label{sec:intro}
 	
-	\IEEEPARstart{D}{ata}
-	hiding is a technique used to prevent the conveyor from knowing the existence of a secret message while transporting it from the sender to the receiver. 
-	While the cover image might inevitably suffer from distortion, a subset of the studies of data hiding is dedicated to meet the requirements that the cover image must be losslessly recovered after extracting the secret message, namely \emph{Reversible Data Hiding} (RDH)~\cite{Coatrieux2009, Gao2009, Li2020}. 
-	Furthermore, a subset within which even started to study the benefits of hiding secret messages into encrypted images, i.e., \emph{Reversible Data Hiding in Encrypted Images} (RDHEI)~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
-	The schemata are usually categorized into the following types. 
+	\IEEEPARstart{E}{ncryption}
+	is used to conceal the meaning of a message, while data hiding is used to conceal the existence of a message.
+	There is no conflict to join their force.
+	When adopting data hiding methods, it will introduce some distortion on the cover images. If a cover image can be recovered after extracting the hidden data, then the method is considered a Reversible Data Hiding (RDH)~\cite{Coatrieux2009, Gao2009, Li2020}.
+	And if the cover images is encrypted, then the method is considered a Reversible Data Hiding in Encrypted Images (RDHEI)~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
+	There are three types of RDHEI.
 	
-	In \emph{Reserving Room Before Encryption} (RRBE)~\cite{Ma2013, Agrawal2017, Liao2015}, as its name implies, a pre-processing procedure is applied to a cover image before it is encrypted. 
-	This type of schemata normally produces a \emph{label map} containing critical information for the following data hiding procedure. 
-	This \emph{label map} is then considered as \emph{auxiliary information} and embedded into the cover image together with the secret message.
+	If a pre-processing is performed on a cover image before the encryption, then it is a Reserving Room Before Encryption (RRBE)~\cite{Ma2013, Agrawal2017, Liao2015}.
+	RRBE usually provides considerable embedding capacity, because they adopting the benefit of high correlation between neighboring pixels. But they might produce label map and auxiliary information as side effects. The \emph{Content-owner} produces and provides such information so that the \emph{Data-hider} can exploits them to embed secret data.
 	
-	In \emph{Vacating Room After Encryption} (VRAE)~\cite{Puech2008, Wu2019, Li2018}, on the contrary, a cover image is encrypted, then a post-processing procedure vacates some part of the encrypted image for a following data hiding procedure.
+	If a post-processing is performed on an already encrypted cover image, then it is a Vacating Room After Encryption (VRAE)~\cite{Puech2008, Wu2019, Li2018}. In this case, the \emph{Data-hider} operates on an encrypted image without any further information about the actual pixels, and hence avoids the overhead of transporting and processing label map and auxiliary information.
+
+	If the process of vacating room for data hiding is happened at the same time as encrypting the cover image, then it is a Vacating Room By Encryption (VRBE)~\cite{Liu2018, Yu2020}. It takes the advantage of some special properties of cryptography algorithms. Some of them might not be able to losslessly restore the original cover image.
+
+	In the research of RDHEI, we commonly adopt a use case of three roles. 
+	The \emph{Content-owner} is responsible for providing encrypted cover images. In RRBE and VRBE, The \emph{Content-owner} might also need to provide label map or perform more operations other than encryption.
+	The \emph{Data-hider} is responsible for embedding secret message. There might be a label map in the case of RRBE or there could only be an encrypted image if it is a VRAE.
+	The \emph{Receiver} might be two different entities, one ought to recover and decrypt the cover image, the other should be able to extract the secret message. These two operations can be performed by the same entity.
 	
-	Though the schemata of VRAE are more concise since the post-processing procedure and the data hiding procedure can be considered as one procedure, 
-	those schemata of RRBE provides more embedding capacity because they exploits the high correlation of adjacent pixels while the input of the post-processing procedure of VRAE is an encrypted image, which is equivalent to low correlation random bytes.
+	There are two implications introduced by the researches of RDHEI.
 	
-	The schemata in the category of \emph{Vacating Room By Encryption} (VRBE)~\cite{Liu2018, Yu2020} are more tricky since they adopt properties of certain cryptography algorithms to squeeze redundant space for data hiding when applying the encryption procedure, but they inevitably sacrifice the possibility to losslessly recover the cover image.
-	
-	In the discussing of RDHEI, a use case that comprises of three roles, namely the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver} is commonly adopted~\cite{Qin2015}.
-	The \emph{Content-owner}, as its name suggested, is responsible for providing encrypted images, commonly analogies to a cloud service client user.
-	The responsibility of the \emph{Data-hider} is to embed some secret message into the encrypted images, e.g., a cloud service provider might request to embed authentication data or annotations into the encrypted images. 
-	The \emph{Receiver} could be the same as \emph{Data-hider} or any other entities that request the encrypted images and/or the embedded secret message.
-	There are two extra requirements in this use case besides the fundamental goal of hiding secret message. 
-%	
 	\begin{enumerate}
 		\item The \emph{Receiver} must receive the identical cover image as the \emph{Content-owner} provided.
 		\item The \emph{Data-hider} must not know the content of the cover image.
 	\end{enumerate}
 %
-	Researches in the field of RDHEI are hence raised to fulfill these two additional requirements.
-	In this paper, we propose a new RRBE RDHEI method adopting error predication and multi-MSB substitution techniques. Our proposal achieves better embedding capacity than other state-of-the-art methods.
+	Researches in the field of RDHEI are hence raised to fulfill these two additional implications.
+	
+	In this paper, we propose a new RRBE RDHEI method adopting error predication and multi-MSB substitution techniques. Our proposal has embedding capacity higher than other state-of-the-art methods.
 
 	The rest of the paper is organized as follows. 
 	Related works are explained in Sec.\,\ref{sec:related}. Our proposal is described in Sec.\,\ref{sec:ours}. 
@@ -172,7 +173,7 @@
 		\label{fig:flowchart}
 	\end{figure*}
 	
-	In this section, we propose a new RRBE RDHEI method base on the same use case as~\cite{Yin2020}.  
+	In this section, we explain our RRBE RDHEI method.  
 	Our method complies with the typical requirements described in Sec.\,\ref{sec:intro} and achieves higher embedding capacity than those mentioned in Sec.\,\ref{sec:related}. 
 	The flow char of our proposal is demonstrated as Fig.\,\ref{fig:flowchart}, each procedure is explained as follows.
 	
@@ -377,7 +378,7 @@
 		\label{eq:t}
 		t_{i, j} &= 
 		\begin{cases}
-			\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < REF ,\\
+			\text{undefined},             & \text{if } pe_{i, j} \text{ is undefined} ,\\
 			8,&  \text{if } pe_{i, j} = 0,       \\
 			7 - \lfloor \log_2(pe_{i, j}) \rfloor ,&  \text{if } pe_{i, j} \neq  0.
 		\end{cases} 	
@@ -385,7 +386,7 @@
 %
 	Let \(\mathbf{T}\) be a matrix containing all \(t_{i, j}\), \(1 \leq i < h, 1\leq j < w\), where \(h\) and \(w\) denote the height and the width of \(I\), respectively.
 	Let \(\mathbf{F}\) be the frequency table of \(\mathbf{T}\).
-	Let \(\mathrm{cap}(t)\) be a function defined for all \(t \in \mathbf{T}\).
+	Let \(\mathrm{cap}(t)\) be a function defined for all possible values of \(t_{i, j}\).
 %	
 	\begin{equation}
 		\label{eq:cap}
@@ -397,7 +398,7 @@
 	\end{equation}
 %
 	Apply the Huffman tree building algorithm (as shown in Algorithm~\ref{algo:buildtree}) on \(\mathbf{F}\).
-	Let \(\mathrm{encode}(t)\) be the Huffman encoding of \(t \in \mathbf{T}\) using \(\mathbf{H}\), and \(\mathrm{decode}(h)\) be its inverse. 
+	Let \(\mathrm{encode}(t)\) be the Huffman encoding of \(t\) using \(\mathbf{H}\) and let \(\mathrm{decode}(h)\) be its inverse. 
 	Define \(\mathrm{payload}(t)\) as the differences between the capacity of $t$ and the length of its Huffman encoding. 
 %	
 	\begin{equation}
@@ -412,18 +413,17 @@
 		\mathbf{T^\prime} &= \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w \mathrm{encode}(t_{i, j})}. %\\
 	\end{align}
 
-	As an example, the tree topology of applying Algorithm~\ref{algo:buildtree} on \emph{Lena} \(512 \times 512\) is shown in Fig.\,\ref{fig:lenatree} and the statistic data is given in Table~\ref{tab:shrlena}. 
+	As an example, the tree topology of applying Algorithm~\ref{algo:buildtree} on \emph{Lena} \(512 \times 512\) is shown in Fig.\,\ref{fig:lenatree}. Table~\ref{tab:shrlena} shows the statistic data. 
 	The columns are in conformity with their definitions and the column \emph{\(\Delta\)} represents the result of \(f_t \times \mathrm{payload}(t)\). 
 	Each cell in the row \emph{\(\sum\)} represents the weighted summation of the corresponding column.
 	
 	Tree serialization follows Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
-	In Algorithm~\ref{algo:serial}, a Huffman tree of \(9\) leaves has \(2 \times 9 -1 = 17\) nodes, each needs one bit to represent its role, where \(1\) indicates an internal node and \(0\) indicates a leaf~\cite{Pu2006}. 
-	Each leaf has a value \(0 \leq v \leq 8\), thus four bits are enough to store a leaf value, i.e., \(4 \times 9 = 36\) bits. 
-	Hence we need \(17 + 36 = 53\) bits to serialize a Huffman tree.
+	In Algorithm~\ref{algo:serial}, if a Huffman tree has \(17\) nodes, it needs \(17\) bits to store their roles. A \(1\) tells that it is an internal node. A \(0\) tells that it is a leaf node~\cite{Pu2006}. 
+	The value of all leaves are \(0 \leq v \leq 8\), each leaf value requires \(4\) bits to encode. Totally a Huffman tree is serialized into \(53\) bits.
 	
 	\subsection{Encrypt Cover Image}
 	
-	The cover image \(I\) is encrypted with a key stream \(K_I\) using~\eqref{eq:enc}. We use \(x^e_{i, j}\) to denote the encrypted pixel in encrypted image \(I_e\). 
+	The cover image \(I\) is encrypted with a key stream \(K_I\) using~\eqref{eq:enc}. We use \(x^e_{i, j}\) to denote an encrypted pixel in an encrypted image \(I_e\). 
 %	
 	\begin{equation}
 		\label{eq:enc}
@@ -431,37 +431,6 @@
 	\end{equation}
 
 	\subsection{Embed Auxiliary Information}
-	
-	\begin{figure}[!t]
-		\begin{algorithm}[H]
-			\caption{Generate encrypted image.}
-			\label{algo:embed1}
-			
-			\begin{algorithmic}[1]
-				\Require cover image \(I\) of size \(w \times h\).
-				\Require key stream \(K_I\).
-				\Require label map \(\mathbf{T}\).
-				\Require frequency table \(\mathbf{T}\).
-				\Require Huffman tree \(\mathbf{H}\).
-				\Ensure encrypted image \(I_e^\prime\).
-
-				\State \(I_e \gets I \oplus K_I\).
-				\State Compute \(\mathbf{T^\prime}\) using~\eqref{eq:encodeT1}.
-				\State Compute \(LEN\) using~\eqref{eq:len}.
-				\State Generate \(S_a\) as Fig.\,\ref{fig:header2}.
-				\State \(I_e^\prime \gets I_e\)
-				\State Replace first \(REF\) bytes of \(I_e^\prime\) with \(S_{a1}\).
-				
-				\ForAll{\(\{(i, j) \mid (i, j) \notin REF\}\)}
-				\If			{\(S_{a2} = \emptyset\)}
-				\State			End of algorithm.
-				\Else
-				\State			Embed \(S_{a2}\) into \(x^e_{i, j}\) using~\eqref{eq:embed1}.
-				\EndIf
-				\EndFor
-			\end{algorithmic}
-		\end{algorithm}
-	\end{figure}
 	
 	\begin{figure}[!t]
 		\scriptsize
@@ -508,15 +477,45 @@
 		\label{fig:header2}
 	\end{figure}
 	
-	Let \(CodeLength\) be the expected length of Huffman coding, then
+	\begin{figure}[!t]
+		\begin{algorithm}[H]
+			\caption{Generate encrypted image.}
+			\label{algo:embed1}
+			
+			\begin{algorithmic}[1]
+				\Require cover image \(I\) of size \(w \times h\).
+				\Require key stream \(K_I\).
+				\Require label map \(\mathbf{T}\).
+				\Require frequency table \(\mathbf{T}\).
+				\Require Huffman tree \(\mathbf{H}\).
+				\Ensure encrypted image \(I_e^\prime\).
+
+				\State \(I_e \gets I \oplus K_I\).
+				\State Compute \(\mathbf{T^\prime}\) using~\eqref{eq:encodeT1}.
+				\State Compute \(LEN\) using~\eqref{eq:len}.
+				\State Generate \(S_a\) as Fig.\,\ref{fig:header2}.
+				\State \(I_e^\prime \gets I_e\)
+				\State Replace first \(REF\) bytes of \(I_e^\prime\) with \(S_{a1}\).
+				
+				\ForAll{\(\{(i, j) \mid (i, j) \notin REF\}\)}
+				\If			{\(S_{a2} = \emptyset\)}
+				\State			End of algorithm.
+				\Else
+				\State			Embed \(S_{a2}\) into \(x^e_{i, j}\) using~\eqref{eq:embed1}.
+				\EndIf
+				\EndFor
+			\end{algorithmic}
+		\end{algorithm}
+	\end{figure}
+	
+	Let \(CodeLength\) be the expected length of Huffman coding in the worst-case, when we expect \(\mathbf{F}\) to be an uniform distribution, 
 %	
 	\begin{equation}
 		\label{eq:floor}
-		CodeLength \leq \lfloor \log_2((w - 1) \times (h - 1) \times C ) \rfloor + 1 , 
+		CodeLength = \lfloor \log_2((w - 1) \times (h - 1) \times C ) \rfloor + 1 , 
 	\end{equation} 
 %
-	where the constant \(C\) is the Shannon entropy~\cite{Shannon1948} representing the expected number of bits required to encode each value \(t \in \mathbf{T}\) 
-	in the worst-case scenario when \(\mathbf{F}\) is a uniform distribution.
+	where \(C\) is the Shannon entropy~\cite{Shannon1948} defined as
 %	
 	\begin{equation}
 		C = - \sum_{i = 0}^{\vert \mathbf{F} \vert} p_i \times \log_2 (p_i), \text{ where } p_i = 1 / {\vert \mathbf{F} \vert}.
@@ -540,7 +539,7 @@
 		\begin{dcases}
 			\mathrm{MSB}^8(S^\ast)                   , \\
 			\quad \text{if }  i = 0 \vee j = 0 \vee 7 \leq t_{i, j} \leq  8, \\
-			\mathrm{MSB}^{(t_{(i, j)} + 1)}(S^\ast) + \mathrm{LSB}^{(7 - t_{i, j})}(x^e_{i, j}),  \\
+			\mathrm{MSB}^{(t_{i, j} + 1)}(S^\ast) + \mathrm{LSB}^{(7 - t_{i, j})}(x^e_{i, j}),  \\
 			\quad \text{if } 0 \leq t_{i, j} < 7 ,
 		\end{dcases}  
 	\end{align}
@@ -652,19 +651,16 @@
 		\end{algorithm}
 	\end{figure}
 
-	A Secret message \(S\) is encrypted with key stream \(K_S\). Then, following Algorithm~\ref{algo:hider1}, we embed \(S_e\) into \(I_e^\prime\) and produce stego image \(I_w\).
+	A secret message \(S\) is encrypted with key stream \(K_S\). Then, following Algorithm~\ref{algo:hider1}, we embed \(S_e\) into \(I_e^\prime\) and produce stego image \(I_w\).
 %	
 	\begin{equation}
 		\label{eq:ens2}
 		S_e = S \oplus K_S .
 	\end{equation}
 	
-
-	
-
 	\subsection{Extract Secret Message}
 	
-	Starting from \((c_x, c_y)\), the secret bits can be extracted using similar method as described in Algorithm~\ref{algo:extractA}, and finally be decrypted with \(K_S\).
+	Starting from \((c_x, c_y)\), the secret bits can be extracted using the same method as described in Algorithm~\ref{algo:extractA}, and finally be decrypted with \(K_S\).
 	
 	\subsection{Restore Cover Image}
 	
@@ -954,46 +950,51 @@
 		\subcaption{using our method.}
 	\end{table}
 	
-	We apply our method on USC-SIPI image dataset~\cite{UniversityofSouthernCalifornia2020}.
-	The experimental results are shown in Table~\ref{tab:common}. 
-	Within each column, there are three sub-columns representing the data of our method, the method of Yin et~al.\ and the differences, respectively.
+	We apply our method on USC-SIPI dataset~\cite{UniversityofSouthernCalifornia2020}.
+	The experimental results are demonstrated in Table~\ref{tab:common}. 
+	In each column, there are three sub-columns separated by two slashes(\(/\)), 
+	the first sub-column represents our data, 
+	the second sub-column is the data of Yin et~al.\ and 
+	the third sub-column is the differences between them.
 	In Table~\ref{tab:common}, 
 	the column \emph{Size} and \emph{REF} are self-explanatory; 
 	the column \emph{Hdr} indicates how many bits are occupied to store the Huffman coding tree; 
 	the column \emph{Capacity} shows the overall embedding capacity the image can provide, without considering the space required to store auxiliary information \(S_a\);
 	the column \emph{LEN} represents the length of \(\mathbf{T'}\).
 	
-	The reason why our method produces larger \(\mathbf{T^\prime}\) when applied on \emph{Lake, Peppers, Lax} and \emph{Man} is that we defined a larger \(\mathbf{T}\).
-	Take \emph{Man} \(1024 \times 1024\) for an example, 
-	\(\mathbf{T}\) is of size \(1023 \times 1023\) when applying the method of Yin et~al., 
-	while it is of size \(1024 \times 1024 - 70\) when applying our method. 
-	It is inevitable that there might be a longer \(\mathbf{T'}\), as we have witnessed in the column \emph{LEN}. 
-	But when we further exam the encoding result of \emph{Man} \(1024 \times 1024\) in Table~\ref{tab:man}, our method produces a slightly shorter average code length of \(t\), which reflects the fact that our method adopts a better Huffman coding tree.
+	We observed that our method creates a larger \(\mathbf{T^\prime}\) in  \emph{Lake, Peppers, Lax} and \emph{Man}. That is because our method uses a larger \(\mathbf{T}\).
+
+	In the case of \emph{Man} \(1024 \times 1024\), Yin et~al. creates a \(\mathbf{T}\) of size \(1023 \times 1023\), but our method creates a \(\mathbf{T}\) of size \(1024 \times 1024 - 70\). Surely in some cases our method could create larger \(\mathbf{T}\) and \(\mathbf{T'}\), as shown in the column \emph{LEN}. 
+ 
+	But our method can still produce shorter bit string after applying the Huffman encoding process, as shown in Table~\ref{tab:man}, where we use \emph{Man} \(1024 \times 1024\) as an example.
 	
-	Though we have to spend extra space in \(S_a\) to store the Huffman tree topology, we also remove the redundant \(LEN\) column, hence \(S_a\) remains almost the same size(\(\pm 1\)), as shown in the column \emph{Hdr}.
+	Though we have to spend extra space in \(S_a\) to store the Huffman tree topology, we remove the redundant \(LEN\) column, hence \(S_a\) remains almost the same size(\(\pm 1\)), as shown in the column \emph{Hdr}.
 	
-	In the column \emph{REF}, our method increases almost a thousand bytes that can be used for information hiding for a \(512 \times 512\) image, which turns into a contribution of averagely more than five thousand bits in \emph{Capacity}. 
-	This improvement is proportional to the \emph{Size} of the cover image.
-	Theoretically, the top-left corner pixel \(x_{0, 0}\) is the only critical byte that must be preserved, but for the following reasons, we define \(REF\) more than this one byte.
-	Aside from the \(53\) bits needed to encode the Huffman tree, 
-	more importantly, we need some more bytes in \(REF\) to avoid violating a loop invariant during Algorithm~\ref{algo:extractA}.
-%	
-	There are two indexes in Algorithm~\ref{algo:extractA}, i.e., the \((d_x, d_y)\) defined at line~\ref{algo:extractT:idxProce} and the \((i, j)\) for the loop at line~\ref{algo:extractT:idxExt}. 
-	For Algorithm~\ref{algo:extractA} to work properly, there is a loop invariant at line~\ref{algo:extractT:nextij} that \((i, j) < (d_x, d_y)\) must be hold, i.e., the index \((d_x, d_y)\) must be in a more advanced position than \((i, j)\) for all time.
-%	
-	While \((i, j)\) increases with every loop iteration, \((d_x, d_y)\) only increases when the \(buf\) at line~\ref{algo:extractT:nextd} contains a proper Huffman code, which is affected by the capacity of each proceeded \(t_{i, j}\).
-	If the distribution of small \(t_{i, j}\) has a tendency to cluster in some part of \(I_w\) and thus slows down the incremental speed of \((d_x, d_y)\), Algorithm~\ref{algo:extractA} will fail.
-%	
-	Increase \(REF\) helps to avoid this problem. 
-	As can be seen at line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractA}, after extracting the encoded Huffman tree, the rest of the \(REF\) bytes will be consumed to produce more \(t_{(d_x, d_y)}\) and put \((d_x, d_y)\) at a more advanced position, thus reduces the chance of violating the loop invariant.
-	Though defining a larger \(REF\) helps to amend this issue, it also decreases the bytes that can otherwise be dedicated to information hiding.
-%	
-	Even though the minimum \(REF\) requirement differs from image to image, for example, the \emph{Airplane} \(512 \times 512\) needs \(REF \geq 8\) byte, while \emph{Baboon} \(512 \times 512\) asks for \(REF \geq 25\) bytes to safely running Algorithm~\ref{algo:extractA}.
-	This loop invariant only exists in extracting process and remain unnoticed to the \emph{Content-Owner}.
-	We have to define a fixed and large enough \(REF\) and share this knowledge with all three participators in our use case. 
-%	
-	According to our experiments, defining \(REF \geq 70\) bytes is enough for all the test images we can acquire~\cite{UniversityofSouthernCalifornia2020, Bas2011, Filler2010}, but we still retain the possibility that it might need to be enlarged for some more complex cover images.
+	According to the column \emph{REF}, our method increases significant extra bytes that can be used for data hiding, it then turns into a few thousands more bits as shown in the column \emph{Capacity}. 
+	This improvement increases with the \emph{Size} of cover image. With larger cover image, this improvement can provide more extra embedding capacities. 
 	
+	Ideally, the \(x_{0, 0}\) is the only pixel that need to be stored, but in practical, we have to define a larger \(REF\). 
+	It takes \(53\) bits to store the encoded Huffman tree, and it takes a few more bytes to preserve the loop invariant in Algorithm~\ref{algo:extractA}.
+T
+	Algorithm~\ref{algo:extractA} defines two indexes \((d_x, d_y)\) and the \((i, j)\) at line~\ref{algo:extractT:idxProce} and line~\ref{algo:extractT:idxExt}. 
+	In order to ensure Algorithm~\ref{algo:extractA} performs properly, a loop invariant \((i, j) < (d_x, d_y)\) is imposed at line~\ref{algo:extractT:nextij}.
+%	
+	As \((i, j)\) advances during each iteration, \((d_x, d_y)\) only move forward when the \(buf\) at line~\ref{algo:extractT:nextd} form a valid Huffman code. Each processed \(t_{i, j}\) will give some contribution to the \(buf\).
+	When there is a condensation of small \(t_{i, j}\) in any part of \(I_w\), the advance of \((d_x, d_y)\) will be slower, which might lead to a failure of Algorithm~\ref{algo:extractA}.
+%
+	A larger \(REF\) alleviates this exception.
+%
+	If we scrutinize into line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractA}, more bytes in \(REF\) will provide more \(t_{d_x, d_y}\), which then can be used to move \((d_x, d_y)\) forward so that the \((i, j) < (d_x, d_y)\) can be hold.
+%	
+	But more bytes in \(REF\) also means less bytes can be used for data hiding.
+
+	Proper value of \(REF\) is different by images. According to our experiments, the \emph{Airplane} \(512 \times 512\) should have \(REF \geq 8\) and \emph{Baboon} \(512 \times 512\) should have \(REF \geq 25\) or otherwise the Algorithm~\ref{algo:extractA} will fail.
+%	
+	This constrain affects the extracting process, hence \(REF\) must be a preshared knowledge among all the \emph{Receiver} who wishes to extract secret message. 
+	Hence \(REF\) must be fixed and large enough in order to handle different cover images.
+%	
+	According to our experimental results, \(REF \geq 70\) is proper for all of our test data~\cite{UniversityofSouthernCalifornia2020, Bas2011, Filler2010}. 
+	A larger \(REF\) will reduce the possibility of failure when using complex images.
 	
 	\subsection{Large datasets}
 	
@@ -1052,7 +1053,7 @@
 	
 	We use BOSSBase~\cite{Bas2011} and BOWS-2~\cite{Filler2010} image datasets to evaluate the embedding capacity of our method and compare it with other state-of-the-art methods. 
 	Both dataset contain \(10,000\ 512 \times 512\) gray-scale images.
-	The experimental result is given in Table~\ref{tab:bestworst}, where we use embedding rate (ER), as defined in Equation~\eqref{eq:er}, to evaluate our method and~\cite{Yin2020} and presents the best, worst and average cases.
+	The experimental result is given in Table~\ref{tab:bestworst}, where we use embedding rate (ER), as defined in Equation~\eqref{eq:er}, to evaluate our method and compare with~\cite{Yin2020} in the best, worst and average cases.
 	The cover image that involved in the best case and the worst case of both dataset are shown in Fig.\,\ref{fig:best} and Fig.\,\ref{fig:worst}.
 %	
 	\begin{equation}
@@ -1068,12 +1069,10 @@
 	\label{sec:conclusion}
 	
 	In this paper, we proposed a new RRBE RDHEI methods that have significant incremental in embedding capacity.
-	Since the method within our discussion is a reversible data hiding method, 
-	which can losslessly restore the cover image after extracting secret message, 
-	and also because the stego image is actually an encrypted image, 
-	we omit the comparison using PSNR and MSE in Sec.\,\ref{sec:experimental} for their values will always be \(+\infty\) and \(0\).
-	We focused our comparison on the embedding capacity and the experimental result shows that our proposal is superior even in the worst case scenario when applying on rough images. 
-	
+	For our method to be a reversible data hiding method, the definition of MSE and PSNR tells us that the results can only be \(+\infty\) and \(0\), respectively.
+%	
+	It only make sense to compare the embedding capacity.
+	Our experimental data illustrated that our method is better then other method even with rough images in the worst case. 
 	
 %	\subsubsection*{Acknowledgments}
 	\section*{Acknowledgments}
