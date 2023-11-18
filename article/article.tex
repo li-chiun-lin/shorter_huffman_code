@@ -1,4 +1,5 @@
 \documentclass[journal]{IEEEtran}
+%\documentclass[journal,onecolumn]{IEEEtran}
 
 \usepackage[table]{xcolor}
 
@@ -65,7 +66,8 @@
 \begin{document}
 	
 	\title{
-		Prediction-based Data Hiding of Multi-MSB Substitution in Encrypted Images Using Huffman Coding
+%		Prediction-based Data Hiding of Multi-MSB Substitution in Encrypted Images Using Huffman Coding
+		Reversible Data Hiding in Encrypted Images Using Multi-MSB Substitution and Enhanced MED Predictor
 	}
 	
 	\author{
@@ -78,15 +80,20 @@
 	\maketitle
 	
 	\begin{abstract}
-		Reversible data hiding in encrypted images is a research domain aimed to perform data hiding in encrypted images. 
+		Reversible data hiding in encrypted images is a research domain aimed to embed secret data into encrypted images. 
 		In this research domain, there are three roles in the use case: the \emph{Content-owner}, \emph{Data-hider} and the \emph{Receiver}.
-		The \emph{Content-owner} is responsible for providing encrypted cover images for the \emph{Data-hider} to embedding secret data into them. Since the cover images are encrypted, the \emph{Data-hider} is presumed not knowing the actual content of the cover image. 
-		The \emph{Receiver} can perform two operations when receiving encrypted images carrying secret data, i.e.\ to \emph{extract} the secret data and/or to \emph{restore} the encrypted images and then decrypted them.
-		In this paper, we propose a new reversible data hiding method in the encrypted image domain. Our proposal exploits the advantage of error prediction and multi-MSB substitution to achieve higher embedding capacity in average and in the worst-case.
+		The \emph{Content-owner} is responsible for providing encrypted images.
+		The \emph{Data-hider} embeds secret data into encrypted images. 
+		Since the images are encrypted, the \emph{Data-hider} do not know the original content of the image. 
+		The \emph{Receiver} performs two operations when receives encrypted images embedded with secret data, i.e.\ to \emph{extract} the secret data and/or to \emph{restore} original cover images by decryption.
+		In this paper, we propose a new reversible data hiding method in encrypted image. 
+		Our proposal adopts an enhanced error prediction technique. 
+		Our enhancement to the median edge detector improves the embedding capacity of an encrypted cover image without side effect and can be adopted in almost any error-prediction based data hiding in encrypted image method.
+		Our method also exploits the advantage of multi-MSB substitution to achieve higher embedding capacity, both in average and the worst-case, than other state-of-the-art methods.
 	\end{abstract}
 	
 	\begin{IEEEkeywords}
-		reversible data hiding, encrypted images, privacy protection, Huffman coding.
+		reversible data hiding, encrypted images, privacy protection, median edge detector, Huffman coding.
 	\end{IEEEkeywords}
 	
 	\section{Introduction}
@@ -94,36 +101,47 @@
 	
 	\IEEEPARstart{E}{ncryption}
 	is used to conceal the meaning of a message, while data hiding is used to conceal the existence of a message.
-	There is no conflict to join their force.
-	When adopting data hiding methods, it will introduce some distortion on the cover images. If a cover image can be recovered after extracting the hidden data, then the method is considered a Reversible Data Hiding (RDH)~\cite{Coatrieux2009, Gao2009, Li2020}.
-	And if the cover images is encrypted, then the method is considered a Reversible Data Hiding in Encrypted Images (RDHEI)~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
+	There is no conflict to join their strength.
+	When adopting data hiding methods, it introduces distortion on the cover images. 
+	If a cover image is recovered after extracting the hidden data, then the method is considered a Reversible Data Hiding (RDH)~\cite{Coatrieux2009, Gao2009, Li2020}.
+	And if the cover images is also encrypted, then the method is considered a Reversible Data Hiding in Encrypted Images (RDHEI)~\cite{Zhang2011, Liu2020, Jain2021, Di2018}.
 	There are three types of RDHEI.
 	
 	If a pre-processing is performed on a cover image before the encryption, then it is a Reserving Room Before Encryption (RRBE)~\cite{Ma2013, Agrawal2017, Liao2015}.
-	RRBE usually provides considerable embedding capacity, because they adopting the benefit of high correlation between neighboring pixels. But they might produce label map and auxiliary information as side effects. The \emph{Content-owner} produces and provides such information so that the \emph{Data-hider} can exploits them to embed secret data.
+	RRBE methods usually have relatively high embedding capacity, because they adopt the benefit of high correlation between neighboring pixels. 
+	But they might need to record label map or auxiliary information as side effects. 
+	The \emph{Content-owner} produces and provides such information so that the \emph{Data-hider} can use it to embed secret data.
 	
-	If a post-processing is performed on an already encrypted cover image, then it is a Vacating Room After Encryption (VRAE)~\cite{Puech2008, Wu2019, Li2018}. In this case, the \emph{Data-hider} operates on an encrypted image without any further information about the actual pixels, and hence avoids the overhead of transporting and processing label map and auxiliary information.
+	If a post-processing is performed on an encrypted image, then it is a Vacating Room After Encryption (VRAE)~\cite{Puech2008, Wu2019, Li2018}. 
+	In this case, the \emph{Data-hider} operates on an encrypted image without any information about the actual pixels, and hence avoids the overhead of transporting and processing label map or auxiliary information.
 
-	If the process of vacating room for data hiding is happened at the same time as encrypting the cover image, then it is a Vacating Room By Encryption (VRBE)~\cite{Liu2018, Yu2020}. It takes the advantage of some special properties of cryptography algorithms. Some of them might not be able to losslessly restore the original cover image.
+	If the process of vacating room for data hiding is happened at the same time as encrypting the cover image, then it is a Vacating Room By Encryption (VRBE)~\cite{Liu2018, Yu2020}. 
+	They exploits special properties of cryptography algorithms to find rooms to embed secret data. 
+%	Some of them might not be able to losslessly restore the original cover image.
 
 	In the research of RDHEI, we commonly adopt a use case of three roles. 
-	The \emph{Content-owner} is responsible for providing encrypted cover images. In RRBE and VRBE, The \emph{Content-owner} might also need to provide label map or perform more operations other than encryption.
-	The \emph{Data-hider} is responsible for embedding secret message. There might be a label map in the case of RRBE or there could only be an encrypted image if it is a VRAE.
-	The \emph{Receiver} might be two different entities, one ought to recover and decrypt the cover image, the other should be able to extract the secret message. These two operations can be performed by the same entity.
+	The \emph{Content-owner} is responsible for providing encrypted cover images. 
+	In RRBE and VRBE, The \emph{Content-owner} might also need to provide label map or perform more operations other than encryption.
+	The \emph{Data-hider} is responsible for embedding secret message. 
+	There might be a label map in the case of RRBE or there could only be an encrypted image if it is a VRAE.
+	The \emph{Receiver} might be two different entities, one ought to recover and decrypt the cover image, the other should be able to extract the secret message. 
+	These two operations can be performed by the same entity.
 	
 	There are two implications introduced by the researches of RDHEI.
 	
 	\begin{enumerate}
-		\item The \emph{Receiver} must receive the identical cover image as the \emph{Content-owner} provided.
+		\item The \emph{Receiver} must be able to restore the identical cover image.
 		\item The \emph{Data-hider} must not know the content of the cover image.
 	\end{enumerate}
 %
 	Researches in the field of RDHEI are hence raised to fulfill these two additional implications.
 	
-	In this paper, we propose a new RRBE RDHEI method adopting error predication and multi-MSB substitution techniques. Our proposal has embedding capacity higher than other state-of-the-art methods.
+	In this paper, we propose a new RRBE RDHEI method adopting error predication and multi-MSB substitution techniques. 
+	Our proposal has higher embedding capacity than other state-of-the-art methods.
 
 	The rest of the paper is organized as follows. 
-	Related works are explained in Sec.\,\ref{sec:related}. Our proposal is described in Sec.\,\ref{sec:ours}. 
+	Related works are explained in Sec.\,\ref{sec:related}. 
+	Our proposal is described in Sec.\,\ref{sec:ours}. 
 	Experimental results are given in Sec.\,\ref{sec:experimental}.
 	Sec.\,\ref{sec:conclusion} concludes this paper. 
 
@@ -131,92 +149,200 @@
 	\section{Related Works}
 	\label{sec:related}
 	
-	Puteaux et~al.\ proposed a MSB-prediction based RDHEI method~\cite{Puteaux2018}, which exploited the interesting fact that neighboring pixels will very likely to have same MSB values, thus can be used for data hiding. 
-	Yi et~al.\ proposed a RDHEI method which uses parametric binary tree labeling technique to harvest the benefit of pixel correlation in small image blocks~\cite{Yi2019}.
-	Chen et~al.’s method adopted extended run-length coding on bit planes to vacate room for embedding~\cite{Chen2019}.
-	Yin et~al.\ proposed a RDHEI method base on median edge detector (MED) predictor
-	and Huffman coding technique~\cite{Yin2020}.
-	Their method complied with the common use case that consists of the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver}.
-	Their method consists of the following steps. 
+	Puteaux et~al.\ proposed a RDHEI method base on multi-MSB substitution and error prediction~\cite{Puteaux2018}, which exploited the interesting fact that neighboring pixels are very likely to have same most significant bits. 
 %	
-	\begin{enumerate}
-		\item The \emph{Content-owner} 
-		\begin{enumerate}
-			\item Generate \emph{label map} from the cover image using MED predictor.
-			\item Encrypt the cover image using key \(K_e\).
-			\item Encode \emph{label map} using a predefined Huffman coding tree.
-			\item Embed the encoded \emph{label map} into the encrypted cover image using multi-MSB substitution.
-		\end{enumerate}
-		\item The \emph{Data-hider}
-		\begin{enumerate}
-			\item Extract and decode the \emph{label map} from the encrypted image. 
-			\item Encrypt secret message using key \(K_d\).
-			\item Encode the secret message using the \emph{label map} and the the same predefined Huffman coding tree.
-			\item Embed the encoded \emph{label map} and secret message into the encrypted image using multi-MSB substitution.
-		\end{enumerate}
-		\item The \emph{Receiver}
-		\begin{enumerate}
-			\item Extract and decode the \emph{label map} from the encrypted image.
-			\item Extract and decrypt the secret message using \(K_d\).
-			\item Restore and decrypt the cover image using \(K_e\).
-		\end{enumerate}
-	\end{enumerate}
+	Later on, they proposed another RDHEI method~\cite{Puteaux2021} using median edge detector (MED) predictor and reversible adaptation to recursively processes each bit-plane of a cover image to achieve an average embedding capacity of \(2.46\) bits per pixel (bpp).
+%	
+	Yi et~al.\ proposed a RDHEI method using parametric binary tree labeling technique to harvest the benefit of pixel correlation in small image blocks~\cite{Yi2019}.
+%	
+	Chen et~al.’s method adopted extended run-length coding on bit-planes to vacate room for embedding~\cite{Chen2019}.
+%	
+	Yin et~al.\ proposed a RDHEI method base on MED predictor and Huffman coding technique~\cite{Yin2020}.
+%	
+	Zhang et~al.\ proposed two methods using vector-based multi-MSB substitution\cite{Zhang2022}.
+%	
+	Gao et~al.\ proposed a method using adaptive Huffman coding aiming for cloud computing. 
+	Their method achieved better compression ratio on auxiliary information~\cite{Gao2023}.
+%	
+	Sui et~al.\ proposed a method using Huffman coding and hybrid prediction~\cite{Sui2023}. 
+	They used two different strategies to process different bit-planes of the cover image. 
+	They used the average of the two neighboring pixels to predict the value in the most significant bit-plane, and they used MED predictor in other bit-planes. 
+	Their method achieves an average embedding capacity of \(3.39\) bpp.
+%	
+	Pang et~al.\ proposed a method based on a block-wise adaptive recognition strategy to combine neighboring identical blocks and hence to preserve room for data hiding\cite{Pang2023}.
+%	
+%	Yin et~al.\ proposed a RDHEI method base on MED predictor and Huffman coding technique~\cite{Yin2020}. 
+	
+	
+	The above mentioned methods complies with the common use case that consists of the \emph{Content-owner}, the \emph{Data-hider} and the \emph{Receiver}.
 
 	
 	\section{Proposed Method}
 	\label{sec:ours}
 	
-	\begin{figure*}[!t]
+	
+	
+	\begin{figure}[!t]
 		\centering
 		\includegraphics[width=\linewidth]{img/flow-chart}%
 		\caption{Flow chart of the proposed method.}
 		\label{fig:flowchart}
-	\end{figure*}
+	\end{figure}
 	
 	In this section, we explain our RRBE RDHEI method.  
 	Our method complies with the typical requirements described in Sec.\,\ref{sec:intro} and achieves higher embedding capacity than those mentioned in Sec.\,\ref{sec:related}. 
-	The flow char of our proposal is demonstrated as Fig.\,\ref{fig:flowchart}, each procedure is explained as follows.
+	Our method consists of the following steps. 
+		
+	\begin{enumerate}
+		\item The \emph{Content-owner} 
+		\begin{enumerate}
+			\item Generate auxiliary information from the cover image using enhanced MED predictor.
+			\item Encrypt the cover image using a image encryption key.
+			\item Encode auxiliary information using Huffman coding.
+			\item Embed the encoded auxiliary information into the encrypted cover image using multi-MSB substitution.
+		\end{enumerate}
+		\item The \emph{Data-hider}
+		\begin{enumerate}
+			\item Extract and decode the auxiliary information from the encrypted image. 
+			\item Encrypt secret message using message encryption key.
+%			\item Encode the secret message using the auxiliary information.
+			\item Embed the encoded auxiliary information and encrypted secret message into the encrypted image using multi-MSB substitution.
+		\end{enumerate}
+		\item The \emph{Receiver}
+		\begin{enumerate}
+			\item Extract and decode the auxiliary information from the encrypted image.
+			\item Extract and decrypt the secret message using the message encryption key.
+			\item Restore and decrypt the cover image using the image encryption key.
+		\end{enumerate}
+	\end{enumerate}
+%	
+	The flow char of our proposal is demonstrated in Fig.\,\ref{fig:flowchart}, each procedure is explained as follows.
+	
+	
+	
+	
 	
 	\subsection{Generate Auxiliary Information}
 	
+	
 	\begin{figure}[!t]
 		\centering
+		\includegraphics[width=.75\linewidth]{img/med}%
+		\caption{MED predictor}
+		\label{fig:med}
+	\end{figure}
+	
+
+	For all pixel \(x_{i, j}\) in a cover image \(I\), the predicted value \(pv_{i, j}\) of MED predictor is defined as~\eqref{eq:pv} and is illustrated in Fig.\,\ref{fig:med}. 
+	The pixels at the first row and the first column of a cover image \(I\) are reference pixels.
+%	
+	\begin{align}
+		\label{eq:pv}
+		pv_{i, j} & = 
+		\begin{cases}
+			\text{undefined}							   , \quad \text{if } i = 0 \vee j = 0, \\
+			\max(x_{i - 1, j}, x_{i, j - 1})               , \\
+			\quad \text{if } x_{i - 1, j - 1} \leq \min(x_{i - 1, j}, x_{i, j - 1}), \\
+			\min(x_{i - 1, j}, x_{i, j - 1})               , \\
+			\quad \text{if } x_{i - 1, j - 1} \geq \max(x_{i - 1, j}, x_{i, j - 1}), \\
+			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} , \quad \text{otherwise}. 
+		\end{cases}  	
+	\end{align}
+%	
+	Instead of using the standard MED predictor, we adopt an enhanced predicted error method. 
+	Different from the standard MED predictor, we exploit the reference pixels in the first row and the first column to increase embedding capacity.
+	When calculating predicted error, we define a variable \(R\) to indicate how many reference pixels must be preserved as \(REF\).
+	Then the rest of the reference pixels can be modified to increase embedding capacity.
+	In spacial domain, this enhancement introduces severe image distortion at the first row and the first column, but in the encrypted image domain, the impact is trivial.
+	We define the predicted error \(pe_{i, j}\) between pixel \(x_{i, j}\) and its predicted value \(pv_{i, j}\) as~\eqref{eq:pe2}.
+%	
+	\begin{align}
+		\label{eq:pe2}
+		pe_{i, j} &= 
+		\begin{cases}
+			\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < R ,\\
+			x_{i, j - 1} \oplus x_{i, j}, & \text{if } i = 0 ,\\
+			x_{i - 1, j} \oplus x_{i, j}, & \text{if } j = 0 ,\\
+			pv_{i, j} \oplus x_{i, j}, 	  & \text{otherwise}.
+		\end{cases} 
+	\end{align}
+
+	\begin{figure}[!t]
+		\centering
+		%		\small
 		\scriptsize
-		\begin{tabular}{|c|c|c|c|c|} 
-			% invisable line to keep the same width of each column.
-			\multicolumn{1}{c}{\phantom{\(x_{i-1, j-1}\)}} & 
-			\multicolumn{1}{c}{\phantom{\(x_{i-1, j-1}\)}} &
-			\multicolumn{1}{c}{\phantom{\(x_{i-1, j-1}\)}} & 
-			\multicolumn{1}{c}{\phantom{\(x_{i-1, j-1}\)}} & 
-			\multicolumn{1}{c}{\phantom{\(x_{i-1, j-1}\)}}  
-			\\
-			\hline
-			\(x_{0, 0}\)   & \(x_{0, 1}\) & \(x_{0, 2}\) & \(\dots\) & \(x_{0, w-1}\)   \\ \hline
-			\(x_{1, 0}\)   & \(\dots\)    & \(\dots\)    & \(\dots\) & \(\dots\)        \\ \hline 
-			\(x_{2, 0}\)   & \(\dots\)    & \cellcolor{black!10} \(x_{i-1, j-1}\) 
-			                                             & \cellcolor{black!10} \(x_{i - 1, j}\) 
-			                                                         & \(\dots\)        \\ \hline 
-			\(\dots\)      & \(\dots\)    & \cellcolor{black!10}\(x_{i, j - 1}\)  
-														 & \cellcolor{black!20}\(x_{i, j}\)      
-														 			 & \(\dots\)        \\ \hline 
-			\(x_{h-1, 0}\) & \(\dots\)    & \(\dots\)    & \(\dots\) & \(x_{h-1, w-1}\) \\ \hline 
+		\begin{tabular}{c|c|c|c|c|c|}
+			\cline{2-6}
+			\multirow{5}{*}{Pixel}
+			&\(100\)   & \(110\) & \(112\) & \(110\) & \(101\)   \\ \cline{2-6}
+			&\(120\)   & \(121\) & \(124\) & \(120\) & \(119\)   \\ \cline{2-6}
+			&\(130\)   & \(132\) & \(140\) & \(150\) & \(142\)   \\ \cline{2-6} 
+			&\(140\)   & \(131\) & \(143\) & \(145\) & \(145\)   \\ \cline{2-6}
+			&\(120\)   & \(121\) & \(124\) & \(145\) & \(145\)   \\ \cline{2-6}
 			
 			% invisable row to seperate table while keep the same width of each column.
-			\multicolumn{5}{c}{{}} \\
+			\multicolumn{6}{c}{{}} \\
 			
-			\hline
-			\rowcolor{black!30}
-			\cellcolor{black!30}\(N/A\)   & \(N/A\)         & \(N/A\)       & \(\dots\) & \(N/A\)           \\ \hline
-			\cellcolor{black!30}\(N/A\)   & \(pv_{1, 1}\)   & \(pv_{1, 2}\) & \(\dots\) & \(pv_{1, w-1}\)   \\ \hline
-			\cellcolor{black!30}\(N/A\)   & \(pv_{2, 1}\)   & \(\dots\)     & \(\dots\) & \(\dots\)         \\ \hline 
-			\cellcolor{black!30}\(\dots\) & \(\dots\)       & \(\dots\)     & \(\dots\) & \(\dots\)         \\ \hline 
-			\cellcolor{black!30}\(\dots\) & \(\dots\)       & \(\dots\)     & \cellcolor{black!20}\(pv_{i, j}\) 
-			                                                                            & \(\dots\)         \\ \hline 
-			\cellcolor{black!30}\(N/A\)   & \(pv_{h-1, 1}\) & \(\dots\)     & \(\dots\) & \(pv_{h-1, w-1}\) \\ \hline 
+			\cline{2-6}
+			\multirow{5}{*}{Predicted value}
+			&\(\times\) & \(\times\) & \(\times\) & \(\times\) &\(\times\) \\ \cline{2-6}
+			&\(\times\) & \(110\)    & \(112\)    & \(122\)    & \(111\)   \\ \cline{2-6}
+			&\(\times\) & \(121\)    & \(124\)    & \(120\)    & \(149\)   \\ \cline{2-6}
+			&\(\times\) & \(140\)    & \(131\)    & \(153\)    & \(142\)   \\ \cline{2-6} 
+			&\(\times\) & \(111\)    & \(133\)    & \(124\)    & \(145\)   \\ \cline{2-6}
+			
+			% invisable row to seperate table while keep the same width of each column.
+			\multicolumn{6}{c}{{}} \\
+			
+			\cline{2-6}
+			\multirow{5}{*}{Predicted error}
+			&\(-\) 		& \(-\) 	 & \(-\) 	  & \(30\)  & \(11\)  \\ \cline{2-6}
+			&\(28\)     & \(23\)     & \(12\)     & \(2\)   & \(24\)  \\ \cline{2-6}
+			&\(250\)    & \(253\)    & \(240\)    & \(238\) & \(27\)  \\ \cline{2-6}
+			&\(14\)     & \(15\)     & \(12\)     & \(8\)   & \(31\)  \\ \cline{2-6} 
+			&\(244\)    & \(22\)     & \(249\)    & \(237\) & \(0\)   \\ \cline{2-6}
+			
+			% invisable row to seperate table while keep the same width of each column.
+			\multicolumn{6}{c}{{}} \\
+			
+			\cline{2-6}
+			\multirow{5}{*}{Embedding capacity}
+			&\(-\) 		& \(-\) 	 & \(-\)	  & \(3\) & \(4\)  \\ \cline{2-6}
+			&\(3\)      & \(3\)      & \(4\)      & \(6\) & \(3\)  \\ \cline{2-6}
+			&\(0\)      & \(0\)      & \(0\)      & \(0\) & \(3\)  \\ \cline{2-6}
+			&\(4\)      & \(4\)      & \(4\)      & \(4\) & \(3\)  \\ \cline{2-6} 
+			&\(0\)      & \(3\)      & \(0\)      & \(0\) & \(8\)  \\ \cline{2-6}
+			
 		\end{tabular}
-		\caption{The MED predictor.}
+		\caption{An example of enhanced MED predictor.}
 		\label{fig:xpv}
 	\end{figure}
+	
+	Each \(pe_{i, j}\) has a corresponding \(t_{i, j}\), as defined in~\eqref{eq:t}, represents the embedding capacity the pixel \(x_{i, j}\) can provide.
+	An example of a \(5 \times 5\) cover image with \(R = 3\) is shown in Fig.\,\ref{fig:xpv} where undefined predicted values are indicated as \(\times\) and \(REF\) pixels are indicated as \(-\).
+%	
+	\begin{align}
+		\label{eq:t}
+		t_{i, j} &= 
+		\begin{cases}
+			\text{undefined},             & \text{if } pe_{i, j} \text{ is undefined} ,\\
+			8,&  \text{if } pe_{i, j} = 0,       \\
+			7 - \lfloor \log_2(pe_{i, j}) \rfloor ,&  \text{otherwise.}
+		\end{cases}  	
+	\end{align}
+%
+	Let \(\mathbf{T}\) be a matrix containing all \(t_{i, j}\) for \(1 \leq i < h\) and \(1\leq j < w\), where \(h\) and \(w\) denote the height and the width of \(I\), respectively.
+	Let \(\mathbf{F}\) be the frequency table of \(\mathbf{T}\).
+	Let \(\mathrm{cap}(t)\) be a function defined for all possible values of \(t \in [0-8]\).
+%	
+	\begin{equation}
+		\label{eq:cap}
+		\mathrm{cap}(t) = 
+		\begin{cases}
+			8     ,&  \text{if } t = 8,       \\
+			t + 1 ,&  \text{otherwise}.
+		\end{cases} 
+	\end{equation}
 
 	\begin{figure}[!t]
 		\begin{algorithm}[H]
@@ -234,104 +360,99 @@
 				\EndFor
 				
 				\While{\(\vert nodes \vert \; > 1\)}
-				\State Find \(n1 \in nodes\) with the least \(f_1\).
-				\State \(nodes \gets nodes \setminus \{n1\}\).
+				\State Find \(n_a \in nodes\) with the least \(f_a\).
+				\State \(nodes \gets nodes \setminus \{n_a\}\).
 				
-				\State Find \(n2 \in nodes\) with the least \(f_2\).
-				\State \(nodes \gets nodes \setminus \{n2\}\).
+				\State Find \(n_b \in nodes\) with the least \(f_b\).
+				\State \(nodes \gets nodes \setminus \{n_b\}\).
 				
-				\State Create a node \(n3\) with 
-				\State\hspace{\algorithmicindent} \(f \leftarrow f_1 + f_2\)
-				\State\hspace{\algorithmicindent} \(left \leftarrow n1\).
-				\State\hspace{\algorithmicindent} \(right \leftarrow n2\).
+				\State Create a node \(n_c\) with 
+				\State\hspace{\algorithmicindent} \(f_c \leftarrow f_a + f_b\)
+				\State\hspace{\algorithmicindent} \(left\_child \leftarrow n_a\).
+				\State\hspace{\algorithmicindent} \(right\_child \leftarrow n_b\).
 				
-				\State \(nodes \gets nodes \cup \{n3\}\).
+				\State \(nodes \gets nodes \cup \{n_c\}\).
 				\EndWhile
 			\end{algorithmic}
 		\end{algorithm}
 	\end{figure}
-
-	\begin{figure}[!t]
-		\begin{algorithm}[H]
-			\caption{Tree Serialization.}
-			\label{algo:serial}
-			
-			\begin{algorithmic}[1]
-				\Require Huffman tree \(\mathbf{H}\).
-				\Ensure  bit sequence \(topology\).
-				\Ensure  bit sequence \(value\).
-				
-				\State \(topology \gets \emptyset\).
-				\State \(value    \gets \emptyset\).
-				
-				\State \Call{SerializeTree}{$\mathbf{H}$}.
-				\\
-				
-				\Procedure{SerializeTree}{$node$}   
-				\If{\(node\) is a leaf}
-				\State 		Let leaf value \(v\) be presented as \(v_0 \Vert \cdots \Vert v_3\).
-				\State 		\(topology \gets topology \Vert 0\).
-				\State 		\(value \gets value \Vert v_0 \Vert \cdots \Vert v_3\).
-				\Else
-				\State		 \(topology \gets topology \Vert 1\).
-				\State 		\Call{SerializeTree}{$node.left$}.
-				\State 		\Call{SerializeTree}{$node.right$}.
-				\EndIf
-				\EndProcedure
-			\end{algorithmic}
-		\end{algorithm}
-	\end{figure}
 	
-	\begin{figure}[!t]
-		\begin{algorithm}[H]
-			\caption{Tree Deserialization.}
-			\label{algo:unserial}
-			
-			\begin{algorithmic}[1]
-				\Require bit sequence \(topology\).
-				\Require bit sequence \(value\).
-				\Ensure Huffman tree \(\mathbf{H}\).
-				
-				\State \Call{UnserializeTree}{$topology, value$}.
-				\\
-				\Function{UnserializeTree}{$topology, value$}   
-				\State Read 1 bit \(b\) from \(topology\).
-				\If{\(b = 0\)}
-				\State 		Read \(4\) bits from \(value\).
-				\State 		Create a node \(n\) with \(v = (value_0, \dots, value_3)\).
-				\Else
-				\State 		Create a node \(n\) with
-				\State \(left \gets\) \Call{UnserializeTree}{$topology, value$} 
-				\State \(right \gets\) \Call{UnserializeTree}{$topology, value$}.
-				\EndIf
-				\State \Return \(n\).
-				\EndFunction
-			\end{algorithmic}
-		\end{algorithm}
-	\end{figure}
+	Apply the Huffman tree building algorithm (as shown in Algorithm~\ref{algo:buildtree}) on \(\mathbf{F}\).
+	Let \(t\_code = \mathrm{encode}(t)\) be the Huffman code of \(t\) using \(\mathbf{H}\) and let \(t = \mathrm{decode}(t\_code)\) be its inverse. 
+	Define \(\mathrm{payload}(t)\) as the differences between the capacity of $t$ and the length of its Huffman code. 
+%	
+	\begin{equation}
+		\label{eq:payload}
+		\mathrm{payload}(t) = \mathrm{cap}(t) - \vert t\_code \vert .
+	\end{equation}
+%
+	Let \(\mathbf{T^\prime}\) be the concatenation of Huffman code of every \(t_{i, j} \in \mathbf{T}\).
+%	
+	\begin{align}
+		\label{eq:encodeT1}
+		\mathbf{T^\prime} &= \bigparallel_{i = 0}^{h - 1}  { \bigparallel_{j = 0}^{w - 1} \mathrm{encode}(t_{i, j})}. %\\
+	\end{align}
 
 	\begin{figure}[!t]
 		\tiny
 		\Tree[ 
 		[.0 [.0 \{00\}\\5 ]
-		[.1 [.0 \{010\}\\7 ] [.1 \{011\}\\8 ]]]
+		[.1 [.0 \{010\}\\7 ] 
+		[.1 \{011\}\\8 ]
+		]
+		]
 		[.1 [.0 [.0 \{100\}\\3 ]
 		[.1 [.0 \{1010\}\\2 ]
-		[.1 [.0 \{10110\}\\1 ] [.1 \{10111\}\\0 ]]]]
-		[.1 [.0 \{110\}\\6 ] [.1 \{111\}\\4 ]]]] 
-		\caption{The Huffman tree of \emph{Lena} \(512 \times 512\).}
-		\label{fig:lenatree}
+		[.1 [.0 \{10110\}\\1 ] 
+		[.1 \{10111\}\\0 ]
+		]
+		]
+		]
+		[.1 [.0 \{110\}\\6 ] 
+		[.1 \{111\}\\4 ]
+		]
+		]
+		] 
+		\caption{The Huffman coding tree of \emph{Lena} \(512 \times 512\).}
+		\label{fig:tree:lena}
 	\end{figure}
-
+	
+	\begin{figure}[!t]
+		\tiny
+		\Tree[ 
+		[.0 [.0 \{00\}\\5 ] 
+		[.1 \{01\}\\4 ]
+		]
+		[.1 [.0 [.0 \{011\}\\6 ] 
+		[.1 \{101\}\\3 ] ] 
+		[.1 
+		[.0 [.0 \{1100\}\\7 ]
+		[.1 [.0 \{11010\}\\0 ]
+		[.1 \{11011\}\\1 ]
+		]
+		]
+		[.1 [.0 \{1110\}\\8 ]
+		[.1 \{1111\}\\2 ]
+		]
+		]
+		]
+		] 
+		\caption{The Huffman coding tree of \emph{Man} \(1024 \times 1024\).}
+		\label{fig:tree:man}
+	\end{figure}
+	
 	\begin{table}[!t]
 		\centering
-		\caption{Huffman coding of \emph{Lena} \(512 \times 512\).}
+		\caption{Huffman coding with \(R = 70\)}
+		\label{tab:huffman}
+		
+		
 		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
 			\toprule  
 			\(t\) & 
 			\multicolumn{1}{c}{\(f_t\)} & 
-			\multicolumn{1}{c}{\(\mathrm{encode}(t)\)} & 
-			\(\mathrm{cap}(t)\) & \(\vert \mathrm{encode}(t) \vert\) & \(\mathrm{payload}(t)\) & 
+			\multicolumn{1}{c}{\(t\_code\)} & 
+			\(\mathrm{cap}(t)\) & \(\vert t\_code \vert\) & \(\mathrm{payload}(t)\) & 
 			\multicolumn{1}{c}{\(\Delta\)} \\
 			\midrule  
 			$0$ & $9866$  & $10111$ & $1$ & $5$ & $-4$ & $-39464$  \\ 
@@ -344,86 +465,69 @@
 			$7$ & $24451$ & $010$   & $8$ & $3$ & $+5$ & $+122255$ \\ 
 			$8$ & $29198$ & $011$   & $8$ & $3$ & $+5$ & $+145990$ \\ 
 			\midrule 
-			$\sum$ & $262074$ & & $1476121$ & $787183$ & $+688938$ & \\ 
-			\bottomrule   
+			$\sum_f$ &  & & $1476121$ & $787183$ & $+688938$ & \\ 
+			%			$262074$
+			\midrule   
+			\multicolumn{7}{l}{Average code length: \(787183 \divisionsymbol (512 \times 512) = 3.002864\)} \\
+			\bottomrule
 		\end{tabular}
-		\label{tab:shrlena}
+		\subcaption{\emph{Lena} \(512 \times 512\).}
+		\label{tab:huffman:lena}
+		
+		%		\vskip .5cm
+		
+		
+		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
+			\toprule 
+			\(t\) &   
+			\multicolumn{1}{c}{\(f_t\)} &     
+			\multicolumn{1}{c}{\(t\_code\)}  &  
+			\(\mathrm{cap}(t)\) &    
+			\(\vert t\_code \vert\)    & 
+			\(\mathrm{payload}(t)\)  & 
+			\multicolumn{1}{c}{\(\Delta\)}  \\
+			\midrule 
+			%			\singlemanshr
+			$0$ & $40555$   & $11010$ & $1$ & $5$ & $-4$ & $-162220$  \\ 
+			$1$ & $41000$   & $11011$ & $2$ & $5$ & $-3$ & $-123000$  \\ 
+			$2$ & $86279$   & $1111$  & $3$ & $4$ & $-1$ & $-86279$   \\ 
+			$3$ & $153773$  & $101$   & $4$ & $3$ & $+1$ & $+153773$  \\ 
+			$4$ & $221579$  & $01$    & $5$ & $2$ & $+3$ & $+664737$  \\ 
+			$5$ & $207665$  & $00$    & $6$ & $2$ & $+4$ & $+830660$  \\ 
+			$6$ & $136075$  & $100$   & $7$ & $3$ & $+4$ & $+544300$  \\ 
+			$7$ & $75666$   & $1100$  & $8$ & $4$ & $+4$ & $+302664$  \\ 
+			$8$ & $85914$   & $1110$  & $8$ & $4$ & $+4$ & $+343656$  \\ 
+			\midrule 
+			$\sum_f$ &    && $5595534$ & $3127243$ &    $+2468291$ & \\ 
+			%			$1048506$
+			\midrule
+			\multicolumn{7}{l}{Average code length: \(3127243 \divisionsymbol (1024 \times 1024) = 2.982570\)} \\
+			\bottomrule
+		\end{tabular}
+		\subcaption{\emph{Man} \(1024 \times 1024\).}
+		\label{tab:huffman:man}
 	\end{table}
 
-	For all pixel \(x_{i, j} \) in a cover image \(I\), the predicted value \(pv_{i, j}\) of MED predictor is defined as~\eqref{eq:pv} and illustrated in Fig.\,\ref{fig:xpv}.
-	The predicted error \(pe_{i, j}\) between each pixel and its predicted value is defined as~\eqref{eq:pe2}.
-	Each \(pe_{i, j}\) has a corresponding value \(t_{i, j}\), as defined in~\eqref{eq:t}, represents the embedding capacity the corresponding pixel \(x_{i, j}\) can provide.
-%	
-	\begin{align}
-		\label{eq:pv}
-		pv_{i, j} & = 
-		\begin{cases}
-			\text{undefined}							   , \quad \text{if } i = 0 \vee j = 0, \\
-			\max(x_{i - 1, j}, x_{i, j - 1})               , \\
-			\quad \text{if } x_{i - 1, j - 1} \leq \min(x_{i - 1, j}, x_{i, j - 1}), \\
-			\min(x_{i - 1, j}, x_{i, j - 1})               , \\
-			\quad \text{if } x_{i - 1, j - 1} \geq \max(x_{i - 1, j}, x_{i, j - 1}), \\
-			x_{i - 1, j} + x_{i, j - 1} - x_{i - 1, j - 1} , \quad \text{otherwise}. 
-		\end{cases} \\
-		%	
-		\label{eq:pe2}
-		pe_{i, j} &= 
-		\begin{cases}
-			\text{undefined},             & \text{if } i = 0 \wedge  0 \leq j < REF ,\\
-			x_{i, j - 1} \oplus x_{i, j}, & \text{if } i = 0 ,\\
-			x_{i - 1, j} \oplus x_{i, j}, & \text{if } j = 0 ,\\
-			pv_{i, j} \oplus x_{i, j}, 	  & \text{otherwise}.
-		\end{cases} \\
-		%	
-		\label{eq:t}
-		t_{i, j} &= 
-		\begin{cases}
-			\text{undefined},             & \text{if } pe_{i, j} \text{ is undefined} ,\\
-			8,&  \text{if } pe_{i, j} = 0,       \\
-			7 - \lfloor \log_2(pe_{i, j}) \rfloor ,&  \text{if } pe_{i, j} \neq  0.
-		\end{cases} 	
-	\end{align}
-%
-	Let \(\mathbf{T}\) be a matrix containing all \(t_{i, j}\), \(1 \leq i < h, 1\leq j < w\), where \(h\) and \(w\) denote the height and the width of \(I\), respectively.
-	Let \(\mathbf{F}\) be the frequency table of \(\mathbf{T}\).
-	Let \(\mathrm{cap}(t)\) be a function defined for all possible values of \(t_{i, j}\).
-%	
-	\begin{equation}
-		\label{eq:cap}
-		\mathrm{cap}(t) = 
-		\begin{cases}
-			8     ,&  \text{if } t = 8,       \\
-			t + 1 ,&  \text{if } 0 \leq t \leq 7.
-		\end{cases} 
-	\end{equation}
-%
-	Apply the Huffman tree building algorithm (as shown in Algorithm~\ref{algo:buildtree}) on \(\mathbf{F}\).
-	Let \(\mathrm{encode}(t)\) be the Huffman encoding of \(t\) using \(\mathbf{H}\) and let \(\mathrm{decode}(h)\) be its inverse. 
-	Define \(\mathrm{payload}(t)\) as the differences between the capacity of $t$ and the length of its Huffman encoding. 
-%	
-	\begin{equation}
-		\label{eq:payload}
-		\mathrm{payload}(t) = \mathrm{cap}(t) - \vert \mathrm{encode}(t) \vert .
-	\end{equation}
-%
-	Let \(\mathbf{T^\prime}\) be the concatenation of Huffman code of \(\mathbf{T}\).
-%	
-	\begin{align}
-		\label{eq:encodeT1}
-		\mathbf{T^\prime} &= \bigparallel_{i = 1}^h  { \bigparallel_{j = 1}^w \mathrm{encode}(t_{i, j})}. %\\
-	\end{align}
-
-	As an example, the tree topology of applying Algorithm~\ref{algo:buildtree} on \emph{Lena} \(512 \times 512\) is shown in Fig.\,\ref{fig:lenatree}. Table~\ref{tab:shrlena} shows the statistic data. 
+	For example, the tree topologies of applying Algorithm~\ref{algo:buildtree} on \emph{Lena} \(512 \times 512\) and \emph{Man} \(1024 \times 1024\) are shown in Fig.\,\ref{fig:tree:lena} and Fig.\,\ref{fig:tree:man}. Table~\ref{tab:huffman} shows the statistic data. 
 	The columns are in conformity with their definitions and the column \emph{\(\Delta\)} represents the result of \(f_t \times \mathrm{payload}(t)\). 
-	Each cell in the row \emph{\(\sum\)} represents the weighted summation of the corresponding column.
+	Each cell in the row \emph{\(\sum_f\)} represents the weighted summation of the corresponding column using \(f_t\) as their weight.
+	The average code length is given at the bottom row.
 	
-	Tree serialization follows Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
-	In Algorithm~\ref{algo:serial}, if a Huffman tree has \(17\) nodes, it needs \(17\) bits to store their roles. A \(1\) tells that it is an internal node. A \(0\) tells that it is a leaf node~\cite{Pu2006}. 
-	The value of all leaves are \(0 \leq v \leq 8\), each leaf value requires \(4\) bits to encode. Totally a Huffman tree is serialized into \(53\) bits.
+%	Tree serialization follows Algorithm~\ref{algo:serial}. The reverse process follows Algorithm~\ref{algo:unserial}.
+	The tree serialization and deserialization processes follow~\cite{Pu2006}.
+	A Huffman tree has \(17\) nodes needs \(17\) bits to store their roles, where \(1\) indicates an internal node and \(0\) indicates a leaf node. 
+	The value of all leaves are \(0 \leq v \leq 8\), each leaf value requires \(4\) bits to encode. 
+	Totally, a Huffman tree is serialized into \(53\) bits.
 	
 	\subsection{Encrypt Cover Image}
+	\label{sec:enc_img}
 	
-	The cover image \(I\) is encrypted with a key stream \(K_I\) using~\eqref{eq:enc}. We use \(x^e_{i, j}\) to denote an encrypted pixel in an encrypted image \(I_e\). 
+	The \emph{Content-owner} uses \(Key_I\) to encrypt the cover image. 
+	The \(Key_I\) must be preshared between the \emph{Content-owner} and the \emph{Receiver}, and they must agree on the same random number generator or stream cipher beforehand.
+	\(Key_I\) is used as the seed of a random number generator or the master key of a stream cipher to generate key stream \(K_I\).
+	\(K_I\) has the same length as the size of the cover image \(I\).
+	The cover image \(I\) is encrypted with key stream \(K_I\) using~\eqref{eq:enc}. 
+	We use \(x^e_{i, j}\) to denote an encrypted pixel in an encrypted image \(I_e\). 
 %	
 	\begin{equation}
 		\label{eq:enc}
@@ -433,16 +537,16 @@
 	\subsection{Embed Auxiliary Information}
 	
 	\begin{figure}[!t]
-		\scriptsize
+		\small
 		\centering
 		
 		\begin{tabularx}{\linewidth}{r r@{}c ccc}
 			\hhline{*{1}{~}*{5}{-}}
 			\(S_a =\)  
-			& \multicolumn{1}{|c|}{\cellcolor{black!10}\(topology\)}
-			& \multicolumn{1}{|c|}{\cellcolor{black!10}\(value\)}
-			& \multicolumn{2}{|c|}{\cellcolor{black!30}\(\mathbf{T^\prime}\)}
-			& \multicolumn{1}{|c|}{\cellcolor{black!40}\(I_e\)}
+			& \multicolumn{1}{|c|}{\(topology\)}
+			& \multicolumn{1}{|c|}{\(value\)}
+			& \multicolumn{2}{|c|}{\phantom{\quad\quad\quad}\(\mathbf{T^\prime}\)\phantom{\quad\quad\quad}}
+			& \multicolumn{1}{|c|}{\(REF\)}
 			\\ \cline{2-6} 
 			& \multicolumn{1}{c}{\upbracefill} 
 			& \multicolumn{1}{c}{\upbracefill}
@@ -452,24 +556,24 @@
 			& \multicolumn{1}{c}{\(17\)  bits}  
 			& \multicolumn{1}{c}{\(36\)  bits}  
 			& \multicolumn{2}{c}{\(LEN\) bits} 
-			& \multicolumn{1}{c}{\(REF\) bytes} 
+			& \multicolumn{1}{c}{\(R\) bytes} 
 			\\
 			
 			\hhline{*{1}{~}*{3}{-}}
 			\(S_{a1} =\)  
-			& \multicolumn{1}{|c|}{\cellcolor{black!10}\(topology\)}
-			& \multicolumn{1}{|c|}{\cellcolor{black!10}\(value\)}
-			& \multicolumn{1}{|c|}{\cellcolor{black!30}\(\mathbf{T^\prime}\)}
+			& \multicolumn{1}{|c|}{\(topology\)}
+			& \multicolumn{1}{|c|}{\(value\)}
+			& \multicolumn{1}{|c|}{\(\mathbf{T_1^\prime}\)}
 			&  & 
 			\\ \cline{2-4} 
 			&\multicolumn{3}{c}{\upbracefill}	&  & \\
-			&\multicolumn{3}{c}{\(REF\) bytes}	&  & \\
+			&\multicolumn{3}{c}{\(R\) bytes}	&  & \\
 			
 			\hhline{*{4}{~}*{2}{-}}
 			\(S_{a2} =\)  
 			& & & 
-			& \multicolumn{1}{|c|}{\cellcolor{black!30}\(\mathbf{T^\prime}\)}
-			& \multicolumn{1}{|c|}{\cellcolor{black!40}\(I_e\)}
+			& \multicolumn{1}{|c|}{\(\mathbf{T_2^\prime}\)}
+			& \multicolumn{1}{|c|}{\(REF\)}
 			
 			\\ \cline{5-6} 
 		\end{tabularx}
@@ -484,6 +588,7 @@
 			
 			\begin{algorithmic}[1]
 				\Require cover image \(I\) of size \(w \times h\).
+				\Require variable \(R\).
 				\Require key stream \(K_I\).
 				\Require label map \(\mathbf{T}\).
 				\Require frequency table \(\mathbf{T}\).
@@ -495,9 +600,10 @@
 				\State Compute \(LEN\) using~\eqref{eq:len}.
 				\State Generate \(S_a\) as Fig.\,\ref{fig:header2}.
 				\State \(I_e^\prime \gets I_e\)
-				\State Replace first \(REF\) bytes of \(I_e^\prime\) with \(S_{a1}\).
+				\State Let \(REF\) be the first \(R\) pixels.
+				\State Replace \(REF\) with \(S_{a1}\).
 				
-				\ForAll{\(\{(i, j) \mid (i, j) \notin REF\}\)}
+				\ForAll{\(\{x^e_{i, j} \notin REF \}\)}
 				\If			{\(S_{a2} = \emptyset\)}
 				\State			End of algorithm.
 				\Else
@@ -508,7 +614,7 @@
 		\end{algorithm}
 	\end{figure}
 	
-	Let \(CodeLength\) be the expected length of Huffman coding in the worst-case, when we expect \(\mathbf{F}\) to be an uniform distribution, 
+	Let \(CodeLength\) be the expected length of Huffman coding in the worst-case when \(\mathbf{F}\) is an uniform distribution, 
 %	
 	\begin{equation}
 		\label{eq:floor}
@@ -528,34 +634,25 @@
 		LEN = CodeLength \times w \times h.
 	\end{equation}
 %
-	We set \(REF = 70\) base on our experiment results.
-	We define auxiliary information \(S_a\) as illustrated in Fig.\,\ref{fig:header2} and let \(S_{a1}\) represent the first \(REF\) bytes of \(S_a\), and \(S_{a2}\) be the rest of \(S_a\). 
-	Every subsequence of \(S_a\) is embedded into \(I_e\) using~\eqref{eq:embed1}, where \(S^\ast\) is a subsequence of \(S_a\). $\mathrm{MSB}$ and $\mathrm{LSB}$ are defined as~\eqref{eq:msb} and~\eqref{eq:lsb}, respectively. 
+	We set \(R = 70\) base on our experiment results.
+	We define auxiliary information \(S_a\) as illustrated in Fig.\,\ref{fig:header2} and let \(S_{a1}\) represent the first \(R\) bytes of \(S_a\) and \(S_{a2}\) represent the rest of \(S_a\). 
+	Every subsequence of \(S_a\) is embedded into \(I_e\) sequentially using~\eqref{eq:embed1}, where \(S^\ast\) is a subsequence of \(S_a\). 
+%	$\mathrm{MSB}$ and $\mathrm{LSB}$ are defined as~\eqref{eq:msb} and~\eqref{eq:lsb}, respectively. 
 	The embedding process follows Algorithm~\ref{algo:embed1}.
-%	
+%
 	\begin{align}
 		\label{eq:embed1}
 		x^{e\prime}_{i, j}  &= 
 		\begin{dcases}
 			\mathrm{MSB}^8(S^\ast)                   , \\
-			\quad \text{if }  i = 0 \vee j = 0 \vee 7 \leq t_{i, j} \leq  8, \\
+			\quad \text{if }  i = 0 \wedge  0 \leq j < R \text{ or } t_{i, j} = 7 \text{ or } t_{i, j} = 8, \\
 			\mathrm{MSB}^{(t_{i, j} + 1)}(S^\ast) + \mathrm{LSB}^{(7 - t_{i, j})}(x^e_{i, j}),  \\
-			\quad \text{if } 0 \leq t_{i, j} < 7 ,
+			\quad \text{otherwise},
 		\end{dcases}  
 	\end{align}
-	where 
-	\begin{equation}
-		\label{eq:msb}
-		\mathrm{MSB}^{m}(B)  = \sum\nolimits_{i = 8 - m}^7 b_i \times 2^i
-	\end{equation}
-	and 
-	\begin{equation}
-	   	\label{eq:lsb}
-	   	\mathrm{LSB}^{n}(B)  = B \bmod 2^n .
-	\end{equation}
+	where \(\mathrm{MSB}^{m}(B)\) and \(\mathrm{LSB}^{n}(B)\) represent the \(m\) most significant and the \(n\) least significant bits of \(B\), respectively.
 		
 	
-	%
 	\subsection{Extract Auxiliary Information}
 
 	\begin{figure}[!t]
@@ -565,6 +662,7 @@
 			
 			\begin{algorithmic}[1]
 				\Require encrypted image \(I_e\) of size \(w \times h\).
+				\Require variable \(R\).
 				\Ensure auxiliary information \(S_a\).
 				\Ensure Huffman tree \(\mathbf{H}\).
 				\Ensure label map \(\mathbf{T}\).
@@ -573,19 +671,21 @@
 				\State \(topology \gets\) read \(17\) bits from \(S_a\).
 				\State \(value \gets\) read \(36\) bits from \(S_a\).
 %				\Comment{consume the first 52 bytes.}
-				\State Compute \(\mathbf{H}\) using Algorithm~\ref{algo:unserial}.
+				\State Deserialize \(\mathbf{H}\) using the method in~\cite{Pu2006}.
 				\State Compute \(LEN\) using~\eqref{eq:len}.
 				
 				\State Initialize \(\mathbf{T}\).
 				\State \((d_x, d_y) \gets (1, 1)\).	
 				\label{algo:extractT:idxProce}
 				\State \(buf \gets \emptyset\).
+				\State Let \(REF\) be the first \(R\) pixels.
 				\ForAll{\(\{b_i \in REF \mid i > 52\}\)}
+				\label{algo:extractT:loop}
 				\State	\(buf \gets buf \Vert b_i\).
 				\If		{\(buf\) is a valid Huffman code}
-				\State 		\(t_{(d_x, d_y)} \gets \mathrm{decode}(buf)\).		
+				\State 		\(t_{d_x, d_y} \gets \mathrm{decode}(buf)\).		
 				\label{algo:extractT:incdref} 
-%				\Comment{\(t_{(d_x, d_y)} \in \mathbf{T}\)}
+%				\Comment{\(t_{d_x, d_y} \in \mathbf{T}\)}
 				\State 		\(buf \gets \emptyset\).
 				\State		Move \((d_x, d_y)\) to next location of \(\mathbf{T}\).
 				
@@ -599,7 +699,7 @@
 				\label{algo:extractT:nextij}
 				
 				\If		{\(buf\) is a valid Huffman code}		
-				\State 		\(t_{(d_x, d_y)} \gets \mathrm{decode}(buf)\). 
+				\State 		\(t_{d_x, d_y} \gets \mathrm{decode}(buf)\). 
 				\label{algo:extractT:nextd} 
 				\State 		\(buf \gets \emptyset\).
 				\State		Move \((d_x, d_y)\) to next location of \(\mathbf{T}\).
@@ -615,17 +715,21 @@
 	\end{figure}
 
 	When giving an encrypted image \(I_e\), we extract \(S_a\), \(\mathbf{H}\) and \(\mathbf{T}\) using Algorithm~\ref{algo:extractA}.
-	Let \(x^e_{i, j} \in I_e\) be represented as a bit sequence \(b_7 \Vert \cdots \Vert b_0\). 
+	Let \(x^e_{i, j} \in I_e\) be represented as a bit sequence \(b_7 \Vert \cdots \Vert b_0\), where \(b_7\) is the most significant bit and \(b_0\) is the least significant bit. 
 	The extraction function is defined as~\eqref{eq:extract}.
 %	
 	\begin{align}
 		\label{eq:extract}
 		\mathrm{extract}(i, j)  &= 
 		\begin{cases}
-			b_7 \Vert \cdots \Vert b_0              ,& \text{if } 7 \leq t_{i, j} \leq 8 , \\
-			b_7 \Vert \cdots \Vert b_{7 - t_{i, j}} ,& \text{if } 0 \leq t_{i, j} \leq 6 .
+			b_7 \Vert \cdots \Vert b_0              ,& \text{if } t_{i, j} = 7 \text{ or } t_{i, j} = 8 , \\
+			b_7 \Vert \cdots \Vert b_{7 - t_{i, j}} ,& \text{otherwise}.
 		\end{cases}
 	\end{align}
+	
+	
+	
+	
 	
 	\subsection{Embed Secret Message}
 	
@@ -651,18 +755,53 @@
 		\end{algorithm}
 	\end{figure}
 
-	A secret message \(S\) is encrypted with key stream \(K_S\). Then, following Algorithm~\ref{algo:hider1}, we embed \(S_e\) into \(I_e^\prime\) and produce stego image \(I_w\).
+	The \emph{Data-hider} uses \(Key_S\) as the seed of a random number generator or the master key of an stream cipher to generate key stream \(K_S\).
+	This \(Key_S\) must be preshared between the \emph{Data-hider} and the \emph{Receiver}, and they must agree on the same random number generator or stream cipher beforehand.
+	This selection is independent from the selection of encryption algorithm in Sec.~\ref{sec:enc_img}.
+	\(K_S\) has the same length as the secret message \(S\).
+	Secret message \(S\) is encrypted with key stream \(K_S\). 
+	Then, following Algorithm~\ref{algo:hider1}, we embed \(S_e\) into \(I_e^\prime\) using \eqref{eq:ens2} and produce stego image \(I_w\).
 %	
 	\begin{equation}
 		\label{eq:ens2}
 		S_e = S \oplus K_S .
 	\end{equation}
 	
+	
+	
+	
+	
+	
 	\subsection{Extract Secret Message}
 	
-	Starting from \((c_x, c_y)\), the secret bits can be extracted using the same method as described in Algorithm~\ref{algo:extractA}, and finally be decrypted with \(K_S\).
+	Starting from \((c_x, c_y)\), the secret bits can be extracted using the same method as described in Algorithm~\ref{algo:extractA}, and finally be decrypted with \(K_S\), if the \emph{Receiver} can provide the same \(Key_S\) to generate the same key stream \(K_S\).
+	
+	
+	
+	
 	
 	\subsection{Restore Cover Image}
+	
+	The first \(R\) bytes of \(I_e\) is extracted using Algorithm~\ref{algo:extractA}.
+	Let \(I_e^\prime\) represent the result of \(I_w\) after restoring the first \(R\) bytes.
+	Then \(I_e^\prime\) is decrypted by key stream \(K_I\) the same way as~\eqref{eq:enc} and becomes \(I^\prime\), if the \emph{Receiver} provides the identical \(Key_I\) to generate the same key stream \(K_I\).
+	The cover image \(I\) is restored after applying~\eqref{eq:restore} to all \(x^\prime_{i, j} \in I^\prime\).
+%	
+	It must be emphasized that when applying~\eqref{eq:restore} to \(x^\prime_{i, j}\), the pixels \(x_{i - i, j - 1}, x_{i - 1, j}\) and \(x_{i, j -1}\) have already been restored from \(REF\) or the former application of~\eqref{eq:restore}, so that the \(pv_{i, j}\) is identical as that in the embedding process.
+%	
+	\begin{equation}
+		\label{eq:restore}
+		x_{i, j} =
+		\begin{cases}
+			pv_{i, j}                          ,& \text{if } t_{i, j} = 8, \\
+			\\
+			\begin{aligned}
+				&\mathrm{MSB}^{(t_{i, j})}(pv_{i, j})  \\
+				&\quad {+} 2^{(7 - t_{i, j})} \\
+				&\quad {+} \mathrm{LSB}^{(7 - t_{i, j})}(x^\prime_{i, j}),
+			\end{aligned} & \text{otherwise}.
+		\end{cases}
+	\end{equation}
 	
 	\begin{figure}[!t]
 		\scriptsize
@@ -694,7 +833,7 @@
 			\cellcolor{lightgray}\;0 &
 			\cellcolor{gray}\;1      & \;0 & \;1 & \;0 &
 			\\
-
+			
 			\cline{4-11}
 			&
 			\multicolumn{2}{c}{ } 					& 
@@ -708,9 +847,9 @@
 			\multicolumn{4}{c}{4}		&
 			\multicolumn{5}{c}{ }       
 			\\
-
+			
 			\multicolumn{12}{c}{ } \\
-	
+			
 			\cline{4-11}
 			\multirow{3}{*}{Encrypt \(\left \{ 
 				\begin{array}{@{}c@{}}
@@ -736,12 +875,12 @@
 			& \multicolumn{1}{c}{+1}
 			& \multicolumn{4}{c}{ }  
 			\\
-
+			
 			\cline{4-8}
 			& \(S^\ast\) & = & 1 & 1 & 0 & 1 & 0 & \multicolumn{4}{c}{ }  \\ \cline{4-8}
 			
 			\multicolumn{12}{c}{ } \\
-
+			
 			\hhline{*{3}{~}*{8}{-}}
 			& \(x^{e\prime}_{i, j}\) & = 
 			& \cellcolor{lightgray}1 
@@ -763,7 +902,7 @@
 			& \multicolumn{1}{c}{+1}
 			& \multicolumn{4}{c}{ } 
 			\\
-
+			
 			\cline{4-8}
 			& \(S^\ast\) & = & 1 & 1 & 0 & 1 & 0 & \multicolumn{4}{c}{ } \\ \cline{4-8}
 			
@@ -797,7 +936,7 @@
 					\\ \\ \\ 
 				\end{array}  \right \}\) Restore}
 			\\
-
+			
 			\hhline{*{3}{~}*{8}{-}}
 			& \(t_{i, j}\) 
 			& \multicolumn{1}{c}{=} 
@@ -805,7 +944,7 @@
 			& \multicolumn{1}{c}{+1}
 			& \multicolumn{4}{c}{ } 
 			\\
-
+			
 			\hhline{*{3}{~}*{8}{-}}
 			& \(x_{i, j}\)  		& = 
 			& \cellcolor{lightgray}1 
@@ -814,7 +953,7 @@
 			& \cellcolor{lightgray}1 
 			& \cellcolor{gray}1 	& 1 & 0 & 0 &
 			\\ 
-
+			
 			\hhline{*{3}{~}*{8}{-}}
 			\multicolumn{7}{c}{ } 			 &
 			\multicolumn{1}{c}{\(\uparrow\)} &
@@ -830,249 +969,249 @@
 		\caption{A visualized example.}
 		\label{fig:example}
 	\end{figure}
-	
-	The first \(REF\) bytes of \(I_e\) is extracted using Algorithm~\ref{algo:extractA}.
-	Let \(I_e^\prime\) represent the result of \(I_w\) restoring the first \(REF\) bytes.
-	Then \(I_e^\prime\) is decrypted by key stream \(K_I\) the same way as~\eqref{eq:enc} and becomes \(I^\prime\).
-	The cover image \(I\) is restored after applying~\eqref{eq:restore} to all \(x^\prime_{i, j} \in I^\prime\).
-	
-	It must be emphasized that when applying~\eqref{eq:restore} to \(x^\prime_{i, j}\), the pixels \(x_{i - i, j - 1}, x_{i - 1, j}\) and \(x_{i, j -1}\) have already been restored from \(REF\) or the former application of~\eqref{eq:restore}, so that the \(pv_{i, j}\) is identical as that in embedding process.
-%	
-	\begin{equation}
-		\label{eq:restore}
-		x_{i, j} =
-		\begin{cases}
-			pv_{i, j}                          ,& \text{if } t_{i, j} = 8, \\
-			\\
-			\begin{aligned}
-				&\mathrm{MSB}^{(t_{i, j})}(pv_{i, j})  \\
-				&\quad {+}\: \mathrm{LSB}^{(7 - t_{i, j})}(x^\prime_{i, j}) \\
-				&\quad {+} \underbrace{(1 - {x^\prime_{i, j}}^{(7 - t_{i, j})}) \times 2^{(7 - t_{i, j})}}_
-				{\text{flip the } (t_{i, j}+1) \text{-th bit}} ,
-			\end{aligned} & \text{otherwise}.
-		\end{cases}
-	\end{equation}
 
 	An visualized demonstration of our method is illustrated in Fig.\,\ref{fig:example}.
 	
 	\section{Experimental results}
 	\label{sec:experimental}
 	
-	\subsection{USC-SIPI}
 	
-	\begin{table*}[!t]
-		\centering
-		\caption{USC-SIPI (Ours/Yin et~al./$\Delta$)}
-		\label{tab:common}
-		\begin{tabular}{lc   r@{/}r@{/}r   r@{/}r@{/}r   r@{/}r@{/}r   r@{/}r@{/}r }
-			\toprule
-			\multicolumn{1}{c}{Image} & Size  & 
-			\multicolumn{3}{c}{Hdr(bit)}      & 
-			\multicolumn{3}{c}{REF(byte)}     & 
-			\multicolumn{3}{c}{Capacity(bit)} & 
-			\multicolumn{3}{c}{LEN(bit)}      \\ 
-			\midrule
-			Airplane  & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1665291$ & $1659203$ & $+6088$	& $659495$  & $682803$  & $-23308$	\\
-			Baboon    & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1077666$ & $1074384$ & $+3282$	& $789420$  & $794941$  & $-5521$	\\
-			Bridge    & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1258779$ & $1255024$ & $+3755$	& $748601$  & $762388$  & $-13787$	\\
-			Couple    & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1498802$ & $1492514$ & $+6288$	& $781360$  & $788184$  & $-6824$	\\
-			Jetplane  & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1591994$ & $1585678$ & $+6316$	& $781304$  & $794510$  & $-13206$	\\
-			Lake      & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1288497$ & $1282947$ & $+5550$	& $789282$  & $786507$  & $+2775$	\\
-			Lena      & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1476121$ & $1470568$ & $+5553$	& $787183$  & $793304$  & $-6121$	\\
-			Milkdrop  & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1639090$ & $1632874$ & $+6216$	& $748818$  & $764578$  & $-15760$	\\
-			Peppers   & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1355908$ & $1350096$ & $+5812$	& $780653$  & $777767$  & $+2886$	\\
-			Tiffany   & $512$ & $53$ & $52$ & $+1$ & $70$ & $1023$ & $-953$	 & $1531474$ & $1525373$ & $+6101$	& $772692$  & $786274$  & $-13582$	\\
-			\midrule 
-			Lax       & $1024$ &$53$ & $54$ & $-1$ & $70$ & $2047$ & $-1977$ & $4903636$ & $4894058$ & $+9578$	& $3122085$ & $3116214$ & $+5871$	\\
-			Man       & $1024$ &$53$ & $54$ & $-1$ & $70$ & $2047$ & $-1977$ & $5595534$ & $5584907$ & $+10627$	& $3127243$ & $3121506$ & $+5737$	\\
-			\bottomrule
-		\end{tabular}
-	\end{table*}
-	
-	\begin{table}[!t]
-		\centering
-		\caption{The encoding result of \emph{Man} \(1024 \times 1024\)}
-		\label{tab:man}
-		
-		
-		\label{tab:mana}
-		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
-			\toprule 
-			\(t\)                                      &   
-			\multicolumn{1}{c}{\(f_t\)}                &     
-			\multicolumn{1}{c}{\(\mathrm{encode}(t)\)} &  
-			\(\mathrm{cap}(t)\)                        &    
-			\(\vert \mathrm{encode}(t) \vert\)         & 
-			\(\mathrm{payload}(t)\)                    & 
-			\multicolumn{1}{c}{\(\Delta\)}             \\
-			\midrule 
-			$0$ & $40463$  & $11111$ & $1$ & $5$ & $-4$ & $-161852$ \\ 
-			$1$ & $40970$  & $11110$ & $2$ & $5$ & $-3$ & $-122910$ \\ 
-			$2$ & $86141$  & $1100$  & $3$ & $4$ & $-1$ & $-86141$  \\ 
-			$3$ & $153456$ & $100$   & $4$ & $3$ & $+1$ & $+153456$ \\ 
-			$4$ & $221148$ & $00$    & $5$ & $2$ & $+3$ & $+663444$ \\ 
-			$5$ & $207241$ & $01$    & $6$ & $2$ & $+4$ & $+828964$ \\ 
-			$6$ & $135809$ & $101$   & $7$ & $3$ & $+4$ & $+543236$ \\ 
-			$7$ & $75529$  & $1110$  & $8$ & $4$ & $+4$ & $+302116$ \\ 
-			$8$ &$ 85772$  & $1101$  & $8$ & $4$ & $+4$ & $+343088$ \\ 
-			\midrule 
-			$\sum$ & $1046529$   && $5584907$ & $3121506$ &    $+2463401$ & \\ 
-			\bottomrule
-			\multicolumn{7}{l}{Average code length: \(3121506 \divisionsymbol 1046529 = 2.982722\)} \\
-			\bottomrule
-		\end{tabular}
-		\subcaption{using~\cite{Yin2020}.}
-		
-		\vskip .5cm
-		
-		\label{tab:manb}
-		\begin{tabular}{c@{\;}rl@{}c@{\;}c@{\;}c@{}r}
-			\toprule 
-			\(t\) &   \multicolumn{1}{c}{\(f_t\)} &     \multicolumn{1}{c}{\(\mathrm{encode}(t)\)}  &  \(\mathrm{cap}(t)\) &    \(\vert \mathrm{encode}(t) \vert\)    & \(\mathrm{payload}(t)\)  & \multicolumn{1}{c}{\(\Delta\)}  \\
-			\midrule 
-			%			\singlemanshr
-			$0$ & $40555$  & $11010$ & $1$ & $5$ & $-4$ & $-162220$ \\ 
-			$1$ & $41000$  & $11011$ & $2$ & $5$ & $-3$ & $-123000$ \\ 
-			$2$ & $86279$  & $1111$ & $3$ & $4$ & $-1$ & $-86279$   \\ 
-			$3$ & $153773$  & $101$ & $4$ & $3$ & $+1$ & $+153773$  \\ 
-			$4$ & $221579$  & $01$ & $5 $ & $2$ & $+3$ & $+664737$  \\ 
-			$5$ & $207665$  & $00$ &  $6$ & $2$ & $+4$ & $+830660$  \\ 
-			$6$ & $136075$  & $100$ & $7$ & $3$ & $+4$ & $+544300$  \\ 
-			$7$ & $75666$  & $1100$ & $8$ & $4$ & $+4$ & $+302664$  \\ 
-			$8$ & $85914$  & $1110$ & $8$ & $4$ & $+4$ & $+343656$  \\ 
-			\midrule 
-			$\sum$ & $1048506$   && $5595534$ & $3127243$ &    $+2468291$ & \\ 
-			
-			\bottomrule
-			\multicolumn{7}{l}{Average code length: \(3127243 \divisionsymbol 1048506 = 2.982570\)} \\
-			\bottomrule
-		\end{tabular}
-		\subcaption{using our method.}
-	\end{table}
-	
-	We apply our method on USC-SIPI dataset~\cite{UniversityofSouthernCalifornia2020}.
-	The experimental results are demonstrated in Table~\ref{tab:common}. 
-	In each column, there are three sub-columns separated by two slashes(\(/\)), 
-	the first sub-column represents our data, 
-	the second sub-column is the data of Yin et~al.\ and 
-	the third sub-column is the differences between them.
-	In Table~\ref{tab:common}, 
-	the column \emph{Size} and \emph{REF} are self-explanatory; 
-	the column \emph{Hdr} indicates how many bits are occupied to store the Huffman coding tree; 
-	the column \emph{Capacity} shows the overall embedding capacity the image can provide, without considering the space required to store auxiliary information \(S_a\);
-	the column \emph{LEN} represents the length of \(\mathbf{T'}\).
-	
-	We observed that our method creates a larger \(\mathbf{T^\prime}\) in  \emph{Lake, Peppers, Lax} and \emph{Man}. That is because our method uses a larger \(\mathbf{T}\).
 
-	In the case of \emph{Man} \(1024 \times 1024\), Yin et~al. creates a \(\mathbf{T}\) of size \(1023 \times 1023\), but our method creates a \(\mathbf{T}\) of size \(1024 \times 1024 - 70\). Surely in some cases our method could create larger \(\mathbf{T}\) and \(\mathbf{T'}\), as shown in the column \emph{LEN}. 
- 
-	But our method can still produce shorter bit string after applying the Huffman encoding process, as shown in Table~\ref{tab:man}, where we use \emph{Man} \(1024 \times 1024\) as an example.
 	
-	Though we have to spend extra space in \(S_a\) to store the Huffman tree topology, we remove the redundant \(LEN\) column, hence \(S_a\) remains almost the same size(\(\pm 1\)), as shown in the column \emph{Hdr}.
 	
-	According to the column \emph{REF}, our method increases significant extra bytes that can be used for data hiding, it then turns into a few thousands more bits as shown in the column \emph{Capacity}. 
-	This improvement increases with the \emph{Size} of cover image. With larger cover image, this improvement can provide more extra embedding capacities. 
 	
-	Ideally, the \(x_{0, 0}\) is the only pixel that need to be stored, but in practical, we have to define a larger \(REF\). 
-	It takes \(53\) bits to store the encoded Huffman tree, and it takes a few more bytes to preserve the loop invariant in Algorithm~\ref{algo:extractA}.
-T
-	Algorithm~\ref{algo:extractA} defines two indexes \((d_x, d_y)\) and the \((i, j)\) at line~\ref{algo:extractT:idxProce} and line~\ref{algo:extractT:idxExt}. 
-	In order to ensure Algorithm~\ref{algo:extractA} performs properly, a loop invariant \((i, j) < (d_x, d_y)\) is imposed at line~\ref{algo:extractT:nextij}.
-%	
-	As \((i, j)\) advances during each iteration, \((d_x, d_y)\) only move forward when the \(buf\) at line~\ref{algo:extractT:nextd} form a valid Huffman code. Each processed \(t_{i, j}\) will give some contribution to the \(buf\).
-	When there is a condensation of small \(t_{i, j}\) in any part of \(I_w\), the advance of \((d_x, d_y)\) will be slower, which might lead to a failure of Algorithm~\ref{algo:extractA}.
-%
-	A larger \(REF\) alleviates this exception.
-%
-	If we scrutinize into line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractA}, more bytes in \(REF\) will provide more \(t_{d_x, d_y}\), which then can be used to move \((d_x, d_y)\) forward so that the \((i, j) < (d_x, d_y)\) can be hold.
-%	
-	But more bytes in \(REF\) also means less bytes can be used for data hiding.
-
-	Proper value of \(REF\) is different by images. According to our experiments, the \emph{Airplane} \(512 \times 512\) should have \(REF \geq 8\) and \emph{Baboon} \(512 \times 512\) should have \(REF \geq 25\) or otherwise the Algorithm~\ref{algo:extractA} will fail.
-%	
-	This constrain affects the extracting process, hence \(REF\) must be a preshared knowledge among all the \emph{Receiver} who wishes to extract secret message. 
-	Hence \(REF\) must be fixed and large enough in order to handle different cover images.
-%	
-	According to our experimental results, \(REF \geq 70\) is proper for all of our test data~\cite{UniversityofSouthernCalifornia2020, Bas2011, Filler2010}. 
-	A larger \(REF\) will reduce the possibility of failure when using complex images.
 	
-	\subsection{Large datasets}
 	
-	\begin{table}[!t]
-		\centering
-		\caption{BOSSBase and BOWS-2 (Ours/Yin et~al./$\Delta$)}
-		\label{tab:bestworst}
-		\begin{tabular}{@{}l@{\;}c@{/}c@{/}c c@{/}c@{/}c c@{/}c@{/}c@{}}
-			\toprule
-			ER (bpp) & 
-			\multicolumn{3}{c}{Best Case}  & 
-			\multicolumn{3}{c}{Worst Case} & 
-			\multicolumn{3}{c}{Average}    \\
-			\midrule
-			BOSSBase & 6.881 &	5.898	& \(+\)0.984 & 0.716 & 0.665 & \(+\)0.051 & 3.464 &	3.361 &	\(+\)0.103 \\
-			BOWS2    & 6.443 &	5.622   & \(+\)0.821 & 0.671 & 0.629 & \(+\)0.042 & 3.320 &	3.246 &	\(+\)0.075 \\
-			\bottomrule
-		\end{tabular}
-	\end{table}
 	
-	\begin{table}[!t]
-		\centering
-		\caption{Average Capacity Comparison(bpp).}
-		\label{tab:compare}
-		\begin{tabular}{cccccc}
-			\toprule
-			Dataset  & \cite{Puteaux2018} & \cite{Yi2019} & \cite{Chen2019} & \cite{Yin2020}  & Our method \\
-			\midrule
-			BOSSBase & 0.966 & 1.957 & 2.323 & 3.361 & 3.464 \\
-			BOWS-2 	 & 0.968 & 1.881 & 2,245 & 3.246 & 3.320 \\
-			\bottomrule
-		\end{tabular}
-	\end{table}
+%	USC-SIPI dataset contain \(10\ 512 \times 512\) and \(2\ 1024 \times 1024\) gray-scale image.
+%	Both dataset contain \(10,000\ 512 \times 512\) gray-scale images.
+	Since our method is a reversible data hiding method, the values of MSE and PSNR are \(+\infty\) and \(0\), respectively, our analysis focuses on embedding capacity and security.
+	
+	
+	
+	\subsection{Embedding capacity}
 	
 	\begin{figure}[!t]
 		\centering
-		\subfloat[]{\includegraphics[width=.45\linewidth]{img/best-boss-5162}%
-			\label{fig_first_case}}
+		\subfloat[\emph{Airplane}]{\includegraphics[width=.25\linewidth]{img/airplane}}
+		\subfloat[\emph{Baboon}]{\includegraphics[width=.25\linewidth]{img/baboon}}
+		\subfloat[\emph{Bridge}]{\includegraphics[width=.25\linewidth]{img/bridge}}
+		\subfloat[\emph{Couple}]{\includegraphics[width=.25\linewidth]{img/couple}}
 		\hfil
-		\subfloat[]{\includegraphics[width=.45\linewidth]{img/best-bows2-1478}%
-			\label{fig_second_case}}
-		\caption{Images with maximum capacity. (a) BOSSBase/5162.tiff. (b) BOWS2/1478.tiff.}
-		\label{fig:best}
+		\subfloat[\emph{Jetplane}]{\includegraphics[width=.25\linewidth]{img/jetplane}}
+		\subfloat[\emph{Lake}]{\includegraphics[width=.25\linewidth]{img/lake}}
+		\subfloat[\emph{Lena}]{\includegraphics[width=.25\linewidth]{img/lena}}
+		\subfloat[\emph{Milkdrop}]{\includegraphics[width=.25\linewidth]{img/milkdrop}}
+		\hfil
+		\subfloat[\emph{Peppers}]{\includegraphics[width=.25\linewidth]{img/peppers}}
+		\subfloat[\emph{Tiffany}]{\includegraphics[width=.25\linewidth]{img/tiffany}}
+		\subfloat[\emph{Lax}]{\includegraphics[width=.25\linewidth]{img/lax}}
+		\subfloat[\emph{Man}]{\includegraphics[width=.25\linewidth]{img/man}}
+		\caption{Test images from USC-SIPI.}
+		\label{fig:usc-sipi}
 	\end{figure}
 	
-	\begin{figure}[!t]
+	\begin{table}[!t]
 		\centering
-		\subfloat[]{\includegraphics[width=.45\linewidth]{img/worst-boss-1377}%
-			\label{fig_first_case2}}
-		\hfil
-		\subfloat[]{\includegraphics[width=.45\linewidth]{img/worst-bows2-5547}%
-			\label{fig_second_case2}}
-		\caption{Images with minimum capacity. (a) BOSSBase/1377.tiff. (b) BOWS2/5547.tiff.}
-		\label{fig:worst}
-	\end{figure}
+		\caption{Experimental result of USC-SIPI with \(R = 70\).}
+		\label{tab:usc}
+		\begin{tabular}{l  r r r   r }
+			\toprule
+			Image 	  & Size   & LEN(bit)  & Capacity(bit) & ER(bpp)	\\ 
+			\midrule
+			Airplane  & $512$  & $659495$  & $1665291$ & $3.837$	\\
+			Baboon    & $512$  & $789420$  & $1077666$ & $1.100$	\\
+			Bridge    & $512$  & $748601$  & $1258779$ & $1.946$	\\
+			Couple    & $512$  & $781360$  & $1498802$ & $2.737$	\\
+			Jetplane  & $512$  & $781304$  & $1591994$ & $3.093$	\\
+			Lake      & $512$  & $789282$  & $1288497$ & $1.904$	\\
+			Lena      & $512$  & $787183$  & $1476121$ & $2.633$	\\
+			Milkdrop  & $512$  & $748818$  & $1639090$ & $3.396$	\\
+			Peppers   & $512$  & $780653$  & $1355908$ & $2.194$	\\
+			Tiffany   & $512$  & $772692$  & $1531474$ & $2.895$	\\
+			%			\midrule 
+			Lax       & $1024$ & $3122085$ & $4903636$ & $1.699$	\\
+			Man       & $1024$ & $3127243$ & $5595534$ & $2.354$	\\
+			\midrule
+			Average	  & &&& $2.482$ \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
 	
-	We use BOSSBase~\cite{Bas2011} and BOWS-2~\cite{Filler2010} image datasets to evaluate the embedding capacity of our method and compare it with other state-of-the-art methods. 
-	Both dataset contain \(10,000\ 512 \times 512\) gray-scale images.
-	The experimental result is given in Table~\ref{tab:bestworst}, where we use embedding rate (ER), as defined in Equation~\eqref{eq:er}, to evaluate our method and compare with~\cite{Yin2020} in the best, worst and average cases.
-	The cover image that involved in the best case and the worst case of both dataset are shown in Fig.\,\ref{fig:best} and Fig.\,\ref{fig:worst}.
-%	
+	We apply our method on images selected from USC-SIPI dataset~\cite{UniversityofSouthernCalifornia2020}, as shown in Fig.~\ref{fig:usc-sipi}.
+	The experimental results are demonstrated in Table~\ref{tab:usc}. 
+%	In each column, there are three sub-columns separated by two slashes(\(/\)), 
+%	the first sub-column represents our data, 
+%	the second sub-column is the data of Yin et~al.~\cite{Yin2020} and 
+%	the third sub-column is the differences between them.
+	In Table~\ref{tab:usc}, 
+	the column \emph{Image} and \emph{Size} are self-explanatory; 
+%	the column \emph{Hdr} indicates how many bits are occupied to store the serialized Huffman coding tree \(\mathbf{H}\); 
+	the column \emph{LEN} represents the length of \(\mathbf{T'}\);
+	the column \emph{Capacity} shows the overall embedding capacity without considering the space overhead required to store auxiliary information \(S_a\);
+	the column \emph{ER} represents the net embedding rate in bits per pixel, as defined in~\eqref{eq:bpp} where \(53\) is the fixed length of a serialized Huffman coding tree having \(9\) leaf nodes with values ranging from \(0\) to \(8\) and \(R\) is the size of preserved reference pixels.
+	
 	\begin{equation}
-		ER = \frac{\sum_{t \in \mathbf{T}} \mathrm{payload}(t) \times f_t}{w \times h}.
-		\label{eq:er}
+		\mathrm{ER} = \frac{\mathrm{Capacity} - LEN - 53 - (R \times 8)}{w \times h}.
+		\label{eq:bpp}
 	\end{equation}
+	
+	
+%	We observed that our method creates a larger \(\mathbf{T^\prime}\) in  \emph{Lake, Peppers, Lax} and \emph{Man}. That is because our method uses a larger \(\mathbf{T}\).
+%	In the case of \emph{Man} \(1024 \times 1024\), Yin et~al.~\cite{Yin2020} creates a \(\mathbf{T}\) of size \(1023 \times 1023\), while our method creates a \(\mathbf{T}\) of size \(1024 \times 1024 - 70\). That explains the reason why in some cases our method could create larger \(\mathbf{T}\) and \(\mathbf{T'}\), as shown in the column \emph{LEN} of Table~\ref{tab:common}. 
+%	But our method can still produce shorter bit string after applying the Huffman encoding process, as shown in Table~\ref{tab:man}, where we use \emph{Man} \(1024 \times 1024\) as an example.
+	
+%	Though we have to spend extra space in \(S_a\) to store the Huffman tree topology, we remove the redundant \(LEN\) column, hence \(S_a\) remains almost the same size(\(\pm 1\)), as shown in the column \emph{Hdr}.
+	
+%	According to the column \emph{R}, our method increases significant extra bytes that can be used for data hiding, it then turns into a few thousands more bits as shown in the column \emph{Capacity}. 
+%	This improvement increases with the \emph{Size} of cover image. With larger cover image, this improvement can provide more extra embedding capacities. 
+	
+	
+	
+	\setlength{\tabcolsep}{4pt}
+	\begin{table}[!t]
+		\centering
+		\caption{Comparison of average capacity (bpp).}
+		\label{tab:compare}
+		\begin{tabular}{lccccccc}
+			\toprule
+			Dataset  & \cite{Yin2020} & \cite{Puteaux2021} & \cite{Zhang2022} & \cite{Gao2023} & \cite{Sui2023} & \cite{Pang2023} & Our method \\
+			\midrule
+			BOSSBase & \(3.361\) & \(-\)     & \(-\)     & \(3.458\) & \(3.389\) & \(2.566\) & \(3.464\)  \\
+			BOWS-2 	 & \(3.246\) & \(2.458\) & \(2.489\) & \(3.314\) & \(3.282\) & \(2.435\) & \(3.320\)  \\
+			UCID 	 & \(2.688\) & \(-\)     & \(-\)     & \(2.751\) & \(-\)     & \(-\)     & \(2.758\)  \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+%	\begin{figure}[!t]
+%		\centering
+%		\subfloat[BOSSBase/5162]{\includegraphics[width=.3\linewidth]{img/best-boss-5162}%
+%			\label{fig_first_case}}
+%		\hfil
+%		\subfloat[BOWS2/1478]{\includegraphics[width=.3\linewidth]{img/best-bows2-1478}%
+%			\label{fig_second_case}}
+%		\caption{Images with maximum capacity.}
+%		\label{fig:best}
+%	\end{figure}
+	
+%	\begin{figure}[!t]
+%		\centering
+%		\subfloat[BOSSBase/1377]{\includegraphics[width=.3\linewidth]{img/worst-boss-1377}%
+%			\label{fig_first_case2}}
+%		\hfil
+%		\subfloat[BOWS2/5547]{\includegraphics[width=.3\linewidth]{img/worst-bows2-5547}%
+%			\label{fig_second_case2}}
+%		\caption{Images with minimum capacity.}
+%		\label{fig:worst}
+%	\end{figure}
+	
+	 We use BOSSBase~\cite{Bas2011}, BOWS-2~\cite{Filler2010} and UCID~\cite{Schaefer2003} image datasets to evaluate the embedding capacity of our method. 
+	 There are \(10,000\) \(512 \times 512\) images in BOSSBase and BOWS-2, while there are \(1388\) \(512 \times 384\) images in UCID.
+	 The comparison between our method and other state-of-the-art methods is shown in Table~\ref{tab:compare}.
+%	The experimental result is given in Table~\ref{tab:bestworst}, where we use embedding rate (ER), as defined in Equation~\eqref{eq:er}, to evaluate our method and compare with~\cite{Yin2020} in the best, worst and average cases.
+%	The cover image that involved in the best case and the worst case of both dataset are shown in Fig.\,\ref{fig:best} and Fig.\,\ref{fig:worst}.
+%	
+%	\begin{equation}
+%		ER = \frac{\sum_{t \in \mathbf{T}} \mathrm{payload}(t) \times f_t}{w \times h}.
+%		\label{eq:er}
+%	\end{equation}
 %
-	Though our method outperforms those of other's (as shown in Table~\ref{tab:compare}), it is worths mentioning that, 
-	as expected, our method performs better when applied on smooth images since similar adjacent pixels produce larger \(t\), hence increase the embedding capacity. 
-	But with rough images, such as those shown in Fig.\,\ref{fig:worst}, our method produce less satisfactory results.
+	Though our method outperforms other methods, it is worth mentioning that our method performs better when applied on smooth images since similar adjacent pixels lead to more accurate predicted values and hence produce larger \(t\) to increase the embedding capacity. 
+	But with rough images, our method produce less satisfactory results.
+	
+	From~\eqref{eq:payload}, we observe the payload comes from the difference between the capacity of each \(t_{i, j}\) and the length of its Huffman code \(t\_code\), hence if the distribution of \(t_{i, j}\) are biased to a particular value \(t\), then those \(t_{i, j} = t\) are encoded into shorter \(t\_code\), such as \(t = 5\) in Fig.~\ref{tab:huffman:lena} and \(t = 4, 5\) in Fig.~\ref{tab:huffman:man}.
+	The most significant increment of capacity appears at those rows in the \(\Delta\) column in Fig.~\ref{tab:huffman}.
+	
+	The other factor that affects~\eqref{eq:payload} is the value of \(t\), since larger \(t\) means larger \(\mathrm{cap}(t)\).
+	By~\eqref{eq:t}, each \(t_{i, j}\) is affected by the position of the most significant set bit of each predicted error \(pe_{i, j}\).
+	Smaller \(pe_{i, j}\) leads to larger \(t_{i, j}\).
+	Hence, the performance of our method is highly dependent on the accuracy of the adopted enhanced MED predictor.
+	A more accurate predictor produces more smaller \(pe_{i, j}\).
+	
+	The size of \(REF\), i.e.~\(R\), is also an factor affecting the overall embedding capacity.
+	Since all the \(REF\) pixels must be losslessly preserved, they occupy \(R\) bytes in the embedding capacity as part of auxiliary information, as demonstrated in Fig.~\ref{fig:header2}.
+	Larger \(R\) means larger overhead.
+	%	
+	Ideally, the \(x_{0, 0}\) is the only pixel that need to be stored, but in practical, we have to define a larger \(R\), 
+	because it takes \(53\) bits to store a serialized Huffman tree, and a few more bytes to preserve the loop invariant in Algorithm~\ref{algo:extractA}.
+	
+	Algorithm~\ref{algo:extractA} defines two indexes, \((d_x, d_y)\) and \((i, j)\), at line~\ref{algo:extractT:idxProce} and line~\ref{algo:extractT:idxExt}. 
+	In order to ensure Algorithm~\ref{algo:extractA} performs properly, a loop invariant \((i, j) < (d_x, d_y)\) is imposed at line~\ref{algo:extractT:nextij}.
+	%	
+	As \((i, j)\) advances during each iteration, \((d_x, d_y)\) only moves forward when the \(buf\) at line~\ref{algo:extractT:nextd} forms a valid Huffman code. 
+	Each processed \(t_{i, j}\) gives some contribution to the \(buf\).
+	When there is a condensation of small \(t_{i, j}\) in any part of \(I_w\), the advancing of \((d_x, d_y)\) slows down, which might lead to a failure of Algorithm~\ref{algo:extractA}.
+	%
+	A larger \(R\) alleviates this problem.
+	%
+	If we scrutinize into line~\ref{algo:extractT:incdref} in Algorithm~\ref{algo:extractA}, a larger \(R\) preserves more bytes in \(REF\)  and hence provides more \(t_{d_x, d_y}\) during the loop at line~\ref{algo:extractT:loop}, which then moves \((d_x, d_y)\) forward to hold \((i, j) < (d_x, d_y)\).
+	%	
+	But a larger \(R\) also means lesser bytes can be used for data hiding.
+	
+	The proper value of \(R\) differs from images. For example, according to our experiments, the \emph{Airplane} \(512 \times 512\) should have \(R \geq 8\) and \emph{Baboon} \(512 \times 512\) should have \(R \geq 25\) or otherwise Algorithm~\ref{algo:extractA} will fail.
+	%	
+	Since this constrain affects the extracting process, \(R\) must be a preshared knowledge among all the \emph{Receivers} who wish to extract secret message. 
+	Hence \(R\) must be fixed and large enough in order to handle different cover images and small enough to not introduce too much overhead on embedding capacity.
+	%	
+	According to our experimental results, \(R \geq 70\) is proper for all of the test images in USC-SIPI, 
+	BOSSBase and BOWS-2, 
+	while UCID image datasets requires \(R \geq 250\).
+	%	A larger \(R\) will reduce the possibility of failure when using complex images.
+	
+	
+
+	\subsection{Security}
+	
+	\begin{figure}[!t]
+		\centering
+		\subfloat[]{\includegraphics[width=.22\linewidth]{img/peppers}}		\hspace{1pt}
+		\subfloat[]{\includegraphics[width=.22\linewidth]{img/encrypted}}	\hspace{1pt}
+		\subfloat[]{\includegraphics[width=.22\linewidth]{img/embedded}}	\hspace{1pt}
+		\subfloat[]{\includegraphics[width=.22\linewidth]{img/peppers}}
+		\caption{Examples of (a) Cover image \(I\); (b) Encrypted image \(I_e\); (c) Embedded image \(I_w\); and (d) Restored image \(I\).}
+		\label{fig:security-demo}
+	\end{figure}
+	
+	\begin{figure}[!t]
+		\centering
+		\subfloat[\emph{Jetplane}]{\includegraphics[width=.33\linewidth]{img/statistic-jetplane}\label{fig:static:jetplane}}		
+		\subfloat[Encrypted \emph{Jetplane}]{\includegraphics[width=.33\linewidth]{img/statistic-jetplane-enc}\label{fig:static:jetplane:enc}}	
+		\subfloat[Embedded \emph{Jetplane}]{\includegraphics[width=.33\linewidth]{img/statistic-jetplane-embed}\label{fig:static:jetplane:embed}}	
+		\hfil
+		\subfloat[\emph{Lena}]{\includegraphics[width=.33\linewidth]{img/statistic-lena}\label{fig:static:lena}}	
+		\subfloat[Encrypted \emph{Lena}]{\includegraphics[width=.33\linewidth]{img/statistic-lena-enc}\label{fig:static:lena:enc}}
+		\subfloat[Embedded \emph{Lena}]{\includegraphics[width=.33\linewidth]{img/statistic-lena-embed}\label{fig:static:lena:embed}}
+%		\hfil
+%		\subfloat[\emph{Baboon}]{\includegraphics[width=.33\linewidth]{img/statistic-baboon}\label{fig:static:baboon}}	
+%		\subfloat[Encrypted \emph{Baboon}]{\includegraphics[width=.33\linewidth]{img/statistic-baboon-enc}\label{fig:static:baboon:enc}}
+%		\subfloat[Embedded \emph{Baboon}]{\includegraphics[width=.33\linewidth]{img/statistic-baboon-embed}\label{fig:static:baboon:embed}}
+		\caption{The pixel frequencies.}
+		\label{fig:statistic}
+	\end{figure}
+	
+	The cover image is encrypted by an key stream \(K_I\) generated by a pre-defined random number generator or stream cipher using \(Key_I\).
+	An encrypted image appears to be random data hence the true content and the features of the cover image are hidden, as shown in Fig.~\ref{fig:security-demo}.
+	
+	We take \emph{Jetplane} and \emph{Lena} as examples, the pixel frequency of cover images are shown in Fig.\ref{fig:static:jetplane} and Fig.~\ref{fig:static:lena}.
+	The histograms of \emph{Jetplane} and \emph{Lena} content information about the content and the features.
+	After the encryption with a random \(Key_I\), the statistic data of the encrypted images are shown in Fig.\ref{fig:static:jetplane:enc} and Fig.~\ref{fig:static:lena:enc}.
+	The pixels of encrypted images are evenly distributed between the range of \([0-255]\).
+	After the embedding process using random stream as secret message, the statistic data of the embedded images are shown in Fig.\ref{fig:static:jetplane:embed} and Fig.~\ref{fig:static:lena:embed}.
+	The pixel frequencies are twisted into picks, but since they are till very different from the pixel frequencies of the cover image, the information about the content and features are still protected by encryption. 
+	Besides, different cover images, i.e. \emph{Jetplane} and \emph{Lena}, produce similar statistical trends, an attacker would not acquire useful information through pixel statistics.
+	The key space of \(K_I\) is as large as \(2^{w \times h \times 8}\), unless the underlaying random number generator or stream cipher is broken, it is computationally infeasible to recover the cover image \(I\) from the encrypted image \(I_e\) or the stego image \(I_w\) without the knowledge of \(K_I\).
+	
 
 	\section{Conclusion}
 	\label{sec:conclusion}
 	
-	In this paper, we proposed a new RRBE RDHEI methods that have significant incremental in embedding capacity.
-	For our method to be a reversible data hiding method, the definition of MSE and PSNR tells us that the results can only be \(+\infty\) and \(0\), respectively.
+	In this paper, we proposed a new RRBE RDHEI methods that have significant incremental in embedding capacity over other state-of-the-art methods.
+	We properly adopt the strength of Huffman coding and proposed an enhanced MED predictor that have not been discussed in any of our reference papers.
+%	Since our method is a reversible data hiding method, the value of MSE and PSNR are \(+\infty\) and \(0\), respectively.
 %	
-	It only make sense to compare the embedding capacity.
-	Our experimental data illustrated that our method is better then other method even with rough images in the worst case. 
+%	It only make sense to compare the embedding capacity.
+	Our experimental data illustrated that our method is better then other method even in the worst case. 
 	
 %	\subsubsection*{Acknowledgments}
 	\section*{Acknowledgments}

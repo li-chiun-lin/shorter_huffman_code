@@ -1,0 +1,36 @@
+Reviewer: 3
+
+Recommendation: RQ - Review Again After Major Changes
+
+Comments:
+In this paper, the authors present a method for data hiding in encrypted images.
+
+1) This paper is a revision of a previous version that was rejected by IEEE TMM.
+
+I have not read and accessed the previous version of this document, but I am surprised by the responses to some of the comments made by previous reviewers. You have to wait for the last answer to understand that article [14] in the previous version is now article [20].But the answer where the authors said "And during our journey of composing this article, we by chance discovered the other two interesting improvements, especially the improvement about REF bytes, which we have not seen in any of our reference papers." is amazing.
+After reading the current version of the paper, I also understand why reviewer 2 failed to understand the method. Indeed, even when you're a specialist, it's not clear enough, making the paper difficult to read and understand.
+
+2) This paper mainly involves a correction and minor improvements to the method presented in paper [20]. If that's all it is, the authors could just as easily suggest a rebuttal.
+
+3) The structure of the current version of the document is not at all helpful to its readability.
+
+For example, Table 1 appears first in the document, but is cited after Figures 1, 2 and 3.
+
+4) Figure 1 is too large. What's more, its content is not easy to read. The boxes around the data are unnecessary. Furthermore, the content of Figure 1 explains/illustrates the proposed method, but does not demonstrate it.
+
+5) Equ. 7 : Where is the key needed to generate the KI key stream presented?
+
+6) Content of Fig. 2 is a figure or a table? Is this figure necessary? It would be better just to have the equation.
+
+7) Equ. 15 is not well located.
+
+8) In the proposed method, there are 6 algorithms one after the other. This doesn't make sense.
+
+9) What is the purpose of figure 6?
+
+10) Several recent papers from 2021, 2022 and 2023 are missing. For example an extension of paper [17] is:
+P. Puteaux and W. Puech. A Recursive Reversible Data Hiding in Encrypted Images Method With a Very High Payload. IEEE Trans. Multim. 23: 636-650 (2021).
+
+11) Reference [5] should be rewritten with a capital letter for the surname.
+
+12) The total length of the paper is 8 pages, with a large number of figures and algorithms.
