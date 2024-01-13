@@ -4,6 +4,7 @@
 #include "../lib/lib.h"
 #include "../msb_huffman/m_exp.h"
 #include "../shorter_huffman/s_exp.h"
+#include "../shorter_huffman/s_hm.h"
 
 #include<filesystem>
 
@@ -513,6 +514,7 @@ void listdir(path p, bool(*ptr)(path file))
 	else
 	{
 		cout << "f: " << p << endl;
+		//cout << ".";
 		(*ptr)(p);
 	}
 }
@@ -540,8 +542,8 @@ void bigdata(string dir, string report)
 void genBigData()
 {
 	bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
-	bigdata("../dataset/BOSSbase/", "../out/bigreport-boss.csv");
-	bigdata("../dataset/BOWS2/", "../out/bigreport-bows2.csv");
+	//bigdata("../dataset/BOSSbase/", "../out/bigreport-boss.csv");
+	//bigdata("../dataset/BOWS2/", "../out/bigreport-bows2.csv");
 	//bigdata("../dataset/UCID/", "../out/bigreport-ucid.csv");
 }
 
@@ -871,19 +873,118 @@ void printvec(vector<int>& vec)
 //}
 
 
+void test_med()
+{
+	vector<vector<int>> p = {
+		{100, 110, 112, 110, 101},
+		{120, 121, 124, 120, 119},
+		{130, 132, 140, 150, 142},
+		{140, 131, 143, 145, 145},
+		{120, 121, 124, 145, 145},
+	};
+
+	auto pv = med(p);
+	auto pe = pred_err(p, pv, 3);
+	auto t = emb_cap(pe, 3);
+
+	print(p);
+	print(pv);
+	print(pe);
+	print(t);
+}
+
+void gen_statistic_data(string fn)
+{
+	//"../image/tiff/" + f + ".raw"
+	vector<unsigned char> buf;
+
+	auto info = readImageTiff(fn, buf);
+
+	vector<int> freq(256);
+
+	for (auto x : buf)
+		++freq[x];
+
+	cout << fn << "\n";
+
+	cout << "pixel,";
+	for (int i = 0; i < 256; ++i)
+		cout << i << ",";
+	cout << "\n";
+
+	cout << "count,";
+	for (int i = 0; i < 256; ++i)
+		cout << freq[i] << ",";
+	cout << "\n";
+}
+
+void gen_statistic_data_random(int size)
+{
+	vector<int> freq(256);
+
+	for (int i = 0; i < size; ++i)
+		for (int j = 0; j < size; ++j)
+		++freq[rand() % 256];
+
+	cout << "random" << "\n";
+
+	cout << "pixel,";
+	for (int i = 0; i < 256; ++i)
+		cout << i << ",";
+	cout << "\n";
+
+	cout << "count,";
+	for (int i = 0; i < 256; ++i)
+		cout << freq[i] << ",";
+	cout << "\n";
+}
+
+int test_shr_huffman()
+{
+	shr_huffman("../image/tiff/lena.tiff.raw", 
+		"../out/lena.tiff.raw_report_sh.txt", 
+		false, 
+		"../image/tiff/out/lena.tiff.raw_encrypt_sh.raw", 
+		"../image/tiff/out/lena.tiff.raw_stego_sh.raw", 
+		"../image/tiff/out/lena.tiff.raw_restore_sh.raw", 
+		"../out/lena.tiff.raw_hex_sh.txt", 
+		"../out/lena.tiff.raw_restore_hex_sh.txt");
+
+	shr_huffman("../image/tiff/Jetplane.tiff.raw",
+		"../out/Jetplane.tiff.raw_report_sh.txt",
+		false,
+		"../image/tiff/out/Jetplane.tiff.raw_encrypt_sh.raw",
+		"../image/tiff/out/Jetplane.tiff.raw_stego_sh.raw",
+		"../image/tiff/out/Jetplane.tiff.raw_restore_sh.raw",
+		"../out/Jetplane.tiff.raw_hex_sh.txt",
+		"../out/Jetplane.tiff.raw_restore_hex_sh.txt");
+
+	shr_huffman("../image/tiff/Baboon.tiff.raw",
+		"../out/Baboon.tiff.raw_report_sh.txt",
+		false,
+		"../image/tiff/out/Baboon.tiff.raw_encrypt_sh.raw",
+		"../image/tiff/out/Baboon.tiff.raw_stego_sh.raw",
+		"../image/tiff/out/Baboon.tiff.raw_restore_sh.raw",
+		"../out/Baboon.tiff.raw_hex_sh.txt",
+		"../out/Baboon.tiff.raw_restore_hex_sh.txt");
+	//shr_huffman(PATH_COVER_IMG, PATH_REPORT);
+
+	return 0;
+}
+
 int main()
 {
 	//genDataTex();
 	//genBigData();
 	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
-	//bigdata("../dataset/USC-SIPI/", "../out/bigreport-usc.csv");
+	//bigdata("../dataset/UCID/", "../out/bigreport-ucid.csv");
 	//bigdata("../dataset/TAMPERE17/", "../out/bigreport-tampere17.csv");
 
 	//genCmpTexSample();
 
 	//genManTex();
-	genLenaTex();
-	genAirplaneTex();
+	//genLenaTex();
+	//genAirplaneTex();
 
 	//testLenaLena();
 
@@ -896,7 +997,20 @@ int main()
 
 	//printlog2();
 
-	system("pause");
+	test_med();
+	//gen_statistic_data("../image/tiff/Jetplane.tiff");
+	//gen_statistic_data("../image/tiff/Lena.tiff");
+#if 0
+	gen_statistic_data_random(512);
+	gen_statistic_data_random(512);
+	gen_statistic_data_random(512);
+	gen_statistic_data_random(512);
+	gen_statistic_data_random(512);
+	gen_statistic_data_random(512);
+#endif
+
+	//test_shr_huffman();
+
 
 	return 0;
 }

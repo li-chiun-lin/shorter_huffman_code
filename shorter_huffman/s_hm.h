@@ -7,7 +7,8 @@ using namespace std;
 
 # define HAS_SIZE_LEN_H_LABEL_MAP 0
 
-# define CNT_REF_EXTRA 63
+//# define CNT_REF_EXTRA 63
+# define CNT_REF_EXTRA 200
 // this is for Baboon
 //# define CNT_REF_EXTRA 16
 
@@ -26,7 +27,7 @@ const int CNT_REF = (CNT_REF_TREE + CNT_REF_LEN + CNT_REF_EXTRA);
 
 
 
-# define DIR_IMG "../image/"
+# define DIR_IMG "../image/tiff/"
 # define DIR_IMG_OUT DIR_IMG "out/"
 # define DIR_DATA_OUT "../out/"
 

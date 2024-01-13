@@ -435,6 +435,24 @@ void printHuffmanEncoder(vector< vector<unsigned char> >& h_encoder)
 	}
 }
 
+void print_statistic_data(const vector<unsigned char>& buf)
+{
+	vector<int> freq(256);
+
+	for (auto x : buf)
+		++freq[x];
+
+	cout << "pixel,";
+	for (int i = 0; i < 256; ++i)
+		cout << i << ",";
+	cout << "\n";
+
+	cout << "count,";
+	for (int i = 0; i < 256; ++i)
+		cout << freq[i] << ",";
+	cout << "\n";
+}
+
 
 
 

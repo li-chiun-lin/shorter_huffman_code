@@ -211,6 +211,9 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 
 	XOR(byte_image, byte_rand_keystream);
 
+	cout << "encrypted\n";
+	print_statistic_data(byte_image);
+
 	if (!path_encry_img.empty())
 		writeImage(path_encry_img, byte_image);
 
@@ -359,6 +362,9 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 	idx_embed = embedMain_(val_labelmap, byte_image, bits_embed, idx_embed);
 
 	assert(idx_embed == idx_prepare);
+
+	cout << "stego\n";
+	print_statistic_data(byte_image);
 
 	if (!path_setgo_img.empty())
 		writeImage(path_setgo_img, byte_image);
@@ -546,6 +552,9 @@ struct Result shr_huffman(string path_cover_img, string path_report, bool isTiff
 # if REPORT
 	reportG4(byte_image, path_resto_img.c_str());
 # endif
+
+	cout << "restore\n";
+	print_statistic_data(byte_image);
 
 	if (!path_resto_img.empty())
 		writeImage(path_resto_img, byte_image);

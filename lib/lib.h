@@ -1,5 +1,6 @@
 #pragma once
-#include<iostream>
+#include <iostream>
+#include <iomanip>
 #include <vector>
 #include <fstream>
 #include <queue>
@@ -319,3 +320,15 @@ struct tiffInfo
 		width(0), height(0), sampleperpixel(0)
 	{}
 };
+
+
+
+void print(vector<int>& v);
+void print(vector<vector<int>>& v);
+
+vector<vector<int>> med(const vector<vector<int>>& v);
+vector<vector<int>> pred_err(const vector<vector<int>>& p, const vector<vector<int>>& pv, int ref);
+vector<vector<int>> emb_cap(const vector<vector<int>>& pe, int ref);
+
+
+void print_statistic_data(const vector<unsigned char>& buf);

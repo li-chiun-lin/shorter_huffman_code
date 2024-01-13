@@ -35,5 +35,8 @@
     <ClCompile Include="l_rep.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="med.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
